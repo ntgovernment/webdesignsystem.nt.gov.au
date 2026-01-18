@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const isComponentMode = mode === 'components'
+  const isComponentMode = mode === 'components';
   
   return {
     plugins: [react()],
@@ -27,5 +27,5 @@ export default defineConfig(({ mode }) => {
         '@': path.resolve(__dirname, './src'),
       },
     },
-  }
-})
+  };
+});

@@ -8,20 +8,28 @@ export interface ThemeSwitcherProps {
   className?: string
 }
 
+// SSR-safe function to get initial theme
+const getInitialTheme = (storageKey: string, themes: string[], defaultTheme: string): string => {
+  if (typeof window === 'undefined') {
+    return defaultTheme
+  }
+  
+  const savedTheme = localStorage.getItem(storageKey)
+  if (savedTheme && themes.includes(savedTheme)) {
+    return savedTheme
+  }
+  return defaultTheme
+}
+
 export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   themes = ['light', 'dark'],
   defaultTheme = 'light',
   storageKey = 'nt-design-system-theme',
   className = '',
 }) => {
-  const [currentTheme, setCurrentTheme] = useState<string>(() => {
-    // Initialize state from localStorage
-    const savedTheme = localStorage.getItem(storageKey)
-    if (savedTheme && themes.includes(savedTheme)) {
-      return savedTheme
-    }
-    return defaultTheme
-  })
+  const [currentTheme, setCurrentTheme] = useState<string>(() => 
+    getInitialTheme(storageKey, themes, defaultTheme)
+  )
 
   useEffect(() => {
     // Apply theme to document
@@ -30,7 +38,9 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
 
   const handleThemeChange = (theme: string) => {
     setCurrentTheme(theme)
-    localStorage.setItem(storageKey, theme)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(storageKey, theme)
+    }
   }
 
   return (
