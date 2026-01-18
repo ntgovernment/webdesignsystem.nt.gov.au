@@ -21,11 +21,6 @@ export default defineConfig(({ mode }) => {
           assetFileNames: '[name].[ext]',
         },
       } : undefined,
-      lib: isComponentMode ? {
-        entry: {},
-        formats: ['es', 'umd'],
-        name: 'NTDesignSystem',
-      } : undefined,
     },
     resolve: {
       alias: {
