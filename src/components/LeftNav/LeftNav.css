@@ -284,7 +284,7 @@
   .nt-leftnav {
     flex-shrink: 0;
   }
-  
+
   .nt-main-content {
     margin-left: 0; /* No extra margin needed with flex */
   }
@@ -295,7 +295,7 @@
   .nt-page-layout {
     flex-direction: column;
   }
-  
+
   .nt-main-content {
     padding: 1rem;
     width: 100%;
