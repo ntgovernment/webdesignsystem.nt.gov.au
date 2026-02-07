@@ -170,9 +170,9 @@ export class LeftNavComponent {
   }
 
   private expandActiveSection(): void {
-    // Find all active links
+    // Find all active links (check both aria-current and active class from Squiz Matrix)
     const activeLinks = this.container.querySelectorAll(
-      '[aria-current="page"]',
+      '[aria-current="page"], .nt-leftnav__subitem.active .nt-leftnav__link, .nt-leftnav__item.active > .nt-leftnav__link',
     );
 
     activeLinks.forEach((link) => {
