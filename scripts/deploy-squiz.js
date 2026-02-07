@@ -66,7 +66,6 @@ if (fs.existsSync(distDir)) {
 // Component mapping: file prefix -> folder name
 const componentMap = {
   header: "header",
-  "header-component": "header",
   "two-column": "two-column",
   "theme-switcher": "theme-switcher",
 };

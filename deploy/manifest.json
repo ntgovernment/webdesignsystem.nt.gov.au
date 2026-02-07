@@ -1,9 +1,7 @@
 {
-  "deployedAt": "2026-02-07T07:52:00.965Z",
+  "deployedAt": "2026-02-07T09:27:06.820Z",
   "components": {
     "header": [
-      "header-component.css",
-      "header-component.js",
       "header.css",
       "header.html",
       "header.js"
@@ -18,6 +16,7 @@
     ]
   },
   "viewer": [
+    "header.html",
     "index.html",
     "index.js"
   ]

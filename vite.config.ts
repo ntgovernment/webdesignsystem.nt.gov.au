@@ -21,11 +21,7 @@ export default defineConfig(({ mode }) => {
                 __dirname,
                 "src/components/ThemeSwitcher/index.ts",
               ),
-              "header-component": path.resolve(
-                __dirname,
-                "src/components/Header/index.ts",
-              ),
-              header: path.resolve(__dirname, "src/header.tsx"),
+              header: path.resolve(__dirname, "src/components/Header/index.ts"),
             },
             output: {
               entryFileNames: "[name].js",
