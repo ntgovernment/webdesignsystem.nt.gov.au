@@ -142,3 +142,14 @@ if (typeof document !== "undefined") {
     initThemeSwitcher();
   }
 }
+
+// Expose ThemeSwitcherComponent globally to prevent variable name conflicts with minification
+declare global {
+  interface Window {
+    NTGThemeSwitcher: typeof ThemeSwitcherComponent;
+  }
+}
+
+if (typeof window !== "undefined") {
+  window.NTGThemeSwitcher = ThemeSwitcherComponent;
+}

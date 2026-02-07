@@ -303,3 +303,14 @@ if (typeof document !== "undefined") {
     initLeftNav();
   }
 }
+
+// Expose LeftNavComponent globally to prevent variable name conflicts with minification
+declare global {
+  interface Window {
+    NTGLeftNav: typeof LeftNavComponent;
+  }
+}
+
+if (typeof window !== "undefined") {
+  window.NTGLeftNav = LeftNavComponent;
+}

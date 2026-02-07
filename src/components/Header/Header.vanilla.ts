@@ -99,3 +99,14 @@ if (typeof document !== "undefined") {
     initHeader();
   }
 }
+
+// Expose HeaderComponent globally to prevent variable name conflicts with minification
+declare global {
+  interface Window {
+    NTGHeader: typeof HeaderComponent;
+  }
+}
+
+if (typeof window !== "undefined") {
+  window.NTGHeader = HeaderComponent;
+}
