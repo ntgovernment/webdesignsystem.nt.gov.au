@@ -10,9 +10,13 @@
     "build:squiz": "vite build --mode squiz && node scripts/deploy-squiz.js",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy:squiz": "node scripts/deploy-squiz.js"
+    "deploy:squiz": "node scripts/deploy-squiz.js",
+    "serve:storybook": "npx http-server C:\\Projects\\web-design-system\\storybook-static -p 8000 -o"
   },
   "dependencies": {
+    "@types/prettier": "^2.7.3",
+    "prettier": "^3.8.1",
+    "prismjs": "^1.30.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

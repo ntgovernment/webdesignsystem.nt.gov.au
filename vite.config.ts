@@ -94,5 +94,14 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
+    server: {
+      proxy: {
+        "/storybook": {
+          target: "http://localhost:8000",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/storybook/, ""),
+        },
+      },
+    },
   };
 });

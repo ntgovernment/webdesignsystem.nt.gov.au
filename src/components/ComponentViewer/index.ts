@@ -1,2 +1,3 @@
-export { ComponentViewer } from './ComponentViewer'
-export { default } from './ComponentViewer'
+export { ComponentViewer } from "./ComponentViewer";
+export type { ComponentViewerProps } from "./ComponentViewer";
+export { default } from "./ComponentViewer";

@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import LeftNav, { type NavItem } from "./components/LeftNav";
 import TwoColumn from "./components/TwoColumn";
 import ThemeSwitcher from "./components/ThemeSwitcher";
+import ComponentViewer from "./components/ComponentViewer";
 import "./App.css";
 
 function App() {
@@ -156,6 +157,13 @@ function App() {
                   and developers
                 </li>
               </ul>
+            </div>
+            <div style={{ marginTop: "3rem" }}>
+              <h2>Component Preview</h2>
+              <ComponentViewer
+                storybookUrl="/storybook/iframe.html"
+                storyId="components-button--primary"
+              />
             </div>
           </div>
         );
