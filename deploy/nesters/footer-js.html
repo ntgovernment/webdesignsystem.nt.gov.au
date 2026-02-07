@@ -10,20 +10,20 @@
   2. Theme Switcher component (vanilla JS)
   
   SQUIZ MATRIX USAGE:
-  Update 1590990 with your Squiz Matrix asset ID:
-  %globals_asset_url:1590990%/js/header.js
+  Asset URLs use %globals_asset_url_with_hash: for automatic cache-busting.
+  1590990 is replaced with your Git File Bridge asset ID during build.
   
-  NOTE: These are ES modules and require type="module"
+  NOTE: Scripts use 'defer' for optimal loading performance
 -->
 
 <!-- Header Component Script -->
-<script src="%globals_asset_url:1590990:deploy/js/header.js%" defer></script>
+<script src="%globals_asset_url_with_hash:1590990:deploy/js/header.js%" defer></script>
 
 <!-- Theme Switcher Component Script -->
-<script src="%globals_asset_url:1590990:deploy/js/theme-switcher.js%" defer></script>
+<script src="%globals_asset_url_with_hash:1590990:deploy/js/theme-switcher.js%" defer></script>
 
 <!-- Two Column Layout Component (if needed) -->
-<!-- <script src="%globals_asset_url:1590990:deploy/js/two-column.js%" defer></script> -->
+<!-- <script src="%globals_asset_url_with_hash:1590990:deploy/js/two-column.js%" defer></script> -->
 
 <!-- Optional: Analytics or tracking scripts -->
 <!-- <script>

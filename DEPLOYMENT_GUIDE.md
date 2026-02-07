@@ -143,7 +143,7 @@ After running `npm run build:squiz`, the HTML nesters in `deploy/nesters/` will 
 ></script>
 <link
   rel="stylesheet"
-  href="%globals_asset_url:1590990:deploy/ntg-design-system.css%"
+  href="%globals_asset_url_with_hash:1590990:deploy/ntg-design-system.css%"
 />
 ```
 
@@ -151,60 +151,80 @@ After running `npm run build:squiz`, the HTML nesters in `deploy/nesters/` will 
 
 Copy the content from `deploy/nesters/` directly into your Squiz Matrix paint layout MySource_AREA tags. No manual find-and-replace needed - the build process has already injected your asset IDs.
 
-  <!-- NT Design System Global Stylesheet -->
-  <link rel="stylesheet" href="%globals_asset_url:ASSET_ID%/ntg-design-system.css">
+The following is a complete paint layout example showing how to integrate all nesters:
 
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        </MySource_AREA>
+```html
+<!--@@ Optionally declare classes to body tag @@-->
+<MySource_AREA id_name="body_classes" design_area="declared_vars" print="no">
+  <MySource_DECLARE name="body_class" value="" type="text" />
+</MySource_AREA>
 
-    </head>
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <MySource_AREA id_name="head" design_area="nest_content" cache="0">
+      <!-- Nest content from deploy/nesters/head.html -->
+    </MySource_AREA>
+  </head>
 
-    <body class="<mysource_print id_name='body_classes' var='body_class' />">
+  <body class="<mysource_print id_name='body_classes' var='body_class' />">
+    <div id="top"></div>
 
-        <div id="top"></div>
+    <!-- Skip Links Nester -->
+    <MySource_AREA id_name="skip_links" design_area="nest_content" cache="1">
+      <!-- Reference: deploy/nesters/skip-links.html -->
+      <nav class="nt-skip-links" aria-label="Skip links">
+        <a href="#content" class="nt-skip-link">Skip to main content</a>
+        <a href="#nt-header-root" class="nt-skip-link">Skip to navigation</a>
+        <a href="#footer" class="nt-skip-link">Skip to footer</a>
+      </nav>
+    </MySource_AREA>
 
-        <!-- Skip Links Nester -->
-        <MySource_AREA id_name="skip_links" design_area="nest_content" cache="1">
-            <!-- Reference: deploy/nesters/skip-links.html -->
-            <nav class="nt-skip-links" aria-label="Skip links">
-                <a href="#content" class="nt-skip-link">Skip to main content</a>
-                <a href="#nt-header-root" class="nt-skip-link">Skip to navigation</a>
-                <a href="#footer" class="nt-skip-link">Skip to footer</a>
-            </nav>
-        </MySource_AREA>
+    <!-- Header Nester -->
+    <MySource_AREA
+      id_name="header_content"
+      design_area="nest_content"
+      cache="1"
+    >
+      <!-- Reference: deploy/nesters/header.html -->
+      <div
+        id="nt-header-root"
+        data-title="%asset_name%"
+        data-logo-src="https://nt.gov.au/_design/latest/images/ntg-primary-reverse.svg"
+        data-logo-alt="NT Government Logo"
+        data-icon="fa-magnifying-glass"
+      ></div>
+    </MySource_AREA>
 
-        <!-- Header Nester -->
-        <MySource_AREA id_name="header_content" design_area="nest_content" cache="1">
-            <!-- Reference: deploy/nesters/header.html -->
-            <div id="nt-header-root"
-                 data-title="%asset_name%"
-                 data-logo-src="https://nt.gov.au/_design/latest/images/ntg-primary-reverse.svg"
-                 data-logo-alt="NT Government Logo"
-                 data-icon="fa-magnifying-glass">
-            </div>
-        </MySource_AREA>
+    <!-- Main Content Area -->
+    <div id="content" class="ntg-body">
+      <MySource_AREA id_name="body" design_area="body" />
+    </div>
 
-        <!-- Main Content Area -->
-        <div id="content" class="ntg-body">
-            <MySource_AREA id_name="body" design_area="body" />
-        </div>
+    <!-- Footer Nester -->
+    <MySource_AREA
+      id_name="footer_content"
+      design_area="nest_content"
+      cache="1"
+    >
+      <!-- Reference: deploy/nesters/footer.html -->
+      <!-- Copy complete footer.html content here or use file asset -->
+    </MySource_AREA>
 
-        <!-- Footer Nester -->
-        <MySource_AREA id_name="footer_content" design_area="nest_content" cache="1">
-            <!-- Reference: deploy/nesters/footer.html -->
-            <!-- Copy complete footer.html content here or use file asset -->
-        </MySource_AREA>
-
-        <!-- Footer JavaScript Nester -->
-        <MySource_AREA id_name="footer_js" design_area="nest_content" cache="1">
-            <!-- Reference: deploy/nesters/footer-js.html -->
-            <script type="module" src="%globals_asset_url:ASSET_ID%/js/header.js"></script>
-            <script type="module" src="%globals_asset_url:ASSET_ID%/js/theme-switcher.js"></script>
-        </MySource_AREA>
-
-    </body>
-
+    <!-- Footer JavaScript Nester -->
+    <MySource_AREA id_name="footer_js" design_area="nest_content" cache="1">
+      <!-- Reference: deploy/nesters/footer-js.html -->
+      <script
+        src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/header.js%"
+        defer
+      ></script>
+      <script
+        src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/theme-switcher.js%"
+        defer
+      ></script>
+    </MySource_AREA>
+  </body>
 </html>
 ```
 
@@ -288,11 +308,11 @@ In your Squiz Matrix paint layouts, reference the compiled files:
 <!-- Component Viewer Application -->
 <link
   rel="stylesheet"
-  href="%globals_asset_url:ASSET_ID%/assets/index-[hash].css"
+  href="%globals_asset_url_with_hash:ASSET_ID%/assets/index-[hash].css"
 />
 <script
   type="module"
-  src="%globals_asset_url:ASSET_ID%/assets/index-[hash].js"
+  src="%globals_asset_url_with_hash:ASSET_ID%/assets/index-[hash].js"
 ></script>
 
 <!-- Container for the app -->
@@ -351,7 +371,7 @@ The component viewer provides an interactive way to browse and test all availabl
 ### Assets Not Loading
 
 - **Verify Git File Bridge sync** - Check that files exist in Squiz Matrix asset tree
-- **Check asset URLs** - Ensure `%globals_asset_url:ASSET_ID%` has correct Asset ID
+- **Check asset URLs** - Ensure `%globals_asset_url_with_hash:ASSET_ID%` has correct Asset ID
 - **Ensure CORS settings** - Allow loading from the asset server
 - **Check file paths** - Verify paths match deployment structure (e.g., `/js/header.js`)
 
