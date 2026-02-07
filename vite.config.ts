@@ -38,6 +38,7 @@ export default defineConfig(({ mode }) => {
               ),
             },
             output: {
+              format: "iife",
               entryFileNames: (chunkInfo) => {
                 // Put JS files in js/ subdirectory
                 return chunkInfo.name === "ntg-design-system"
