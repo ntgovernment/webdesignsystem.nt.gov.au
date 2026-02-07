@@ -15,6 +15,9 @@
   /* Header Shadows */
   --shadow-header: 0px 4px 16px rgba(15, 15, 47, 0.15);
 
+  /* Header Sizing */
+  --header-height: 76px;
+
   /* Typography */
   --font-family-primary:
     "Lato", system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -28,6 +31,9 @@
   --clr-nav-bg-active: #e8e8eb;
   --clr-nav-text-active: #1f1f5f;
   --clr-nav-overlay: rgba(0, 0, 0, 0.5);
+  --clr-bg-shade: #f5f5f7;
+  --clr-link-default: #1f1f5f;
+  --clr-border-accent: #c33826;
 
   /* Navigation Spacing */
   --nav-padding-item: 16px;

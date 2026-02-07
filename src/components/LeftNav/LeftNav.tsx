@@ -25,6 +25,7 @@ export const LeftNav = ({
     new Set(defaultExpanded),
   );
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
   // Auto-expand sections containing active items
@@ -81,6 +82,17 @@ export const LeftNav = ({
     };
   }, [isMobileOpen]);
 
+  // Track scroll position to adjust mobile button position
+  useEffect(() => {
+    const handleScroll = () => {
+      const headerHeight = 76; // matches --header-height
+      setIsHeaderScrolled(window.scrollY > headerHeight);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const toggleSection = (sectionId: string) => {
     setExpandedSections((prev) => {
       const newSet = new Set(prev);
@@ -128,7 +140,7 @@ export const LeftNav = ({
               <span>{item.label}</span>
             </div>
             <div className="nt-leftnav__chevron">
-              <i className="fa-light fa-chevron-right" aria-hidden="true"></i>
+              <i className="fa-light fa-chevron-down" aria-hidden="true"></i>
             </div>
           </button>
           <ul
@@ -167,7 +179,9 @@ export const LeftNav = ({
     <>
       {/* Mobile toggle button */}
       <button
-        className="nt-leftnav__mobile-toggle"
+        className={`nt-leftnav__mobile-toggle ${
+          isHeaderScrolled ? "nt-leftnav__mobile-toggle--scrolled" : ""
+        }`}
         onClick={() => setIsMobileOpen(true)}
         aria-label="Open navigation menu"
         aria-expanded={isMobileOpen}
