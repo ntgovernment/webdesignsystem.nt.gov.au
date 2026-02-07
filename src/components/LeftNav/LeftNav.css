@@ -253,3 +253,51 @@
     display: none;
   }
 }
+
+/**
+ * Page Layout Styles
+ * Creates a two-column layout with navigation on left and content on right
+ */
+
+/* Page layout container */
+.nt-page-layout {
+  display: flex;
+  min-height: calc(100vh - var(--header-height, 76px));
+  position: relative;
+}
+
+/* Main content area */
+.nt-main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  max-width: 100%;
+}
+
+.nt-main-content .ntg-body {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Desktop: Navigation stays fixed on left */
+@media (min-width: 769px) {
+  .nt-leftnav {
+    flex-shrink: 0;
+  }
+  
+  .nt-main-content {
+    margin-left: 0; /* No extra margin needed with flex */
+  }
+}
+
+/* Mobile: Content takes full width, nav is drawer */
+@media (max-width: 768px) {
+  .nt-page-layout {
+    flex-direction: column;
+  }
+  
+  .nt-main-content {
+    padding: 1rem;
+    width: 100%;
+  }
+}
