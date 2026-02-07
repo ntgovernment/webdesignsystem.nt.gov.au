@@ -18,4 +18,29 @@
   /* Typography */
   --font-family-primary:
     "Lato", system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  /* Navigation Colors */
+  --clr-nav-bg: #ffffff;
+  --clr-nav-border: #d3d3d7;
+  --clr-nav-text: #1f1f5f;
+  --clr-nav-text-hover: #14143d;
+  --clr-nav-bg-hover: #f5f5f7;
+  --clr-nav-bg-active: #e8e8eb;
+  --clr-nav-text-active: #1f1f5f;
+  --clr-nav-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Navigation Spacing */
+  --nav-padding-item: 16px;
+  --nav-padding-submenu: 16px 16px 16px 36px;
+  --nav-gap: 8px;
+  --nav-border-width: 1px;
+
+  /* Navigation Sizing */
+  --nav-width: 280px;
+  --nav-icon-size: 20px;
+  --nav-mobile-breakpoint: 768px;
+
+  /* Navigation Transitions */
+  --nav-transition: 0.2s ease-in-out;
+  --nav-drawer-transition: 0.3s ease-out;
 }

@@ -45,12 +45,14 @@ npm run deploy:squiz
 ```
 
 This will:
+
 1. Build all components and the viewer
 2. Copy compiled JS and CSS to the `deploy/` directory
 3. Generate a deployment manifest
 4. Organize files for Git File Bridge sync
 
 The deployment structure:
+
 ```
 deploy/
 ├── components/       # Individual component builds
@@ -66,7 +68,7 @@ deploy/
 A responsive two-column layout that automatically stacks on mobile devices.
 
 ```tsx
-import { TwoColumn } from 'nt-design-system'
+import { TwoColumn } from "nt-design-system";
 
 <TwoColumn
   leftContent={<div>Left content</div>}
@@ -74,10 +76,11 @@ import { TwoColumn } from 'nt-design-system'
   leftWidth="2fr"
   rightWidth="1fr"
   gap="2rem"
-/>
+/>;
 ```
 
 **Props:**
+
 - `leftContent` (ReactNode): Content for the left column
 - `rightContent` (ReactNode): Content for the right column
 - `leftWidth` (string): CSS grid width for left column (default: '1fr')
@@ -90,29 +93,121 @@ import { TwoColumn } from 'nt-design-system'
 A component that allows users to switch between light and dark themes with localStorage persistence.
 
 ```tsx
-import { ThemeSwitcher } from 'nt-design-system'
+import { ThemeSwitcher } from "nt-design-system";
 
 <ThemeSwitcher
-  themes={['light', 'dark']}
+  themes={["light", "dark"]}
   defaultTheme="light"
   storageKey="nt-design-system-theme"
-/>
+/>;
 ```
 
 **Props:**
+
 - `themes` (string[]): Available theme options (default: ['light', 'dark'])
 - `defaultTheme` (string): Initial theme (default: 'light')
 - `storageKey` (string): localStorage key for persistence
 - `className` (string): Additional CSS classes
+
+### Left Navigation Component
+
+A responsive left navigation sidebar with 2-level collapsible menu. Features auto-expansion of sections containing the active page and mobile drawer functionality.
+
+**React Usage:**
+
+```tsx
+import { LeftNav, type NavItem } from 'nt-design-system'
+
+const navItems: NavItem[] = [
+  {
+    id: 'home',
+    label: 'Home',
+    href: '/home',
+    icon: 'fa-light fa-home',
+    isActive: true
+  },
+  {
+    id: 'foundations',
+    label: 'Foundations',
+    children: [
+      { id: 'colour', label: 'Colour', href: '/colour' },
+      { id: 'typography', label: 'Typography', href: '/typography' }
+    ]
+  }
+]
+
+<LeftNav
+  items={navItems}
+  defaultExpanded={['foundations']}
+/>
+```
+
+**Vanilla JS Usage (Squiz Matrix):**
+
+```html
+<!-- Include in Squiz nester -->
+<div id="nt-leftnav-root" data-default-expanded="foundations">
+  <nav class="nt-leftnav" aria-label="Main navigation">
+    <ul class="nt-leftnav__list">
+      <li class="nt-leftnav__item">
+        <a href="#home" class="nt-leftnav__link" aria-current="page">
+          <span>Home</span>
+        </a>
+      </li>
+      <!-- Collapsible section -->
+      <li class="nt-leftnav__item">
+        <button
+          class="nt-leftnav__toggle"
+          aria-expanded="false"
+          aria-controls="submenu-foundations"
+        >
+          <span>Foundations</span>
+          <div class="nt-leftnav__chevron">
+            <i class="fa-light fa-chevron-right"></i>
+          </div>
+        </button>
+        <ul id="submenu-foundations" class="nt-leftnav__submenu">
+          <li class="nt-leftnav__item">
+            <a href="#colour" class="nt-leftnav__link">
+              <span>Colour</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<script src="%globals_asset_url:XXXXX%/js/left-nav.js"></script>
+```
+
+**Props (React):**
+
+- `items` (NavItem[]): Array of navigation items
+- `defaultExpanded` (string[]): Array of section IDs to expand by default
+- `className` (string): Additional CSS classes
+
+**Data Attributes (Vanilla):**
+
+- `data-default-expanded`: Comma-separated list of section IDs to expand
+- `data-mobile-breakpoint`: Mobile breakpoint in pixels (default: 768)
+
+**Features:**
+
+- Auto-expands sections containing active page (via `aria-current="page"`)
+- Mobile drawer with overlay backdrop
+- Keyboard navigation (Enter, Space, Escape)
+- Smooth expand/collapse animations
+- ARIA compliant for accessibility
 
 ### Component Viewer
 
 A comprehensive viewer application for browsing and testing all design system components.
 
 ```tsx
-import { ComponentViewer } from 'nt-design-system'
+import { ComponentViewer } from "nt-design-system";
 
-<ComponentViewer />
+<ComponentViewer />;
 ```
 
 ## 🎨 Using with Squiz Matrix
@@ -124,11 +219,17 @@ After deploying via Git File Bridge, reference the compiled assets in your Squiz
 ```html
 <!-- Component Viewer -->
 <script src="%globals_asset_url:XXXXX%/viewer/index.js"></script>
-<link rel="stylesheet" href="%globals_asset_url:XXXXX%/assets/index.css">
+<link rel="stylesheet" href="%globals_asset_url:XXXXX%/assets/index.css" />
 
 <!-- Individual Components -->
 <script src="%globals_asset_url:XXXXX%/components/two-column.js"></script>
 <script src="%globals_asset_url:XXXXX%/components/theme-switcher.js"></script>
+
+<!-- Vanilla JS Components (Squiz) -->
+<script src="%globals_asset_url:XXXXX%/js/header.js"></script>
+<script src="%globals_asset_url:XXXXX%/js/theme-switcher.js"></script>
+<script src="%globals_asset_url:XXXXX%/js/left-nav.js"></script>
+<link rel="stylesheet" href="%globals_asset_url:XXXXX%/ntg-design-system.css" />
 ```
 
 Replace `XXXXX` with your Squiz Matrix asset ID.

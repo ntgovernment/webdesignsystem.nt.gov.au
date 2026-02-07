@@ -27,6 +27,10 @@ export default defineConfig(({ mode }) => {
                 __dirname,
                 "src/components/ThemeSwitcher/ThemeSwitcher.vanilla.ts",
               ),
+              "left-nav": path.resolve(
+                __dirname,
+                "src/components/LeftNav/LeftNav.vanilla.ts",
+              ),
               // Global stylesheet
               "ntg-design-system": path.resolve(
                 __dirname,
@@ -64,6 +68,10 @@ export default defineConfig(({ mode }) => {
                 header: path.resolve(
                   __dirname,
                   "src/components/Header/index.ts",
+                ),
+                "left-nav": path.resolve(
+                  __dirname,
+                  "src/components/LeftNav/index.ts",
                 ),
               },
               output: {

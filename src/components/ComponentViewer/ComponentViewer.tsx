@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TwoColumn from "../TwoColumn";
 import ThemeSwitcher from "../ThemeSwitcher";
 import Header from "../Header";
+import LeftNav, { type NavItem } from "../LeftNav";
 import "./ComponentViewer.css";
 
 export const ComponentViewer: React.FC = () => {
@@ -95,6 +96,97 @@ export const ComponentViewer: React.FC = () => {
           </div>
         );
 
+      case "left-nav":
+        const navItems: NavItem[] = [
+          {
+            id: "home",
+            label: "Home",
+            href: "#home",
+            icon: "fa-light fa-home",
+            isActive: true,
+          },
+          {
+            id: "about",
+            label: "About",
+            href: "#about",
+          },
+          {
+            id: "design",
+            label: "Design",
+            href: "#design",
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            href: "#develop",
+          },
+          {
+            id: "foundations",
+            label: "Foundations",
+            children: [
+              { id: "colour", label: "Colour", href: "#colour" },
+              { id: "typography", label: "Typography", href: "#typography" },
+              { id: "iconography", label: "Iconography", href: "#iconography" },
+              { id: "grids", label: "Grids", href: "#grids" },
+              { id: "spacing", label: "Spacing", href: "#spacing" },
+              {
+                id: "border-width",
+                label: "Border width",
+                href: "#border-width",
+              },
+              { id: "radius", label: "Radius", href: "#radius" },
+              { id: "elevation", label: "Elevation", href: "#elevation" },
+              { id: "logo", label: "Logo", href: "#logo" },
+              { id: "focus-state", label: "Focus state", href: "#focus-state" },
+            ],
+          },
+          {
+            id: "components",
+            label: "Components",
+            href: "#components",
+          },
+          {
+            id: "help-support",
+            label: "Help and Support",
+            href: "#help-support",
+          },
+        ];
+
+        return (
+          <div className="demo-container">
+            <h2>Left Navigation Component</h2>
+            <p>
+              A responsive left navigation sidebar with 2-level collapsible
+              menu. Features auto-expansion of sections containing the active
+              page and mobile drawer functionality.
+            </p>
+            <div
+              className="demo-content"
+              style={{
+                height: "600px",
+                border: "1px solid var(--clr-border-subtle)",
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              <div style={{ height: "100%", overflow: "auto" }}>
+                <LeftNav items={navItems} />
+              </div>
+            </div>
+            <div style={{ marginTop: "2rem" }}>
+              <h3>Features</h3>
+              <ul>
+                <li>2-level collapsible menu structure</li>
+                <li>Auto-expands sections with active items</li>
+                <li>Mobile-responsive drawer with overlay</li>
+                <li>Keyboard navigation support (Enter, Space, Escape)</li>
+                <li>ARIA attributes for accessibility</li>
+                <li>Smooth transitions and animations</li>
+              </ul>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
@@ -125,6 +217,14 @@ export const ComponentViewer: React.FC = () => {
                 onClick={() => setActiveComponent("theme-switcher")}
               >
                 Theme Switcher
+              </button>
+            </li>
+            <li>
+              <button
+                className={activeComponent === "left-nav" ? "active" : ""}
+                onClick={() => setActiveComponent("left-nav")}
+              >
+                Left Navigation
               </button>
             </li>
           </ul>
