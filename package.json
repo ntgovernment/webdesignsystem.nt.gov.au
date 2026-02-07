@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:components": "vite build --mode components",
+    "build:squiz": "vite build --mode squiz && node scripts/deploy-squiz.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy:squiz": "node scripts/deploy-squiz.js"

@@ -5,37 +5,80 @@ import path from "path";
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const isComponentMode = mode === "components";
+  const isSquizMode = mode === "squiz";
 
   return {
     plugins: [react()],
     build: {
-      outDir: isComponentMode ? "dist/components" : "dist",
-      rollupOptions: isComponentMode
+      outDir: isSquizMode
+        ? "dist/squiz"
+        : isComponentMode
+          ? "dist/components"
+          : "dist",
+      rollupOptions: isSquizMode
         ? {
             input: {
-              "two-column": path.resolve(
+              // Vanilla JS components for Squiz Matrix (no React)
+              header: path.resolve(
                 __dirname,
-                "src/components/TwoColumn/index.ts",
+                "src/components/Header/Header.vanilla.ts",
               ),
               "theme-switcher": path.resolve(
                 __dirname,
-                "src/components/ThemeSwitcher/index.ts",
+                "src/components/ThemeSwitcher/ThemeSwitcher.vanilla.ts",
               ),
-              header: path.resolve(__dirname, "src/components/Header/index.ts"),
+              // Global stylesheet
+              "ntg-design-system": path.resolve(
+                __dirname,
+                "src/global-styles.ts",
+              ),
             },
             output: {
-              entryFileNames: "[name].js",
-              chunkFileNames: "[name].js",
-              assetFileNames: "[name].[ext]",
+              entryFileNames: (chunkInfo) => {
+                // Put JS files in js/ subdirectory
+                return chunkInfo.name === "ntg-design-system"
+                  ? "[name].js"
+                  : "js/[name].js";
+              },
+              chunkFileNames: "js/chunks/[name]-[hash].js",
+              assetFileNames: (assetInfo) => {
+                // Keep CSS at root level
+                if (assetInfo.name && assetInfo.name.endsWith(".css")) {
+                  return "[name].[ext]";
+                }
+                return "assets/[name].[ext]";
+              },
             },
           }
-        : {
-            output: {
-              entryFileNames: "[name].js",
-              chunkFileNames: "[name].js",
-              assetFileNames: "[name].[ext]",
+        : isComponentMode
+          ? {
+              input: {
+                "two-column": path.resolve(
+                  __dirname,
+                  "src/components/TwoColumn/index.ts",
+                ),
+                "theme-switcher": path.resolve(
+                  __dirname,
+                  "src/components/ThemeSwitcher/index.ts",
+                ),
+                header: path.resolve(
+                  __dirname,
+                  "src/components/Header/index.ts",
+                ),
+              },
+              output: {
+                entryFileNames: "[name].js",
+                chunkFileNames: "[name].js",
+                assetFileNames: "[name].[ext]",
+              },
+            }
+          : {
+              output: {
+                entryFileNames: "[name].js",
+                chunkFileNames: "[name].js",
+                assetFileNames: "[name].[ext]",
+              },
             },
-          },
     },
     resolve: {
       alias: {

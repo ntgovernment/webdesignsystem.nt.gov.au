@@ -1,0 +1,167 @@
+<!-- 
+  NT Design System - FOOTER Nester
+  Squiz Matrix Area: footer_content (design_area="nest_content")
+  
+  Main site footer with NT Government branding, links, and optional theme switcher.
+  
+  NOTE: Add your footer content, navigation links, and legal information here.
+  This is a template - customize based on NT Government footer requirements.
+-->
+
+<footer id="footer" class="nt-footer">
+    <div class="nt-footer__inner">
+
+        <!-- Footer Navigation -->
+        <nav class="nt-footer__nav" aria-label="Footer navigation">
+            <div class="nt-footer__section">
+                <h3 class="nt-footer__heading">About</h3>
+                <ul class="nt-footer__links">
+                    <li><a href="/about">About NT Government</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="/jobs">Careers</a></li>
+                </ul>
+            </div>
+
+            <div class="nt-footer__section">
+                <h3 class="nt-footer__heading">Services</h3>
+                <ul class="nt-footer__links">
+                    <li><a href="/services">Government Services</a></li>
+                    <li><a href="/news">News and Events</a></li>
+                    <li><a href="/publications">Publications</a></li>
+                </ul>
+            </div>
+
+            <div class="nt-footer__section">
+                <h3 class="nt-footer__heading">Legal</h3>
+                <ul class="nt-footer__links">
+                    <li><a href="/privacy">Privacy</a></li>
+                    <li><a href="/copyright">Copyright</a></li>
+                    <li><a href="/disclaimer">Disclaimer</a></li>
+                    <li><a href="/accessibility">Accessibility</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Theme Switcher (Optional) -->
+        <div class="nt-footer__theme">
+            <div id="nt-theme-switcher-root" data-themes="light,dark" data-default-theme="light">
+                <!-- Theme switcher will be injected by theme-switcher.js -->
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="nt-footer__bottom">
+            <div class="nt-footer__logo">
+                <img src="https://nt.gov.au/_design/latest/images/ntg-primary.svg" alt="NT Government Logo"
+                    class="nt-footer__logo-img">
+            </div>
+            <p class="nt-footer__copyright">
+                &copy; <span id="current-year"></span> Northern Territory Government of Australia
+            </p>
+        </div>
+
+    </div>
+</footer>
+
+<script>
+    // Update copyright year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+
+<style>
+    /* Footer styles */
+    .nt-footer {
+        background-color: #f5f5f5;
+        border-top: 1px solid #d3d3d7;
+        padding: 3rem 1rem 1.5rem;
+        margin-top: 4rem;
+    }
+
+    .nt-footer__inner {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .nt-footer__nav {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .nt-footer__section {
+        min-width: 0;
+    }
+
+    .nt-footer__heading {
+        font-family: "Lato", system-ui, sans-serif;
+        font-size: 1.125rem;
+        font-weight: 700;
+        margin: 0 0 1rem 0;
+        color: #1f1f5f;
+    }
+
+    .nt-footer__links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nt-footer__links li {
+        margin-bottom: 0.5rem;
+    }
+
+    .nt-footer__links a {
+        color: #333;
+        text-decoration: none;
+        font-family: "Lato", system-ui, sans-serif;
+    }
+
+    .nt-footer__links a:hover {
+        text-decoration: underline;
+        color: #1f1f5f;
+    }
+
+    .nt-footer__theme {
+        padding: 1.5rem 0;
+        border-top: 1px solid #d3d3d7;
+        border-bottom: 1px solid #d3d3d7;
+        margin-bottom: 1.5rem;
+    }
+
+    .nt-footer__bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .nt-footer__logo-img {
+        height: 40px;
+        width: auto;
+    }
+
+    .nt-footer__copyright {
+        font-family: "Lato", system-ui, sans-serif;
+        font-size: 0.875rem;
+        color: #666;
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .nt-footer {
+            padding: 2rem 1rem 1rem;
+        }
+
+        .nt-footer__nav {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .nt-footer__bottom {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+</style>

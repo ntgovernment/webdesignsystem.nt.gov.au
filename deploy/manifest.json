@@ -1,5 +1,22 @@
 {
-  "deployedAt": "2026-02-07T09:27:06.820Z",
+  "deployedAt": "2026-02-07T10:01:04.043Z",
+  "nesters": {
+    "count": 5,
+    "files": [
+      "footer-js.html",
+      "footer.html",
+      "head.html",
+      "header.html",
+      "skip-links.html"
+    ]
+  },
+  "squizComponents": {
+    "count": 2,
+    "files": [
+      "header.js",
+      "theme-switcher.js"
+    ]
+  },
   "components": {
     "header": [
       "header.css",
@@ -19,5 +36,8 @@
     "header.html",
     "index.html",
     "index.js"
+  ],
+  "stylesheets": [
+    "ntg-design-system.css"
   ]
 }
