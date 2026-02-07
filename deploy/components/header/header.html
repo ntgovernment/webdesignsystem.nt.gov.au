@@ -1,0 +1,23 @@
+<!-- 
+  NT Design System - Embeddable Header Component
+  
+  IMPORTANT: Before embedding this header, ensure your page includes:
+  1. Font Awesome Kit: <script src="https://kit.fontawesome.com/9bf658a5c7.js" crossorigin="anonymous"></script>
+  2. Lato Font: Already included in header.css via Google Fonts
+  
+  Configuration via data attributes:
+  - data-title: Header title text (default: "NTG Web Design System")
+  - data-logo-src: URL to logo image (default: NT Government desert rose logo)
+  - data-logo-alt: Alt text for logo (default: "NT Government Logo")
+  - data-icon: Font Awesome icon class (default: "fa-bars", must use fa-light variants)
+  
+  Example usage in Squiz Matrix:
+  <script src="https://kit.fontawesome.com/9bf658a5c7.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="%globals_asset_url:ASSET_ID%/components/header/header.css">
+  <div id="nt-header-root" data-title="My Application"></div>
+  <script type="module" src="%globals_asset_url:ASSET_ID%/components/header/header.js"></script>
+-->
+
+<link rel="stylesheet" href="header.css">
+<div id="nt-header-root" data-title="NTG Web Design System"></div>
+<script type="module" src="header.js"></script>

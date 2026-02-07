@@ -5,6 +5,7 @@ This guide explains how to deploy the NT Design System components to Squiz Matri
 ## Quick Reference
 
 ### Build Commands
+
 ```bash
 # Install dependencies
 npm install
@@ -50,8 +51,14 @@ In your Squiz Matrix paint layouts, reference the compiled files:
 
 ```html
 <!-- Component Viewer Application -->
-<link rel="stylesheet" href="%globals_asset_url:ASSET_ID%/assets/index-[hash].css">
-<script type="module" src="%globals_asset_url:ASSET_ID%/assets/index-[hash].js"></script>
+<link
+  rel="stylesheet"
+  href="%globals_asset_url:ASSET_ID%/assets/index-[hash].css"
+/>
+<script
+  type="module"
+  src="%globals_asset_url:ASSET_ID%/assets/index-[hash].js"
+></script>
 
 <!-- Container for the app -->
 <div id="root"></div>
@@ -81,9 +88,10 @@ The component viewer provides an interactive way to browse and test all availabl
 
 ## Asset Hashing
 
-The build process generates content-hashed filenames (e.g., `index-BItTTFhS.js`). 
+The build process generates content-hashed filenames (e.g., `index-BItTTFhS.js`).
 
 To find the current hashes:
+
 1. Check `deploy/manifest.json` after running deployment
 2. Or check the `deploy/viewer/index.html` file which contains the correct references
 
@@ -98,15 +106,18 @@ To find the current hashes:
 ## Troubleshooting
 
 ### Assets not loading
+
 - Verify the Git File Bridge is syncing correctly
 - Check that asset URLs match the deployed file names
 - Ensure CORS settings allow loading from the asset server
 
 ### Components not rendering
+
 - Check browser console for JavaScript errors
 - Verify the `#root` div exists in your HTML
 - Ensure both CSS and JS files are loaded
 
 ### Theme not persisting
+
 - Check that localStorage is enabled in the browser
 - Verify no conflicting theme scripts on the page

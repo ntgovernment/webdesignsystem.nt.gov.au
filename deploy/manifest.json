@@ -1,6 +1,22 @@
 {
-  "deployedAt": "2026-02-07T07:10:45.444Z",
-  "components": [],
+  "deployedAt": "2026-02-07T07:52:00.965Z",
+  "components": {
+    "header": [
+      "header-component.css",
+      "header-component.js",
+      "header.css",
+      "header.html",
+      "header.js"
+    ],
+    "theme-switcher": [
+      "theme-switcher.css",
+      "theme-switcher.js"
+    ],
+    "two-column": [
+      "two-column.css",
+      "two-column.js"
+    ]
+  },
   "viewer": [
     "index.html",
     "index.js"

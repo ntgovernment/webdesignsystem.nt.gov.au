@@ -1,5 +1,14 @@
+@import "./tokens.css";
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(
+    --font-family-primary,
+    system-ui,
+    Avenir,
+    Helvetica,
+    Arial,
+    sans-serif
+  );
   line-height: 1.5;
   font-weight: 400;
 

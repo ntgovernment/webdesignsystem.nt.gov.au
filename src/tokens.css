@@ -1,0 +1,21 @@
+/**
+ * Design Tokens
+ * Centralized CSS custom properties for consistent theming across the NT Design System
+ */
+
+/* Import Lato font */
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+
+:root {
+  /* Header Colors */
+  --clr-bg-header: #1f1f5f;
+  --clr-border-subtle: #d3d3d7;
+  --clr-text-inverse: white;
+
+  /* Header Shadows */
+  --shadow-header: 0px 4px 16px rgba(15, 15, 47, 0.15);
+
+  /* Typography */
+  --font-family-primary:
+    "Lato", system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
