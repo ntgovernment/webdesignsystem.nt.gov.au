@@ -1,13 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "./components/Header";
 import LeftNav, { type NavItem } from "./components/LeftNav";
 import TwoColumn from "./components/TwoColumn";
 import ThemeSwitcher from "./components/ThemeSwitcher";
-import ComponentViewer from "./components/ComponentViewer";
+import { ComponentViewerClient } from "./components/ComponentViewer";
 import "./App.css";
 
 function App() {
   const [activeSection, setActiveSection] = useState("home");
+  const componentViewerRef = useRef<HTMLDivElement>(null);
+
+  // Initialize ComponentViewer when mounted
+  useEffect(() => {
+    if (componentViewerRef.current) {
+      const container = componentViewerRef.current.querySelector(
+        '[data-hydration-component="component-viewer"]',
+      );
+      if (container) {
+        new ComponentViewerClient(container as HTMLElement);
+      }
+    }
+  }, [activeSection]); // Re-initialize when section changes to "home"
 
   const navItems: NavItem[] = [
     {
@@ -160,7 +173,18 @@ function App() {
             </div>
             <div style={{ marginTop: "3rem" }}>
               <h2>Component Preview</h2>
-              <ComponentViewer storybookUrl="https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story" />
+              <div ref={componentViewerRef}>
+                <div
+                  className="nt-component-viewer"
+                  data-hydration-component="component-viewer"
+                  data-hydration-props={JSON.stringify({
+                    storybookUrl:
+                      "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story",
+                    height: "400px",
+                  })}
+                  data-instance-id="cv-app-home"
+                ></div>
+              </div>
             </div>
           </div>
         );

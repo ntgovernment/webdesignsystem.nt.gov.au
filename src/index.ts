@@ -5,4 +5,7 @@ export {
   ThemeSwitcher,
   type ThemeSwitcherProps,
 } from "./components/ThemeSwitcher";
-export { ComponentViewer } from "./components/ComponentViewer";
+export {
+  ComponentViewerClient,
+  type ComponentViewerProps,
+} from "./components/ComponentViewer";

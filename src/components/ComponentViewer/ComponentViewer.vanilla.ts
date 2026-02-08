@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-interface ComponentViewerProps {
+export interface ComponentViewerProps {
   storybookUrl: string;
   codeExample?: string;
   height?: string;
