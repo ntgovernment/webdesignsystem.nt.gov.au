@@ -1,5 +1,5 @@
 {
-  "deployedAt": "2026-02-08T04:01:01.497Z",
+  "deployedAt": "2026-02-08T06:00:55.078Z",
   "nesters": {
     "count": 7,
     "files": [
@@ -12,36 +12,21 @@
       "skip-links.html"
     ]
   },
-  "squizComponents": {
-    "count": 4,
+  "components": {
+    "count": 5,
     "files": [
       "component-viewer-client.js",
       "header.js",
       "left-nav.js",
-      "theme-switcher.js"
-    ]
-  },
-  "components": {
-    "header": [
-      "header.css",
-      "header.html",
-      "header.js"
-    ],
-    "theme-switcher": [
-      "theme-switcher.css",
-      "theme-switcher.js"
-    ],
-    "two-column": [
-      "two-column.css",
+      "theme-switcher.js",
       "two-column.js"
     ]
   },
-  "viewer": [
-    "header.html",
-    "index.html",
-    "index.js"
-  ],
   "stylesheets": [
-    "ntg-design-system.css"
+    "header.css",
+    "left-nav.css",
+    "ntg-design-system.css",
+    "theme-switcher.css",
+    "two-column.css"
   ]
 }

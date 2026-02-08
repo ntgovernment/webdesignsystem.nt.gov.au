@@ -5,8 +5,10 @@
 
 .nt-leftnav {
   width: var(--nav-width);
+  min-width: var(--nav-width);
+  flex: 0 0 var(--nav-width);
   background-color: var(--clr-nav-bg);
-  border-right: var(--nav-border-width) solid var(--clr-nav-border);
+  border-right: 1px solid var(--clr-border-subtle, #d3d3d7);
   height: 100%;
   max-height: 100vh;
   overflow-y: auto;
@@ -38,17 +40,17 @@
   display: flex;
   align-items: center;
   gap: var(--nav-gap);
-  padding: var(--nav-padding-item);
+  padding: 16px 16px 16px 16px; /* top right bottom left - added 16px right padding */
   border: none;
-  border-bottom: var(--nav-border-width) solid var(--clr-nav-border);
+  border-bottom: 1px solid var(--clr-border-subtle, #d3d3d7);
   background-color: transparent;
   color: var(--clr-link-default, #1f1f5f);
   text-decoration: none;
   width: 100%;
-  font-size: 16px;
+  font-size: 18px;
   font-family: var(--font-family-primary);
   font-weight: 700;
-  line-height: 24px;
+  line-height: 20px;
   cursor: pointer;
   transition:
     background-color var(--nav-transition),
@@ -83,6 +85,27 @@
 /* Expanded toggle style */
 .nt-leftnav__toggle[aria-expanded="true"] {
   background-color: var(--clr-bg-shade, #f5f5f7);
+  /* keep same parent font-size when expanded */
+  font-size: 18px;
+  line-height: 20px;
+}
+
+/* Link content wrapper */
+.nt-leftnav__link-content {
+  display: flex;
+  align-items: center;
+  gap: var(--nav-gap);
+}
+
+/* Icon styles for Font Awesome icons directly in link-content */
+.nt-leftnav__link-content > i {
+  width: var(--nav-icon-size);
+  height: var(--nav-icon-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 18px;
 }
 
 /* Icon styles */
@@ -93,6 +116,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  font-size: 18px;
 }
 
 .nt-leftnav__icon svg,
@@ -101,24 +125,20 @@
   height: 100%;
 }
 
-/* Chevron icon */
-.nt-leftnav__chevron {
-  width: var(--nav-icon-size);
-  height: var(--nav-icon-size);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: transform var(--nav-transition);
+.nt-leftnav__link .nt-leftnav__icon {
+  margin-left: auto;
 }
 
-.nt-leftnav__chevron i {
-  font-size: 14px;
+/* Chevron icon */
+.nt-leftnav__chevron {
+  font-size: 16px;
+  transition: transform var(--nav-transition);
+  color: currentColor;
 }
 
 /* Rotate chevron when expanded */
 .nt-leftnav__toggle[aria-expanded="true"] .nt-leftnav__chevron {
-  transform: rotate(180deg);
+  transform: rotate(-180deg);
 }
 
 /* Submenu styles */
@@ -129,17 +149,31 @@
   overflow: hidden;
   max-height: 0;
   transition: max-height var(--nav-transition);
+  background-color: var(--clr-bg-shade, #f5f5f7);
 }
 
 .nt-leftnav__submenu--expanded {
   max-height: 2000px; /* Large enough for content */
 }
 
-.nt-leftnav__submenu .nt-leftnav__link {
-  padding: 16px 16px 16px 32px;
+.nt-leftnav__submenu .nt-leftnav__link,
+.nt-leftnav__subitem .nt-leftnav__link {
+  padding: 16px 16px 16px 32px; /* top right bottom left - added 16px right padding */
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
+  border-bottom: 1px solid var(--clr-border-subtle, #d3d3d7);
+}
+
+/* Active submenu item */
+.nt-leftnav__subitem.active .nt-leftnav__link {
+  background-color: var(--clr-nav-bg-active);
+  color: var(--clr-nav-text-active);
+}
+
+/* Parent link (hidden by default when has children) */
+.nt-leftnav__link--parent {
+  display: none;
 }
 
 /* Mobile drawer styles */

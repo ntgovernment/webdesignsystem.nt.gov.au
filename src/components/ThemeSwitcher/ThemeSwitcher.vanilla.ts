@@ -3,6 +3,8 @@
  * Lightweight implementation without React dependency for Squiz Matrix embedding
  */
 
+import "./ThemeSwitcher.css";
+
 export interface ThemeSwitcherConfig {
   themes?: string[];
   defaultTheme?: string;

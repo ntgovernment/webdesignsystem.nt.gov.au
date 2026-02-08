@@ -8,8 +8,8 @@
  * that can be synced via Git File Bridge.
  *
  * Usage:
- *   npm run build:squiz       - Build Squiz components and deploy
- *   npm run deploy:squiz      - Deploy without rebuilding
+ *   npm run build       - Build Squiz components and deploy
+ *   npm run deploy      - Deploy without rebuilding
  *
  * Environment Variables:
  *   SQUIZ_DEPLOY_PATH - Path where files should be deployed (default: ./deploy)
@@ -68,8 +68,6 @@ console.log(`✨ Font Awesome Kit: ${fontAwesomeKitId}\n`);
 // Create deployment directory structure
 const deployDirs = {
   assets: path.join(deployPath, "assets"),
-  components: path.join(deployPath, "components"),
-  viewer: path.join(deployPath, "viewer"),
   nesters: path.join(deployPath, "nesters"),
   js: path.join(deployPath, "js"),
 };
@@ -144,9 +142,7 @@ if (fs.existsSync(distSquizDir)) {
     }
   });
 } else {
-  console.warn(
-    "⚠️  No dist/squiz directory found. Run `npm run build:squiz` first.",
-  );
+  console.warn("⚠️  No dist/squiz directory found. Run `npm run build` first.");
 }
 
 // Copy DXP Component Service structure (if exists)
@@ -157,98 +153,11 @@ if (fs.existsSync(dxpComponentsSourceDir)) {
   console.log(`✓ Copied DXP Component Services`);
 }
 
-// Copy compiled viewer assets (if building full viewer)
-if (fs.existsSync(distDir)) {
-  const viewerFiles = fs.readdirSync(distDir);
-  viewerFiles.forEach((file) => {
-    const srcPath = path.join(distDir, file);
-
-    // Skip the squiz and components subdirectories
-    if (file === "squiz" || file === "components") {
-      return;
-    }
-
-    const destPath = path.join(deployDirs.viewer, file);
-
-    if (fs.statSync(srcPath).isFile()) {
-      fs.copyFileSync(srcPath, destPath);
-      console.log(`✓ Copied viewer file: ${file}`);
-    } else if (fs.statSync(srcPath).isDirectory() && file === "assets") {
-      // Copy assets directory recursively
-      copyDirRecursive(srcPath, deployDirs.assets);
-      console.log(`✓ Copied assets directory`);
-    }
-  });
-}
-
-// Component mapping: file prefix -> folder name (for legacy React components build)
-const componentMap = {
-  header: "header",
-  "two-column": "two-column",
-  "theme-switcher": "theme-switcher",
-};
-
-// Copy component builds into individual folders (legacy React components)
-const componentsDistDir = path.join(rootDir, "dist", "components");
-if (fs.existsSync(componentsDistDir)) {
-  const componentFiles = fs.readdirSync(componentsDistDir);
-
-  // Group files by component
-  const componentGroups = {};
-
-  componentFiles.forEach((file) => {
-    if (fs.statSync(path.join(componentsDistDir, file)).isFile()) {
-      // Determine which component this file belongs to
-      for (const [prefix, folderName] of Object.entries(componentMap)) {
-        if (file.startsWith(prefix)) {
-          if (!componentGroups[folderName]) {
-            componentGroups[folderName] = [];
-          }
-          componentGroups[folderName].push(file);
-          break;
-        }
-      }
-    }
-  });
-
-  // Copy files into their component folders
-  Object.entries(componentGroups).forEach(([folderName, files]) => {
-    const componentDir = path.join(deployDirs.components, folderName);
-    if (!fs.existsSync(componentDir)) {
-      fs.mkdirSync(componentDir, { recursive: true });
-    }
-
-    files.forEach((file) => {
-      const srcPath = path.join(componentsDistDir, file);
-      const destPath = path.join(componentDir, file);
-      fs.copyFileSync(srcPath, destPath);
-      console.log(`✓ Copied ${folderName}/${file}`);
-    });
-  });
-}
-
-// Copy header HTML template if it exists
-const headerHtmlSrc = path.join(rootDir, "public", "header.html");
-const headerDir = path.join(deployDirs.components, "header");
-if (fs.existsSync(headerHtmlSrc)) {
-  if (!fs.existsSync(headerDir)) {
-    fs.mkdirSync(headerDir, { recursive: true });
-  }
-  fs.copyFileSync(headerHtmlSrc, path.join(headerDir, "header.html"));
-  console.log("✓ Copied header/header.html");
-}
-
 // Create deployment manifest
 const manifest = {
   deployedAt: new Date().toISOString(),
   nesters: {},
-  squizComponents: {},
   components: {},
-  viewer: fs.existsSync(deployDirs.viewer)
-    ? fs
-        .readdirSync(deployDirs.viewer)
-        .filter((f) => f.endsWith(".html") || f.endsWith(".js"))
-    : [],
   stylesheets: [],
 };
 
@@ -264,7 +173,7 @@ if (fs.existsSync(deployDirs.nesters)) {
 // Add vanilla JS components to manifest
 if (fs.existsSync(deployDirs.js)) {
   const jsFiles = fs.readdirSync(deployDirs.js);
-  manifest.squizComponents = {
+  manifest.components = {
     count: jsFiles.length,
     files: jsFiles,
   };
@@ -275,17 +184,6 @@ const cssFiles = fs.existsSync(deployPath)
   ? fs.readdirSync(deployPath).filter((f) => f.endsWith(".css"))
   : [];
 manifest.stylesheets = cssFiles;
-
-// Add component files to manifest (legacy React components)
-if (fs.existsSync(deployDirs.components)) {
-  const componentFolders = fs.readdirSync(deployDirs.components);
-  componentFolders.forEach((folder) => {
-    const folderPath = path.join(deployDirs.components, folder);
-    if (fs.statSync(folderPath).isDirectory()) {
-      manifest.components[folder] = fs.readdirSync(folderPath);
-    }
-  });
-}
 
 fs.writeFileSync(
   path.join(deployPath, "manifest.json"),

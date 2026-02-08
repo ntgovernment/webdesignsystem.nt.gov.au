@@ -32,47 +32,28 @@ These values are automatically substituted during the build process. The `.env` 
 # Install dependencies
 npm install
 
-# Start local development
+# Start local development with component previews
 npm run dev
 
-# Build component viewer
+# Build components for deployment (vanilla JS)
 npm run build
 
-# Build individual components (React-based)
-npm run build:components
-
-# Build Squiz Matrix nesters (Vanilla JS - Recommended)
-npm run build:squiz
-
-# Prepare for Squiz deployment (legacy)
-npm run deploy:squiz
+# Deploy without rebuilding
+npm run deploy
 ```
 
-## Deployment Options
+## Deployment Approach
 
-The NT Design System supports two deployment modes:
-
-### 1. **Squiz Matrix HTML Nesters (Recommended)**
-
-Lightweight vanilla JavaScript components designed for direct embedding in Squiz Matrix paint layouts. This is the recommended approach for production sites.
+The NT Design System uses **lightweight vanilla JavaScript components** for production deployment to Squiz Matrix. This approach provides small bundle sizes (~60-70KB total) with no framework dependencies.
 
 **Benefits:**
 
-- ✅ Small bundle sizes (~30KB JS per component vs 380KB React)
-- ✅ No React dependency
+- ✅ Small bundle sizes (~5-10KB per component vs 380KB+ with React)
+- ✅ No framework dependencies
 - ✅ Direct integration with MySource_AREA tags
 - ✅ Single global stylesheet for entire design system
 - ✅ Pre-built HTML nesters ready to embed
-
-**Build Command:**
-
-```bash
-npm run build:squiz
-```
-
-### 2. **React Component Viewer**
-
-Interactive component gallery for testing and documentation. Useful for development but not recommended for production integration.
+- ✅ ES modules with automatic code splitting
 
 **Build Command:**
 
@@ -82,7 +63,7 @@ npm run build
 
 ## Deployment Structure
 
-After running `npm run build:squiz`, files are organized as:
+After running `npm run build`, files are organized as:
 
 ```
 deploy/
@@ -90,20 +71,22 @@ deploy/
 │   ├── head.html               # <head> content with stylesheets
 │   ├── skip-links.html         # Accessibility skip navigation
 │   ├── header.html             # NT Government header
+│   ├── left-nav.html           # Left navigation sidebar
 │   ├── footer.html             # Footer with navigation and branding
 │   └── footer-js.html          # JavaScript component loading
 ├── js/                          # Vanilla JavaScript components
 │   ├── header.js               # Header component (~25KB)
-│   └── theme-switcher.js       # Theme switcher (~10KB)
+│   ├── left-nav.js             # Left navigation (~5KB)
+│   ├── theme-switcher.js       # Theme switcher (~10KB)
+│   ├── two-column.js           # Two-column layout (~8KB)
+│   └── component-viewer-client.js  # Component viewer client
 ├── ntg-design-system.css       # Global stylesheet with all design tokens
-├── components/                  # Legacy React components
-├── viewer/                      # Component viewer app
 └── manifest.json               # Deployment metadata
 ```
 
 ## Squiz Matrix Paint Layout Integration
 
-**Important:** After running `npm run build:squiz`, commit and push the `deploy/` directory to trigger the Git File Bridge sync.
+**Important:** After running `npm run build`, commit and push the `deploy/` directory to trigger the Git File Bridge sync.
 
 ### 2. Upload Font Awesome Kit
 
@@ -129,7 +112,7 @@ The NT Design System requires Font Awesome icons. You have two options:
 
 ### 3. Verify Asset References
 
-After running `npm run build:squiz`, the HTML nesters in `deploy/nesters/` will contain:
+After running `npm run build`, the HTML nesters in `deploy/nesters/` will contain:
 
 - Git File Bridge Asset ID: `1590990` (from `.env`)
 - Font Awesome Kit ID: `d8e5f638f7` (from `.env`)
@@ -290,13 +273,13 @@ VITE_SQUIZ_GIT_BRIDGE_ASSET_ID=1590990
 VITE_FONT_AWESOME_KIT_ID=d8e5f638f7
 ```
 
-These values are automatically injected into all HTML nesters during `npm run build:squiz`.
+These values are automatically injected into all HTML nesters during `npm run build`.
 
 ### 2. Git File Bridge Setup
 
 Configure your Git File Bridge in Squiz Matrix to sync the `deploy/` directory from this repository.
 
-**Important:** After running `npm run build:squiz`, commit and push the `deploy/` directory to trigger the Git File Bridge sync.
+**Important:** After running `npm run build`, commit and push the `deploy/` directory to trigger the Git File Bridge sync.
 
 ### 3. Reference Assets in Paint Layouts
 
@@ -305,55 +288,52 @@ The HTML nesters in `deploy/nesters/` already contain the correct asset referenc
 In your Squiz Matrix paint layouts, reference the compiled files:
 
 ```html
-<!-- Component Viewer Application -->
+<!-- Global Design System Stylesheet -->
 <link
   rel="stylesheet"
-  href="%globals_asset_url_with_hash:ASSET_ID%/assets/index-[hash].css"
+  href="%globals_asset_url_with_hash:ASSET_ID:deploy/ntg-design-system.css%"
 />
+
+<!-- Vanilla JS Components -->
 <script
   type="module"
-  src="%globals_asset_url_with_hash:ASSET_ID%/assets/index-[hash].js"
+  src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/header.js%"
+  defer
 ></script>
-
-<!-- Container for the app -->
-<div id="root"></div>
+<script
+  type="module"
+  src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/left-nav.js%"
+  defer
+></script>
+<script
+  type="module"
+  src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/theme-switcher.js%"
+  defer
+></script>
 ```
 
-Replace `ASSET_ID` with your Squiz Matrix asset ID and `[hash]` with the actual hash from the build.
+Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 
-### 3. Component Usage
-
-The component viewer provides an interactive way to browse and test all available components:
-
-- **Two Column Component** - Responsive layout that stacks on mobile
+## Development Workflow
 
 ### For Squiz Matrix Integration
 
 1. **First time setup:** Copy `.env.example` to `.env` and configure your asset IDs
 2. Make changes to components in `src/components/`
-3. Update vanilla JS versions in `*.vanilla.ts` files if needed
+3. Update vanilla JS versions in `*.vanilla.ts` files
 4. Update HTML nesters in `public/squiz/` if needed
-5. Test locally with `npm run dev`
+5. Test locally with `npm run dev` (opens preview pages)
 6. Run linter with `npm run lint`
-7. Build Squiz nesters with `npm run build:squiz` (automatically injects .env values)
-8. Review output in `deploy/nesters/` directory
+7. Build for deployment with `npm run build` (automatically injects .env values)
+8. Review output in `deploy/` directory
 9. Commit and push to trigger Git File Bridge sync
 10. Copy updated nesters to Squiz Matrix paint layouts if needed
 
 **Note:** The `.env` file is git-ignored. Team members need to create their own from `.env.example`.
 
-### For Component Viewer Development
+### Squiz Matrix Integration Best Practices
 
-1. Make changes to React components in `src/components/`
-2. Test with `npm run dev`
-3. Run linter with `npm run lint`
-4. Build with `npm run build`
-5. Deploy viewer with `npm run deploy:squiz`
-6. Commit and push to trigger Git File Bridge sync
-
-### Squiz Matrix Integration
-
-1. **Always use the vanilla JS build** (`npm run build:squiz`) for production sites
+1. **Use vanilla JS components** for all production sites
 2. **Cache nesters appropriately** - Use `cache="1"` for static nesters (header, footer), `cache="0"` for dynamic content (head with page-specific meta tags)
 3. **Update asset references** after each deployment if file hashes change
 4. **Test accessibility** - All nesters include ARIA labels and semantic HTML
@@ -398,10 +378,10 @@ The component viewer provides an interactive way to browse and test all availabl
 
 ### Bundle Size Issues
 
-- **Use vanilla JS build** - Avoid using React components in production
-- **Check build output** - Run `npm run build:squiz` and verify file sizes in `deploy/`
+- **Check build output** - Run `npm run build` and verify file sizes in `deploy/js/`
 - **Minimize Font Awesome** - Use kit configuration to include only needed icons
-- **Code splitting** - For custom components, consider lazy loading
+- **Code splitting** - Components are automatically split into separate bundles
+- **Review dependencies** - Check package.json for unnecessary dependencies
 
 ## Component Reference
 
@@ -417,10 +397,13 @@ The component viewer provides an interactive way to browse and test all availabl
 
 ### Vanilla JS Components
 
-| Component      | File                   | Size  | Auto-Mount ID             |
-| -------------- | ---------------------- | ----- | ------------------------- |
-| Header         | `js/header.js`         | ~25KB | `#nt-header-root`         |
-| Theme Switcher | `js/theme-switcher.js` | ~10KB | `#nt-theme-switcher-root` |
+| Component      | File                            | Size  | Auto-Mount ID                |
+| -------------- | ------------------------------- | ----- | ---------------------------- |
+| Header         | `js/header.js`                  | ~25KB | `#nt-header-root`            |
+| Left Nav       | `js/left-nav.js`                | ~5KB  | `#nt-leftnav-root`           |
+| Theme Switcher | `js/theme-switcher.js`          | ~10KB | `#nt-theme-switcher-root`    |
+| Two Column     | `js/two-column.js`              | ~8KB  | `#nt-twocolumn-root`         |
+| Viewer Client  | `js/component-viewer-client.js` | ~15KB | `[data-hydration-component]` |
 
 ### Configuration Reference
 
@@ -444,41 +427,42 @@ The component viewer provides an interactive way to browse and test all availabl
 
 ## File Size Reference
 
-### Vanilla JS Build (Squiz Mode)
+### Vanilla JS Build
 
 ```
 deploy/
 ├── ntg-design-system.css    ~20-30KB (minified, all components)
 ├── js/
 │   ├── header.js            ~25KB (includes dependencies)
-│   └── theme-switcher.js    ~10KB (includes dependencies)
-└── nesters/                5 HTML files, <5KB total
+│   ├── left-nav.js          ~5KB (minimal dependencies)
+│   ├── theme-switcher.js    ~10KB (includes localStorage logic)
+│   ├── two-column.js        ~8KB (lightweight layout)
+│   └── component-viewer-client.js  ~15KB (includes Prism.js)
+└── nesters/                ~10-15KB total (5 HTML files)
 ```
 
-**Total bundle size:** ~60-70KB (complete design system)
+**Total bundle size:** ~90-110KB (complete design system with all components)
 
-### React Build (Legacy Component Mode)
+**Performance Benefits:**
 
-```
-deploy/components/
-├── header/
-│   ├── header.js            ~380KB (includes React runtime)
-│   └── header.css           ~5KB
-```
-
-**Note:** React build is ~5-6x larger and not recommended for production.
-To find the current hashes:
+- Fast load times with ES modules
+- Automatic code splitting per component
+- No framework overhead
+- Minimal runtime dependencies
+  To find the current hashes:
 
 1. Check `deploy/manifest.json` after running deployment
 2. Or check the `deploy/viewer/index.html` file which contains the correct references
 
 ## Best Practices
 
-1. Always run `npm run deploy:squiz` before committing deployment files
-2. Test the component viewer locally before deploying
+1. Always run `npm run build` before committing deployment files
+2. Test components locally with `npm run dev` before deploying
 3. Keep the `deploy/` directory in version control for Git File Bridge
 4. Document any custom components added to the system
 5. Update paint layout references when asset hashes change
+6. Use data attributes for component configuration instead of modifying code
+7. Test in multiple browsers and screen sizes
 
 ## Troubleshooting
 
@@ -487,12 +471,14 @@ To find the current hashes:
 - Verify the Git File Bridge is syncing correctly
 - Check that asset URLs match the deployed file names
 - Ensure CORS settings allow loading from the asset server
+- Clear browser cache and hard reload
 
 ### Components not rendering
 
 - Check browser console for JavaScript errors
-- Verify the `#root` div exists in your HTML
+- Verify container divs with correct IDs exist (e.g., `#nt-header-root`)
 - Ensure both CSS and JS files are loaded
+- Check that scripts use `type="module"` attribute
 
 ### Theme not persisting
 

@@ -26,7 +26,6 @@ export interface ComponentViewerProps {
 
 export class ComponentViewerClient {
   private container: HTMLElement;
-  private instanceId: string;
   private props: ComponentViewerProps;
   private iframe: HTMLIFrameElement | null = null;
   private zoomContainer: HTMLElement | null = null;
@@ -38,7 +37,6 @@ export class ComponentViewerClient {
 
   constructor(container: HTMLElement) {
     this.container = container;
-    this.instanceId = container.dataset.instanceId || "";
 
     // Parse props from data-hydration-props
     try {
@@ -88,7 +86,6 @@ export class ComponentViewerClient {
   private render(): void {
     const {
       storybookUrl,
-      codeExample = "",
       height = "200px",
       showCodeByDefault = false,
       enableCopy = true,
@@ -291,7 +288,11 @@ export class ComponentViewerClient {
       if (this.isCodeVisible) {
         this.codePanel.classList.add("component-viewer__code--visible");
         if (!this.extractedCode) {
+          // No extracted code yet — extract (formatCode will animate when done)
           this.extractIframeContent();
+        } else if (this.codeDisplay) {
+          // We already have formatted code — animate typing now
+          this.animateTyping(this.extractedCode);
         }
       } else {
         this.codePanel.classList.remove("component-viewer__code--visible");
@@ -397,14 +398,22 @@ export class ComponentViewerClient {
           htmlWhitespaceSensitivity: "css",
         });
 
-        this.displayCode(formatted);
+        this.extractedCode = formatted;
       } else {
         // Fallback without Prettier
-        this.displayCode(code);
+        this.extractedCode = code;
       }
     } catch (error) {
       console.error("Failed to format code:", error);
-      this.displayCode(code);
+      this.extractedCode = code;
+    }
+
+    // Only display (with typing effect) when the code panel is visible
+    if (this.isCodeVisible) {
+      this.animateTyping(this.extractedCode || "");
+    } else if (this.codeDisplay) {
+      // keep code panel empty until user opens it
+      this.codeDisplay.textContent = "";
     }
   }
 
@@ -412,11 +421,56 @@ export class ComponentViewerClient {
     if (this.codeDisplay) {
       this.codeDisplay.textContent = code;
 
-      // Apply Prism syntax highlighting if available
-      if (window.Prism) {
+      // If Prism is available and we are not typing, highlight immediately
+      if (
+        window.Prism &&
+        !this.codeDisplay.classList.contains("typing-cursor")
+      ) {
         window.Prism.highlightElement(this.codeDisplay);
       }
     }
+  }
+
+  private animateTyping(code: string, avgDelay = 12): void {
+    if (!this.codeDisplay) return;
+
+    // Clear existing content and add typing cursor class
+    this.codeDisplay.textContent = "";
+    this.codeDisplay.classList.add("typing-cursor");
+
+    let i = 0;
+    const len = code.length;
+
+    const tick = () => {
+      // Append next character
+      this.codeDisplay!.textContent += code.charAt(i);
+      i += 1;
+
+      if (i < len) {
+        // Randomize delay slightly to feel human/agent-like
+        const jitter = Math.floor(Math.random() * 20) - 10;
+        setTimeout(tick, Math.max(4, avgDelay + jitter));
+      } else {
+        // Finished typing: remove cursor and apply Prism highlighting
+        setTimeout(() => {
+          this.codeDisplay!.classList.remove("typing-cursor");
+          if (window.Prism) {
+            window.Prism.highlightElement(this.codeDisplay!);
+          }
+        }, 120);
+      }
+    };
+
+    // Start
+    if (len === 0) {
+      // Nothing to type — immediately remove cursor and clear
+      this.codeDisplay.classList.remove("typing-cursor");
+      this.codeDisplay.textContent = "";
+      return;
+    }
+
+    // Kick off the first tick
+    setTimeout(tick, avgDelay);
   }
 }
 

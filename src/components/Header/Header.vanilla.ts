@@ -3,6 +3,8 @@
  * Lightweight implementation without React dependency for Squiz Matrix embedding
  */
 
+import "./Header.css";
+
 export interface HeaderConfig {
   title?: string;
   logoSrc?: string;

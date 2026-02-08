@@ -3,6 +3,8 @@
  * Lightweight implementation without React dependency for Squiz Matrix embedding
  */
 
+import "./LeftNav.css";
+
 export interface LeftNavConfig {
   defaultExpanded?: string[]; // Array of section IDs to expand by default
   mobileBreakpoint?: number; // Mobile breakpoint in pixels

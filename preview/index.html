@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NT Design System - Preview</title>
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css">
+    <!-- Prism syntax-highlighting theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <!-- Global tokens and base styles required by components -->
+    <link rel="stylesheet" href="/src/index.css">
+    <!-- Fallback: built design system stylesheet -->
+    <link rel="stylesheet" href="/deploy/ntg-design-system.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Theme variables */
+        :root[data-theme="light"] {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #f5f5f5;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #f5f5f5;
+            --card-bg: #2d2d2d;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Layout structure */
+        .page-container {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Content styles */
+        h1 {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .demo-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            transition: background-color 0.3s;
+        }
+
+        .demo-section h2 {
+            color: #0066cc;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .demo-section h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .features-list {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .features-list li {
+            margin-bottom: 0.5rem;
+        }
+
+        .component-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .component-link {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #0066cc;
+            border: 2px solid var(--card-bg);
+            transition: all 0.2s;
+            display: block;
+        }
+
+        .component-link:hover {
+            border-color: #0066cc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 102, 204, 0.2);
+        }
+
+        .component-link strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+        }
+
+        .component-link small {
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        /* Theme switcher container */
+        .theme-switcher-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .theme-switcher-container {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Theme switcher removed for preview -->
+
+    <!-- Header Component -->
+    <div id="nt-header-root" data-title="NT Design System" data-logo-alt="Northern Territory Government"></div>
+
+    <!-- Page Container with Left Nav and Main Content -->
+    <div class="page-container">
+        <!-- Left Navigation Component -->
+        <div id="nt-leftnav-root" data-default-expanded="Foundations">
+            <nav class="nt-leftnav" aria-label="Main navigation">
+                <ul class="nt-leftnav__list">
+                    <!-- Home link with icon -->
+                    <li class="nt-leftnav__item">
+                        <a href="#home" class="nt-leftnav__link" aria-current="page">
+                            <div class="nt-leftnav__link-content">
+                                <i class="fa-light fa-home" aria-hidden="true"> </i>
+                                <span> Home</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <!-- About -->
+                    <li class="nt-leftnav__item">
+                        <a href="#about" class="nt-leftnav__link">
+                            <span>About</span>
+                        </a>
+                    </li>
+
+                    <!-- Design -->
+                    <li class="nt-leftnav__item">
+                        <a href="#design" class="nt-leftnav__link">
+                            <span>Design</span>
+                        </a>
+                    </li>
+
+                    <!-- Develop -->
+                    <li class="nt-leftnav__item">
+                        <a href="#develop" class="nt-leftnav__link">
+                            <span>Develop</span>
+                        </a>
+                    </li>
+
+                    <!-- Foundations with submenu -->
+                    <li class="nt-leftnav__item has-children">
+                        <button class="nt-leftnav__toggle" aria-expanded="false" aria-controls="submenu-foundations">
+                            <div>
+                                <span>Foundations</span>
+                            </div>
+                            <i class="nt-leftnav__chevron fa-light fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+
+                        <ul class="nt-leftnav__submenu" id="submenu-foundations">
+                            <li class="nt-leftnav__subitem">
+                                <a href="#colour" class="nt-leftnav__link">Colour</a>
+                            </li>
+                            <li class="nt-leftnav__subitem">
+                                <a href="#typography" class="nt-leftnav__link">Typography</a>
+                            </li>
+                            <li class="nt-leftnav__subitem">
+                                <a href="#iconography" class="nt-leftnav__link">Iconography</a>
+                            </li>
+                            <li class="nt-leftnav__subitem">
+                                <a href="#grids" class="nt-leftnav__link">Grids</a>
+                            </li>
+                            <li class="nt-leftnav__subitem">
+                                <a href="#spacing" class="nt-leftnav__link">Spacing</a>
+                            </li>
+                            <li class="nt-leftnav__subitem">
+                                <a href="#border-width" class="nt-leftnav__link">Border width</a>
+                            </li>
+                            <li class="nt-leftnav__subitem">
+                                <a href="#radius" class="nt-leftnav__link">Radius</a>
+                            </li>
+                            <li class="nt-leftnav__subitem">
+                                <a href="#elevation" class="nt-leftnav__link">Elevation</a>
+                            </li>
+                            <li class="nt-leftnav__subitem">
+                                <a href="#logo" class="nt-leftnav__link">Logo</a>
+                            </li>
+                            <li class="nt-leftnav__subitem">
+                                <a href="#focus-state" class="nt-leftnav__link">Focus state</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Components -->
+                    <li class="nt-leftnav__item">
+                        <a href="#components" class="nt-leftnav__link">
+                            <span>Components</span>
+                        </a>
+                    </li>
+
+                    <!-- Help and support -->
+                    <li class="nt-leftnav__item">
+                        <a href="#help-support" class="nt-leftnav__link">
+                            <span>Help and support</span>
+                        </a>
+                    </li>
+
+                    <!-- NTG Central with lock icon -->
+                    <li class="nt-leftnav__item">
+                        <a href="#ntg-central" class="nt-leftnav__link">
+                            <span>NTG Central</span>
+                            <div class="nt-leftnav__icon">
+                                <i class="fa-light fa-lock" aria-hidden="true"></i>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Component viewer preview (auto-hydrates via ComponentViewerClient) -->
+            <div data-hydration-component="component-viewer"
+                data-hydration-props='{"storybookUrl":"https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story","codeExample":"<button class=\"ntgds-btn ntgds-btn--primary\">Label</button>","height":"260px","showCodeByDefault":false,"enableCopy":true,"enableZoom":true}'>
+            </div>
+
+            <div class="content-wrapper">
+                <h1>Welcome to the NT Design System</h1>
+                <p>This is a preview of the design system with all major components integrated. You're seeing the
+                    header, left navigation, and theme switcher working together.</p>
+
+                <div class="demo-section">
+                    <h2>🎨 What You're Seeing</h2>
+                    <p>This page demonstrates:</p>
+                    <ul class="features-list">
+                        <li><strong>Header Component</strong> - NT Government branding at the top</li>
+                        <li><strong>Left Navigation</strong> - Collapsible sidebar with 2-level menu structure</li>
+                        <li><strong>Theme Switcher</strong> - Toggle between light and dark themes (top right)</li>
+                        <li><strong>Responsive Layout</strong> - Try resizing your browser to see mobile behavior</li>
+                    </ul>
+                </div>
+
+                <div class="demo-section">
+                    <h2>🚀 Getting Started</h2>
+                    <p>All components are built with vanilla JavaScript - no framework dependencies!</p>
+
+                    <h3>Key Features:</h3>
+                    <ul class="features-list">
+                        <li>Auto-mount functionality via data attributes</li>
+                        <li>Small bundle sizes (1-8 KB per component)</li>
+                        <li>Keyboard accessible and ARIA compliant</li>
+                        <li>Theme persistence with localStorage</li>
+                        <li>Mobile-responsive with smooth transitions</li>
+                    </ul>
+
+                    <h3>Try These Interactions:</h3>
+                    <ul class="features-list">
+                        <li>Click sections in the left navigation to expand/collapse</li>
+                        <li>Toggle the theme switcher (top right) to see dark mode</li>
+                        <li>Resize your browser to see the mobile drawer menu</li>
+                        <li>Use Tab key to navigate through interactive elements</li>
+                    </ul>
+                </div>
+
+                <div class="demo-section">
+                    <h2>📦 Individual Component Previews</h2>
+                    <p>View each component in isolation:</p>
+
+                    <div class="component-links">
+                        <a href="./header.html" class="component-link">
+                            <strong>Header</strong>
+                            <small>NT Government branding</small>
+                        </a>
+                        <a href="./left-nav.html" class="component-link">
+                            <strong>Left Navigation</strong>
+                            <small>Collapsible sidebar menu</small>
+                        </a>
+                        <a href="./theme-switcher.html" class="component-link">
+                            <strong>Theme Switcher</strong>
+                            <small>Light/dark mode toggle</small>
+                        </a>
+                        <a href="./two-column.html" class="component-link">
+                            <strong>Two Column</strong>
+                            <small>Responsive grid layout</small>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="demo-section">
+                    <h2>📝 Documentation</h2>
+                    <p>For detailed integration instructions, see:</p>
+                    <ul class="features-list">
+                        <li><strong>README.md</strong> - Component usage and API reference</li>
+                        <li><strong>DEPLOYMENT_GUIDE.md</strong> - Squiz Matrix integration guide</li>
+                        <li><strong>MIGRATION_COMPLETE.md</strong> - React to vanilla JS migration details</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Load Component Scripts -->
+    <!-- Prettier (browser standalone) for formatting code examples -->
+    <script src="https://unpkg.com/prettier@2.8.8/standalone.js"></script>
+    <script src="https://unpkg.com/prettier@2.8.8/parser-html.js"></script>
+
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <script type="module" src="/src/components/Header/Header.vanilla.ts"></script>
+    <script type="module" src="/src/components/LeftNav/LeftNav.vanilla.ts"></script>
+    <script type="module" src="/src/components/ComponentViewer/ComponentViewer.vanilla.ts"></script>
+</body>
+
+</html>
