@@ -1,0 +1,43 @@
+{
+  "single": {
+    "themes": [
+      {
+        "name": "Default",
+        "url": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story"
+      }
+    ],
+    "height": "400px"
+  },
+  "twoThemes": {
+    "themes": [
+      {
+        "name": "Light Theme",
+        "url": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=theme:light&args=&id=components-button--primary&viewMode=story"
+      },
+      {
+        "name": "Dark Theme",
+        "url": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=theme:dark&args=&id=components-button--primary&viewMode=story"
+      }
+    ],
+    "height": "500px",
+    "defaultTheme": "Light Theme"
+  },
+  "threeThemes": {
+    "themes": [
+      {
+        "name": "Light",
+        "url": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=theme:light&args=&id=components-card--default&viewMode=story"
+      },
+      {
+        "name": "Dark",
+        "url": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=theme:dark&args=&id=components-card--default&viewMode=story"
+      },
+      {
+        "name": "High Contrast",
+        "url": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=theme:contrast&args=&id=components-card--default&viewMode=story"
+      }
+    ],
+    "height": "600px",
+    "defaultTheme": "Light"
+  }
+}

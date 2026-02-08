@@ -1,11 +1,12 @@
 /**
  * Theme Switcher Component
- * Vanilla JS implementation
+ * Vanilla JS implementation with hydration pattern
+ * Multi-URL theme switcher with tab navigation
  */
 
-export { ThemeSwitcherComponent } from "./ThemeSwitcher.vanilla";
-export type { ThemeSwitcherConfig } from "./ThemeSwitcher.vanilla";
-export { ThemeSwitcherComponent as default } from "./ThemeSwitcher.vanilla";
+export { ThemeSwitcherClient } from "./ThemeSwitcher.vanilla";
+export type { ThemeSwitcherProps, ThemeItem } from "./ThemeSwitcher.vanilla";
+export { ThemeSwitcherClient as default } from "./ThemeSwitcher.vanilla";
 
 // CSS import for bundling
 import "./ThemeSwitcher.css";

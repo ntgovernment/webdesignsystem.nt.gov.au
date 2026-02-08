@@ -272,6 +272,16 @@
         <!-- Main Content Area -->
         <main class="main-content">
             <div class="content-wrapper">
+                <!-- Theme Switcher Component Sample -->
+                <div class="demo-section" style="margin-bottom: 3rem;">
+                    <h2>🎨 Theme Switcher Component</h2>
+                    <p style="margin-bottom: 1.5rem;">DXP Component Service - Multi-URL theme switcher with tab
+                        navigation (up to 3 themes)</p>
+                    <div data-hydration-component="theme-switcher"
+                        data-hydration-props='{"themes":[{"name":"Primary Button","url":"https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story"},{"name":"Secondary Button","url":"https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--secondary&viewMode=story"},{"name":"Tertiary Button","url":"https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--tertiary&viewMode=story"}],"height":"300px","defaultTheme":"Primary Button"}'>
+                    </div>
+                </div>
+
                 <!-- Two Column Component Sample -->
                 <div class="demo-section" style="margin-bottom: 3rem;">
                     <h2>📐 Two Column Layout Component</h2>
@@ -373,6 +383,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
     <script type="module" src="/src/components/Header/Header.vanilla.ts"></script>
     <script type="module" src="/src/components/LeftNav/LeftNav.vanilla.ts"></script>
+    <script type="module" src="/src/components/ThemeSwitcher/ThemeSwitcher.vanilla.ts"></script>
     <script type="module" src="/src/components/ComponentViewer/ComponentViewer.vanilla.ts"></script>
 
     <!-- Two Column Component Hydration -->

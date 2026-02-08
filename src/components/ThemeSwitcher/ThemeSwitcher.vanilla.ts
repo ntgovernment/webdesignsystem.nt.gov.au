@@ -1,157 +1,243 @@
 /**
- * Vanilla JS Theme Switcher Component
- * Lightweight implementation without React dependency for Squiz Matrix embedding
+ * ThemeSwitcher Vanilla JS - Client-Side Hydration
+ *
+ * Multi-URL theme switcher with tab navigation supporting up to 3 themes.
+ * Reads minimal server-rendered container and renders full HTML with interactivity.
+ * Loaded globally and auto-detects all [data-hydration-component="theme-switcher"] elements.
  */
 
 import "./ThemeSwitcher.css";
 
-export interface ThemeSwitcherConfig {
-  themes?: string[];
-  defaultTheme?: string;
-  storageKey?: string;
-  className?: string;
+export interface ThemeItem {
+  name: string;
+  url: string;
 }
 
-export class ThemeSwitcherComponent {
+export interface ThemeSwitcherProps {
+  themes: ThemeItem[];
+  height?: string;
+  defaultTheme?: string;
+}
+
+export class ThemeSwitcherClient {
   private container: HTMLElement;
-  private config: Required<ThemeSwitcherConfig>;
-  private currentTheme: string;
-  private selectElement: HTMLSelectElement | null = null;
+  private props: ThemeSwitcherProps;
+  private activeThemeIndex: number = 0;
+  private iframes: Map<number, HTMLIFrameElement> = new Map();
 
-  constructor(container: HTMLElement, config: ThemeSwitcherConfig = {}) {
+  constructor(container: HTMLElement) {
     this.container = container;
-    this.config = {
-      themes: config.themes || ["light", "dark"],
-      defaultTheme: config.defaultTheme || "light",
-      storageKey: config.storageKey || "web-design-system-theme",
-      className: config.className || "",
-    };
 
-    // Get initial theme from localStorage or use default
-    this.currentTheme = this.getInitialTheme();
+    // Parse props from data-hydration-props
+    try {
+      this.props = JSON.parse(container.dataset.hydrationProps || "{}");
+    } catch (error) {
+      console.error("Failed to parse hydration props:", error);
+      this.props = {
+        themes: [],
+      };
+    }
 
-    this.render();
-    this.applyTheme();
-  }
+    // Validate props
+    if (!this.props.themes || this.props.themes.length === 0) {
+      this.renderError("No themes provided");
+      return;
+    }
 
-  private getInitialTheme(): string {
-    if (typeof localStorage !== "undefined") {
-      const savedTheme = localStorage.getItem(this.config.storageKey);
-      if (savedTheme && this.config.themes.includes(savedTheme)) {
-        return savedTheme;
+    if (this.props.themes.length > 3) {
+      this.renderError("Maximum 3 themes allowed");
+      return;
+    }
+
+    // Validate each theme
+    for (const theme of this.props.themes) {
+      if (!theme.name || !theme.url) {
+        this.renderError("Each theme must have a name and url");
+        return;
       }
     }
-    return this.config.defaultTheme;
+
+    // Determine active theme
+    this.activeThemeIndex = this.getInitialThemeIndex();
+
+    // Render the HTML
+    this.render();
+
+    // Setup event listeners
+    this.setupEventListeners();
+  }
+
+  private getInitialThemeIndex(): number {
+    const { themes, defaultTheme } = this.props;
+
+    // If defaultTheme is specified, find its index
+    if (defaultTheme) {
+      const index = themes.findIndex((t) => t.name === defaultTheme);
+      if (index !== -1) {
+        return index;
+      }
+    }
+
+    // Default to first theme
+    return 0;
+  }
+
+  private renderError(message: string): void {
+    this.container.innerHTML = `
+      <div class="nt-theme-switcher-error" style="padding: 2rem; background: #fee; border: 2px solid #c33; color: #c33; border-radius: 4px;">
+        <strong>Theme Switcher Error:</strong> ${this.escapeHtml(message)}
+      </div>
+    `;
   }
 
   private render(): void {
-    const className = this.config.className
-      ? `nt-theme-switcher ${this.config.className}`
-      : "nt-theme-switcher";
+    const { themes, height = "600px" } = this.props;
 
-    const optionsHtml = this.config.themes
-      .map((theme) => {
-        const selected = theme === this.currentTheme ? "selected" : "";
-        const label = theme.charAt(0).toUpperCase() + theme.slice(1);
-        return `<option value="${theme}" ${selected}>${label}</option>`;
+    // If only one theme, don't show tabs - just the iframe
+    if (themes.length === 1) {
+      this.container.innerHTML = `
+        <div class="nt-theme-switcher__content">
+          <iframe
+            src="${this.escapeHtml(themes[0].url)}"
+            class="nt-theme-switcher__iframe"
+            style="height: ${this.escapeHtml(height)};"
+            title="${this.escapeHtml(themes[0].name)}"
+            frameborder="0"
+            data-theme-index="0"
+          ></iframe>
+        </div>
+      `;
+      return;
+    }
+
+    // Multiple themes - show tabs
+    const tabsHtml = themes
+      .map((theme, index) => {
+        const isActive = index === this.activeThemeIndex;
+        return `
+        <button
+          class="nt-theme-switcher__tab ${isActive ? "nt-theme-switcher__tab--active" : ""}"
+          data-theme-index="${index}"
+          aria-selected="${isActive}"
+          role="tab"
+        >
+          ${this.escapeHtml(theme.name)}
+        </button>
+      `;
+      })
+      .join("");
+
+    const iframesHtml = themes
+      .map((theme, index) => {
+        const isActive = index === this.activeThemeIndex;
+        return `
+        <iframe
+          src="${this.escapeHtml(theme.url)}"
+          class="nt-theme-switcher__iframe"
+          style="height: ${this.escapeHtml(height)}; display: ${isActive ? "block" : "none"};"
+          title="${this.escapeHtml(theme.name)}"
+          frameborder="0"
+          data-theme-index="${index}"
+        ></iframe>
+      `;
       })
       .join("");
 
     this.container.innerHTML = `
-      <div class="${className}">
-        <label for="theme-select" class="nt-theme-switcher__label">
-          Theme:
-        </label>
-        <select id="theme-select" class="nt-theme-switcher__select">
-          ${optionsHtml}
-        </select>
+      <div class="nt-theme-switcher__tabs" role="tablist">
+        ${tabsHtml}
+      </div>
+      <div class="nt-theme-switcher__content">
+        ${iframesHtml}
       </div>
     `;
 
-    // Attach event listener
-    this.selectElement = this.container.querySelector("#theme-select");
-    if (this.selectElement) {
-      this.selectElement.addEventListener("change", (e) => {
-        this.handleThemeChange((e.target as HTMLSelectElement).value);
+    // Store iframe references
+    this.container
+      .querySelectorAll(".nt-theme-switcher__iframe")
+      .forEach((iframe) => {
+        const index = parseInt(
+          (iframe as HTMLElement).dataset.themeIndex || "0",
+          10,
+        );
+        this.iframes.set(index, iframe as HTMLIFrameElement);
       });
-    }
   }
 
-  private handleThemeChange(theme: string): void {
-    this.currentTheme = theme;
-    this.applyTheme();
-
-    // Save to localStorage
-    if (typeof localStorage !== "undefined") {
-      localStorage.setItem(this.config.storageKey, theme);
-    }
+  private escapeHtml(str: string): string {
+    return (str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
-  private applyTheme(): void {
-    document.documentElement.setAttribute("data-theme", this.currentTheme);
+  private setupEventListeners(): void {
+    // Get all tab buttons
+    const tabs = this.container.querySelectorAll(".nt-theme-switcher__tab");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const index = parseInt(
+          (tab as HTMLElement).dataset.themeIndex || "0",
+          10,
+        );
+        this.switchTheme(index);
+      });
+    });
   }
 
-  public getTheme(): string {
-    return this.currentTheme;
-  }
+  private switchTheme(newIndex: number): void {
+    if (newIndex === this.activeThemeIndex) return;
 
-  public setTheme(theme: string): void {
-    if (this.config.themes.includes(theme)) {
-      this.currentTheme = theme;
-      this.applyTheme();
+    const oldIndex = this.activeThemeIndex;
+    this.activeThemeIndex = newIndex;
 
-      if (this.selectElement) {
-        this.selectElement.value = theme;
+    // Update tab states
+    const tabs = this.container.querySelectorAll(".nt-theme-switcher__tab");
+    tabs.forEach((tab, index) => {
+      if (index === newIndex) {
+        tab.classList.add("nt-theme-switcher__tab--active");
+        tab.setAttribute("aria-selected", "true");
+      } else {
+        tab.classList.remove("nt-theme-switcher__tab--active");
+        tab.setAttribute("aria-selected", "false");
       }
+    });
 
-      if (typeof localStorage !== "undefined") {
-        localStorage.setItem(this.config.storageKey, theme);
-      }
+    // Show/hide iframes
+    const oldIframe = this.iframes.get(oldIndex);
+    const newIframe = this.iframes.get(newIndex);
+
+    if (oldIframe) {
+      oldIframe.style.display = "none";
+    }
+
+    if (newIframe) {
+      newIframe.style.display = "block";
     }
   }
-
-  public destroy(): void {
-    this.container.innerHTML = "";
-    this.selectElement = null;
-  }
 }
 
-// Auto-mount functionality for standalone use
-if (typeof document !== "undefined") {
-  const initThemeSwitcher = () => {
-    const container = document.getElementById("nt-theme-switcher-root");
+// Auto-initialize all ThemeSwitcher instances on page load
+(function () {
+  if (typeof document !== "undefined") {
+    const initThemeSwitchers = () => {
+      const containers = document.querySelectorAll(
+        '[data-hydration-component="theme-switcher"]',
+      );
+      containers.forEach((container) => {
+        new ThemeSwitcherClient(container as HTMLElement);
+      });
+    };
 
-    if (container) {
-      // Read configuration from data attributes
-      const themesAttr = container.getAttribute("data-themes");
-      const config: ThemeSwitcherConfig = {
-        themes: themesAttr
-          ? themesAttr.split(",").map((t) => t.trim())
-          : undefined,
-        defaultTheme: container.getAttribute("data-default-theme") || undefined,
-        storageKey: container.getAttribute("data-storage-key") || undefined,
-        className: container.getAttribute("data-class") || undefined,
-      };
-
-      new ThemeSwitcherComponent(container, config);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initThemeSwitchers);
+    } else {
+      initThemeSwitchers();
     }
-  };
-
-  // Initialize on DOM ready
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initThemeSwitcher);
-  } else {
-    initThemeSwitcher();
   }
-}
+})();
 
-// Expose ThemeSwitcherComponent globally to prevent variable name conflicts with minification
-declare global {
-  interface Window {
-    NTGThemeSwitcher: typeof ThemeSwitcherComponent;
-  }
-}
-
-if (typeof window !== "undefined") {
-  window.NTGThemeSwitcher = ThemeSwitcherComponent;
-}
+export default ThemeSwitcherClient;
