@@ -432,21 +432,23 @@ export class ComponentViewerClient {
 }
 
 // Auto-initialize all ComponentViewer instances on page load
-if (typeof document !== "undefined") {
-  const initComponentViewers = () => {
-    const containers = document.querySelectorAll(
-      '[data-hydration-component="component-viewer"]',
-    );
-    containers.forEach((container) => {
-      new ComponentViewerClient(container as HTMLElement);
-    });
-  };
+(function() {
+  if (typeof document !== "undefined") {
+    const initComponentViewers = () => {
+      const containers = document.querySelectorAll(
+        '[data-hydration-component="component-viewer"]',
+      );
+      containers.forEach((container) => {
+        new ComponentViewerClient(container as HTMLElement);
+      });
+    };
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initComponentViewers);
-  } else {
-    initComponentViewers();
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initComponentViewers);
+    } else {
+      initComponentViewers();
+    }
   }
-}
+})();
 
 export default ComponentViewerClient;
