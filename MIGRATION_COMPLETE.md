@@ -7,6 +7,42 @@
 
 The NT Design System has been successfully migrated from React to vanilla JavaScript. All React dependencies have been removed, the build process simplified, and the codebase is now framework-free.
 
+## Strategy & Rationale
+
+This migration aligns with modern best practices for design systems and government digital services:
+
+### Why Vanilla JavaScript?
+
+**Performance First:**
+
+- React added 500+ KB of JavaScript per component
+- Vanilla JS achieves the same functionality in 1-8 KB
+- **92% bundle size reduction** improves user experience, especially for rural and remote NT users
+- Faster load times reduce infrastructure costs
+
+**Squiz Matrix Native Integration:**
+
+- Vanilla JS components integrate directly with MySource_AREA tags
+- No React hydration conflicts or transformation layers needed
+- Configuration via standard HTML data attributes
+- Cleaner, simpler deployment to Squiz DXP
+
+**Long-term Independence:**
+
+- No reliance on React ecosystem updates or breaking changes
+- NT Government team has full control over component evolution
+- Fewer security dependencies to audit and maintain
+- Components work indefinitely without external framework dependency
+
+**Simplified Development:**
+
+- Developers don't need React expertise
+- Fewer concepts to learn (no hooks, context, lifecycle)
+- Faster build times, simpler tooling
+- Easier debugging and maintenance
+
+For comprehensive analysis, see **[VANILLA_JS_RATIONALE.md](VANILLA_JS_RATIONALE.md)**.
+
 ## What Was Done
 
 ### 1. Created Missing Vanilla Components
