@@ -1,12 +1,27 @@
+/**
+ * Two Column Layout Component
+ * 
+ * Responsive layout with configurable column widths.
+ * Grid styles (columns, gap) are applied inline per instance.
+ * This CSS provides base structure and responsive behavior.
+ */
+
 .nt-two-column {
   width: 100%;
 }
 
 .nt-two-column__left,
 .nt-two-column__right {
-  min-width: 0;
+  min-width: 0; /* Prevent grid overflow with long content */
 }
 
+/* Add padding when columns have background colors */
+.nt-two-column__left[style*="background"],
+.nt-two-column__right[style*="background"] {
+  padding: 1.5rem;
+}
+
+/* Mobile: Stack columns vertically */
 @media (max-width: 768px) {
   .nt-two-column {
     grid-template-columns: 1fr !important;
