@@ -417,20 +417,6 @@ export class ComponentViewerClient {
     }
   }
 
-  private displayCode(code: string): void {
-    if (this.codeDisplay) {
-      this.codeDisplay.textContent = code;
-
-      // If Prism is available and we are not typing, highlight immediately
-      if (
-        window.Prism &&
-        !this.codeDisplay.classList.contains("typing-cursor")
-      ) {
-        window.Prism.highlightElement(this.codeDisplay);
-      }
-    }
-  }
-
   private animateTyping(code: string, avgDelay = 12): void {
     if (!this.codeDisplay) return;
 

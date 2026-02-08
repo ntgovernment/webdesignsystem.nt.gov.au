@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Theme Switcher Hydration</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; }
+        h1 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>Theme Switcher Hydration Test</h1>
+    <p>Testing the exact HTML from production:</p>
+    
+    <div class="nt-theme-switcher " data-hydration-component="theme-switcher" data-hydration-props="{&quot;themes&quot;:[{&quot;name&quot;:&quot;NT.GOV.AU&quot;,&quot;url&quot;:&quot;https://ntgovernment.github.io/ntg-design-system/?path=/story/components-button--primary&quot;},{&quot;name&quot;:&quot;NTG Central&quot;,&quot;url&quot;:&quot;https://ntgovernment.github.io/ntg-design-system/?path=/story/components-button--primary&amp;globals=brand:ntgcentral&quot;}],&quot;height&quot;:&quot;150px&quot;,&quot;defaultTheme&quot;:&quot;NT.GOV.AU&quot;}" data-instance-id="ts-gvxgtus3l"></div>
+
+    <script>
+        // Debug: Check what dataset.hydrationProps gives us
+        const container = document.querySelector('[data-hydration-component="theme-switcher"]');
+        console.log('Container found:', container);
+        console.log('Raw attribute:', container.getAttribute('data-hydration-props'));
+        console.log('Dataset value:', container.dataset.hydrationProps);
+        
+        try {
+            const parsed = JSON.parse(container.dataset.hydrationProps);
+            console.log('Parsed successfully:', parsed);
+        } catch (e) {
+            console.error('Parse error:', e);
+        }
+    </script>
+</body>
+</html>
