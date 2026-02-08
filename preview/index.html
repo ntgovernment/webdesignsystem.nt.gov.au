@@ -271,6 +271,18 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Two Column Component Sample -->
+                <div class="demo-section" style="margin-bottom: 3rem;">
+                    <h2>📐 Two Column Layout Component</h2>
+                    <p style="margin-bottom: 1.5rem;">DXP Component Service - Responsive grid layout with WYSIWYG
+                        content areas</p>
+                    <div data-hydration-component="two-column"
+                        data-hydration-props='{"leftContent":"<h3 style=\"margin-top: 0; color: #1f1f5f;\">📚 Documentation</h3><ul style=\"line-height: 1.8; padding-left: 1.5rem;\"><li><a href=\"#getting-started\" style=\"color: #0066cc;\">Getting Started</a></li><li><a href=\"#components\" style=\"color: #0066cc;\">Components</a></li><li><a href=\"#design-tokens\" style=\"color: #0066cc;\">Design Tokens</a></li><li><a href=\"#deployment\" style=\"color: #0066cc;\">Deployment Guide</a></li></ul>","rightContent":"<h3 style=\"margin-top: 0; color: #1f1f5f;\">🎯 Features</h3><p style=\"line-height: 1.6; margin-bottom: 1rem;\">This two-column layout component is built for Squiz DXP Component Service with:</p><ul style=\"line-height: 1.8; padding-left: 1.5rem;\"><li><strong>WYSIWYG editors</strong> for left and right content</li><li><strong>Responsive design</strong> - stacks on mobile (≤768px)</li><li><strong>Configurable widths</strong> using CSS grid values</li><li><strong>Optional backgrounds</strong> per column</li><li><strong>Server-rendered</strong> - no client JS required</li></ul>","leftWidth":"1fr","rightWidth":"2fr","gap":"2rem","leftBackground":"#f5f5f7","rightBackground":"#ffffff"}'>
+                    </div>
+                </div>
+            </div>
+
             <!-- Component viewer preview (auto-hydrates via ComponentViewerClient) -->
             <div data-hydration-component="component-viewer"
                 data-hydration-props='{"storybookUrl":"https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story","codeExample":"<button class=\"ntgds-btn ntgds-btn--primary\">Label</button>","height":"260px","showCodeByDefault":false,"enableCopy":true,"enableZoom":true}'>
@@ -362,6 +374,34 @@
     <script type="module" src="/src/components/Header/Header.vanilla.ts"></script>
     <script type="module" src="/src/components/LeftNav/LeftNav.vanilla.ts"></script>
     <script type="module" src="/src/components/ComponentViewer/ComponentViewer.vanilla.ts"></script>
+
+    <!-- Two Column Component Hydration -->
+    <script type="module">
+        // Client-side hydration for two-column components
+        import twoColumnComponent from '/deploy/dxp-components/two-column/main.js';
+
+        // Find all two-column hydration containers
+        const twoColumnContainers = document.querySelectorAll('[data-hydration-component="two-column"]');
+
+        twoColumnContainers.forEach(async (container) => {
+            try {
+                // Parse the configuration from data attribute
+                const props = JSON.parse(container.getAttribute('data-hydration-props') || '{}');
+
+                // Render the component
+                const html = await twoColumnComponent.render(props);
+
+                // Insert rendered HTML inside the hydration container
+                // keep the data-hydration attributes present for inspection
+                container.innerHTML = html;
+
+                console.log('✓ Two-column component hydrated');
+            } catch (error) {
+                console.error('Error hydrating two-column component:', error);
+                container.innerHTML = '<p style="color: #c33826;">Error loading two-column component.</p>';
+            }
+        });
+    </script>
 </body>
 
 </html>
