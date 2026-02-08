@@ -1,8 +1,9 @@
 {
-  "deployedAt": "2026-02-07T11:53:28.821Z",
+  "deployedAt": "2026-02-08T01:28:17.591Z",
   "nesters": {
-    "count": 6,
+    "count": 7,
     "files": [
+      "component-viewer.html",
       "footer-js.html",
       "footer.html",
       "head.html",
@@ -12,8 +13,9 @@
     ]
   },
   "squizComponents": {
-    "count": 3,
+    "count": 4,
     "files": [
+      "component-viewer-client.js",
       "header.js",
       "left-nav.js",
       "theme-switcher.js"

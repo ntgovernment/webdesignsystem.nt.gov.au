@@ -149,6 +149,14 @@ if (fs.existsSync(distSquizDir)) {
   );
 }
 
+// Copy DXP Component Service structure (if exists)
+const dxpComponentsSourceDir = path.join(rootDir, "deploy", "dxp-components");
+if (fs.existsSync(dxpComponentsSourceDir)) {
+  const deployDxpDir = path.join(deployPath, "dxp-components");
+  copyDirRecursive(dxpComponentsSourceDir, deployDxpDir);
+  console.log(`✓ Copied DXP Component Services`);
+}
+
 // Copy compiled viewer assets (if building full viewer)
 if (fs.existsSync(distDir)) {
   const viewerFiles = fs.readdirSync(distDir);

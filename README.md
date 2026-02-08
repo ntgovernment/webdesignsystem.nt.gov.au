@@ -68,7 +68,7 @@ deploy/
 A responsive two-column layout that automatically stacks on mobile devices.
 
 ```tsx
-import { TwoColumn } from "nt-design-system";
+import { TwoColumn } from "web-design-system";
 
 <TwoColumn
   leftContent={<div>Left content</div>}
@@ -93,12 +93,12 @@ import { TwoColumn } from "nt-design-system";
 A component that allows users to switch between light and dark themes with localStorage persistence.
 
 ```tsx
-import { ThemeSwitcher } from "nt-design-system";
+import { ThemeSwitcher } from "web-design-system";
 
 <ThemeSwitcher
   themes={["light", "dark"]}
   defaultTheme="light"
-  storageKey="nt-design-system-theme"
+  storageKey="web-design-system-theme"
 />;
 ```
 
@@ -116,7 +116,7 @@ A responsive left navigation sidebar with 2-level collapsible menu. Features aut
 **React Usage:**
 
 ```tsx
-import { LeftNav, type NavItem } from 'nt-design-system'
+import { LeftNav, type NavItem } from 'web-design-system'
 
 const navItems: NavItem[] = [
   {
@@ -205,7 +205,7 @@ const navItems: NavItem[] = [
 A comprehensive viewer application for browsing and testing all design system components.
 
 ```tsx
-import { ComponentViewer } from "nt-design-system";
+import { ComponentViewer } from "web-design-system";
 
 <ComponentViewer />;
 ```

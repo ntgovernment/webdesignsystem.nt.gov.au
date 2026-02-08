@@ -24,7 +24,7 @@ const getInitialTheme = (storageKey: string, themes: string[], defaultTheme: str
 export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   themes = ['light', 'dark'],
   defaultTheme = 'light',
-  storageKey = 'nt-design-system-theme',
+  storageKey = 'web-design-system-theme',
   className = '',
 }) => {
   const [currentTheme, setCurrentTheme] = useState<string>(() => 

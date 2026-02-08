@@ -219,7 +219,7 @@ function App() {
                 borderRadius: "4px",
               }}
             >
-              {`npm install nt-design-system`}
+              {`npm install web-design-system`}
             </pre>
           </div>
         );

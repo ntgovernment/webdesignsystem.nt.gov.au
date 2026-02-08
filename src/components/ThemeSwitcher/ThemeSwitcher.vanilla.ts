@@ -21,7 +21,7 @@ export class ThemeSwitcherComponent {
     this.config = {
       themes: config.themes || ["light", "dark"],
       defaultTheme: config.defaultTheme || "light",
-      storageKey: config.storageKey || "nt-design-system-theme",
+      storageKey: config.storageKey || "web-design-system-theme",
       className: config.className || "",
     };
 

@@ -1,0 +1,29 @@
+{
+  "basic": {
+    "storybookUrl": "/iframe.html",
+    "storyId": "components-button--primary",
+    "height": "200px"
+  },
+  "withCode": {
+    "storybookUrl": "/iframe.html",
+    "storyId": "components-header--default",
+    "height": "300px",
+    "showCodeByDefault": true,
+    "codeExample": "<header class=\"nt-header\">\n  <h1>Example Header</h1>\n</header>"
+  },
+  "customZoom": {
+    "storybookUrl": "/iframe.html",
+    "storyId": "components-card--default",
+    "height": "400px",
+    "initialZoom": 1.5,
+    "enableCopy": true,
+    "enableZoom": true
+  },
+  "minimal": {
+    "storybookUrl": "/iframe.html",
+    "storyId": "components-button--secondary",
+    "height": "150px",
+    "enableCopy": false,
+    "enableZoom": false
+  }
+}

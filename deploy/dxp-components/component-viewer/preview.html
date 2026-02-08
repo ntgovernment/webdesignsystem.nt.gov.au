@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComponentViewer Preview - DXP Component Service</title>
+
+    <!-- Design System Styles -->
+    <link rel="stylesheet" href="../../ntg-design-system.css">
+
+    <!-- Prism.js Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism-okaidia.min.css">
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/9bf658a5c7.js" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .intro {
+            color: #666;
+            margin-bottom: 3rem;
+        }
+
+        .preview-section {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-section h2 {
+            margin-top: 0;
+            color: #444;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 0.5rem;
+        }
+
+        .preview-section h3 {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: normal;
+            margin: 0.5rem 0 1rem 0;
+        }
+
+        .note {
+            background: #fffbea;
+            border-left: 4px solid #f5c330;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .note strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ComponentViewer - DXP Component Preview</h1>
+    <p class="intro">Testing the ComponentViewer DXP Component Service with different configurations.</p>
+
+    <div class="note">
+        <strong>⚠️ Note:</strong>
+        This preview requires a local server to load ES modules. The Storybook URLs point to
+        <code>/storybook/iframe.html</code>
+        which may not be available. Update the <code>storybookUrl</code> in <code>example.data.json</code> to match your
+        setup.
+    </div>
+
+    <!-- Basic Example -->
+    <div class="preview-section">
+        <h2>1. Basic Example</h2>
+        <h3>Default component with all controls enabled</h3>
+        <div id="preview-basic"></div>
+    </div>
+
+    <!-- With Code Visible -->
+    <div class="preview-section">
+        <h2>2. With Code Visible by Default</h2>
+        <h3>Code panel shown on load with fallback example</h3>
+        <div id="preview-with-code"></div>
+    </div>
+
+    <!-- Custom Zoom -->
+    <div class="preview-section">
+        <h2>3. Custom Initial Zoom (1.5x)</h2>
+        <h3>Component loads zoomed in at 1.5x scale</h3>
+        <div id="preview-zoom"></div>
+    </div>
+
+    <!-- Minimal (No Controls) -->
+    <div class="preview-section">
+        <h2>4. Minimal (No Copy, No Zoom)</h2>
+        <h3>Simplified view without zoom or copy controls</h3>
+        <div id="preview-minimal"></div>
+    </div>
+
+    <!-- Load the server-side rendering function -->
+    <script type="module">
+        import render from './main.js';
+
+        // Import example data
+        const response = await fetch('./example.data.json');
+        const exampleData = await response.json();
+
+        // Render each example
+        document.getElementById('preview-basic').innerHTML = render(exampleData.basic);
+        document.getElementById('preview-with-code').innerHTML = render(exampleData.withCode);
+        document.getElementById('preview-zoom').innerHTML = render(exampleData.customZoom);
+        document.getElementById('preview-minimal').innerHTML = render(exampleData.minimal);
+
+        console.log('✓ All ComponentViewer examples rendered');
+    </script>
+
+    <!-- Global Client-Side Bundle (for interactivity) -->
+    <!-- Note: This would normally be built from ComponentViewer.vanilla.ts -->
+    <!-- For now, we'll inline a simplified version for preview -->
+    <script type="module">
+        // Check if the built bundle exists, otherwise use inline initialization
+        try {
+            const { ComponentViewerClient } = await import('../../js/component-viewer-client.js');
+            console.log('✓ Loaded component-viewer-client.js');
+        } catch (err) {
+            console.warn('⚠️ Built bundle not found. Build with: npm run build:squiz');
+            console.log('Using inline initialization for preview...');
+
+            // Simplified inline version for preview only
+            class ComponentViewerClient {
+                constructor(container) {
+                    this.container = container;
+                    this.iframe = container.querySelector('[data-iframe]');
+                    this.codeDisplay = container.querySelector('[data-code-display]');
+                    this.currentZoom = parseFloat(container.dataset.initialZoom || '1');
+                    this.isCodeVisible = container.dataset.showCode === 'true';
+                    this.extractedCode = '';
+
+                    this.setupEventListeners();
+
+                    if (this.currentZoom !== 1) {
+                        this.applyZoom();
+                    }
+
+                    // Wait for iframe to load, then extract code
+                    if (this.iframe) {
+                        this.iframe.addEventListener('load', () => {
+                            setTimeout(() => this.extractIframeContent(), 1000);
+                        });
+                    }
+
+                    // If code should be visible by default, show it
+                    if (this.isCodeVisible && !this.extractedCode) {
+                        setTimeout(() => this.extractIframeContent(), 1200);
+                    }
+                }
+
+                setupEventListeners() {
+                    const buttons = this.container.querySelectorAll('[data-action]');
+                    buttons.forEach(button => {
+                        const action = button.dataset.action;
+                        if (action === 'zoom-in') button.addEventListener('click', () => this.handleZoomIn());
+                        if (action === 'zoom-out') button.addEventListener('click', () => this.handleZoomOut());
+                        if (action === 'zoom-reset') button.addEventListener('click', () => this.handleZoomReset());
+                        if (action === 'toggle-code') button.addEventListener('click', () => this.handleToggleCode());
+                        if (action === 'copy') button.addEventListener('click', () => this.handleCopy());
+                        if (action === 'open-new-tab') button.addEventListener('click', () => this.handleOpenNewTab());
+                    });
+                }
+
+                handleZoomIn() {
+                    this.currentZoom = Math.min(this.currentZoom + 0.1, 2);
+                    this.applyZoom();
+                }
+
+                handleZoomOut() {
+                    this.currentZoom = Math.max(this.currentZoom - 0.1, 0.5);
+                    this.applyZoom();
+                }
+
+                handleZoomReset() {
+                    this.currentZoom = 1;
+                    this.applyZoom();
+                }
+
+                applyZoom() {
+                    const zoomContainer = this.container.querySelector('[data-zoom-container]');
+                    if (zoomContainer) {
+                        zoomContainer.style.transform = `scale(${this.currentZoom})`;
+                    }
+                }
+
+                handleToggleCode() {
+                    this.isCodeVisible = !this.isCodeVisible;
+                    const codePanel = this.container.querySelector('[data-code-panel]');
+
+                    if (codePanel) {
+                        if (this.isCodeVisible) {
+                            codePanel.classList.add('component-viewer__code--visible');
+                            // Extract code if not already done
+                            if (!this.extractedCode) {
+                                this.extractIframeContent();
+                            }
+                        } else {
+                            codePanel.classList.remove('component-viewer__code--visible');
+                        }
+                    }
+
+                    const toggleText = this.container.querySelector('[data-code-toggle-text]');
+                    if (toggleText) {
+                        toggleText.textContent = this.isCodeVisible ? 'Hide code' : 'See code';
+                    }
+
+                    const toggleButton = this.container.querySelector('[data-action="toggle-code"]');
+                    if (toggleButton) {
+                        toggleButton.setAttribute('aria-label', this.isCodeVisible ? 'Hide code' : 'See code');
+                    }
+                }
+
+                extractIframeContent() {
+                    try {
+                        if (!this.iframe) {
+                            this.formatCode(this.container.dataset.codeExample || '<!-- Iframe not found -->');
+                            return;
+                        }
+
+                        const iframeDoc = this.iframe.contentDocument || this.iframe.contentWindow?.document;
+
+                        if (!iframeDoc) {
+                            console.warn('Cannot access iframe document');
+                            this.formatCode(this.container.dataset.codeExample || '<!-- Unable to access iframe -->');
+                            return;
+                        }
+
+                        // Try multiple selectors
+                        const selectors = [
+                            '#storybook-root',
+                            '[data-story-block]',
+                            '.sb-story',
+                            '#storybook-docs',
+                            '[id*="story"]',
+                            '#root',
+                            'body'
+                        ];
+
+                        let root = null;
+                        for (const selector of selectors) {
+                            const element = iframeDoc.querySelector(selector);
+                            if (element && element.innerHTML.trim()) {
+                                root = element;
+                                break;
+                            }
+                        }
+
+                        if (root && root.innerHTML.trim()) {
+                            let extractedHTML = root.innerHTML.trim();
+
+                            // Strip outer container if it's a single div
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = extractedHTML;
+
+                            if (tempDiv.children.length === 1 && tempDiv.children[0].tagName.toLowerCase() === 'div') {
+                                extractedHTML = tempDiv.children[0].innerHTML.trim();
+                            }
+
+                            this.formatCode(extractedHTML);
+                        } else {
+                            this.formatCode(this.container.dataset.codeExample || '');
+                        }
+                    } catch (error) {
+                        console.error('Error extracting iframe content:', error);
+                        this.formatCode(this.container.dataset.codeExample || '<!-- Error extracting content -->');
+                    }
+                }
+
+                async formatCode(code) {
+                    this.extractedCode = code;
+
+                    try {
+                        // Check if Prettier is available globally
+                        if (window.prettier && window.prettierPlugins) {
+                            const formatted = await window.prettier.format(code, {
+                                parser: 'html',
+                                plugins: window.prettierPlugins.html ? [window.prettierPlugins.html] : [],
+                                printWidth: 80,
+                                tabWidth: 2,
+                                useTabs: false,
+                                htmlWhitespaceSensitivity: 'css'
+                            });
+
+                            this.displayCode(formatted);
+                        } else {
+                            // Fallback without Prettier
+                            this.displayCode(code);
+                        }
+                    } catch (error) {
+                        console.error('Failed to format code:', error);
+                        this.displayCode(code);
+                    }
+                }
+
+                displayCode(code) {
+                    if (this.codeDisplay) {
+                        this.codeDisplay.textContent = code;
+
+                        // Apply Prism syntax highlighting if available
+                        if (window.Prism) {
+                            window.Prism.highlightElement(this.codeDisplay);
+                        }
+                    }
+                }
+
+                async handleCopy() {
+                    const copyTextEl = this.container.querySelector('[data-copy-text]');
+                    const code = this.extractedCode || this.container.dataset.codeExample || '';
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        if (copyTextEl) {
+                            const originalText = copyTextEl.textContent;
+                            copyTextEl.textContent = 'Copied!';
+                            setTimeout(() => {
+                                copyTextEl.textContent = originalText;
+                            }, 2000);
+                        }
+                    } catch (err) {
+                        console.error('Copy failed:', err);
+                    }
+                }
+
+                handleOpenNewTab() {
+                    const iframe = this.container.querySelector('[data-iframe]');
+                    if (iframe) {
+                        const src = iframe.getAttribute('src');
+                        if (src) window.open(src, '_blank');
+                    }
+                }
+            }
+
+            // Initialize all instances
+            document.querySelectorAll('[data-component-viewer]').forEach(container => {
+                new ComponentViewerClient(container);
+            });
+
+            console.log('✓ Initialized ComponentViewer instances (preview mode)');
+        }
+    </script>
+
+    <!-- Prism.js -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markup.min.js"></script>
+
+    <!-- Prettier (for code formatting) -->
+    <script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/standalone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/plugins/html.js"></script>
+</body>
+
+</html>

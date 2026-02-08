@@ -1,0 +1,149 @@
+{
+  "$schema": "http://localhost:3000/schemas/v1.json#",
+  "namespace": "web-design-system",
+  "name": "component-viewer",
+  "displayName": "Component Viewer",
+  "description": "Interactive component viewer with Storybook iframe integration, code display, and zoom controls",
+  "icon": {
+    "id": "code",
+    "color": {
+      "type": "enum",
+      "value": "blue"
+    }
+  },
+  "type": "edge",
+  "version": "1.0.0",
+  "mainFunction": "render",
+  "functions": [
+    {
+      "name": "render",
+      "entry": "main.js",
+      "input": {
+        "type": "object",
+        "properties": {
+          "storybookUrl": {
+            "type": "string",
+            "title": "Storybook URL",
+            "description": "Base URL for Storybook iframe (e.g., 'https://storybook.nt.gov.au/iframe.html')"
+          },
+          "storyId": {
+            "type": "string",
+            "title": "Story ID",
+            "description": "Storybook story ID (e.g., 'components-button--primary')"
+          },
+          "codeExample": {
+            "type": "string",
+            "title": "Code Example",
+            "description": "HTML code example to display in code panel"
+          },
+          "height": {
+            "type": "string",
+            "title": "Height",
+            "description": "Iframe height (e.g., '400px', '50vh')",
+            "default": "400px"
+          },
+          "initialZoom": {
+            "type": "number",
+            "title": "Initial Zoom",
+            "description": "Initial zoom level (e.g., 1, 1.5, 0.75)",
+            "default": 1,
+            "minimum": 0.25,
+            "maximum": 3
+          },
+          "showCodeByDefault": {
+            "type": "boolean",
+            "title": "Show Code by Default",
+            "description": "Whether to show code panel on initial load",
+            "default": false
+          },
+          "enableCopy": {
+            "type": "boolean",
+            "title": "Enable Copy",
+            "description": "Enable copy to clipboard button",
+            "default": true
+          },
+          "enableZoom": {
+            "type": "boolean",
+            "title": "Enable Zoom",
+            "description": "Enable zoom controls",
+            "default": true
+          },
+          "cssClass": {
+            "type": "string",
+            "title": "CSS Class",
+            "description": "Additional CSS classes to apply to the component container"
+          }
+        },
+        "required": ["storybookUrl", "storyId"]
+      },
+      "output": {
+        "responseType": "html"
+      }
+    }
+  ],
+  "previews": {
+    "basic": {
+      "functionData": {
+        "render": {
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "storybookUrl": "/iframe.html",
+              "storyId": "components-button--primary",
+              "height": "200px"
+            }
+          }
+        }
+      }
+    },
+    "with-code": {
+      "functionData": {
+        "render": {
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "storybookUrl": "/iframe.html",
+              "storyId": "components-header--default",
+              "height": "300px",
+              "showCodeByDefault": true,
+              "codeExample": "<header class=\"nt-header\">\n  <h1>Example Header</h1>\n</header>"
+            }
+          }
+        }
+      }
+    },
+    "custom-zoom": {
+      "functionData": {
+        "render": {
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "storybookUrl": "/iframe.html",
+              "storyId": "components-card--default",
+              "height": "400px",
+              "initialZoom": 1.5,
+              "enableCopy": true,
+              "enableZoom": true
+            }
+          }
+        }
+      }
+    },
+    "minimal": {
+      "functionData": {
+        "render": {
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "storybookUrl": "/iframe.html",
+              "storyId": "components-button--secondary",
+              "height": "150px",
+              "enableCopy": false,
+              "enableZoom": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

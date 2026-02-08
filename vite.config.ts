@@ -31,6 +31,10 @@ export default defineConfig(({ mode }) => {
                 __dirname,
                 "src/components/LeftNav/LeftNav.vanilla.ts",
               ),
+              "component-viewer-client": path.resolve(
+                __dirname,
+                "src/components/ComponentViewer/ComponentViewer.vanilla.ts",
+              ),
               // Global stylesheet
               "ntg-design-system": path.resolve(
                 __dirname,

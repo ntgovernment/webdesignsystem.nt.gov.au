@@ -439,7 +439,7 @@ The component viewer provides an interactive way to browse and test all availabl
 | -------------------- | ---------- | ------------------------ | ---------------------- |
 | `data-themes`        | CSV string | "light,dark"             | Available themes       |
 | `data-default-theme` | string     | "light"                  | Default theme          |
-| `data-storage-key`   | string     | "nt-design-system-theme" | localStorage key       |
+| `data-storage-key`   | string     | "web-design-system-theme" | localStorage key       |
 | `data-class`         | string     | ""                       | Additional CSS classes |
 
 ## File Size Reference
