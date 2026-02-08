@@ -113,17 +113,17 @@
 
     <!-- Load the server-side rendering function -->
     <script type="module">
-        import render from './main.js';
+        import component from './main.js';
 
         // Import example data
         const response = await fetch('./example.data.json');
         const exampleData = await response.json();
 
         // Render each example
-        document.getElementById('preview-basic').innerHTML = render(exampleData.basic);
-        document.getElementById('preview-with-code').innerHTML = render(exampleData.withCode);
-        document.getElementById('preview-zoom').innerHTML = render(exampleData.customZoom);
-        document.getElementById('preview-minimal').innerHTML = render(exampleData.minimal);
+        document.getElementById('preview-basic').innerHTML = await component.render(exampleData.basic);
+        document.getElementById('preview-with-code').innerHTML = await component.render(exampleData.withCode);
+        document.getElementById('preview-zoom').innerHTML = await component.render(exampleData.customZoom);
+        document.getElementById('preview-minimal').innerHTML = await component.render(exampleData.minimal);
 
         console.log('✓ All ComponentViewer examples rendered');
     </script>
@@ -351,7 +351,7 @@
             }
 
             // Initialize all instances
-            document.querySelectorAll('[data-component-viewer]').forEach(container => {
+            document.querySelectorAll('[data-hydration-component="component-viewer"]').forEach(container => {
                 new ComponentViewerClient(container);
             });
 
