@@ -8,14 +8,12 @@ import "./ComponentViewer.css";
 
 export interface ComponentViewerProps {
   storybookUrl?: string;
-  storyId?: string;
   codeExample?: string;
   height?: string;
 }
 
 export const ComponentViewer: React.FC<ComponentViewerProps> = ({
-  storybookUrl = "/storybook/iframe.html",
-  storyId = "components-button--primary",
+  storybookUrl = "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story",
   codeExample = `--example-comp: {
   class: var(--ntg-type-font-default);
   class: var(--ntg-type-size-8);
@@ -35,7 +33,7 @@ export const ComponentViewer: React.FC<ComponentViewerProps> = ({
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const codeRef = useRef<HTMLElement>(null);
 
-  const iframeSrc = `${storybookUrl}?id=${storyId}&viewMode=story`;
+  const iframeSrc = storybookUrl;
 
   // Extract iframe content for Show Code
   useEffect(() => {

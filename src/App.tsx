@@ -160,10 +160,7 @@ function App() {
             </div>
             <div style={{ marginTop: "3rem" }}>
               <h2>Component Preview</h2>
-              <ComponentViewer
-                storybookUrl="/storybook/iframe.html"
-                storyId="components-button--primary"
-              />
+              <ComponentViewer storybookUrl="https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story" />
             </div>
           </div>
         );

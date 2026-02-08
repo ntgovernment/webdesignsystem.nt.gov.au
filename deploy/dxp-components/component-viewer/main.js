@@ -7,8 +7,7 @@
 
 export function render(props) {
   const {
-    storybookUrl = "/storybook/iframe.html",
-    storyId = "components-button--primary",
+    storybookUrl = "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story",
     codeExample = "",
     height = "200px",
     initialZoom = 1.0,
@@ -20,7 +19,7 @@ export function render(props) {
 
   // Generate unique ID for this instance
   const instanceId = `cv-${Math.random().toString(36).substr(2, 9)}`;
-  const iframeSrc = `${storybookUrl}?id=${storyId}&viewMode=story`;
+  const iframeSrc = storybookUrl;
 
   // Escape HTML for data attributes
   const escapeHtml = (str) =>
@@ -37,7 +36,6 @@ export function render(props) {
   data-component-viewer
   data-instance-id="${instanceId}"
   data-storybook-url="${escapeHtml(storybookUrl)}"
-  data-story-id="${escapeHtml(storyId)}"
   data-code-example="${escapeHtml(codeExample)}"
   data-initial-zoom="${initialZoom}"
   data-show-code="${showCodeByDefault}"

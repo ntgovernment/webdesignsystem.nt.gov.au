@@ -1,47 +1,51 @@
-import React, { useEffect, useState } from 'react'
-import './ThemeSwitcher.css'
+import React, { useEffect, useState } from "react";
+import "./ThemeSwitcher.css";
 
 export interface ThemeSwitcherProps {
-  themes?: string[]
-  defaultTheme?: string
-  storageKey?: string
-  className?: string
+  themes?: string[];
+  defaultTheme?: string;
+  storageKey?: string;
+  className?: string;
 }
 
 // SSR-safe function to get initial theme
-const getInitialTheme = (storageKey: string, themes: string[], defaultTheme: string): string => {
-  if (typeof window === 'undefined') {
-    return defaultTheme
+const getInitialTheme = (
+  storageKey: string,
+  themes: string[],
+  defaultTheme: string,
+): string => {
+  if (typeof window === "undefined") {
+    return defaultTheme;
   }
-  
-  const savedTheme = localStorage.getItem(storageKey)
+
+  const savedTheme = localStorage.getItem(storageKey);
   if (savedTheme && themes.includes(savedTheme)) {
-    return savedTheme
+    return savedTheme;
   }
-  return defaultTheme
-}
+  return defaultTheme;
+};
 
 export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
-  themes = ['light', 'dark'],
-  defaultTheme = 'light',
-  storageKey = 'web-design-system-theme',
-  className = '',
+  themes = ["light", "dark"],
+  defaultTheme = "light",
+  storageKey = "web-design-system-theme",
+  className = "",
 }) => {
-  const [currentTheme, setCurrentTheme] = useState<string>(() => 
-    getInitialTheme(storageKey, themes, defaultTheme)
-  )
+  const [currentTheme, setCurrentTheme] = useState<string>(() =>
+    getInitialTheme(storageKey, themes, defaultTheme),
+  );
 
   useEffect(() => {
     // Apply theme to document
-    document.documentElement.setAttribute('data-theme', currentTheme)
-  }, [currentTheme])
+    document.documentElement.setAttribute("data-theme", currentTheme);
+  }, [currentTheme]);
 
   const handleThemeChange = (theme: string) => {
-    setCurrentTheme(theme)
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(storageKey, theme)
+    setCurrentTheme(theme);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(storageKey, theme);
     }
-  }
+  };
 
   return (
     <div className={`nt-theme-switcher ${className}`}>
@@ -61,7 +65,7 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
         ))}
       </select>
     </div>
-  )
-}
+  );
+};
 
-export default ThemeSwitcher
+export default ThemeSwitcher;

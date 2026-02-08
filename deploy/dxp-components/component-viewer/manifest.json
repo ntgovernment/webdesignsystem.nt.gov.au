@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "mainFunction": "render",
   "functions": [
     {
@@ -24,12 +24,7 @@
           "storybookUrl": {
             "type": "string",
             "title": "Storybook URL",
-            "description": "Base URL for Storybook iframe (e.g., 'https://storybook.nt.gov.au/iframe.html')"
-          },
-          "storyId": {
-            "type": "string",
-            "title": "Story ID",
-            "description": "Storybook story ID (e.g., 'components-button--primary')"
+            "description": "Full Storybook iframe URL including story ID and parameters (e.g., 'https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story')"
           },
           "codeExample": {
             "type": "string",
@@ -74,7 +69,7 @@
             "description": "Additional CSS classes to apply to the component container"
           }
         },
-        "required": ["storybookUrl", "storyId"]
+        "required": ["storybookUrl"]
       },
       "output": {
         "responseType": "html"
@@ -88,8 +83,7 @@
           "inputData": {
             "type": "inline",
             "value": {
-              "storybookUrl": "/iframe.html",
-              "storyId": "components-button--primary",
+              "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story",
               "height": "200px"
             }
           }
@@ -102,8 +96,7 @@
           "inputData": {
             "type": "inline",
             "value": {
-              "storybookUrl": "/iframe.html",
-              "storyId": "components-header--default",
+              "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-header--default&viewMode=story",
               "height": "300px",
               "showCodeByDefault": true,
               "codeExample": "<header class=\"nt-header\">\n  <h1>Example Header</h1>\n</header>"
@@ -118,8 +111,7 @@
           "inputData": {
             "type": "inline",
             "value": {
-              "storybookUrl": "/iframe.html",
-              "storyId": "components-card--default",
+              "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-card--default&viewMode=story",
               "height": "400px",
               "initialZoom": 1.5,
               "enableCopy": true,
@@ -135,8 +127,7 @@
           "inputData": {
             "type": "inline",
             "value": {
-              "storybookUrl": "/iframe.html",
-              "storyId": "components-button--secondary",
+              "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--secondary&viewMode=story",
               "height": "150px",
               "enableCopy": false,
               "enableZoom": false

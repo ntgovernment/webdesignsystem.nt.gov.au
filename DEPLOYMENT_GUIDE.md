@@ -435,12 +435,12 @@ The component viewer provides an interactive way to browse and test all availabl
 
 #### Theme Switcher Data Attributes
 
-| Attribute            | Type       | Default                  | Description            |
-| -------------------- | ---------- | ------------------------ | ---------------------- |
-| `data-themes`        | CSV string | "light,dark"             | Available themes       |
-| `data-default-theme` | string     | "light"                  | Default theme          |
+| Attribute            | Type       | Default                   | Description            |
+| -------------------- | ---------- | ------------------------- | ---------------------- |
+| `data-themes`        | CSV string | "light,dark"              | Available themes       |
+| `data-default-theme` | string     | "light"                   | Default theme          |
 | `data-storage-key`   | string     | "web-design-system-theme" | localStorage key       |
-| `data-class`         | string     | ""                       | Additional CSS classes |
+| `data-class`         | string     | ""                        | Additional CSS classes |
 
 ## File Size Reference
 

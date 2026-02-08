@@ -1,27 +1,23 @@
 {
   "basic": {
-    "storybookUrl": "/iframe.html",
-    "storyId": "components-button--primary",
+    "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story",
     "height": "200px"
   },
   "withCode": {
-    "storybookUrl": "/iframe.html",
-    "storyId": "components-header--default",
+    "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-header--default&viewMode=story",
     "height": "300px",
     "showCodeByDefault": true,
     "codeExample": "<header class=\"nt-header\">\n  <h1>Example Header</h1>\n</header>"
   },
   "customZoom": {
-    "storybookUrl": "/iframe.html",
-    "storyId": "components-card--default",
+    "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-card--default&viewMode=story",
     "height": "400px",
     "initialZoom": 1.5,
     "enableCopy": true,
     "enableZoom": true
   },
   "minimal": {
-    "storybookUrl": "/iframe.html",
-    "storyId": "components-button--secondary",
+    "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--secondary&viewMode=story",
     "height": "150px",
     "enableCopy": false,
     "enableZoom": false
