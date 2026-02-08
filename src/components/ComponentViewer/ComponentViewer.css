@@ -163,6 +163,9 @@
 
 .component-viewer__code-content code {
   font-family: inherit;
+  padding: 0;
+  margin: 0;
+  display: block;
 }
 
 /* Typing cursor animation */

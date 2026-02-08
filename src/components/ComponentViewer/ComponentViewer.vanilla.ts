@@ -172,9 +172,7 @@ export class ComponentViewerClient {
 
       <!-- Code Display Section -->
       <div class="component-viewer__code ${showCodeByDefault ? "component-viewer__code--visible" : ""}" data-code-panel>
-        <pre class="component-viewer__code-content">
-          <code class="language-html" data-code-display></code>
-        </pre>
+        <pre class="component-viewer__code-content"><code class="language-html" data-code-display></code></pre>
       </div>
 
       <!-- Action Buttons -->
@@ -381,13 +379,51 @@ export class ComponentViewerClient {
     }
   }
 
+  /**
+   * Remove common leading indentation from code
+   * Fixes issue where first line has invisible indent from extracted HTML
+   */
+  private dedentCode(code: string): string {
+    if (!code || !code.trim()) return code;
+
+    const lines = code.split("\n");
+
+    // Find minimum indentation (ignoring empty lines)
+    let minIndent = Infinity;
+    for (const line of lines) {
+      if (line.trim().length === 0) continue; // Skip empty lines
+
+      const leadingSpaces = line.match(/^[ \t]*/)?.[0].length || 0;
+      if (leadingSpaces < minIndent) {
+        minIndent = leadingSpaces;
+      }
+    }
+
+    // If no indentation found or all lines are empty, return original
+    if (minIndent === 0 || minIndent === Infinity) {
+      return code.trim();
+    }
+
+    // Remove the minimum indentation from all lines
+    const dedented = lines
+      .map((line) => {
+        if (line.trim().length === 0) return ""; // Empty lines become truly empty
+        return line.slice(minIndent);
+      })
+      .join("\n");
+
+    return dedented.trim();
+  }
+
   private async formatCode(code: string): Promise<void> {
-    this.extractedCode = code;
+    // Remove common leading indentation from all lines
+    const dedentedCode = this.dedentCode(code);
+    this.extractedCode = dedentedCode;
 
     try {
       // Check if Prettier is available globally
       if (window.prettier && window.prettierPlugins) {
-        const formatted = await window.prettier.format(code, {
+        const formatted = await window.prettier.format(dedentedCode, {
           parser: "html",
           plugins: window.prettierPlugins.html
             ? [window.prettierPlugins.html]
@@ -401,11 +437,11 @@ export class ComponentViewerClient {
         this.extractedCode = formatted;
       } else {
         // Fallback without Prettier
-        this.extractedCode = code;
+        this.extractedCode = dedentedCode;
       }
     } catch (error) {
       console.error("Failed to format code:", error);
-      this.extractedCode = code;
+      this.extractedCode = dedentedCode;
     }
 
     // Only display (with typing effect) when the code panel is visible
