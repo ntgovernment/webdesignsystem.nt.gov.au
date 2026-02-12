@@ -25,8 +25,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const rootDir = path.resolve(__dirname, "..");
-const distDir = path.join(rootDir, "dist");
-const distSquizDir = path.join(rootDir, "dist", "squiz");
+const buildDir = path.join(rootDir, ".build");
 const publicSquizDir = path.join(rootDir, "public", "squiz");
 const deployPath =
   process.env.SQUIZ_DEPLOY_PATH || path.join(rootDir, "deploy");
@@ -69,7 +68,6 @@ console.log(`✨ Font Awesome Kit: ${fontAwesomeKitId}\n`);
 const deployDirs = {
   assets: path.join(deployPath, "assets"),
   nesters: path.join(deployPath, "nesters"),
-  js: path.join(deployPath, "js"),
 };
 
 Object.values(deployDirs).forEach((dir) => {
@@ -105,82 +103,45 @@ if (fs.existsSync(publicSquizDir)) {
   console.warn("⚠️  No public/squiz directory found.");
 }
 
-// Copy Squiz build outputs (vanilla JS components and global CSS)
-if (fs.existsSync(distSquizDir)) {
-  const squizFiles = fs.readdirSync(distSquizDir);
+// Copy bundled assets from .build to deploy
+if (fs.existsSync(buildDir)) {
+  const buildFiles = fs.readdirSync(buildDir);
 
-  squizFiles.forEach((file) => {
-    const srcPath = path.join(distSquizDir, file);
+  buildFiles.forEach((file) => {
+    const srcPath = path.join(buildDir, file);
     const stat = fs.statSync(srcPath);
 
     if (stat.isFile()) {
-      // Copy CSS files to root of deploy
-      if (file.endsWith(".css")) {
+      // Copy CSS and JS bundles to root of deploy
+      if (
+        file === "web-design-system.min.css" ||
+        file === "web-design-system.min.js"
+      ) {
         const destPath = path.join(deployPath, file);
         fs.copyFileSync(srcPath, destPath);
-        console.log(`✓ Copied stylesheet: ${file}`);
+        console.log(`✓ Copied bundle: ${file}`);
       }
-      // Skip the ntg-design-system.js file (it's just for CSS extraction)
-      else if (file !== "ntg-design-system.js" && file.endsWith(".js")) {
-        const destPath = path.join(deployPath, file);
-        fs.copyFileSync(srcPath, destPath);
-        console.log(`✓ Copied file: ${file}`);
-      }
-    } else if (stat.isDirectory()) {
-      // Copy js/ directory
-      if (file === "js") {
-        const destJsDir = path.join(deployPath, "js");
-        copyDirRecursive(srcPath, destJsDir);
-        console.log(`✓ Copied js/ directory`);
-      }
-      // Copy other directories (like assets, chunks, etc.)
-      else {
-        const destPath = path.join(deployPath, file);
-        copyDirRecursive(srcPath, destPath);
-        console.log(`✓ Copied directory: ${file}`);
-      }
+    } else if (stat.isDirectory() && file === "assets") {
+      // Copy assets directory if it exists
+      const destPath = path.join(deployPath, "assets");
+      copyDirRecursive(srcPath, destPath);
+      console.log(`✓ Copied assets directory`);
     }
   });
 } else {
-  console.warn("⚠️  No dist/squiz directory found. Run `npm run build` first.");
+  console.warn("⚠️  No .build directory found. Run `npm run build` first.");
 }
 
-// Copy DXP Component Service structure from src/components/*/dxp/
-const deployDxpDir = path.join(deployPath, "dxp-components");
-const dxpComponents = ["ComponentViewer", "ThemeSwitcher", "TwoColumn"];
-let dxpCopied = 0;
-
-dxpComponents.forEach((component) => {
-  const srcDxpDir = path.join(rootDir, "src", "components", component, "dxp");
-  if (fs.existsSync(srcDxpDir)) {
-    // Convert ComponentViewer -> component-viewer, ThemeSwitcher -> theme-switcher, etc.
-    const componentKebab = component
-      .replace(/([A-Z])/g, "-$1")
-      .toLowerCase()
-      .substring(1);
-    const destComponentDir = path.join(deployDxpDir, componentKebab);
-    copyDirRecursive(srcDxpDir, destComponentDir);
-    dxpCopied++;
-  }
-});
-
-// Copy shared DXP schemas
-const srcSchemasDir = path.join(rootDir, "src", "components", "dxp-schemas");
-if (fs.existsSync(srcSchemasDir)) {
-  const destSchemasDir = path.join(deployDxpDir, "schemas");
-  copyDirRecursive(srcSchemasDir, destSchemasDir);
-}
-
-if (dxpCopied > 0) {
-  console.log(`✓ Copied ${dxpCopied} DXP Component Services`);
-}
+// DXP components kept source-only in src/components (not deployed)
 
 // Create deployment manifest
 const manifest = {
   deployedAt: new Date().toISOString(),
+  bundles: {
+    css: "web-design-system.min.css",
+    js: "web-design-system.min.js",
+  },
   nesters: {},
-  components: {},
-  stylesheets: [],
 };
 
 // Add Squiz nesters to manifest
@@ -191,21 +152,6 @@ if (fs.existsSync(deployDirs.nesters)) {
     files: nesterFiles,
   };
 }
-
-// Add vanilla JS components to manifest
-if (fs.existsSync(deployDirs.js)) {
-  const jsFiles = fs.readdirSync(deployDirs.js);
-  manifest.components = {
-    count: jsFiles.length,
-    files: jsFiles,
-  };
-}
-
-// Add stylesheets to manifest
-const cssFiles = fs.existsSync(deployPath)
-  ? fs.readdirSync(deployPath).filter((f) => f.endsWith(".css"))
-  : [];
-manifest.stylesheets = cssFiles;
 
 fs.writeFileSync(
   path.join(deployPath, "manifest.json"),
@@ -222,11 +168,13 @@ console.log("1. Review the files in the deploy directory");
 console.log(
   "   - deploy/nesters/ contains HTML nesters for MySource_AREA tags",
 );
-console.log("   - deploy/js/ contains vanilla JS components");
-console.log("   - deploy/ntg-design-system.css contains global stylesheet");
+console.log(
+  "   - deploy/web-design-system.min.css contains all component styles",
+);
+console.log("   - deploy/web-design-system.min.js contains all component code");
 console.log("2. Commit and push to trigger Git File Bridge sync");
 console.log(
-  "3. Reference in your Squiz Matrix paint layouts using %globals_asset_url:ASSET_ID%",
+  "3. Reference in your Squiz Matrix paint layouts using %globals_asset_url_with_hash:ASSET_ID%",
 );
 console.log("4. See DEPLOYMENT_GUIDE.md for detailed integration instructions");
 

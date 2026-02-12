@@ -5,11 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite --open /preview/",
-    "build": "tsc -b && vite build --mode squiz && node scripts/deploy-squiz.js",
+    "build": "tsc -b && node scripts/bundle-components.js && node scripts/deploy-squiz.js",
     "lint": "eslint .",
     "preview": "vite preview --open /preview/",
-    "deploy": "node scripts/deploy-squiz.js",
-    "serve:storybook": "npx http-server C:\\Projects\\web-design-system\\storybook-static -p 8000 -o"
+    "deploy": "node scripts/deploy-squiz.js"
   },
   "dependencies": {
     "@types/prettier": "^2.7.3",

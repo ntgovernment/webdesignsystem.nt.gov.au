@@ -1,5 +1,9 @@
 {
-  "deployedAt": "2026-02-12T15:12:21.190Z",
+  "deployedAt": "2026-02-12T16:43:09.360Z",
+  "bundles": {
+    "css": "web-design-system.min.css",
+    "js": "web-design-system.min.js"
+  },
   "nesters": {
     "count": 7,
     "files": [
@@ -11,20 +15,5 @@
       "left-nav.html",
       "skip-links.html"
     ]
-  },
-  "components": {
-    "count": 4,
-    "files": [
-      "component-viewer-client.js",
-      "header.js",
-      "left-nav.js",
-      "theme-switcher.js"
-    ]
-  },
-  "stylesheets": [
-    "header.css",
-    "left-nav.css",
-    "ntg-design-system.css",
-    "theme-switcher.css"
-  ]
+  }
 }

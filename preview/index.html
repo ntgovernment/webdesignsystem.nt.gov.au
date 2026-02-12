@@ -441,18 +441,18 @@
                 alt="Homepage hero banner" />
 
             <!-- Page Banner / Hero Section -->
-            <div data-bannertype="Secondary" data-breakpoint="xl+lg+md" data-cta="true" data-popular-link="false"
+            <div data-page-banner-type="Primary" data-breakpoint="xl+lg+md" data-cta="true" data-popular-link="false"
                 data-show-breadcrumb="false" data-show-graphics="false"
-                style="width: 100%; padding: 48px 32px; background: var(--clr-bg-shade, #F5F5F7); display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+                style="width: 100%; padding: 48px 32px; background: var(--clr-bg-dark-alt, #44447A); display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
                 <div
                     style="width: 100%; max-width: 1168px; display: flex; justify-content: flex-start; align-items: flex-start; gap: 32px;">
                     <div
-                        style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 16px; padding-right: 32px; border-right: 1px solid var(--clr-border-subtle, #D3D3D7);">
+                        style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 16px; padding-right: 32px; border-right: 1px solid var(--clr-border-inverse, #FFFFFF);">
                         <div
-                            style="align-self: stretch; color: var(--clr-text-default, #1F1E27); font-size: 40px; font-family: Lato; font-weight: 700; line-height: 44px; word-wrap: break-word">
+                            style="align-self: stretch; color: var(--clr-text-inverse, #FFFFFF); font-size: 40px; font-family: Lato; font-weight: 700; line-height: 44px; word-wrap: break-word">
                             Foundations</div>
                         <div
-                            style="align-self: stretch; color: var(--clr-text-default, #1F1E27); font-size: 16px; font-family: Lato; font-weight: 400; line-height: 24px; word-wrap: break-word">
+                            style="align-self: stretch; color: var(--clr-text-inverse, #FFFFFF); font-size: 16px; font-family: Lato; font-weight: 400; line-height: 24px; word-wrap: break-word">
                             Foundations are the base elements of the design system <br />that define the core visual and
                             functional rules.</div>
                         <div style="justify-content: flex-start; align-items: center; gap: 16px; display: inline-flex">
@@ -461,11 +461,11 @@
                                 style="padding-top: 12px; padding-bottom: 12px; justify-content: flex-start; align-items: center; gap: 4px; display: flex">
                                 <div style="width: 20px; height: 20px; position: relative; overflow: hidden">
                                     <div
-                                        style="width: 12.08px; height: 17.50px; left: 3.96px; top: 1.46px; position: absolute; background: var(--clr-link-default, #1F1F5F)">
+                                        style="width: 12.08px; height: 17.50px; left: 3.96px; top: 1.46px; position: absolute; background: var(--clr-text-inverse, #FFFFFF)">
                                     </div>
                                 </div>
                                 <div
-                                    style="text-box-trim: trim-both; text-box-edge: cap alphabetic; color: var(--clr-link-default, #1F1F5F); font-size: 14px; font-family: Lato; font-weight: 700; line-height: 16px; word-wrap: break-word">
+                                    style="text-box-trim: trim-both; text-box-edge: cap alphabetic; color: var(--clr-text-inverse, #FFFFFF); font-size: 14px; font-family: Lato; font-weight: 700; line-height: 16px; word-wrap: break-word">
                                     Figma</div>
                             </div>
                             <div data-left-icon="true" data-right-icon="false" data-size="Large (default)"
@@ -473,11 +473,11 @@
                                 style="padding-top: 12px; padding-bottom: 12px; justify-content: flex-start; align-items: center; gap: 4px; display: flex">
                                 <div style="width: 20px; height: 20px; position: relative; overflow: hidden">
                                     <div
-                                        style="width: 11.67px; height: 15px; left: 4.17px; top: 2.50px; position: absolute; outline: 1px var(--clr-border-strong-01, #1F1F5F) solid; outline-offset: -0.50px">
+                                        style="width: 11.67px; height: 15px; left: 4.17px; top: 2.50px; position: absolute; outline: 1px var(--clr-text-inverse, #FFFFFF) solid; outline-offset: -0.50px">
                                     </div>
                                 </div>
                                 <div
-                                    style="text-box-trim: trim-both; text-box-edge: cap alphabetic; color: var(--clr-link-default, #1F1F5F); font-size: 14px; font-family: Lato; font-weight: 700; line-height: 16px; word-wrap: break-word">
+                                    style="text-box-trim: trim-both; text-box-edge: cap alphabetic; color: var(--clr-text-inverse, #FFFFFF); font-size: 14px; font-family: Lato; font-weight: 700; line-height: 16px; word-wrap: break-word">
                                     Storybook</div>
                             </div>
                         </div>
@@ -603,7 +603,7 @@
     <!-- Two Column Component Hydration -->
     <script type="module">
         // Client-side hydration for two-column components
-        import twoColumnComponent from '/deploy/dxp-components/two-column/main.js';
+        import twoColumnComponent from '/src/components/TwoColumn/dxp/main.js';
 
         // Find all two-column hydration containers
         const twoColumnContainers = document.querySelectorAll('[data-hydration-component="two-column"]');

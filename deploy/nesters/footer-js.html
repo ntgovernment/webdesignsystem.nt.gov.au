@@ -5,9 +5,12 @@
   JavaScript component loading for NT Design System.
   Place this at the end of the body for optimal page load performance.
   
-  COMPONENTS LOADED:
+  COMPONENTS LOADED (unified bundle):
   1. Header component (vanilla JS)
-  2. Theme Switcher component (vanilla JS)
+  2. Left Navigation component (vanilla JS)
+  3. Theme Switcher component (vanilla JS)
+  4. Component Viewer component (vanilla JS)
+  5. Page Banner component (vanilla JS)
   
   SQUIZ MATRIX USAGE:
   Asset URLs use %globals_asset_url_with_hash: for automatic cache-busting.
@@ -16,17 +19,8 @@
   NOTE: Scripts use 'defer' for optimal loading performance
 -->
 
-<!-- Header Component Script -->
-<script src="%globals_asset_url_with_hash:1590990:deploy/js/header.js%" defer></script>
-
-<!-- Theme Switcher Component Script -->
-<script src="%globals_asset_url_with_hash:1590990:deploy/js/theme-switcher.js%" defer></script>
-
-<!-- Two Column Layout Component (if needed) -->
-<!-- <script src="%globals_asset_url_with_hash:1590990:deploy/js/two-column.js%" defer></script> -->
-
-<!-- ComponentViewer Client Script (for documentation sites) -->
-<script src="%globals_asset_url_with_hash:1590990:deploy/js/component-viewer-client.js%" defer></script>
+<!-- Unified NT Design System Bundle -->
+<script src="%globals_asset_url_with_hash:1590990:deploy/web-design-system.min.js%" defer></script>
 
 <!-- Prism.js for ComponentViewer syntax highlighting -->
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js" defer></script>
