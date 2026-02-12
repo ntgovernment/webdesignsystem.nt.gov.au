@@ -145,12 +145,34 @@ if (fs.existsSync(distSquizDir)) {
   console.warn("⚠️  No dist/squiz directory found. Run `npm run build` first.");
 }
 
-// Copy DXP Component Service structure (if exists)
-const dxpComponentsSourceDir = path.join(rootDir, "deploy", "dxp-components");
-if (fs.existsSync(dxpComponentsSourceDir)) {
-  const deployDxpDir = path.join(deployPath, "dxp-components");
-  copyDirRecursive(dxpComponentsSourceDir, deployDxpDir);
-  console.log(`✓ Copied DXP Component Services`);
+// Copy DXP Component Service structure from src/components/*/dxp/
+const deployDxpDir = path.join(deployPath, "dxp-components");
+const dxpComponents = ["ComponentViewer", "ThemeSwitcher", "TwoColumn"];
+let dxpCopied = 0;
+
+dxpComponents.forEach((component) => {
+  const srcDxpDir = path.join(rootDir, "src", "components", component, "dxp");
+  if (fs.existsSync(srcDxpDir)) {
+    // Convert ComponentViewer -> component-viewer, ThemeSwitcher -> theme-switcher, etc.
+    const componentKebab = component
+      .replace(/([A-Z])/g, "-$1")
+      .toLowerCase()
+      .substring(1);
+    const destComponentDir = path.join(deployDxpDir, componentKebab);
+    copyDirRecursive(srcDxpDir, destComponentDir);
+    dxpCopied++;
+  }
+});
+
+// Copy shared DXP schemas
+const srcSchemasDir = path.join(rootDir, "src", "components", "dxp-schemas");
+if (fs.existsSync(srcSchemasDir)) {
+  const destSchemasDir = path.join(deployDxpDir, "schemas");
+  copyDirRecursive(srcSchemasDir, destSchemasDir);
+}
+
+if (dxpCopied > 0) {
+  console.log(`✓ Copied ${dxpCopied} DXP Component Services`);
 }
 
 // Create deployment manifest

@@ -51,13 +51,14 @@
 
         .main-content {
             flex: 1;
-            padding: 2rem;
+            padding: 0;
             overflow-y: auto;
         }
 
         .content-wrapper {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 2rem;
         }
 
         /* Content styles */
@@ -144,13 +145,177 @@
         }
 
         @media (max-width: 768px) {
-            .main-content {
+            .content-wrapper {
                 padding: 1rem;
             }
 
             .theme-switcher-container {
                 top: 0.5rem;
                 right: 0.5rem;
+            }
+        }
+
+        /* Footer Root */
+        .nt-footer {
+            width: 100%;
+            border-top: 1px solid var(--clr-border-subtle, #D3D3D7);
+            display: flex;
+            flex-direction: column;
+            font-family: var(--font-family-primary, "Lato", system-ui, sans-serif);
+        }
+
+        /* Top Section: Logo and Links */
+        .nt-footer__top {
+            background: var(--clr-bg-shade, #F5F5F7);
+            padding: 24px 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nt-footer__inner {
+            width: 100%;
+            max-width: 1168px;
+        }
+
+        .nt-footer__content {
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Logo Styling */
+        .nt-footer__logo-container {
+            display: flex;
+        }
+
+        .nt-footer__logo {
+            height: 63.39px;
+            width: 176px;
+        }
+
+        /* Footer Links Navigation */
+        .nt-footer__nav {
+            align-self: stretch;
+        }
+
+        .nt-footer__links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px;
+            row-gap: 12px;
+        }
+
+        .nt-footer__link-item {
+            display: inline;
+        }
+
+        .nt-footer__link {
+            color: var(--clr-text-default, #1F1E27);
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            text-decoration: none;
+            transition: text-decoration 0.2s ease;
+        }
+
+        .nt-footer__link:hover {
+            text-decoration: underline;
+        }
+
+        .nt-footer__link:focus-visible {
+            outline: 2px solid var(--clr-link-default, #1f1f5f);
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+
+        .nt-footer__separator {
+            color: var(--clr-text-muted, #666774);
+            font-size: 16px;
+            line-height: 24px;
+            user-select: none;
+        }
+
+        /* Bottom Section: Acknowledgement */
+        .nt-footer__bottom {
+            background: var(--clr-bg-shade-alt, #E7E7EA);
+            border-top: 0.5px solid var(--clr-border-inverse, white);
+            padding: 24px 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nt-footer__acknowledgement {
+            margin-bottom: 24px;
+        }
+
+        .nt-footer__acknowledgement-text {
+            color: var(--clr-text-default, #1F1E27);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            margin: 0;
+        }
+
+        .nt-footer__copyright {
+            color: var(--clr-text-default, #1F1E27);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nt-footer__top {
+                padding: 16px;
+            }
+
+            .nt-footer__content {
+                padding: 16px 0;
+                gap: 20px;
+            }
+
+            .nt-footer__logo {
+                height: 50px;
+                width: auto;
+            }
+
+            .nt-footer__links {
+                gap: 12px;
+                row-gap: 8px;
+            }
+
+            .nt-footer__link {
+                font-size: 14px;
+                line-height: 20px;
+            }
+
+            .nt-footer__separator {
+                font-size: 14px;
+                line-height: 20px;
+            }
+
+            .nt-footer__bottom {
+                padding: 16px;
+            }
+
+            .nt-footer__acknowledgement {
+                margin-bottom: 16px;
+            }
+
+            .nt-footer__acknowledgement-text {
+                font-size: 13px;
+                line-height: 18px;
+            }
+
+            .nt-footer__copyright {
+                font-size: 13px;
+                line-height: 18px;
             }
         }
     </style>
@@ -271,6 +436,55 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
+            <!-- Optional Homepage Hero Image -->
+            <img style="width: 100%; height: auto; display: block;" src="https://placehold.co/1142x191"
+                alt="Homepage hero banner" />
+
+            <!-- Page Banner / Hero Section -->
+            <div data-bannertype="Secondary" data-breakpoint="xl+lg+md" data-cta="true" data-popular-link="false"
+                data-show-breadcrumb="false" data-show-graphics="false"
+                style="width: 100%; padding: 48px 32px; background: var(--clr-bg-shade, #F5F5F7); display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+                <div
+                    style="width: 100%; max-width: 1168px; display: flex; justify-content: flex-start; align-items: flex-start; gap: 32px;">
+                    <div
+                        style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 16px; padding-right: 32px; border-right: 1px solid var(--clr-border-subtle, #D3D3D7);">
+                        <div
+                            style="align-self: stretch; color: var(--clr-text-default, #1F1E27); font-size: 40px; font-family: Lato; font-weight: 700; line-height: 44px; word-wrap: break-word">
+                            Foundations</div>
+                        <div
+                            style="align-self: stretch; color: var(--clr-text-default, #1F1E27); font-size: 16px; font-family: Lato; font-weight: 400; line-height: 24px; word-wrap: break-word">
+                            Foundations are the base elements of the design system <br />that define the core visual and
+                            functional rules.</div>
+                        <div style="justify-content: flex-start; align-items: center; gap: 16px; display: inline-flex">
+                            <div data-left-icon="true" data-right-icon="false" data-size="Large (default)"
+                                data-state="Default" data-type="Tertiary"
+                                style="padding-top: 12px; padding-bottom: 12px; justify-content: flex-start; align-items: center; gap: 4px; display: flex">
+                                <div style="width: 20px; height: 20px; position: relative; overflow: hidden">
+                                    <div
+                                        style="width: 12.08px; height: 17.50px; left: 3.96px; top: 1.46px; position: absolute; background: var(--clr-link-default, #1F1F5F)">
+                                    </div>
+                                </div>
+                                <div
+                                    style="text-box-trim: trim-both; text-box-edge: cap alphabetic; color: var(--clr-link-default, #1F1F5F); font-size: 14px; font-family: Lato; font-weight: 700; line-height: 16px; word-wrap: break-word">
+                                    Figma</div>
+                            </div>
+                            <div data-left-icon="true" data-right-icon="false" data-size="Large (default)"
+                                data-state="Default" data-type="Tertiary"
+                                style="padding-top: 12px; padding-bottom: 12px; justify-content: flex-start; align-items: center; gap: 4px; display: flex">
+                                <div style="width: 20px; height: 20px; position: relative; overflow: hidden">
+                                    <div
+                                        style="width: 11.67px; height: 15px; left: 4.17px; top: 2.50px; position: absolute; outline: 1px var(--clr-border-strong-01, #1F1F5F) solid; outline-offset: -0.50px">
+                                    </div>
+                                </div>
+                                <div
+                                    style="text-box-trim: trim-both; text-box-edge: cap alphabetic; color: var(--clr-link-default, #1F1F5F); font-size: 14px; font-family: Lato; font-weight: 700; line-height: 16px; word-wrap: break-word">
+                                    Storybook</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="content-wrapper">
                 <!-- Theme Switcher Component Sample -->
                 <div class="demo-section" style="margin-bottom: 3rem;">
@@ -414,5 +628,76 @@
         });
     </script>
 </body>
+
+<!-- Footer Component -->
+<footer id="footer" class="nt-footer">
+    <!-- Top Section: Logo and Links -->
+    <div class="nt-footer__top">
+        <div class="nt-footer__inner">
+            <div class="nt-footer__content">
+                <!-- NT Government Logo -->
+                <div class="nt-footer__logo-container">
+                    <img src="https://nt.gov.au/_design/latest/images/ntg-primary.svg"
+                        alt="Northern Territory Government" class="nt-footer__logo">
+                </div>
+
+                <!-- Footer Links Navigation -->
+                <nav class="nt-footer__nav" aria-label="Footer links">
+                    <ul class="nt-footer__links">
+                        <li class="nt-footer__link-item">
+                            <a href="#copyright" class="nt-footer__link">Copyright, disclaimer and privacy</a>
+                        </li>
+                        <li class="nt-footer__separator" aria-hidden="true">|</li>
+                        <li class="nt-footer__link-item">
+                            <a href="#foi" class="nt-footer__link">Freedom of information</a>
+                        </li>
+                        <li class="nt-footer__separator" aria-hidden="true">|</li>
+                        <li class="nt-footer__link-item">
+                            <a href="#interpreter" class="nt-footer__link">Interpreter services</a>
+                        </li>
+                        <li class="nt-footer__separator" aria-hidden="true">|</li>
+                        <li class="nt-footer__link-item">
+                            <a href="#accessibility" class="nt-footer__link">Accessibility</a>
+                        </li>
+                        <li class="nt-footer__separator" aria-hidden="true">|</li>
+                        <li class="nt-footer__link-item">
+                            <a href="#sitemap" class="nt-footer__link">Site map</a>
+                        </li>
+                        <li class="nt-footer__separator" aria-hidden="true">|</li>
+                        <li class="nt-footer__link-item">
+                            <a href="#contacts" class="nt-footer__link">Contacts</a>
+                        </li>
+                        <li class="nt-footer__separator" aria-hidden="true">|</li>
+                        <li class="nt-footer__link-item">
+                            <a href="#ntg-staff" class="nt-footer__link">NTG staff systems</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Section: Acknowledgement of Country -->
+    <div class="nt-footer__bottom">
+        <div class="nt-footer__inner">
+            <div class="nt-footer__acknowledgement">
+                <p class="nt-footer__acknowledgement-text">
+                    The Northern Territory Government acknowledges the Traditional Owners of the Northern Territory and
+                    recognises their continuing cultural and spiritual connections to the lands, waters and communities.
+                    We pay our respects to all Aboriginal and Torres Strait Islander people and their cultures, their
+                    Elders past and present, and to future generations.
+                </p>
+            </div>
+            <p class="nt-footer__copyright">
+                &copy; <span id="current-year"></span> Northern Territory Government of Australia
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Update copyright year dynamically
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
 
 </html>

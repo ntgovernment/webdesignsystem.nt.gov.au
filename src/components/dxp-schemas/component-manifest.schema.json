@@ -1,0 +1,471 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "component-manifest.schema.json",
+  "type": "object",
+  "title": "ComponentManifest",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "the manifest schema version"
+    },
+    "namespace": {
+      "type": "string",
+      "description": "Namespace of the component",
+      "$ref": "#/definitions/name-pattern"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the component",
+      "$ref": "#/definitions/name-pattern"
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Display name of the component"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the component"
+    },
+    "mainFunction": {
+      "type": "string",
+      "description": "Name of the main function to be executed at the root of the access url"
+    },
+    "icon": {
+      "$ref": "component-icons.schema.json"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["edge", "server"],
+      "description": "Type of component that will be deployed to different runtimes"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semver version number",
+      "minLength": 5,
+      "maxLength": 14,
+      "pattern": "^(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)$"
+    },
+    "environment": {
+      "type": "array",
+      "description": "an array of environmental variables needed to execute correctly. These variables are set through your local environment variables during testing or through the component set during production run time",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
+            "description": "Environmental variable name"
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    "staticFiles": {
+      "type": "object",
+      "properties": {
+        "locationRoot": {
+          "type": "string",
+          "description": "The location the system begins looking static files. All static files will be referenced from here."
+        }
+      },
+      "required": ["locationRoot"]
+    },
+    "functions": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "title": "ComponentFunction",
+        "description": "Component function definition, this object provides the runtime with input validation and what to execute",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "$ref": "#/definitions/name-pattern",
+            "description": "Function name, this will be used as part of the url to access this function"
+          },
+          "entry": {
+            "type": "string",
+            "description": "File path to the javascript file to execute. The file path must be relative to the manifest file and cannot be in a folder above the manifest file."
+          },
+          "input": {
+            "$ref": "component-input.schema.json"
+          },
+          "output": {
+            "oneOf": [
+              {
+                "title": "HtmlResponse",
+                "type": "object",
+                "additionalProperties": false,
+                "description": "The HtmlResponse type is for returning html content. The response out of the function must be a string. This response object also includes references to resources (staticFiles) the component needs to execute correctly. It is up to the integrating system to respect this.",
+                "properties": {
+                  "responseType": {
+                    "const": "html"
+                  },
+                  "staticFiles": {
+                    "type": "array",
+                    "description": "A list of static resources that are required for the component to execute correctly",
+                    "items": {
+                      "type": "object",
+                      "title": "HtmlStaticFile",
+                      "additionalProperties": false,
+                      "properties": {
+                        "location": {
+                          "description": "The location property is used to inform integrating system if the static resource should be included in the header of footer of the document",
+                          "oneOf": [
+                            {
+                              "const": "header"
+                            },
+                            {
+                              "const": "footer"
+                            }
+                          ]
+                        },
+                        "file": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "title": "JsFile",
+                              "additionalProperties": false,
+                              "properties": {
+                                "type": {
+                                  "const": "js"
+                                },
+                                "filepath": {
+                                  "type": "string"
+                                },
+                                "defer": {
+                                  "type": "boolean"
+                                },
+                                "async": {
+                                  "type": "boolean"
+                                },
+                                "module": {
+                                  "oneOf": [
+                                    {
+                                      "const": "module"
+                                    },
+                                    {
+                                      "const": "text/javascript"
+                                    }
+                                  ]
+                                },
+                                "integrity": {
+                                  "type": "string"
+                                },
+                                "crossorigin": {
+                                  "oneOf": [
+                                    {
+                                      "const": "anonymous"
+                                    },
+                                    {
+                                      "const": "use-credentials"
+                                    }
+                                  ]
+                                },
+                                "referrerpolicy": {
+                                  "oneOf": [
+                                    {
+                                      "const": "no-referrer"
+                                    },
+                                    {
+                                      "const": "no-referrer-when-downgrade"
+                                    },
+                                    {
+                                      "const": "origin"
+                                    },
+                                    {
+                                      "const": "origin-when-cross-origin"
+                                    },
+                                    {
+                                      "const": "same-origin"
+                                    },
+                                    {
+                                      "const": "strict-origin"
+                                    },
+                                    {
+                                      "const": "strict-origin-when-cross-origin"
+                                    },
+                                    {
+                                      "const": "unsafe-url"
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": ["filepath", "type"]
+                            },
+                            {
+                              "type": "object",
+                              "title": "CssFile",
+                              "additionalProperties": false,
+                              "properties": {
+                                "type": {
+                                  "const": "css"
+                                },
+                                "filepath": {
+                                  "type": "string"
+                                },
+                                "crossorigin": {
+                                  "oneOf": [
+                                    {
+                                      "const": "anonymous"
+                                    },
+                                    {
+                                      "const": "use-credentials"
+                                    }
+                                  ]
+                                },
+                                "referrerpolicy": {
+                                  "oneOf": [
+                                    {
+                                      "const": "no-referrer"
+                                    },
+                                    {
+                                      "const": "no-referrer-when-downgrade"
+                                    },
+                                    {
+                                      "const": "origin"
+                                    },
+                                    {
+                                      "const": "origin-when-cross-origin"
+                                    },
+                                    {
+                                      "const": "same-origin"
+                                    },
+                                    {
+                                      "const": "strict-origin"
+                                    },
+                                    {
+                                      "const": "strict-origin-when-cross-origin"
+                                    },
+                                    {
+                                      "const": "unsafe-url"
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": ["filepath"]
+                            }
+                          ]
+                        }
+                      },
+                      "required": ["location", "file"]
+                    }
+                  },
+                  "headers": {
+                    "title": "ResponseHeaders",
+                    "type": "object",
+                    "description": "Response headers to set",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": ["responseType"]
+              },
+              {
+                "title": "JsonResponse",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "responseType": {
+                    "const": "json"
+                  },
+                  "definition": {
+                    "$ref": "http://json-schema.org/draft-07/schema#"
+                  },
+                  "headers": {
+                    "title": "ResponseHeaders",
+                    "type": "object",
+                    "description": "Response headers to set",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": ["responseType", "definition"]
+              }
+            ]
+          },
+          "queryParameters": {
+            "propertyNames": {
+              "title": "Query parameter name",
+              "type": "string"
+            },
+            "additionalProperties": {
+              "title": "Query parameter value type",
+              "type": "object",
+              "properties": {
+                "required": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["required"]
+            }
+          }
+        },
+        "required": ["name", "entry", "input", "output"]
+      }
+    },
+    "previews": {
+      "type": "object",
+      "description": "A map of previews which provide configuration to preview the component in isolation",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_\\-]+$"
+      },
+      "minProperties": 1,
+      "additionalProperties": {
+        "title": "Preview Definition",
+        "type": "object",
+        "description": "Name for the preview and how it will be accessed",
+        "required": ["functionData"],
+        "properties": {
+          "functionData": {
+            "description": "A map of the functions to their respective preview information. Properties must match name of a function defined in functions list",
+            "type": "object",
+            "propertyNames": {
+              "$ref": "#/definitions/name-pattern"
+            },
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "object",
+              "title": "Function preview configuration",
+              "description": "Data inputs for the preview of functions in the component",
+              "properties": {
+                "inputData": {
+                  "type": "object",
+                  "description": "Property for defining the input data for this preview component function",
+                  "properties": {
+                    "type": {
+                      "description": "An enum of 'file' or 'inline' for how the input data is defined",
+                      "enum": ["file", "inline"]
+                    }
+                  },
+                  "required": ["type"],
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "enum": ["file"]
+                        },
+                        "path": {
+                          "type": "string",
+                          "format": "uri-reference",
+                          "description": "Path to input data file"
+                        }
+                      },
+                      "required": ["type", "path"]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "enum": ["inline"]
+                        },
+                        "value": {
+                          "type": "object",
+                          "description": "Input data value"
+                        }
+                      },
+                      "required": ["type", "value"]
+                    }
+                  ]
+                },
+                "headers": {
+                  "title": "ResponseHeaders",
+                  "type": "object",
+                  "description": "Response headers to set",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "wrapper": {
+                  "type": "object",
+                  "description": "Define the extra static files which provide a container for the component function",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "format": "uri-reference",
+                      "description": "File path to the wrapper container"
+                    }
+                  },
+                  "required": ["path"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "mockedUris": {
+      "type": "object",
+      "description": "Mocked uri objects used in the preview",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9_\\-]+:\\/\\/"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "description": "Property for defining the mock URI object",
+        "properties": {
+          "type": {
+            "description": "An enum of 'file' or 'inline' for how the uri object is defined",
+            "enum": ["file", "inline"]
+          }
+        },
+        "required": ["type"],
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": ["file"]
+              },
+              "path": {
+                "type": "string",
+                "format": "uri-reference",
+                "description": "Path to uri object"
+              }
+            },
+            "required": ["type", "path"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": ["inline"]
+              },
+              "value": {
+                "$ref": "MatrixAsset.schema.json",
+                "description": "Inline URI object"
+              }
+            },
+            "required": ["type", "value"]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "name",
+    "namespace",
+    "displayName",
+    "description",
+    "version",
+    "functions",
+    "$schema",
+    "mainFunction"
+  ],
+  "definitions": {
+    "name-pattern": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_\\-]+$"
+    }
+  }
+}

@@ -28,3 +28,6 @@ dist-ssr
 
 # Deployment directory (uncomment if you don't want to commit deploy files)
 # deploy
+
+# DXP components are generated from src/components/*/dxp/ during build
+deploy/dxp-components/
