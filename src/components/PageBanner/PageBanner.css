@@ -1,4 +1,8 @@
 /* Page Banner component styles */
+#nt-page-banner-content {
+  padding: 0;
+}
+
 .nt-page-banner {
   width: 100%;
   box-sizing: border-box;
