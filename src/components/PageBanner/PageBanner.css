@@ -5,7 +5,7 @@
   padding: 32px 24px;
   display: flex;
   justify-content: center;
-  background: var(--clr-bg-dark-alt, #44447A);
+  background: var(--clr-bg-dark-alt, #44447a);
   color: var(--clr-text-inverse, #ffffff);
 }
 
@@ -45,7 +45,7 @@
 
 .nt-page-banner__cta {
   background: transparent;
-  border: 2px solid rgba(255,255,255,0.16);
+  border: 2px solid rgba(255, 255, 255, 0.16);
   color: #fff;
   padding: 10px 14px;
   border-radius: 6px;
@@ -71,7 +71,7 @@
 
 /* Variants */
 .nt-page-banner--primary {
-  background: var(--clr-bg-dark-alt, #44447A);
+  background: var(--clr-bg-dark-alt, #44447a);
   color: var(--clr-text-inverse, #ffffff);
 }
 

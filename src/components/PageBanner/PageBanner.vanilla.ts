@@ -21,7 +21,14 @@ export class PageBanner {
   }
 
   private render(): void {
-    const { title = "", description = "", type = "Primary", image = "", figmaUrl = "", storybookUrl = "" } = this.props;
+    const {
+      title = "",
+      description = "",
+      type = "Primary",
+      image = "",
+      figmaUrl = "",
+      storybookUrl = "",
+    } = this.props;
 
     const variantClass = `nt-page-banner--${(type || "Primary").toLowerCase()}`;
 
@@ -69,18 +76,23 @@ if (typeof document !== "undefined") {
     if (container) {
       const props: PageBannerProps = {
         title: container.getAttribute("data-page-banner-title") || undefined,
-        description: container.getAttribute("data-page-banner-description") || undefined,
+        description:
+          container.getAttribute("data-page-banner-description") || undefined,
         type: container.getAttribute("data-page-banner-type") || undefined,
         image: container.getAttribute("data-page-banner-image") || undefined,
-        figmaUrl: container.getAttribute("data-page-banner-figma-url") || undefined,
-        storybookUrl: container.getAttribute("data-page-banner-storybook-url") || undefined,
+        figmaUrl:
+          container.getAttribute("data-page-banner-figma-url") || undefined,
+        storybookUrl:
+          container.getAttribute("data-page-banner-storybook-url") || undefined,
       };
 
       new PageBanner(container, props);
     }
 
     // Support generic hydration attributes too
-    const nodes = document.querySelectorAll('[data-hydration-component="page-banner"]');
+    const nodes = document.querySelectorAll(
+      '[data-hydration-component="page-banner"]',
+    );
     nodes.forEach((node) => {
       const el = node as HTMLElement;
       const props: PageBannerProps = {
