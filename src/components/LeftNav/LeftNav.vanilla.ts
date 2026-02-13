@@ -21,6 +21,9 @@ export class LeftNavComponent {
   private nav: HTMLElement | null = null;
 
   constructor(container: HTMLElement, config: LeftNavConfig = {}) {
+    console.log('[LeftNav] Constructor called, container:', container);
+    console.log('[LeftNav] Container innerHTML length:', container.innerHTML.length);
+    
     this.container = container;
     this.config = {
       defaultExpanded: config.defaultExpanded || [],
@@ -28,10 +31,13 @@ export class LeftNavComponent {
     };
     this.expandedSections = new Set(this.config.defaultExpanded);
 
+    console.log('[LeftNav] About to call convertParentLinksWithChildren...');
     this.convertParentLinksWithChildren();
+    console.log('[LeftNav] About to call render...');
     this.render();
     this.attachEventListeners();
     this.expandActiveSection();
+    console.log('[LeftNav] Constructor complete');
   }
 
   private render(): void {
@@ -81,17 +87,29 @@ export class LeftNavComponent {
   private convertParentLinksWithChildren(): void {
     // Find all items that have a submenu
     const items = this.container.querySelectorAll(".nt-leftnav__item");
+    console.log('[LeftNav] convertParentLinksWithChildren - found items:', items.length);
 
-    items.forEach((item) => {
+    let processedCount = 0;
+    let skippedCount = 0;
+
+    items.forEach((item, index) => {
       const submenu = item.querySelector(".nt-leftnav__submenu");
 
       // Only process items that have a submenu
       if (submenu) {
+        console.log(`[LeftNav] Item ${index} has submenu, looking for direct link...`);
+        
         const link = item.querySelector(
           ":scope > .nt-leftnav__link",
         ) as HTMLAnchorElement;
 
-        if (!link) return;
+        if (!link) {
+          console.log(`[LeftNav] Item ${index} - NO DIRECT LINK FOUND, skipping`);
+          skippedCount++;
+          return;
+        }
+
+        console.log(`[LeftNav] Item ${index} - Creating wrapper for:`, link.textContent?.trim());
 
         // Get submenu ID or create one from asset ID
         const submenuId =
@@ -129,8 +147,13 @@ export class LeftNavComponent {
         link.parentNode?.insertBefore(wrapper, link);
         wrapper.appendChild(link);
         wrapper.appendChild(toggleButton);
+        
+        processedCount++;
+        console.log(`[LeftNav] Item ${index} - Wrapper created successfully`);
       }
     });
+    
+    console.log(`[LeftNav] convertParentLinksWithChildren complete - processed: ${processedCount}, skipped: ${skippedCount}`);
   }
 
   private attachEventListeners(): void {
