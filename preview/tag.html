@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tag - NT Design System (Preview)</title>
+    <!-- Global tokens and base styles required by components -->
+    <link rel="stylesheet" href="/src/index.css">
+    <!-- Fallback: built design system stylesheet -->
+    <link rel="stylesheet" href="/deploy/ntg-design-system.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .demo-container {
+            min-height: 100vh;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #0066cc;
+            text-decoration: none;
+            margin: 1rem 0;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .demo-content {
+            max-width: 1168px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        .demo-content h1 {
+            color: #1f1f5f;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-content p {
+            color: #444;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .nt-main-content {
+            padding: 0;
+        }
+
+        /* Preview override for page banner CTAs */
+        .nt-page-banner__cta {
+            text-box-trim: trim-both;
+            text-box-edge: cap alphabetic;
+            color: var(--clr-link-inverse, white);
+            font-size: 14px;
+            font-family: Lato, var(--font-family-primary, system-ui, sans-serif);
+            font-weight: 700;
+            line-height: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .nt-page-banner__cta:hover {
+            color: var(--clr-link-inverse, white);
+            text-decoration: underline;
+        }
+
+        .nt-page-banner__cta svg {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="demo-container">
+        <!-- Header + Left nav to show page layout context -->
+        <div id="nt-header-root" data-title="Tag"></div>
+
+        <div class="page-container" style="display:flex;">
+            <div id="nt-leftnav-root" data-default-expanded="Foundations"></div>
+
+            <main class="nt-main-content" style="flex:1;">
+                <!-- Page banner MUST be outside and immediately above #content -->
+                <div id="nt-page-banner-content" data-page-banner-title="Tag"
+                    data-page-banner-description="Used to categorise and differentiate content that helps users find what they need quickly and easily."
+                    data-page-banner-type="Primary"
+                    data-page-banner-figma-url="https://www.figma.com/design/H2JiHRyJGSE7Z7uq2LvQEh/NTG-Design-System?m=dev"
+                    data-page-banner-storybook-url="https://ntgovernment.github.io/web-design-system/?path=/docs/components-tag--docs">
+                </div>
+
+                <div id="content" class="demo-content ntg-body">
+                    <a href="./" class="back-link">← Back to preview</a>
+                    <h1>Tag</h1>
+                    <p>Tags allow UX and content designers to categorise content using short labels — for example
+                        <code>Default</code>,
+                        <code>Warning</code> or <code>Green</code>.
+                    </p>
+                    <p>This preview demonstrates how the page banner renders above the main <code>#content</code>
+                        container.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="/src/components/Header/Header.vanilla.ts"></script>
+    <script type="module" src="/src/components/LeftNav/LeftNav.vanilla.ts"></script>
+    <script type="module" src="/src/components/PageBanner/PageBanner.vanilla.ts"></script>
+</body>
+
+</html>

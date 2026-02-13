@@ -6,7 +6,7 @@
   padding-top: 24px;
   padding-bottom: 48px;
   padding-left: 32px;
-  background: var(--clr-bg-dark-alt, #44447A);
+  background: var(--clr-bg-dark-alt, #44447a);
   overflow: hidden;
   display: inline-flex;
   flex-direction: column;
@@ -71,6 +71,9 @@
   color: var(--clr-link-inverse, white);
   padding: 8px 0;
   text-decoration: none;
+  /* text trimming / optical layout — preserved from provided spec */
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
   font-family: var(--font-family-primary, "Lato", system-ui, sans-serif);
   font-size: 14px;
   font-weight: 700;
@@ -82,7 +85,27 @@
   gap: 4px;
 }
 
+/* keep hover colour identical to default */
 .nt-page-banner__cta:hover {
+  color: var(--clr-link-inverse, white);
+  text-decoration: underline;
+}
+
+/* Ensure inline SVG icons render and align */
+.nt-page-banner__cta svg {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+.nt-page-banner__cta svg path {
+  vector-effect: non-scaling-stroke;
+}
+
+.nt-page-banner__cta:hover {
+  color: var(--clr-link-inverse, white);
   text-decoration: underline;
 }
 
