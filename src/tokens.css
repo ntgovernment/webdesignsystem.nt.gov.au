@@ -98,7 +98,7 @@
    * Overrides circular dependencies from external-tokens/base-variables.css
    * These values match the actual definitions from external-tokens/typography.css
    */
-  
+
   /* Mobile Typography - Body */
   --type-mobile-body-default-size: 1rem;
   --type-mobile-body-default-bold-size: 1rem;

@@ -25,7 +25,7 @@
 .nt-page-banner__inner {
   width: 100%;
   max-width: 1200px;
-  padding-top: var(--sp-xl, 24px);
+  padding: var(--sp-xl, 24px);
   display: inline-flex;
   justify-content: flex-start;
   align-items: flex-start;
