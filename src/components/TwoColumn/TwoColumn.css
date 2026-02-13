@@ -18,7 +18,7 @@
 /* Add padding when columns have background colors */
 .nt-two-column__left[style*="background"],
 .nt-two-column__right[style*="background"] {
-  padding: 1.5rem;
+  padding: var(--sp-xl, 24px);
 }
 
 /* Mobile: Stack columns vertically */

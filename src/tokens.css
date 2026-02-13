@@ -86,4 +86,10 @@
   /* Navigation Transitions */
   --nav-transition: 0.2s ease-in-out;
   --nav-drawer-transition: 0.3s ease-out;
+
+  /* Additional Spacing (project-specific) */
+  --sp-xs-plus: 10px;
+
+  /* Content Max Width (standard for layout) */
+  --content-max-width: 1200px;
 }
