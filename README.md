@@ -195,6 +195,10 @@ A responsive left navigation sidebar with 2-level collapsible menu. Features aut
 - `data-mobile-breakpoint`: Mobile breakpoint in pixels (default: 768)
 - `data-nav-items`: JSON string of navigation items (alternative to HTML markup)
 
+**Behavior note:**
+
+- Parent items with children now act as regular landing-page links while a JS-inserted chevron (toggle) controls submenu expand/collapse. This avoids server-side conditionals — the vanilla component enhances plain HTML on init (`convertParentLinksWithChildren()`).
+
 **Features:**
 
 - Auto-expands sections containing active page (via `aria-current="page"`)

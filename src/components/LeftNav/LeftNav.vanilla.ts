@@ -28,6 +28,7 @@ export class LeftNavComponent {
     };
     this.expandedSections = new Set(this.config.defaultExpanded);
 
+    this.convertParentLinksWithChildren();
     this.render();
     this.attachEventListeners();
     this.expandActiveSection();
@@ -71,6 +72,65 @@ export class LeftNavComponent {
 
     // Update submenu states based on expandedSections
     this.updateSubmenuStates();
+  }
+
+  /**
+   * Converts parent links to dual-functionality (link + toggle) for items with children
+   * This allows clicking the text to navigate and clicking the chevron to expand/collapse
+   */
+  private convertParentLinksWithChildren(): void {
+    // Find all items that have a submenu
+    const items = this.container.querySelectorAll(".nt-leftnav__item");
+
+    items.forEach((item) => {
+      const submenu = item.querySelector(".nt-leftnav__submenu");
+
+      // Only process items that have a submenu
+      if (submenu) {
+        const link = item.querySelector(
+          ":scope > .nt-leftnav__link",
+        ) as HTMLAnchorElement;
+
+        if (!link) return;
+
+        // Get submenu ID or create one from asset ID
+        const submenuId =
+          submenu.id ||
+          `submenu-${
+            item.getAttribute("data-asset-id") ||
+            Math.random().toString(36).substr(2, 9)
+          }`;
+        submenu.id = submenuId;
+
+        // Create wrapper div
+        const wrapper = document.createElement("div");
+        wrapper.className = "nt-leftnav__parent-wrapper";
+
+        // Update link classes
+        link.classList.add("nt-leftnav__link--parent");
+
+        // Create toggle button (chevron only)
+        const toggleButton = document.createElement("button");
+        toggleButton.className = "nt-leftnav__toggle";
+        toggleButton.setAttribute("aria-expanded", "false");
+        toggleButton.setAttribute("aria-controls", submenuId);
+        toggleButton.setAttribute(
+          "aria-label",
+          `Toggle ${link.textContent?.trim()} submenu`,
+        );
+
+        // Add chevron icon
+        const chevronIcon = document.createElement("i");
+        chevronIcon.className = "nt-leftnav__chevron fa-light fa-chevron-right";
+        chevronIcon.setAttribute("aria-hidden", "true");
+        toggleButton.appendChild(chevronIcon);
+
+        // Replace link with wrapper containing link + toggle
+        link.parentNode?.insertBefore(wrapper, link);
+        wrapper.appendChild(link);
+        wrapper.appendChild(toggleButton);
+      }
+    });
   }
 
   private attachEventListeners(): void {
