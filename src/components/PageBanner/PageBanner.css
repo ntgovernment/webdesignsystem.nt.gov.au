@@ -106,11 +106,6 @@
   vector-effect: non-scaling-stroke;
 }
 
-.nt-page-banner__cta:hover {
-  color: var(--clr-link-inverse, white);
-  text-decoration: underline;
-}
-
 .nt-page-banner__graphics {
   width: 300px;
   max-width: 40%;
