@@ -1,7 +1,19 @@
 {
-  "deployedAt": "2026-01-18T01:32:46.554Z",
-  "components": [],
-  "viewer": [
-    "index.html"
-  ]
+  "deployedAt": "2026-02-13T17:54:52.070Z",
+  "bundles": {
+    "css": "web-design-system.min.css",
+    "js": "web-design-system.min.js"
+  },
+  "nesters": {
+    "count": 7,
+    "files": [
+      "component-viewer.html",
+      "footer-js.html",
+      "footer.html",
+      "head.html",
+      "header.html",
+      "left-nav.html",
+      "skip-links.html"
+    ]
+  }
 }

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Left Navigation - NT Design System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .demo-container {
+            display: flex;
+            width: 100%;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .demo-info {
+            max-width: 800px;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-info h1 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .demo-info p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #0066cc;
+            text-decoration: none;
+            margin-bottom: 1rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="demo-container">
+        <!-- Left navigation will mount here -->
+        <div id="nt-leftnav-root"></div>
+
+        <div class="main-content">
+            <div class="demo-info">
+                <a href="./" class="back-link">← Back to all components</a>
+                <h1>Left Navigation Component</h1>
+                <p>A responsive 2-level navigation component with collapsible sections.</p>
+                <p><strong>Features:</strong></p>
+                <ul>
+                    <li>2-level navigation hierarchy</li>
+                    <li>Collapsible sections with smooth animations</li>
+                    <li>Mobile drawer with overlay</li>
+                    <li>Active state tracking</li>
+                    <li>Keyboard accessible</li>
+                </ul>
+                <p style="margin-top: 1rem;"><em>Try resizing your browser to see the mobile drawer behavior!</em></p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Sample navigation data
+        const navData = [
+            {
+                title: 'Getting Started',
+                items: [
+                    { title: 'Introduction', href: '#intro', active: true },
+                    { title: 'Installation', href: '#install' },
+                    { title: 'Quick Start', href: '#quickstart' }
+                ]
+            },
+            {
+                title: 'Components',
+                items: [
+                    { title: 'Header', href: '#header' },
+                    { title: 'Navigation', href: '#nav' },
+                    { title: 'Buttons', href: '#buttons' },
+                    { title: 'Forms', href: '#forms' }
+                ]
+            },
+            {
+                title: 'Guidelines',
+                items: [
+                    { title: 'Accessibility', href: '#a11y' },
+                    { title: 'Design Tokens', href: '#tokens' },
+                    { title: 'Best Practices', href: '#practices' }
+                ]
+            }
+        ];
+
+        // Set navigation data
+        const container = document.getElementById('nt-leftnav-root');
+        if (container) {
+            container.setAttribute('data-nav-items', JSON.stringify(navData));
+        }
+    </script>
+    <script type="module" src="/src/components/LeftNav/LeftNav.vanilla.ts"></script>
+</body>
+
+</html>

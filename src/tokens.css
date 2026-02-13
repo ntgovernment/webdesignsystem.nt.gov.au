@@ -1,0 +1,132 @@
+/**
+ * Design Tokens
+ * Centralized CSS custom properties for consistent theming across the NT Design System
+ * 
+ * Token Hierarchy:
+ * 1. External tokens from @ntgovernment/web-design-system (base foundation)
+ * 2. Local token overrides (project-specific customizations)
+ */
+
+/* Import External Design System Tokens */
+/* 
+ * Source: @ntgovernment/web-design-system
+ * Repository: https://github.com/ntgovernment/web-design-system
+ * 
+ * To populate external tokens:
+ * - Option A: Run `npm install` (requires GitHub authentication)
+ * - Option B: Manually copy files from external repo to src/external-tokens/
+ * 
+ * See src/external-tokens/README.md for detailed instructions
+ */
+
+/* External token files imported from @ntgovernment/web-design-system */
+@import "./external-tokens/base-variables.css";
+@import "./external-tokens/common.css";
+@import "./external-tokens/grid.css";
+@import "./external-tokens/typography.css";
+@import "./external-tokens/typography-literals.css";
+@import "./external-tokens/typography-ntg.css";
+@import "./external-tokens/theme-ntg.css";
+
+/* Import Lato font */
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+
+/**
+ * Local Token Definitions & Overrides
+ * 
+ * These tokens either:
+ * - Provide fallback values when external tokens are not yet imported
+ * - Override external tokens with project-specific values
+ * - Define tokens unique to this project
+ * 
+ * Once external tokens are imported above, these values will override
+ * any matching CSS variables from the external design system.
+ */
+
+:root {
+  /* Header Colors */
+  --clr-bg-header: #1f1f5f;
+  --clr-border-subtle: #d3d3d7;
+  --clr-text-inverse: white;
+
+  /* Header Shadows */
+  --shadow-header: 0px 4px 16px rgba(15, 15, 47, 0.15);
+
+  /* Header Sizing */
+  --header-height: 76px;
+
+  /* Typography */
+  --font-family-primary:
+    "Lato", system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  /* Navigation Colors */
+  --clr-nav-bg: #ffffff;
+  --clr-nav-border: #d3d3d7;
+  --clr-nav-text: #1f1f5f;
+  --clr-nav-text-hover: #14143d;
+  --clr-nav-bg-hover: #f5f5f7;
+  --clr-nav-bg-active: #e8e8eb;
+  --clr-nav-text-active: #1f1f5f;
+  --clr-nav-overlay: rgba(0, 0, 0, 0.5);
+  --clr-bg-shade: #f5f5f7;
+  --clr-link-default: #1f1f5f;
+  --clr-border-accent: #c33826;
+
+  /* Navigation Spacing */
+  --nav-padding-item: 16px;
+  --nav-padding-submenu: 16px 16px 16px 36px;
+  --nav-gap: 8px;
+  --nav-border-width: 1px;
+
+  /* Navigation Sizing */
+  --nav-width: 300px;
+  --nav-icon-size: 20px;
+  --nav-mobile-breakpoint: 768px;
+
+  /* Navigation Transitions */
+  --nav-transition: 0.2s ease-in-out;
+  --nav-drawer-transition: 0.3s ease-out;
+
+  /* Additional Spacing (project-specific) */
+  --sp-xs-plus: 10px;
+
+  /* Content Max Width (standard for layout) */
+  --content-max-width: 1200px;
+
+  /* 
+   * Typography Token Fixes
+   * Overrides circular dependencies from external-tokens/base-variables.css
+   * These values match the actual definitions from external-tokens/typography.css
+   */
+
+  /* Mobile Typography - Body */
+  --type-mobile-body-default-size: 1rem;
+  --type-mobile-body-default-bold-size: 1rem;
+  --type-mobile-body-sm-size: 0.875rem;
+  --type-mobile-body-sm-bold-size: 0.875rem;
+
+  /* Mobile Typography - Button */
+  --type-mobile-button-default-size: 1rem;
+  --type-mobile-button-default-sm-size: 0.875rem;
+
+  /* Mobile Typography - Tag */
+  --type-mobile-tag-size: 0.75rem;
+  --type-mobile-tag-text-transform: uppercase;
+
+  /* Link Decoration */
+  --type-link-default-decoration: underline;
+  --type-link-default-paragraph-spacing: 1rem;
+  --type-link-default-bold-decoration: underline;
+  --type-link-default-bold-paragraph-spacing: 1rem;
+  --type-link-sm-decoration: underline;
+
+  /* Mobile Link Decoration */
+  --type-mobile-link-default-decoration: underline;
+  --type-mobile-link-default-paragraph-spacing: 1rem;
+  --type-mobile-link-sm-decoration: underline;
+
+  /* Caption & Uppercase Text */
+  --type-caption-default-paragraph-spacing: 1rem;
+  --type-uppercase-small-text-transform: uppercase;
+  --type-uppercase-default-text-transform: uppercase;
+}

@@ -1,0 +1,33 @@
+<!-- 
+  NT Design System - HEADER Nester
+  Squiz Matrix Area: header_content (design_area="nest_content")
+  
+  Main site header with NT Government branding and navigation menu button.
+  Uses vanilla JavaScript component (no React dependency).
+  
+  CONFIGURATION via data attributes:
+  - data-title: Header title text (default: "Web Design System")
+  - data-logo-src: URL to logo image (default: NT Gov logo)
+  - data-logo-alt: Alt text for logo (default: "NT Government Logo")
+  - data-icon: Font Awesome icon class (default: "fa-magnifying-glass")
+  
+  DEPENDENCIES:
+  - Font Awesome Kit (loaded in head nester)
+  - ntg-design-system.css (loaded in head nester)
+  - header.js (loaded in footer-js nester)
+  
+  SQUIZ MATRIX EXAMPLE:
+  Update data-title with your application name:
+  <div id="nt-header-root" data-title="%asset_name%"></div>
+-->
+
+<div id="nt-header-root" data-title="%globals_site_name%"
+    data-logo-src="https://nt.gov.au/_design/latest/images/ntg-primary-reverse.svg" data-logo-alt="NT Government Logo"
+    data-icon="fa-magnifying-glass">
+    <!-- Header content will be injected by header.js -->
+    <noscript>
+        <div class="nt-header" style="background-color: #1f1f5f; padding: 1rem; color: white;">
+            <strong>JavaScript Required:</strong> This component requires JavaScript to function.
+        </div>
+    </noscript>
+</div>

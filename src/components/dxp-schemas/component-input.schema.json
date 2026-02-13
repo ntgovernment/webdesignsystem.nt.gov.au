@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "component-input.schema.json",
+  "title": "ComponentInputSchema",
+  "description": "Input schema for a component",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "content-meta.schema.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "object"
+        },
+        "additionalProperties": {
+          "default": false
+        }
+      }
+    }
+  ]
+}

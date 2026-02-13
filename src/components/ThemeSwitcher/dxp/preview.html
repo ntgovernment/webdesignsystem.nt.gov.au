@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Switcher - DXP Component Preview</title>
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="stylesheet" href="../../theme-switcher.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .preview-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #1f1f5f;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .demo-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-section h2 {
+            color: #0066cc;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .demo-section p {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #0066cc;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .info-box strong {
+            color: #0066cc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="preview-container">
+        <h1>🎨 Theme Switcher Component</h1>
+        <p class="subtitle">DXP Component Service - Multi-URL theme switcher with tab navigation</p>
+
+        <!-- Single Theme Example -->
+        <div class="demo-section">
+            <h2>Example 1: Single Theme (No Tabs)</h2>
+            <p>When only one theme is provided, no tabs are shown - just the iframe.</p>
+            <div id="preview-single"></div>
+        </div>
+
+        <!-- Two Themes Example -->
+        <div class="demo-section">
+            <h2>Example 2: Two Themes</h2>
+            <p>With two themes, tab navigation appears above the iframe content.</p>
+            <div id="preview-two"></div>
+        </div>
+
+        <!-- Three Themes Example -->
+        <div class="demo-section">
+            <h2>Example 3: Three Themes (Maximum)</h2>
+            <p>Maximum of 3 themes supported with tab navigation.</p>
+            <div id="preview-three"></div>
+        </div>
+
+        <!-- Documentation -->
+        <div class="demo-section">
+            <h2>📖 Usage</h2>
+            <p>Server-side rendering with client-side hydration pattern:</p>
+
+            <div class="code-block">
+                <pre>&lt;div 
+  data-hydration-component="theme-switcher" 
+  data-hydration-props='{
+    "themes": [
+      {"name": "Light", "url": "https://..."},
+      {"name": "Dark", "url": "https://..."}
+    ],
+    "height": "600px",
+    "defaultTheme": "Light"
+  }'&gt;
+&lt;/div&gt;</pre>
+            </div>
+
+            <div class="info-box">
+                <strong>Props:</strong>
+                <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                    <li><strong>themes</strong> (required): Array of 1-3 theme objects with name and url</li>
+                    <li><strong>height</strong> (optional): Iframe height, default "600px"</li>
+                    <li><strong>defaultTheme</strong> (optional): Name of theme to show by default</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load the DXP component renderer -->
+    <script type="module">
+        import themeSwitcherComponent from './main.js';
+        import exampleData from './example.data.json' assert { type: 'json' };
+
+        async function renderPreview(containerId, props) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            try {
+                // Get the HTML from the DXP component
+                const html = await themeSwitcherComponent.render(props);
+                // Insert it into the container
+                container.innerHTML = html;
+                console.log(`✓ Rendered ${containerId}`);
+            } catch (error) {
+                console.error(`Error rendering ${containerId}:`, error);
+                container.innerHTML = `<div style="color: red;">Error: ${error.message}</div>`;
+            }
+        }
+
+        // Render all examples
+        await renderPreview('preview-single', exampleData.single);
+        await renderPreview('preview-two', exampleData.twoThemes);
+        await renderPreview('preview-three', exampleData.threeThemes);
+    </script>
+
+    <!-- Load the client-side hydration script -->
+    <script type="module" src="../../js/theme-switcher.js"></script>
+</body>
+
+</html>

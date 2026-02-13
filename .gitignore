@@ -8,9 +8,12 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
+.build
 dist-ssr
 *.local
+
+# Environment variables
+.env
 
 # Editor directories and files
 .vscode/*
@@ -25,3 +28,4 @@ dist-ssr
 
 # Deployment directory (uncomment if you don't want to commit deploy files)
 # deploy
+debug/
