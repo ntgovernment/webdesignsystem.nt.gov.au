@@ -140,10 +140,7 @@
   color: currentColor;
 }
 
-/* Rotate chevron when expanded */
-.nt-leftnav__toggle[aria-expanded="true"] .nt-leftnav__chevron {
-  transform: rotate(-180deg);
-}
+/* (removed global chevron rotation — handled specifically for parent-wrapper below) */
 
 /* Submenu styles */
 .nt-leftnav__submenu {
@@ -205,8 +202,8 @@
   font-weight: var(--type-heading-h5-weight, 700);
   line-height: var(--type-heading-h5-lh, 1.25rem);
   border: none;
-  border-right: var(--border-width-md, 1px) solid
-    var(--clr-border-subtle, #d3d3d7);
+  /* removed divider between link and toggle (toggle has its own padding) */
+  border-right: none;
   transition:
     background-color var(--nav-transition),
     color var(--nav-transition);
@@ -262,11 +259,11 @@
   background-color: var(--clr-bg-shade, #f5f5f7);
 }
 
-/* Chevron icon - update rotation for right chevron */
+/* Parent-wrapper: collapsed (down) -> expanded (up) */
 .nt-leftnav__parent-wrapper
   .nt-leftnav__toggle[aria-expanded="true"]
   .nt-leftnav__chevron {
-  transform: rotate(90deg);
+  transform: rotate(180deg);
 }
 
 /* Mobile drawer styles */
