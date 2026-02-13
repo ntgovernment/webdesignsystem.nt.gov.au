@@ -62,6 +62,43 @@ deploy/
 
 ## 📦 Components
 
+### Page Banner Component
+
+A hero banner component for page introductions with optional Figma and Storybook CTAs.
+
+**HTML Usage:**
+
+```html
+<div
+  id="nt-page-banner-content"
+  data-page-banner-title="Page title"
+  data-page-banner-description="Short description"
+  data-page-banner-type="Primary"
+  data-page-banner-image="https://.../image.jpg"
+  data-page-banner-figma-url="https://..."
+  data-page-banner-storybook-url="https://..."
+></div>
+```
+
+**Configuration:**
+
+- `data-page-banner-title`: Banner title text
+- `data-page-banner-description`: Description text
+- `data-page-banner-type`: Visual variant ('Primary' or 'Secondary', default: 'Primary')
+- `data-page-banner-image`: Optional image URL
+- `data-page-banner-figma-url`: Optional Figma link (shows icon + link)
+- `data-page-banner-storybook-url`: Optional Storybook link (shows icon + link)
+
+**Features:**
+
+- Auto-hydrates on page load
+- Inline SVG icons with currentColor for theming
+- Content-driven height (auto-adjusts)
+- Accessible CTAs with proper ARIA attributes
+- Must be placed outside `#content` element
+
+See [src/components/PageBanner/README.md](src/components/PageBanner/README.md) for detailed documentation.
+
 ### Two Column Component
 
 A responsive two-column layout that automatically stacks on mobile devices.
