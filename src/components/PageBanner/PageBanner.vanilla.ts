@@ -35,6 +35,7 @@ export class PageBanner {
     this.container.classList.add("nt-page-banner", variantClass);
 
     this.container.innerHTML = `
+      ${image ? `<div class="nt-page-banner__graphics"><img class="nt-page-banner__image" src="${this.escapeAttr(image)}" alt=""/></div>` : ""}
       <div class="nt-page-banner__inner">
         <div class="nt-page-banner__content">
           ${title ? `<h1 class="nt-page-banner__title">${this.escapeHtml(title)}</h1>` : ""}
@@ -44,7 +45,6 @@ export class PageBanner {
             ${storybookUrl ? `<a class="nt-page-banner__cta" href="${this.escapeAttr(storybookUrl)}" target="_blank" rel="noopener noreferrer"><svg width="11" height="13" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3.16667 8.5C3.56667 9.5 4.25933 9.83333 5.35533 9.83333H5.16667C6.36667 9.83333 7.16667 9.184 7.16667 8.21C7.16667 7.414 6.61267 7.01067 5.73533 6.65467L4.41867 6.12C3.652 5.80867 3.16667 5.172 3.16667 4.47533C3.16667 3.82867 3.766 3.28467 4.558 3.21333L4.96667 3.17667C5.98533 3.08467 6.96667 3.68467 7.16667 4.5M7.83333 0.833333V1.5M0.5 1.16667L0.833333 12.1667L9.83333 12.5V0.5L0.5 1.16667Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>Storybook</a>` : ""}
           </div>
         </div>
-        ${image ? `<div class="nt-page-banner__graphics"><img class="nt-page-banner__image" src="${this.escapeAttr(image)}" alt=""/></div>` : ""}
       </div>
     `;
   }
