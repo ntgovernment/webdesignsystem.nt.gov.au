@@ -11,6 +11,7 @@
     "deploy": "node scripts/deploy-squiz.js"
   },
   "dependencies": {
+    "@ntgovernment/web-design-system": "git+https://github.com/ntgovernment/web-design-system.git",
     "@types/prettier": "^2.7.3",
     "prettier": "^3.8.1",
     "prismjs": "^1.30.0"

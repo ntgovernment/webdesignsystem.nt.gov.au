@@ -3,7 +3,7 @@
  * 
  * Consolidated styles for all components.
  * 
- * Generated: 2026-02-12T16:43:03.573Z
+ * Generated: 2026-02-13T07:57:54.455Z
  */
 
 /* ============================================ */
@@ -71,10 +71,47 @@ body {
 /**
  * Design Tokens
  * Centralized CSS custom properties for consistent theming across the NT Design System
+ * 
+ * Token Hierarchy:
+ * 1. External tokens from @ntgovernment/web-design-system (base foundation)
+ * 2. Local token overrides (project-specific customizations)
  */
+
+/* Import External Design System Tokens */
+/* 
+ * Source: @ntgovernment/web-design-system
+ * Repository: https://github.com/ntgovernment/web-design-system
+ * 
+ * To populate external tokens:
+ * - Option A: Run `npm install` (requires GitHub authentication)
+ * - Option B: Manually copy files from external repo to src/external-tokens/
+ * 
+ * See src/external-tokens/README.md for detailed instructions
+ */
+
+/* External token files imported from @ntgovernment/web-design-system */
+@import "./external-tokens/base-variables.css";
+@import "./external-tokens/common.css";
+@import "./external-tokens/grid.css";
+@import "./external-tokens/typography.css";
+@import "./external-tokens/typography-literals.css";
+@import "./external-tokens/typography-ntg.css";
+@import "./external-tokens/theme-ntg.css";
 
 /* Import Lato font */
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+
+/**
+ * Local Token Definitions & Overrides
+ * 
+ * These tokens either:
+ * - Provide fallback values when external tokens are not yet imported
+ * - Override external tokens with project-specific values
+ * - Define tokens unique to this project
+ * 
+ * Once external tokens are imported above, these values will override
+ * any matching CSS variables from the external design system.
+ */
 
 :root {
   /* Header Colors */

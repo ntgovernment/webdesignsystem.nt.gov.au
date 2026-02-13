@@ -12,6 +12,8 @@ This repository hosts vanilla JavaScript components and compiled CSS files for d
 npm install
 ```
 
+**Note**: This project depends on external design tokens from a private GitHub repository (`@ntgovernment/web-design-system`). Ensure you have GitHub authentication configured. See the [🎨 Design Tokens Integration](#-design-tokens-integration) section for setup instructions.
+
 ### Development
 
 View component previews locally:
@@ -258,6 +260,70 @@ See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for detailed integration instruct
 - **TypeScript** - Type safety
 - **Vanilla JavaScript** - No framework dependencies
 - **ESLint** - Code linting
+- **External Design Tokens** - Shared tokens from @ntgovernment/web-design-system
+
+## 🎨 Design Tokens Integration
+
+This project integrates CSS design tokens from the centralized NT Government Web Design System repository:
+
+- **Source Repository**: [ntgovernment/web-design-system](https://github.com/ntgovernment/web-design-system)
+- **Package**: `@ntgovernment/web-design-system`
+- **Token Files**: base-variables.css, common.css, grid.css, typography.css, theme-ntg.css
+
+### Setup External Tokens
+
+The external design system tokens are referenced in [src/tokens.css](src/tokens.css). To enable them:
+
+**Option A: NPM Package (Recommended)**
+
+Requires GitHub authentication for private repository access:
+
+```bash
+# Install dependencies (includes external design system)
+npm install
+
+# Tokens will be available at:
+# node_modules/@ntgovernment/web-design-system/src/themes/
+```
+
+**Option B: Manual Sync**
+
+Copy CSS files manually from the external repository:
+
+```bash
+# Clone external design system repository
+git clone https://github.com/ntgovernment/web-design-system.git ../temp-design-system
+
+# Copy theme files to local directory
+cp ../temp-design-system/src/themes/*.css ./src/external-tokens/
+
+# Uncomment imports in src/tokens.css
+# Clean up
+rm -rf ../temp-design-system
+```
+
+**Configure GitHub Authentication**
+
+For npm install to work with private GitHub repositories, ensure Git credential manager is configured:
+
+```bash
+# Check current git credential helper
+git config --get credential.helper
+
+# Should return: manager (on Windows) or osxkeychain (on macOS)
+
+# If not set, configure it:
+git config --global credential.helper manager  # Windows
+git config --global credential.helper osxkeychain  # macOS
+```
+
+### Token Architecture
+
+1. **External tokens** (from @ntgovernment/web-design-system) provide the foundation
+2. **Local tokens** (in src/tokens.css) override or extend external tokens
+3. **CSS cascade** ensures local customizations take precedence
+
+See [src/external-tokens/README.md](src/external-tokens/README.md) for detailed documentation.
 
 ## 🎯 Why Vanilla JavaScript?
 

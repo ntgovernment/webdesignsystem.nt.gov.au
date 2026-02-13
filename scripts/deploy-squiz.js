@@ -68,6 +68,7 @@ console.log(`✨ Font Awesome Kit: ${fontAwesomeKitId}\n`);
 const deployDirs = {
   assets: path.join(deployPath, "assets"),
   nesters: path.join(deployPath, "nesters"),
+  externalTokens: path.join(deployPath, "external-tokens"),
 };
 
 Object.values(deployDirs).forEach((dir) => {
@@ -130,6 +131,29 @@ if (fs.existsSync(buildDir)) {
   });
 } else {
   console.warn("⚠️  No .build directory found. Run `npm run build` first.");
+}
+
+// Copy external design tokens to deploy
+const externalTokensDir = path.join(rootDir, "src", "external-tokens");
+if (fs.existsSync(externalTokensDir)) {
+  const tokenFiles = fs.readdirSync(externalTokensDir);
+  let copiedCount = 0;
+
+  tokenFiles.forEach((file) => {
+    const srcPath = path.join(externalTokensDir, file);
+    const destPath = path.join(deployDirs.externalTokens, file);
+
+    if (fs.statSync(srcPath).isFile() && file.endsWith(".css")) {
+      fs.copyFileSync(srcPath, destPath);
+      copiedCount++;
+    }
+  });
+
+  if (copiedCount > 0) {
+    console.log(`✓ Copied ${copiedCount} external token file(s)`);
+  }
+} else {
+  console.warn("⚠️  No external-tokens directory found in src/.");
 }
 
 // DXP components kept source-only in src/components (not deployed)
