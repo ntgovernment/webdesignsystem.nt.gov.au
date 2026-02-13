@@ -2,10 +2,9 @@
 
 **Recent updates (2026-02-14):**
 
-- Parent items that have children are now *dual-purpose*: the visible link navigates to the parent landing page and a JavaScript-injected chevron button controls expand/collapse. This is implemented by `convertParentLinksWithChildren()` in `LeftNav.vanilla.ts` (no Squiz conditionals required).
+- Parent items that have children are now _dual-purpose_: the visible link navigates to the parent landing page and a JavaScript-injected chevron button controls expand/collapse. This is implemented by `convertParentLinksWithChildren()` in `LeftNav.vanilla.ts` (no Squiz conditionals required).
 - Hover & focus states updated to use `var(--clr-bg-shade)` for background and `var(--clr-link-default)` for text.
 - Left navigation now stretches to the full page height so its right border runs from header to footer (`min-height: 100%` + `align-self: stretch`).
-
 
 ## ✅ Implementation Complete
 
