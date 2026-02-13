@@ -92,4 +92,41 @@
 
   /* Content Max Width (standard for layout) */
   --content-max-width: 1200px;
+
+  /* 
+   * Typography Token Fixes
+   * Overrides circular dependencies from external-tokens/base-variables.css
+   * These values match the actual definitions from external-tokens/typography.css
+   */
+  
+  /* Mobile Typography - Body */
+  --type-mobile-body-default-size: 1rem;
+  --type-mobile-body-default-bold-size: 1rem;
+  --type-mobile-body-sm-size: 0.875rem;
+  --type-mobile-body-sm-bold-size: 0.875rem;
+
+  /* Mobile Typography - Button */
+  --type-mobile-button-default-size: 1rem;
+  --type-mobile-button-default-sm-size: 0.875rem;
+
+  /* Mobile Typography - Tag */
+  --type-mobile-tag-size: 0.75rem;
+  --type-mobile-tag-text-transform: uppercase;
+
+  /* Link Decoration */
+  --type-link-default-decoration: underline;
+  --type-link-default-paragraph-spacing: 1rem;
+  --type-link-default-bold-decoration: underline;
+  --type-link-default-bold-paragraph-spacing: 1rem;
+  --type-link-sm-decoration: underline;
+
+  /* Mobile Link Decoration */
+  --type-mobile-link-default-decoration: underline;
+  --type-mobile-link-default-paragraph-spacing: 1rem;
+  --type-mobile-link-sm-decoration: underline;
+
+  /* Caption & Uppercase Text */
+  --type-caption-default-paragraph-spacing: 1rem;
+  --type-uppercase-small-text-transform: uppercase;
+  --type-uppercase-default-text-transform: uppercase;
 }

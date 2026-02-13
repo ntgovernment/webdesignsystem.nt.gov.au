@@ -232,6 +232,21 @@ git commit -m "Update design system tokens"
 
 ## 🐛 Troubleshooting
 
+### Circular CSS-variable generation bug — temporary workaround
+
+If you see CSS custom properties that reference themselves (e.g. `--type-mobile-body-default-size: var(--type-mobile-body-default-size);`), this is a token-generation bug in the external token build pipeline. A temporary project-level override has been added to `src/tokens.css` to prevent runtime resolution loops; the long-term fix is to correct the source design-tokens and regenerate the external token files.
+
+What we changed in this repo:
+
+- Added explicit overrides in `src/tokens.css` for the affected mobile/type/link variables so they resolve correctly at runtime.
+- This is a stop-gap measure only — the canonical fix must be applied in the external token source (design-tokens/tokens.json) and re-published.
+
+Recommended permanent actions:
+
+1. Update the external token source (design-tokens) to remove self-referential mappings.
+2. Run the token generation (`npm run tokens:build`) in the external repo and publish the updated CSS tokens package.
+3. Remove the temporary overrides in `src/tokens.css` once the external package is updated and the imports are re-activated.
+
 ### NPM Install Fails with Authentication Error
 
 **Problem**: `npm error A git connection error occurred`
