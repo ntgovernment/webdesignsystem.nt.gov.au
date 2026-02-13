@@ -24,6 +24,11 @@ body {
   min-height: 100vh;
 }
 
+/* Ensure page content has the design-system spacing token (24px) */
+#content {
+  padding: var(--sp-xl, 24px);
+}
+
 * {
   box-sizing: border-box;
 }
