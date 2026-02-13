@@ -5,6 +5,7 @@ import path from "path";
 export default defineConfig(() => ({
   build: {
     outDir: ".build",
+    cssCodeSplit: false, // Extract all CSS into single file
     rollupOptions: {
       input: {
         // Unified vanilla JS components bundle
@@ -14,7 +15,8 @@ export default defineConfig(() => ({
         ),
       },
       output: {
-        format: "es",
+        format: "iife",
+        name: "NTGDesignSystem",
         entryFileNames: () => "web-design-system.min.js",
         assetFileNames: (assetInfo) => {
           // CSS files at root with .min.css extension
@@ -23,6 +25,7 @@ export default defineConfig(() => ({
           }
           return "assets/[name].[ext]";
         },
+        inlineDynamicImports: true, // Ensure everything is bundled together
       },
     },
   },

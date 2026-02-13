@@ -34,10 +34,11 @@ npm run build
 
 This will:
 
-1. Compile vanilla JS components
-2. Generate CSS stylesheets
+1. Bundle all vanilla JS components into a single IIFE bundle
+2. Extract CSS stylesheets into a single file
 3. Copy files to `deploy/` directory
 4. Create deployment manifest
+5. Copy external design tokens to deployment
 
 ### Deployment to Squiz DXP
 
@@ -47,15 +48,16 @@ The deployment structure:
 
 ```
 deploy/
-├── js/                      # Vanilla JS components
-│   ├── header.js
-│   ├── left-nav.js
-│   ├── theme-switcher.js
-│   ├── two-column.js
-│   └── component-viewer-client.js
-├── nesters/                 # HTML templates for Squiz Matrix
-├── ntg-design-system.css    # Global stylesheet
-└── manifest.json            # Deployment metadata
+├── nesters/                        # HTML templates for Squiz Matrix
+│   ├── header.html
+│   ├── left-nav.html
+│   ├── skip-links.html
+│   ├── footer.html
+│   └── head.html
+├── external-tokens/                # External design system tokens
+├── web-design-system.min.js        # All components (IIFE global)
+├── web-design-system.min.css       # All styles
+└── manifest.json                   # Deployment metadata
 ```
 
 ## 📦 Components
@@ -64,48 +66,32 @@ deploy/
 
 A responsive two-column layout that automatically stacks on mobile devices.
 
-**Vanilla JS Usage:**
+**HTML Usage:**
 
 ```html
 <div
-  id="nt-twocolumn-root"
-  data-left-width="2fr"
-  data-right-width="1fr"
-  data-gap="2rem"
-></div>
-
-<script type="module" src="%globals_asset_url:XXXXX%/js/two-column.js"></script>
+  class="nt-two-column"
+  style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem"
+>
+  <div class="nt-two-column__left">
+    <!-- Left content -->
+  </div>
+  <div class="nt-two-column__right">
+    <!-- Right content -->
+  </div>
+</div>
 ```
 
-**Manual Initialization:**
+**Configuration (via CSS custom properties):**
 
-```javascript
-import { TwoColumnComponent } from "./path/to/TwoColumn.vanilla.js";
-
-const container = document.getElementById("my-container");
-new TwoColumnComponent(container, {
-  leftContent: "<div>Left content</div>",
-  rightContent: "<div>Right content</div>",
-  leftWidth: "2fr",
-  rightWidth: "1fr",
-  gap: "2rem",
-});
-```
-
-**Configuration:**
-
-- `data-left-content` / `leftContent`: HTML content for the left column
-- `data-right-content` / `rightContent`: HTML content for the right column
-- `data-left-width` / `leftWidth`: CSS grid width for left column (default: '1fr')
-- `data-right-width` / `rightWidth`: CSS grid width for right column (default: '1fr')
-- `data-gap` / `gap`: Gap between columns (default: '2rem')
-- `data-class` / `className`: Additional CSS classes
+- Use standard CSS Grid properties: `grid-template-columns`, `gap`, etc.
+- Automatically stacks to single column on mobile (≤ 768px)
 
 ### Theme Switcher Component
 
-A component that allows users to switch between light and dark themes with localStorage persistence.
+A component that allows users to switch between light and dark themes.
 
-**Vanilla JS Usage:**
+**HTML Usage:**
 
 ```html
 <div
@@ -113,32 +99,15 @@ A component that allows users to switch between light and dark themes with local
   data-themes="light,dark"
   data-default-theme="light"
 ></div>
-
-<script
-  type="module"
-  src="%globals_asset_url:XXXXX%/js/theme-switcher.js"
-></script>
 ```
 
-**Manual Initialization:**
-
-```javascript
-import { ThemeSwitcherComponent } from "./path/to/ThemeSwitcher.vanilla.js";
-
-const container = document.getElementById("my-container");
-new ThemeSwitcherComponent(container, {
-  themes: ["light", "dark"],
-  defaultTheme: "light",
-  storageKey: "web-design-system-theme",
-});
-```
+The global `NTGDesignSystem` object will auto-initialize this component on page load.
 
 **Configuration:**
 
-- `data-themes` / `themes`: Comma-separated list of theme options (default: 'light,dark')
-- `data-default-theme` / `defaultTheme`: Initial theme (default: 'light')
-- `data-storage-key` / `storageKey`: localStorage key for persistence
-- `data-class` / `className`: Additional CSS classes
+- `data-themes`: Comma-separated list of theme options (default: 'light,dark')
+- `data-default-theme`: Initial theme (default: 'light')
+- `data-class`: Additional CSS classes
 
 ### Left Navigation Component
 
@@ -228,19 +197,33 @@ After deploying via Git File Bridge, reference the compiled assets in your Squiz
 
 ```html
 <!-- Global Stylesheet -->
-<link rel="stylesheet" href="%globals_asset_url:XXXXX%/ntg-design-system.css" />
+<link
+  rel="stylesheet"
+  href="%globals_asset_url:XXXXX%/web-design-system.min.css"
+/>
 
-<!-- Vanilla JS Components -->
-<script type="module" src="%globals_asset_url:XXXXX%/js/header.js"></script>
-<script
-  type="module"
-  src="%globals_asset_url:XXXXX%/js/theme-switcher.js"
-></script>
-<script type="module" src="%globals_asset_url:XXXXX%/js/left-nav.js"></script>
-<script type="module" src="%globals_asset_url:XXXXX%/js/two-column.js"></script>
+<!-- All Components (IIFE Bundle) -->
+<script src="%globals_asset_url:XXXXX%/web-design-system.min.js"></script>
+
+<!-- Components auto-initialize via NTGDesignSystem global -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // All components are already initialized
+    // Access via window.NTGDesignSystem if needed
+  });
+</script>
 ```
 
 Replace `XXXXX` with your Squiz Matrix Git File Bridge asset ID.
+
+### Component Auto-Initialization
+
+Once the bundle is loaded, components auto-initialize by looking for specific element IDs and data attributes:
+
+- `#nt-header-root` → Header component
+- `#nt-leftnav-root` → Left navigation component
+- `#nt-theme-switcher-root` → Theme switcher component
+- `[data-hydration-component="component-viewer"]` → Component viewer
 
 ### Using HTML Nesters
 

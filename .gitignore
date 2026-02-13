@@ -28,3 +28,4 @@ dist-ssr
 
 # Deployment directory (uncomment if you don't want to commit deploy files)
 # deploy
+debug/
