@@ -88,21 +88,16 @@ export class PageCardClient {
 
   private renderCard(page: ContentPageAsset): string {
     const assetId = this.escapeAttr(page.assetId);
-    const title = page.title ? this.escapeHtml(page.title) : "";
-    const description = page.description
-      ? this.escapeHtml(page.description)
-      : "";
 
     return `<div class="card card--clickable card--full text-bg-full" tabindex="0" role="button" style="max-width: 353px;" data-asset-id="${assetId}">
       <div class="card__media card__media--16:9">
-        <img src="%asset_metadata_content-cardImagePhoto:${assetId}^as_asset:asset_url%" alt="Card image" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; max-height: 200px;">
+        <img src="%globals_asset_metadata_content-cardImagePhoto:${assetId}^as_asset:asset_url%" alt="Card image" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; max-height: 200px;">
       </div>
       <div class="card-body">
         <div class="card__body-content">
           <div class="card__body-title-wrapper">
-            <h5 class="card-title">${title}</h5>
+            <h5 class="card-title">%globals_asset_name:${assetId}</h5>
           </div>
-          <div class="card-text">${description}</div>
         </div>
       </div>
       <div class="card-footer">
