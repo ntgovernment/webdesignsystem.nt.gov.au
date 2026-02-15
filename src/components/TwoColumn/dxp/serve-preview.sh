@@ -36,4 +36,4 @@ echo "Press Ctrl+C to stop the server"
 echo ""
 
 # Start the server
-npx serve -p 3000
+dxp-next cmp dev-ui ./src/components

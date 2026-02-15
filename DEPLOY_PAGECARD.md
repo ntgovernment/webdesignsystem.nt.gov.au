@@ -5,7 +5,6 @@ This checklist prepares and deploys the `PageCard` component to Squiz DXP via yo
 Steps
 
 1. Review `deploy/` contents locally (bundles and nesters):
-
    - `deploy/web-design-system.min.css`
    - `deploy/web-design-system.min.js`
    - `deploy/nesters/page-card.html`
@@ -19,30 +18,31 @@ git push
 ```
 
 3. Verify Git File Bridge sync:
-
    - Check the bridge logs or Matrix asset change history to confirm files arrived.
    - Note the Squiz Matrix asset ID where the files were published (used below as `ASSET_ID`).
 
 4. Update paint layouts to reference the deployed bundles (replace `ASSET_ID`):
 
 ```html
-<link rel="stylesheet" href="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.css%">
+<link
+  rel="stylesheet"
+  href="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.css%"
+/>
 <script src="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.js%"></script>
 ```
 
 5. Register/verify the nester in a paint layout (example):
 
 ```html
-%nester_asset_name:page-card.html%  <!-- include where you want the component to render -->
+%nester_asset_name:page-card.html%
+<!-- include where you want the component to render -->
 ```
 
 6. Test in Squiz Matrix author and preview environments:
-
    - Add the `PageCard` component in the DXP component configuration (asset picker selects `assetId` values).
    - Verify rendered output, images, links and accessibility features in preview and public-facing pages.
 
 7. Rollback plan
-
    - To roll back, revert the commit and push the revert, or restore previous files in the Git File Bridge target.
 
 Notes
