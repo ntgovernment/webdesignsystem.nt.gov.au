@@ -396,6 +396,7 @@
   padding: var(--sp-xxl, 32px);
   overflow-y: auto;
   max-width: 100%;
+  background-color: var(--clr-bg-shade);
 }
 
 .nt-main-content .ntg-body {
