@@ -1,10 +1,10 @@
-# NT Design System
+﻿# NT Design System
 
 Documentation website and component library for the Northern Territory Government design system.
 
 This repository hosts vanilla JavaScript components and compiled CSS files for deployment to Squiz Matrix via Git File Bridge, along with preview pages for local development and testing.
 
-## 🚀 Quick Start
+## ðŸš€ Quick Start
 
 ### Installation
 
@@ -12,7 +12,7 @@ This repository hosts vanilla JavaScript components and compiled CSS files for d
 npm install
 ```
 
-**Note**: This project depends on external design tokens from a private GitHub repository (`@ntgovernment/web-design-system`). Ensure you have GitHub authentication configured. See the [🎨 Design Tokens Integration](#-design-tokens-integration) section for setup instructions.
+**Note**: This project depends on external design tokens from a private GitHub repository (`@ntgovernment/web-design-system`). Ensure you have GitHub authentication configured. See the [ðŸŽ¨ Design Tokens Integration](#-design-tokens-integration) section for setup instructions.
 
 ### Development
 
@@ -40,7 +40,7 @@ This will:
 4. Create deployment manifest
 5. Copy external design tokens to deployment
 
-### 🎨 Theme Integration
+### ðŸŽ¨ Theme Integration
 
 This project uses the **NT Government Design System theme** from [@ntgovernment/web-design-system](https://github.com/ntgovernment/web-design-system).
 
@@ -79,19 +79,19 @@ The deployment structure:
 
 ```
 deploy/
-├── nesters/                        # HTML templates for Squiz Matrix
-│   ├── header.html
-│   ├── left-nav.html
-│   ├── skip-links.html
-│   ├── footer.html
-│   └── head.html
-├── external-tokens/                # External design system tokens
-├── web-design-system.min.js        # All components (IIFE global)
-├── web-design-system.min.css       # All styles
-└── manifest.json                   # Deployment metadata
+â”œâ”€â”€ nesters/                        # HTML templates for Squiz Matrix
+â”‚   â”œâ”€â”€ header.html
+â”‚   â”œâ”€â”€ left-nav.html
+â”‚   â”œâ”€â”€ skip-links.html
+â”‚   â”œâ”€â”€ footer.html
+â”‚   â””â”€â”€ head.html
+â”œâ”€â”€ external-tokens/                # External design system tokens
+â”œâ”€â”€ web-design-system.min.js        # All components (IIFE global)
+â”œâ”€â”€ web-design-system.min.css       # All styles
+â””â”€â”€ manifest.json                   # Deployment metadata
 ```
 
-## 📦 Components
+## ðŸ“¦ Components
 
 ### Page Banner Component
 
@@ -153,7 +153,7 @@ A responsive two-column layout that automatically stacks on mobile devices.
 **Configuration (via CSS custom properties):**
 
 - Use standard CSS Grid properties: `grid-template-columns`, `gap`, etc.
-- Automatically stacks to single column on mobile (≤ 768px)
+- Automatically stacks to single column on mobile (â‰¤ 768px)
 
 ### Theme Switcher Component
 
@@ -228,7 +228,7 @@ A responsive left navigation sidebar with 2-level collapsible menu. Features aut
 
 **Behavior note:**
 
-- Parent items with children now act as regular landing-page links while a JS-inserted chevron (toggle) controls submenu expand/collapse. This avoids server-side conditionals — the vanilla component enhances plain HTML on init (`convertParentLinksWithChildren()`).
+- Parent items with children now act as regular landing-page links while a JS-inserted chevron (toggle) controls submenu expand/collapse. This avoids server-side conditionals â€” the vanilla component enhances plain HTML on init (`convertParentLinksWithChildren()`).
 
 **Features:**
 
@@ -261,7 +261,7 @@ The NT Government header with logo and navigation elements.
 - `data-logo-src`: Logo image URL
 - `data-logo-alt`: Logo alt text for accessibility
 
-## 🎨 Using with Squiz Matrix
+## ðŸŽ¨ Using with Squiz Matrix
 
 ### Referencing in Paint Layouts
 
@@ -292,10 +292,10 @@ Replace `XXXXX` with your Squiz Matrix Git File Bridge asset ID.
 
 Once the bundle is loaded, components auto-initialize by looking for specific element IDs and data attributes:
 
-- `#nt-header-root` → Header component
-- `#nt-leftnav-root` → Left navigation component
-- `#nt-theme-switcher-root` → Theme switcher component
-- `[data-hydration-component="component-viewer"]` → Component viewer
+- `#nt-header-root` â†’ Header component
+- `#nt-leftnav-root` â†’ Left navigation component
+- `#nt-theme-switcher-root` â†’ Theme switcher component
+- `[data-hydration-component="component-viewer"]` â†’ Component viewer
 
 ### Using HTML Nesters
 
@@ -309,7 +309,7 @@ The `deploy/nesters/` directory contains ready-to-use HTML templates with MySour
 
 See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for detailed integration instructions.
 
-## 🛠️ Tech Stack
+## ðŸ› ï¸ Tech Stack
 
 - **Vite** - Build tool and dev server
 - **TypeScript** - Type safety
@@ -317,7 +317,7 @@ See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for detailed integration instruct
 - **ESLint** - Code linting
 - **External Design Tokens** - Shared tokens from @ntgovernment/web-design-system
 
-## 🎨 Design Tokens Integration
+## ðŸŽ¨ Design Tokens Integration
 
 This project integrates CSS design tokens from the centralized NT Government Web Design System repository:
 
@@ -380,7 +380,7 @@ git config --global credential.helper osxkeychain  # macOS
 
 See [src/external-tokens/README.md](src/external-tokens/README.md) for detailed documentation.
 
-## 🎯 Why Vanilla JavaScript?
+## ðŸŽ¯ Why Vanilla JavaScript?
 
 This design system uses **vanilla JavaScript instead of React** for strategic reasons:
 
@@ -421,55 +421,55 @@ This design system uses **vanilla JavaScript instead of React** for strategic re
 
 **For a complete analysis and strategic rationale, see [VANILLA_JS_RATIONALE.md](VANILLA_JS_RATIONALE.md).**
 
-## 📁 Project Structure
+## ðŸ“ Project Structure
 
 ```
 .
-├── src/
-│   ├── components/
-│   │   ├── Header/              # Header component
-│   │   │   ├── Header.vanilla.ts
-│   │   │   ├── Header.css
-│   │   │   └── index.ts
-│   │   ├── LeftNav/             # Left navigation
-│   │   │   ├── LeftNav.vanilla.ts
-│   │   │   ├── LeftNav.css
-│   │   │   └── index.ts
-│   │   ├── ThemeSwitcher/       # Theme switcher
-│   │   │   ├── ThemeSwitcher.vanilla.ts
-│   │   │   ├── ThemeSwitcher.css
-│   │   │   └── index.ts
-│   │   ├── TwoColumn/           # Two-column layout
-│   │   │   ├── TwoColumn.vanilla.ts
-│   │   │   ├── TwoColumn.css
-│   │   │   └── index.ts
-│   │   └── ComponentViewer/     # Component viewer client
-│   │       ├── ComponentViewer.vanilla.ts
-│   │       └── index.ts
-│   ├── global-styles.ts         # Global stylesheet imports
-│   ├── tokens.css               # Design tokens
-│   └── ntg-design-system.css    # Main stylesheet
-├── preview/                     # Development preview pages
-│   ├── index.html               # Preview landing page
-│   ├── header.html
-│   ├── left-nav.html
-│   ├── theme-switcher.html
-│   └── two-column.html
-├── public/
-│   └── squiz/                   # HTML nester templates (source)
-├── scripts/
-│   └── deploy-squiz.js          # Deployment script
-├── deploy/                      # Deployment output (committed to git)
-│   ├── js/                      # Compiled components
-│   ├── nesters/                 # HTML templates
-│   ├── ntg-design-system.css    # Global stylesheet
-│   └── manifest.json            # Deployment metadata
-├── package.json
-├── vite.config.ts
-└── README.md
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ components/
+â”‚   â”‚   â”œâ”€â”€ Header/              # Header component
+â”‚   â”‚   â”‚   â”œâ”€â”€ Header.vanilla.ts
+â”‚   â”‚   â”‚   â”œâ”€â”€ Header.css
+â”‚   â”‚   â”‚   â””â”€â”€ index.ts
+â”‚   â”‚   â”œâ”€â”€ LeftNav/             # Left navigation
+â”‚   â”‚   â”‚   â”œâ”€â”€ LeftNav.vanilla.ts
+â”‚   â”‚   â”‚   â”œâ”€â”€ LeftNav.css
+â”‚   â”‚   â”‚   â””â”€â”€ index.ts
+â”‚   â”‚   â”œâ”€â”€ ThemeSwitcher/       # Theme switcher
+â”‚   â”‚   â”‚   â”œâ”€â”€ ThemeSwitcher.vanilla.ts
+â”‚   â”‚   â”‚   â”œâ”€â”€ ThemeSwitcher.css
+â”‚   â”‚   â”‚   â””â”€â”€ index.ts
+â”‚   â”‚   â”œâ”€â”€ TwoColumn/           # Two-column layout
+â”‚   â”‚   â”‚   â”œâ”€â”€ TwoColumn.vanilla.ts
+â”‚   â”‚   â”‚   â”œâ”€â”€ TwoColumn.css
+â”‚   â”‚   â”‚   â””â”€â”€ index.ts
+â”‚   â”‚   â””â”€â”€ ComponentViewer/     # Component viewer client
+â”‚   â”‚       â”œâ”€â”€ ComponentViewer.vanilla.ts
+â”‚   â”‚       â””â”€â”€ index.ts
+â”‚   â”œâ”€â”€ global-styles.ts         # Global stylesheet imports
+â”‚   â”œâ”€â”€ tokens.css               # Design tokens
+â”‚   â””â”€â”€ web-design-system.css    # Main stylesheet
+â”œâ”€â”€ preview/                     # Development preview pages
+â”‚   â”œâ”€â”€ index.html               # Preview landing page
+â”‚   â”œâ”€â”€ header.html
+â”‚   â”œâ”€â”€ left-nav.html
+â”‚   â”œâ”€â”€ theme-switcher.html
+â”‚   â””â”€â”€ two-column.html
+â”œâ”€â”€ public/
+â”‚   â””â”€â”€ squiz/                   # HTML nester templates (source)
+â”œâ”€â”€ scripts/
+â”‚   â””â”€â”€ deploy-squiz.js          # Deployment script
+â”œâ”€â”€ deploy/                      # Deployment output (committed to git)
+â”‚   â”œâ”€â”€ js/                      # Compiled components
+â”‚   â”œâ”€â”€ nesters/                 # HTML templates
+â”‚   â”œâ”€â”€ web-design-system.css    # Global stylesheet
+â”‚   â””â”€â”€ manifest.json            # Deployment metadata
+â”œâ”€â”€ package.json
+â”œâ”€â”€ vite.config.ts
+â””â”€â”€ README.md
 ```
 
-## 🔧 Configuration
+## ðŸ”§ Configuration
 
 ### Environment Variables
 
@@ -488,7 +488,7 @@ VITE_FONT_AWESOME_KIT_ID=your_kit_id
 
 The `vite.config.ts` builds vanilla JS components as ES modules with automatic code splitting and CSS extraction.
 
-## 📝 Scripts
+## ðŸ“ Scripts
 
 - `npm run dev` - Start development server with component previews
 - `npm run build` - Build components and prepare deployment
@@ -496,10 +496,11 @@ The `vite.config.ts` builds vanilla JS components as ES modules with automatic c
 - `npm run preview` - Preview built components
 - `npm run deploy` - Copy built files to deploy directory (without rebuilding)
 
-## 📄 License
+## ðŸ“„ License
 
 Northern Territory Government
 
-## 🤝 Contributing
+## ðŸ¤ Contributing
 
 This repository is managed by the Northern Territory Government. For contributions or issues, please contact the design system team.
+

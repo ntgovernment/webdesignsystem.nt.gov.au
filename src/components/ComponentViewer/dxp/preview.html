@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <title>ComponentViewer Preview - DXP Component Service</title>
 
     <!-- Design System Styles -->
-    <link rel="stylesheet" href="../../ntg-design-system.css">
+    <link rel="stylesheet" href="../../web-design-system.css">
 
     <!-- Prism.js Theme -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism-okaidia.min.css">
@@ -76,7 +76,7 @@
     <p class="intro">Testing the ComponentViewer DXP Component Service with different configurations.</p>
 
     <div class="note">
-        <strong>⚠️ Note:</strong>
+        <strong>âš ï¸ Note:</strong>
         This preview requires a local server to load ES modules. The Storybook URLs point to
         <code>/storybook/iframe.html</code>
         which may not be available. Update the <code>storybookUrl</code> in <code>example.data.json</code> to match your
@@ -125,7 +125,7 @@
         document.getElementById('preview-zoom').innerHTML = await component.render(exampleData.customZoom);
         document.getElementById('preview-minimal').innerHTML = await component.render(exampleData.minimal);
 
-        console.log('✓ All ComponentViewer examples rendered');
+        console.log('âœ“ All ComponentViewer examples rendered');
     </script>
 
     <!-- Global Client-Side Bundle (for interactivity) -->
@@ -135,9 +135,9 @@
         // Check if the built bundle exists, otherwise use inline initialization
         try {
             const { ComponentViewerClient } = await import('../../js/component-viewer-client.js');
-            console.log('✓ Loaded component-viewer-client.js');
+            console.log('âœ“ Loaded component-viewer-client.js');
         } catch (err) {
-            console.warn('⚠️ Built bundle not found. Build with: npm run build:squiz');
+            console.warn('âš ï¸ Built bundle not found. Build with: npm run build:squiz');
             console.log('Using inline initialization for preview...');
 
             // Simplified inline version for preview only
@@ -355,7 +355,7 @@
                 new ComponentViewerClient(container);
             });
 
-            console.log('✓ Initialized ComponentViewer instances (preview mode)');
+            console.log('âœ“ Initialized ComponentViewer instances (preview mode)');
         }
     </script>
 

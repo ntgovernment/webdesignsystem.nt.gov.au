@@ -1,38 +1,4 @@
-<!-- 
-  NT Design System - PAGE CARD Nester
-  Squiz Matrix Area: page_card_content (design_area="nest_content")
-  
-  Responsive grid layout displaying ContentPage assets as cards with images and titles.
-  Uses vanilla JavaScript component (no React dependency).
-  
-  CONFIGURATION via data attributes:
-  - data-hydration-component: "page-card" (required)
-  - data-hydration-props: JSON-encoded props object
-  
-  EXAMPLE IMPLEMENTATION:
-  {
-    "pages": [
-      {
-        "id": "page-1",
-        "title": "Service Name",
-        "imageUrl": "https://...",
-        "description": "Short description",
-        "href": "/path/to/page"
-      }
-    ],
-    "columns": 3,
-    "gap": "var(--sp-md, 16px)"
-  }
-  
-  DEPENDENCIES:
-  - Font Awesome Kit (loaded in head nester)
-  - ntg-design-system.css (loaded in head nester)
-  - page-card-client.js (loaded in footer-js nester)
-  
-  SQUIZ MATRIX EXAMPLE:
-  <div data-hydration-component="page-card" 
-       data-hydration-props='{"pages":[...],"columns":3}'></div>
--->
+﻿<!-- PageCard nester: see src/components/PageCard/README.md for full developer documentation and usage examples. -->
 
 <div data-hydration-component="page-card" data-hydration-props='{"pages":[],"columns":3}'>
 </div>

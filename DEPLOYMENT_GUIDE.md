@@ -1,4 +1,4 @@
-# Deployment Guide for Squiz Matrix
+﻿# Deployment Guide for Squiz Matrix
 
 This guide explains how to deploy the NT Design System components to Squiz Matrix using Git File Bridge.
 
@@ -118,12 +118,12 @@ The NT Design System uses **lightweight vanilla JavaScript components** for prod
 
 **Benefits:**
 
-- ✅ Small bundle sizes (~5-10KB per component vs 380KB+ with React)
-- ✅ No framework dependencies
-- ✅ Direct integration with MySource_AREA tags
-- ✅ Single global stylesheet for entire design system
-- ✅ Pre-built HTML nesters ready to embed
-- ✅ ES modules with automatic code splitting
+- âœ… Small bundle sizes (~5-10KB per component vs 380KB+ with React)
+- âœ… No framework dependencies
+- âœ… Direct integration with MySource_AREA tags
+- âœ… Single global stylesheet for entire design system
+- âœ… Pre-built HTML nesters ready to embed
+- âœ… ES modules with automatic code splitting
 
 **Build Command:**
 
@@ -137,21 +137,21 @@ After running `npm run build`, files are organized as:
 
 ```
 deploy/
-├── nesters/                    # HTML nesters for MySource_AREA tags
-│   ├── head.html               # <head> content with stylesheets
-│   ├── skip-links.html         # Accessibility skip navigation
-│   ├── header.html             # NT Government header
-│   ├── left-nav.html           # Left navigation sidebar
-│   ├── footer.html             # Footer with navigation and branding
-│   └── footer-js.html          # JavaScript component loading
-├── js/                          # Vanilla JavaScript components
-│   ├── header.js               # Header component (~25KB)
-│   ├── left-nav.js             # Left navigation (~5KB)
-│   ├── theme-switcher.js       # Theme switcher (~10KB)
-│   ├── two-column.js           # Two-column layout (~8KB)
-│   └── component-viewer-client.js  # Component viewer client
-├── ntg-design-system.css       # Global stylesheet with all design tokens
-└── manifest.json               # Deployment metadata
+â”œâ”€â”€ nesters/                    # HTML nesters for MySource_AREA tags
+â”‚   â”œâ”€â”€ head.html               # <head> content with stylesheets
+â”‚   â”œâ”€â”€ skip-links.html         # Accessibility skip navigation
+â”‚   â”œâ”€â”€ header.html             # NT Government header
+â”‚   â”œâ”€â”€ left-nav.html           # Left navigation sidebar
+â”‚   â”œâ”€â”€ footer.html             # Footer with navigation and branding
+â”‚   â””â”€â”€ footer-js.html          # JavaScript component loading
+â”œâ”€â”€ js/                          # Vanilla JavaScript components
+â”‚   â”œâ”€â”€ header.js               # Header component (~25KB)
+â”‚   â”œâ”€â”€ left-nav.js             # Left navigation (~5KB)
+â”‚   â”œâ”€â”€ theme-switcher.js       # Theme switcher (~10KB)
+â”‚   â”œâ”€â”€ two-column.js           # Two-column layout (~8KB)
+â”‚   â””â”€â”€ component-viewer-client.js  # Component viewer client
+â”œâ”€â”€ web-design-system.css       # Global stylesheet with all design tokens
+â””â”€â”€ manifest.json               # Deployment metadata
 ```
 
 ## Squiz Matrix Paint Layout Integration
@@ -196,7 +196,7 @@ After running `npm run build`, the HTML nesters in `deploy/nesters/` will contai
 ></script>
 <link
   rel="stylesheet"
-  href="%globals_asset_url_with_hash:1590990:deploy/ntg-design-system.css%"
+  href="%globals_asset_url_with_hash:1590990:deploy/web-design-system.css%"
 />
 ```
 
@@ -361,7 +361,7 @@ In your Squiz Matrix paint layouts, reference the compiled files:
 <!-- Global Design System Stylesheet -->
 <link
   rel="stylesheet"
-  href="%globals_asset_url_with_hash:ASSET_ID:deploy/ntg-design-system.css%"
+  href="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.css%"
 />
 
 <!-- Vanilla JS Components -->
@@ -427,7 +427,7 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 
 ### Styles Not Applied
 
-- **Check stylesheet loading** - Verify `ntg-design-system.css` loads in Network tab
+- **Check stylesheet loading** - Verify `web-design-system.css` loads in Network tab
 - **Check for CSS conflicts** - Existing site styles may override design system
 - **Verify class names** - Components use `.nt-*` prefix to avoid conflicts
 - **Clear cache** - Browser and Squiz Matrix caches may need clearing
@@ -501,14 +501,14 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 
 ```
 deploy/
-├── ntg-design-system.css    ~20-30KB (minified, all components)
-├── js/
-│   ├── header.js            ~25KB (includes dependencies)
-│   ├── left-nav.js          ~5KB (minimal dependencies)
-│   ├── theme-switcher.js    ~10KB (includes localStorage logic)
-│   ├── two-column.js        ~8KB (lightweight layout)
-│   └── component-viewer-client.js  ~15KB (includes Prism.js)
-└── nesters/                ~10-15KB total (5 HTML files)
+â”œâ”€â”€ web-design-system.css    ~20-30KB (minified, all components)
+â”œâ”€â”€ js/
+â”‚   â”œâ”€â”€ header.js            ~25KB (includes dependencies)
+â”‚   â”œâ”€â”€ left-nav.js          ~5KB (minimal dependencies)
+â”‚   â”œâ”€â”€ theme-switcher.js    ~10KB (includes localStorage logic)
+â”‚   â”œâ”€â”€ two-column.js        ~8KB (lightweight layout)
+â”‚   â””â”€â”€ component-viewer-client.js  ~15KB (includes Prism.js)
+â””â”€â”€ nesters/                ~10-15KB total (5 HTML files)
 ```
 
 **Total bundle size:** ~90-110KB (complete design system with all components)
@@ -554,3 +554,4 @@ deploy/
 
 - Check that localStorage is enabled in the browser
 - Verify no conflicting theme scripts on the page
+

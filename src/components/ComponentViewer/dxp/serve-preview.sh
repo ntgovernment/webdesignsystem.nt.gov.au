@@ -1,9 +1,9 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 # ComponentViewer Preview Helper Script
 # Copies preview files to Storybook's public directory for same-origin testing
 
-echo "📦 Setting up ComponentViewer preview in Storybook..."
+echo "ðŸ“¦ Setting up ComponentViewer preview in Storybook..."
 
 # Set the Storybook project directory
 STORYBOOK_DIR="/c/Projects/web-design-system"
@@ -24,18 +24,18 @@ cp deploy/dxp-components/component-viewer/example.data.json "$STORYBOOK_PUBLIC/c
 # Update paths in the copied preview file for the new location
 sed -i 's|import render from '\''\.\/main\.js'\'';|import render from '\''./component-viewer-main.js'\'';|g' "$STORYBOOK_PUBLIC/component-viewer-preview.html"
 sed -i 's|fetch('\''\.\/example\.data\.json'\'')|fetch('\''./component-viewer-data.json'\'')|g' "$STORYBOOK_PUBLIC/component-viewer-preview.html"
-sed -i 's|href="\.\.\/\.\.\/ntg-design-system\.css"|href="./ntg-design-system.css"|g' "$STORYBOOK_PUBLIC/component-viewer-preview.html"
+sed -i 's|href="\.\.\/\.\.\/web-design-system\.css"|href="./web-design-system.css"|g' "$STORYBOOK_PUBLIC/component-viewer-preview.html"
 
 # Copy design system CSS if it exists in deploy
-if [ -f "deploy/ntg-design-system.css" ]; then
-  cp deploy/ntg-design-system.css "$STORYBOOK_PUBLIC/"
-  echo "✓ Copied ntg-design-system.css"
+if [ -f "deploy/web-design-system.css" ]; then
+  cp deploy/web-design-system.css "$STORYBOOK_PUBLIC/"
+  echo "âœ“ Copied web-design-system.css"
 fi
 
 echo ""
-echo "✅ Preview files copied to $STORYBOOK_PUBLIC"
+echo "âœ… Preview files copied to $STORYBOOK_PUBLIC"
 echo ""
-echo "🚀 Next steps:"
+echo "ðŸš€ Next steps:"
 echo ""
 echo "   1. Navigate to your Storybook project:"
 echo "      $ cd $STORYBOOK_DIR"
@@ -47,5 +47,6 @@ echo "   3. Open in browser:"
 echo "      http://localhost:6006/component-viewer-preview.html"
 echo "      (or whatever port your Storybook runs on)"
 echo ""
-echo "💡 Files will auto-reload when you make changes!"
+echo "ðŸ’¡ Files will auto-reload when you make changes!"
 echo ""
+

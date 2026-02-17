@@ -1,4 +1,4 @@
-# TwoColumn - DXP Component Service
+﻿# TwoColumn - DXP Component Service
 
 Responsive two-column layout with WYSIWYG content areas for Squiz DXP Component Service.
 
@@ -11,7 +11,7 @@ TwoColumn provides a flexible grid-based layout for displaying content side-by-s
 - WYSIWYG editors for left and right content
 - Configurable column widths (CSS grid values)
 - Optional background colors per column
-- Responsive: side-by-side on desktop (>768px), stacked on mobile (≤768px)
+- Responsive: side-by-side on desktop (>768px), stacked on mobile (â‰¤768px)
 - No client-side JavaScript required (server-rendered only)
 
 ## Architecture
@@ -20,7 +20,7 @@ Unlike ComponentViewer which uses client-side hydration, TwoColumn is a **pure s
 
 - **Server-side rendering** (edge): `main.js` generates complete HTML structure
 - **No client-side JavaScript**: Static layout with CSS-only responsive behavior
-- **Global styles**: Loaded via `ntg-design-system.css`
+- **Global styles**: Loaded via `web-design-system.css`
 
 ## Files
 
@@ -125,7 +125,7 @@ The following must be loaded in the page `<head>`:
   ```html
   <link
     rel="stylesheet"
-    href="%globals_asset_url_with_hash:ASSET_ID:deploy/ntg-design-system.css%"
+    href="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.css%"
   />
   ```
 
@@ -145,37 +145,37 @@ The following must be loaded in the page `<head>`:
 ## Architecture Diagram
 
 ```
-┌─────────────────────────────────────────┐
-│   Server (Edge)                         │
-│   main.js renders complete HTML:        │
-│                                         │
-│   <div class="nt-two-column"            │
-│        style="display: grid;            │
-│                grid-template-columns:   │
-│                  1fr 2fr;               │
-│                gap: 2rem;">             │
-│     <div class="...__left">             │
-│       [WYSIWYG content]                 │
-│     </div>                              │
-│     <div class="...__right">            │
-│       [WYSIWYG content]                 │
-│     </div>                              │
-│   </div>                                │
-└──────────────┬──────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────┐
-│   Browser (Client)                      │
-│                                         │
-│   1. Loads ntg-design-system.css        │
-│   2. Applies responsive breakpoint:     │
-│      @media (max-width: 768px) {        │
-│        grid-template-columns: 1fr;      │
-│      }                                  │
-│   3. Displays final layout              │
-│                                         │
-│   No JavaScript initialization needed   │
-└─────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   Server (Edge)                         â”‚
+â”‚   main.js renders complete HTML:        â”‚
+â”‚                                         â”‚
+â”‚   <div class="nt-two-column"            â”‚
+â”‚        style="display: grid;            â”‚
+â”‚                grid-template-columns:   â”‚
+â”‚                  1fr 2fr;               â”‚
+â”‚                gap: 2rem;">             â”‚
+â”‚     <div class="...__left">             â”‚
+â”‚       [WYSIWYG content]                 â”‚
+â”‚     </div>                              â”‚
+â”‚     <div class="...__right">            â”‚
+â”‚       [WYSIWYG content]                 â”‚
+â”‚     </div>                              â”‚
+â”‚   </div>                                â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+               â”‚
+               â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   Browser (Client)                      â”‚
+â”‚                                         â”‚
+â”‚   1. Loads web-design-system.css        â”‚
+â”‚   2. Applies responsive breakpoint:     â”‚
+â”‚      @media (max-width: 768px) {        â”‚
+â”‚        grid-template-columns: 1fr;      â”‚
+â”‚      }                                  â”‚
+â”‚   3. Displays final layout              â”‚
+â”‚                                         â”‚
+â”‚   No JavaScript initialization needed   â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ## Example Use Cases
@@ -218,8 +218,9 @@ The following must be loaded in the page `<head>`:
 The source files remain at `src/components/TwoColumn/` if you need to modify styles:
 
 - `TwoColumn.css` - Base styles and responsive breakpoints
-- Rebuild with: `npm run build` (updates `deploy/ntg-design-system.css`)
+- Rebuild with: `npm run build` (updates `deploy/web-design-system.css`)
 
 ## Version History
 
 - **1.0.0** - Initial DXP Component Service implementation with WYSIWYG support
+

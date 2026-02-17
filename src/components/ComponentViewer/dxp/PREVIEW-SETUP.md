@@ -1,4 +1,4 @@
-# ComponentViewer - Local Preview Setup
+﻿# ComponentViewer - Local Preview Setup
 
 This guide explains how to preview the ComponentViewer component with your Storybook instance running in a separate directory.
 
@@ -41,7 +41,7 @@ mkdir .storybook\public
 copy ..\webdesignsystem.nt.gov.au\deploy\dxp-components\component-viewer\preview.html .storybook\public\component-viewer-preview.html
 copy ..\webdesignsystem.nt.gov.au\deploy\dxp-components\component-viewer\main.js .storybook\public\component-viewer-main.js
 copy ..\webdesignsystem.nt.gov.au\deploy\dxp-components\component-viewer\example.data.json .storybook\public\component-viewer-data.json
-copy ..\webdesignsystem.nt.gov.au\deploy\ntg-design-system.css .storybook\public\
+copy ..\webdesignsystem.nt.gov.au\deploy\web-design-system.css .storybook\public\
 ```
 
 ### Step 2: Update Paths in preview.html
@@ -60,9 +60,9 @@ const response = await fetch('./example.data.json');
 const response = await fetch('./component-viewer-data.json');
 
 // Change:
-<link rel="stylesheet" href="../../ntg-design-system.css">
+<link rel="stylesheet" href="../../web-design-system.css">
 // To:
-<link rel="stylesheet" href="./ntg-design-system.css">
+<link rel="stylesheet" href="./web-design-system.css">
 ```
 
 ### Step 3: Start Storybook
@@ -85,10 +85,10 @@ Navigate to: http://localhost:6006/component-viewer-preview.html
 
 By serving the ComponentViewer preview from the same server as Storybook:
 
-- ✅ **No CORS errors** - Both on same origin
-- ✅ **Code extraction works** - Can access iframe content
-- ✅ **Live preview** - See actual Storybook components
-- ✅ **Auto-reload** - Changes to preview files reload automatically
+- âœ… **No CORS errors** - Both on same origin
+- âœ… **Code extraction works** - Can access iframe content
+- âœ… **Live preview** - See actual Storybook components
+- âœ… **Auto-reload** - Changes to preview files reload automatically
 
 ### Alternative: Proxy Setup (Not Recommended)
 
@@ -140,3 +140,4 @@ This setup is for **development only**. For production:
 - Use the Squiz DXP Component Service pattern
 - Or deploy as static files via Git File Bridge
 - See main README.md for deployment instructions
+

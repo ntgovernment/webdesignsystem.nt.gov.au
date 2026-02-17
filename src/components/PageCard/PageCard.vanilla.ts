@@ -51,6 +51,8 @@ export interface PageCardProps {
   pages?: PageCardItem[]; // Squiz Matrix nester compatibility
   Title?: string;
   title?: string;
+  Description?: string;
+  description?: string;
   gap?: string;
   cssClass?: string;
 }
@@ -207,19 +209,13 @@ export class PageCardClient {
     const pageArray =
       this.props.Cards || this.props.PageArray || this.props.pages || [];
     const title = this.props.Title || this.props.title || "";
+    const description = this.props.Description || this.props.description || "";
     const { gap = "var(--sp-md, 16px)", cssClass = "" } = this.props;
 
     const containerClasses = ["nt-page-card", cssClass]
       .filter(Boolean)
       .join(" ");
     this.container.className = containerClasses;
-    this.container.setAttribute("role", "list");
-    this.container.setAttribute("data-component-type", "page-card-grid");
-    this.container.setAttribute("data-page-count", String(pageArray.length));
-    this.container.style.display = "grid";
-    this.container.style.gridTemplateColumns =
-      "repeat(auto-fill, minmax(353px, 1fr))";
-    this.container.style.gap = gap;
     this.container.style.width = "100%";
 
     let html = "";
@@ -228,9 +224,14 @@ export class PageCardClient {
     if (title) {
       html += `<h2 class="nt-page-card__title">${escapeHtml(title)}</h2>`;
     }
+    if (description) {
+      html += `<p class="nt-page-card__description">${escapeHtml(description)}</p>`;
+    }
+    html += `<div class="nt-page-card__grid" role="list" data-component-type="page-card-grid" data-page-count="${pageArray.length}" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(353px, 1fr)); gap: ${escapeAttr(gap)}; width: 100%;">`;
     pageArray.forEach((page, index) => {
       html += `<div role="listitem" data-page-index="${index}" style="width: 100%; height: 100%;">${this.renderCard(page)}</div>`;
     });
+    html += "</div>";
 
     this.container.innerHTML = html;
   }

@@ -1,4 +1,4 @@
-# Left Navigation Component - Implementation Summary
+﻿# Left Navigation Component - Implementation Summary
 
 **Recent updates (2026-02-14):**
 
@@ -6,11 +6,11 @@
 - Hover & focus states updated to use `var(--clr-bg-shade)` for background and `var(--clr-link-default)` for text.
 - Left navigation now stretches to the full page height so its right border runs from header to footer (`min-height: 100%` + `align-self: stretch`).
 
-## ✅ Implementation Complete
+## âœ… Implementation Complete
 
 The Left Navigation component has been successfully implemented with both React and Vanilla JS versions.
 
-## 📦 What Was Built
+## ðŸ“¦ What Was Built
 
 ### Components Created
 
@@ -47,9 +47,9 @@ Extended [src/tokens.css](src/tokens.css) with:
 
 - **JavaScript**: `deploy/js/left-nav.js` (4.99 kB, 1.27 kB gzipped)
 - **Nester**: `deploy/nesters/left-nav.html`
-- **Styles**: Included in `deploy/ntg-design-system.css`
+- **Styles**: Included in `deploy/web-design-system.css`
 
-## 🎯 Menu Structure
+## ðŸŽ¯ Menu Structure
 
 The component includes all requested menu items:
 
@@ -71,7 +71,7 @@ The component includes all requested menu items:
 - **Components**
 - **Help and Support**
 
-## 🚀 Usage Examples
+## ðŸš€ Usage Examples
 
 ### React Usage
 
@@ -108,7 +108,7 @@ function App() {
 ```html
 <link
   rel="stylesheet"
-  href="%globals_asset_url:1590990%/ntg-design-system.css"
+  href="%globals_asset_url:1590990%/web-design-system.css"
 />
 ```
 
@@ -177,7 +177,7 @@ function App() {
 </div>
 ```
 
-## ✨ Features
+## âœ¨ Features
 
 ### Auto-Expansion
 
@@ -216,11 +216,11 @@ function App() {
 ### Animations
 
 - Smooth expand/collapse transitions (0.2s)
-- Chevron rotation (90°) when section expands
+- Chevron rotation (90Â°) when section expands
 - Mobile drawer slide-in/out (0.3s)
 - Overlay fade in/out
 
-## 🎨 Customization
+## ðŸŽ¨ Customization
 
 ### CSS Custom Properties
 
@@ -252,7 +252,7 @@ All colors, spacing, and transitions can be customized via CSS variables in [tok
 - `data-default-expanded`: Comma-separated section IDs (e.g., `"foundations,components"`)
 - `data-mobile-breakpoint`: Pixel value for mobile breakpoint (default: `"768"`)
 
-## 📱 Testing
+## ðŸ“± Testing
 
 ### Development Server
 
@@ -272,17 +272,17 @@ The component is viewable in the Component Viewer at:
 - [x] Smooth animations
 - [x] Icon rendering (Font Awesome)
 
-## 🚢 Deployment
+## ðŸš¢ Deployment
 
 Files are ready in the `deploy/` directory:
 
 ```
 deploy/
-├── js/
-│   └── left-nav.js                    # Vanilla JS component (4.99 kB)
-├── nesters/
-│   └── left-nav.html                  # Squiz nester template
-└── ntg-design-system.css              # Global styles (includes LeftNav)
+â”œâ”€â”€ js/
+â”‚   â””â”€â”€ left-nav.js                    # Vanilla JS component (4.99 kB)
+â”œâ”€â”€ nesters/
+â”‚   â””â”€â”€ left-nav.html                  # Squiz nester template
+â””â”€â”€ web-design-system.css              # Global styles (includes LeftNav)
 ```
 
 ### Next Steps for Squiz Matrix
@@ -292,24 +292,25 @@ deploy/
 3. Mark the current page with `aria-current="page"` on the appropriate link
 4. Customize menu items and links for your site structure
 
-## 📚 Documentation
+## ðŸ“š Documentation
 
 Updated documentation in:
 
 - [README.md](README.md) - Usage examples and API reference
 - Component Viewer - Live demo with full menu structure
 
-## 🎉 Summary
+## ðŸŽ‰ Summary
 
 The Left Navigation component is production-ready with:
 
-- ✅ Dual implementation (React + Vanilla JS)
-- ✅ 2-level collapsible menu structure
-- ✅ Auto-expansion of active sections
-- ✅ Mobile-responsive drawer
-- ✅ Full keyboard navigation
-- ✅ ARIA compliant for accessibility
-- ✅ Squiz Matrix deployment ready
-- ✅ Complete documentation
+- âœ… Dual implementation (React + Vanilla JS)
+- âœ… 2-level collapsible menu structure
+- âœ… Auto-expansion of active sections
+- âœ… Mobile-responsive drawer
+- âœ… Full keyboard navigation
+- âœ… ARIA compliant for accessibility
+- âœ… Squiz Matrix deployment ready
+- âœ… Complete documentation
 
 Total bundle size: **4.99 kB** (1.27 kB gzipped) - lightweight and performant!
+

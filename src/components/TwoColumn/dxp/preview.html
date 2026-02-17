@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
     <title>TwoColumn Preview - DXP Component Service</title>
 
     <!-- Design System Styles -->
-    <link rel="stylesheet" href="../../ntg-design-system.css">
+    <link rel="stylesheet" href="../../web-design-system.css">
 
     <style>
         body {
@@ -71,7 +71,7 @@
         /* Responsive indicator */
         @media (max-width: 768px) {
             body::before {
-                content: "📱 Mobile View (≤768px) - Columns should be stacked";
+                content: "ðŸ“± Mobile View (â‰¤768px) - Columns should be stacked";
                 display: block;
                 padding: 1rem;
                 background: #fff3cd;
@@ -85,7 +85,7 @@
 
         @media (min-width: 769px) {
             body::before {
-                content: "🖥️ Desktop View (>768px) - Columns should be side-by-side";
+                content: "ðŸ–¥ï¸ Desktop View (>768px) - Columns should be side-by-side";
                 display: block;
                 padding: 1rem;
                 background: #d1ecf1;
@@ -176,16 +176,16 @@
 
             // Update status
             document.getElementById('status').innerHTML =
-                '✓ All examples rendered successfully! Resize browser window to test responsive behavior.';
+                'âœ“ All examples rendered successfully! Resize browser window to test responsive behavior.';
 
-            console.log('✓ TwoColumn component preview loaded successfully');
+            console.log('âœ“ TwoColumn component preview loaded successfully');
             console.log('Example data:', exampleData);
 
         } catch (error) {
             console.error('Error loading preview:', error);
             const statusEl = document.getElementById('status');
             statusEl.className = 'status error';
-            statusEl.innerHTML = `✗ Error: ${error.message}`;
+            statusEl.innerHTML = `âœ— Error: ${error.message}`;
         }
     </script>
 </body>

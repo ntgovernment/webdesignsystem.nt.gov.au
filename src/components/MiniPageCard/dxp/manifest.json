@@ -1,9 +1,9 @@
 {
   "$schema": "http://localhost:3000/schemas/v1.json#",
   "namespace": "web-design-system",
-  "name": "page-card",
-  "displayName": "Page Card Grid",
-  "description": "Responsive grid layout displaying Card assets with Image and Title",
+  "name": "mini-page-card",
+  "displayName": "Mini Page Card",
+  "description": "Compact grid layout displaying Card assets with icon and title",
   "icon": {
     "id": "layers",
     "color": {
@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.9",
+  "version": "1.0.1",
   "mainFunction": "main",
   "functions": [
     {
@@ -34,7 +34,7 @@
           "Cards": {
             "type": "array",
             "title": "Cards",
-            "description": "Collection of cards to display in the grid. Each card includes a link, optional image, and title.",
+            "description": "Collection of cards to display in the grid. Each card includes a link, title, and icon.",
             "items": {
               "type": "object",
               "properties": {
@@ -42,13 +42,14 @@
                   "type": "SquizLink",
                   "title": "Page asset"
                 },
-                "CardImage": {
-                  "type": "SquizImage",
-                  "title": "Card image"
-                },
                 "CardTitle": {
                   "type": "string",
                   "title": "Card title"
+                },
+                "IconCode": {
+                  "type": "string",
+                  "title": "FontAwesome class name",
+                  "description": "Class string for the icon (example: fa-solid fa-circle-info)"
                 }
               },
               "required": ["PageAsset", "CardTitle"]
@@ -81,7 +82,7 @@
           "Cards": {
             "type": "array",
             "title": "Cards",
-            "description": "Collection of cards to display in the grid. Each card includes a link, optional image, and title.",
+            "description": "Collection of cards to display in the grid. Each card includes a link, title, and icon.",
             "items": {
               "type": "object",
               "properties": {
@@ -89,13 +90,14 @@
                   "type": "SquizLink",
                   "title": "Page asset"
                 },
-                "CardImage": {
-                  "type": "SquizImage",
-                  "title": "Card image"
-                },
                 "CardTitle": {
                   "type": "string",
                   "title": "Card title"
+                },
+                "IconCode": {
+                  "type": "string",
+                  "title": "FontAwesome class name",
+                  "description": "Class string for the icon (example: fa-solid fa-circle-info)"
                 }
               },
               "required": ["PageAsset", "CardTitle"]
@@ -120,80 +122,62 @@
           "inputData": {
             "type": "inline",
             "value": {
-              "Title": "Key Services",
-              "Description": "Browse services and resources by topic.",
+              "Title": "Explore the design system",
+              "Description": "Quick links to the system resources.",
               "Cards": [
                 {
                   "PageAsset": {
-                    "url": "/business/licensing",
-                    "text": "Business Licensing",
+                    "url": "/about",
+                    "text": "About",
                     "target": "_self"
                   },
-                  "CardImage": {
-                    "name": "Business Licensing image",
-                    "alt": "Business Licensing",
-                    "caption": "Business Licensing",
-                    "imageVariations": {
-                      "original": {
-                        "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=360&fit=crop",
-                        "width": 640,
-                        "height": 360,
-                        "byteSize": 0,
-                        "mimeType": "image/jpeg",
-                        "aspectRatio": "16:9",
-                        "sha1Hash": "0000000000000000000000000000000000000000"
-                      }
-                    }
-                  },
-                  "CardTitle": "Business Licensing"
+                  "CardTitle": "About",
+                  "IconCode": "fa-light fa-circle-info"
                 },
                 {
                   "PageAsset": {
-                    "url": "/grants/community",
-                    "text": "Community Grants",
+                    "url": "/foundations",
+                    "text": "Foundations",
                     "target": "_self"
                   },
-                  "CardImage": {
-                    "name": "Community Grants image",
-                    "alt": "Community Grants",
-                    "caption": "Community Grants",
-                    "imageVariations": {
-                      "original": {
-                        "url": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&h=360&fit=crop",
-                        "width": 640,
-                        "height": 360,
-                        "byteSize": 0,
-                        "mimeType": "image/jpeg",
-                        "aspectRatio": "16:9",
-                        "sha1Hash": "0000000000000000000000000000000000000000"
-                      }
-                    }
-                  },
-                  "CardTitle": "Community Grants"
+                  "CardTitle": "Foundations",
+                  "IconCode": "fa-light fa-layer-group"
                 },
                 {
                   "PageAsset": {
-                    "url": "/health",
-                    "text": "Health Services",
+                    "url": "/components",
+                    "text": "Components",
                     "target": "_self"
                   },
-                  "CardImage": {
-                    "name": "Health Services image",
-                    "alt": "Health Services",
-                    "caption": "Health Services",
-                    "imageVariations": {
-                      "original": {
-                        "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=640&h=360&fit=crop",
-                        "width": 640,
-                        "height": 360,
-                        "byteSize": 0,
-                        "mimeType": "image/jpeg",
-                        "aspectRatio": "16:9",
-                        "sha1Hash": "0000000000000000000000000000000000000000"
-                      }
-                    }
+                  "CardTitle": "Components",
+                  "IconCode": "fa-light fa-cubes"
+                },
+                {
+                  "PageAsset": {
+                    "url": "/storybook",
+                    "text": "Storybook",
+                    "target": "_self"
                   },
-                  "CardTitle": "Health Services"
+                  "CardTitle": "Storybook",
+                  "IconCode": "fa-light fa-book"
+                },
+                {
+                  "PageAsset": {
+                    "url": "/figma",
+                    "text": "Figma UI Kit",
+                    "target": "_self"
+                  },
+                  "CardTitle": "Figma UI Kit",
+                  "IconCode": "fa-light fa-pen-nib"
+                },
+                {
+                  "PageAsset": {
+                    "url": "https://github.com/ntgovernment/web-design-system",
+                    "text": "Github",
+                    "target": "_blank"
+                  },
+                  "CardTitle": "Github",
+                  "IconCode": "fa-brands fa-github"
                 }
               ]
             }

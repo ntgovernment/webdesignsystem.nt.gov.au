@@ -1,11 +1,11 @@
-/**
+﻿/**
  * TwoColumn DXP Component Service - Server-Side Renderer
  *
  * Renders a responsive two-column layout with WYSIWYG content areas.
  * Desktop: Columns displayed side-by-side with configurable widths
- * Mobile (≤768px): Columns stack vertically
+ * Mobile (â‰¤768px): Columns stack vertically
  *
- * CSS is loaded globally via ntg-design-system.css
+ * CSS is loaded globally via web-design-system.css
  * No client-side JavaScript required (static layout component)
  */
 
@@ -84,3 +84,4 @@ export default {
 </div>`;
   },
 };
+
