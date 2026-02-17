@@ -5,14 +5,14 @@
   "displayName": "Page Card Grid",
   "description": "Responsive grid layout displaying Card assets with Image and Title",
   "icon": {
-    "id": "layers",
+    "id": "view_comfy",
     "color": {
       "type": "enum",
       "value": "orange"
     }
   },
   "type": "edge",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "mainFunction": "main",
   "functions": [
     {

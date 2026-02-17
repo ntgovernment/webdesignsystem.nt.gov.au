@@ -5,14 +5,14 @@
   "displayName": "Mini Page Card",
   "description": "Compact grid layout displaying Card assets with icon and title",
   "icon": {
-    "id": "layers",
+    "id": "grid_view",
     "color": {
       "type": "enum",
       "value": "orange"
     }
   },
   "type": "edge",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "mainFunction": "main",
   "functions": [
     {

@@ -5,14 +5,14 @@
   "displayName": "Component Viewer",
   "description": "Interactive component viewer with Storybook iframe integration, code display, and zoom controls",
   "icon": {
-    "id": "code",
+    "id": "preview",
     "color": {
       "type": "enum",
       "value": "blue"
     }
   },
   "type": "edge",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "mainFunction": "render",
   "functions": [
     {
