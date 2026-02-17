@@ -8,22 +8,52 @@
 
 import "./PageCard.css";
 
-export interface ContentPageAsset {
-  assetId: string;
-  title?: string;
-  description?: string;
-  href?: string;
-  ariaLabel?: string;
+export type SquizLinkValue =
+  | string
+  | {
+      assetId?: string;
+      url?: string;
+      href?: string;
+      text?: string;
+      title?: string;
+      name?: string;
+      target?: string;
+    };
+
+export interface SquizImageVariation {
+  url?: string;
+  width?: number;
+  height?: number;
+  byteSize?: number;
+  mimeType?: string;
+  aspectRatio?: string;
+  sha1Hash?: string;
+}
+
+export interface SquizImageValue {
+  name?: string;
+  alt?: string;
+  caption?: string;
+  imageVariations?: Record<string, SquizImageVariation>;
+}
+
+export interface PageCardItem {
+  PageAsset?: SquizLinkValue;
+  CardImage?: SquizImageValue | SquizLinkValue;
+  CardTitle?: string;
 }
 
 export interface PageCardProps {
-  pages: ContentPageAsset[];
-  columns?: number;
+  PageArray?: PageCardItem[];
+  pages?: PageCardItem[];
   gap?: string;
-  cardVariant?: "full" | "compact";
-  clickable?: boolean;
   cssClass?: string;
 }
+
+const isLinkObject = (
+  link?: SquizLinkValue,
+): link is Exclude<SquizLinkValue, string> =>
+  !!link && typeof link !== "string";
 
 export class PageCardClient {
   private container: HTMLElement;
@@ -53,7 +83,8 @@ export class PageCardClient {
     }
 
     // Validate props
-    if (!this.props.pages || this.props.pages.length === 0) {
+    const pageArray = this.props.PageArray || this.props.pages || [];
+    if (!pageArray || pageArray.length === 0) {
       console.error("[PageCard] No pages provided in props");
       this.renderError("No content pages provided");
       return;
@@ -61,7 +92,7 @@ export class PageCardClient {
 
     console.log(
       "[PageCard] Validation passed, rendering",
-      this.props.pages.length,
+      pageArray.length,
       "page(s)",
     );
 
@@ -86,32 +117,105 @@ export class PageCardClient {
       .replace(/'/g, "&#039;");
   }
 
-  private renderCard(page: ContentPageAsset): string {
-    const assetId = this.escapeAttr(page.assetId);
+  private resolveLinkUrl(link?: SquizLinkValue): string {
+    if (!link) {
+      return "";
+    }
 
-    return `<div class="card card--clickable card--full text-bg-full" tabindex="0" role="button" style="max-width: 353px;" data-asset-id="${assetId}">
+    if (typeof link === "string") {
+      return link;
+    }
+
+    return link.url || link.href || "";
+  }
+
+  private resolveLinkTitle(link?: SquizLinkValue): string {
+    if (!link || typeof link === "string") {
+      return "";
+    }
+
+    return link.text || link.title || link.name || "";
+  }
+
+  private resolveImageUrl(image?: SquizImageValue | SquizLinkValue): string {
+    if (!image) {
+      return "";
+    }
+
+    if (typeof image === "string") {
+      return image;
+    }
+
+    if ("imageVariations" in image && image.imageVariations) {
+      const original = image.imageVariations.original;
+      if (original?.url) {
+        return original.url;
+      }
+
+      const variations = Object.values(image.imageVariations);
+      const fallback = variations.find((item) => item?.url);
+      if (fallback?.url) {
+        return fallback.url;
+      }
+    }
+
+    if (isLinkObject(image)) {
+      return image.url || image.href || "";
+    }
+
+    return "";
+  }
+
+  private resolveImageAlt(
+    image?: SquizImageValue | SquizLinkValue,
+    fallbackTitle?: string,
+  ): string {
+    if (!image || typeof image === "string") {
+      return fallbackTitle || "";
+    }
+
+    if ("alt" in image && image.alt) {
+      return image.alt;
+    }
+
+    return fallbackTitle || image.name || "";
+  }
+
+  private renderCard(page: PageCardItem): string {
+    const href = this.resolveLinkUrl(page.PageAsset);
+    const imageUrl = this.resolveImageUrl(page.CardImage);
+    const title = page.CardTitle || this.resolveLinkTitle(page.PageAsset) || "";
+    const escapedTitle = this.escapeHtml(title);
+    const escapedTitleAttr = this.escapeAttr(
+      this.resolveImageAlt(page.CardImage, title || "Card"),
+    );
+    const cardTag = href ? "a" : "div";
+    const hrefAttr = href ? ` href="${this.escapeAttr(href)}"` : "";
+    const clickableClass = href ? " card--clickable" : "";
+    const mediaContent = imageUrl
+      ? `<img src="${this.escapeAttr(imageUrl)}" alt="${escapedTitleAttr}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; max-height: 200px;">`
+      : `<div aria-hidden="true" style="width: 100%; height: 100%; background: var(--clr-bg-shade, #f5f5f7);"></div>`;
+
+    return `<${cardTag} class="card${clickableClass} card--full text-bg-full"${hrefAttr} style="max-width: 353px;">
       <div class="card__media card__media--16:9">
-        <img src="%globals_asset_metadata_content-cardImagePhoto:${assetId}^as_asset:asset_url%" alt="Card image" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; max-height: 200px;">
+        ${mediaContent}
       </div>
       <div class="card-body">
         <div class="card__body-content">
           <div class="card__body-title-wrapper">
-            <h5 class="card-title">%globals_asset_name:${assetId}</h5>
+            <h5 class="card-title">${escapedTitle}</h5>
           </div>
         </div>
       </div>
       <div class="card-footer">
         <div class="card__footer-actions"></div>
       </div>
-    </div>`;
+    </${cardTag}>`;
   }
 
   private render(): void {
-    const {
-      pages = [],
-      gap = "var(--sp-md, 16px)",
-      cssClass = "",
-    } = this.props;
+    const pageArray = this.props.PageArray || this.props.pages || [];
+    const { gap = "var(--sp-md, 16px)", cssClass = "" } = this.props;
 
     const containerClasses = ["nt-page-card", cssClass]
       .filter(Boolean)
@@ -119,7 +223,7 @@ export class PageCardClient {
     this.container.className = containerClasses;
     this.container.setAttribute("role", "list");
     this.container.setAttribute("data-component-type", "page-card-grid");
-    this.container.setAttribute("data-page-count", String(pages.length));
+    this.container.setAttribute("data-page-count", String(pageArray.length));
     this.container.style.display = "grid";
     this.container.style.gridTemplateColumns =
       "repeat(auto-fill, minmax(280px, 1fr))";
@@ -127,29 +231,11 @@ export class PageCardClient {
     this.container.style.width = "100%";
 
     let html = "";
-    pages.forEach((page, index) => {
+    pageArray.forEach((page, index) => {
       html += `<div role="listitem" data-page-index="${index}">${this.renderCard(page)}</div>`;
     });
 
     this.container.innerHTML = html;
-
-    // Attach event listeners for keyboard navigation
-    this.attachEventListeners();
-  }
-
-  private attachEventListeners(): void {
-    const cards = this.container.querySelectorAll(".card.card--clickable");
-    cards.forEach((card) => {
-      const cardEl = card as HTMLElement;
-      cardEl.addEventListener("keydown", (e: Event) => {
-        if (
-          e instanceof KeyboardEvent &&
-          (e.key === "Enter" || e.key === " ")
-        ) {
-          cardEl.click();
-        }
-      });
-    });
   }
 
   private renderError(message: string): void {

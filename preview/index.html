@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <!-- Global tokens and base styles required by components -->
     <link rel="stylesheet" href="/src/index.css">
-    <!-- Fallback: built design system stylesheet -->
-    <link rel="stylesheet" href="/deploy/ntg-design-system.css">
+    <!-- NTG theme + card styles from web-design-system -->
+    <link rel="stylesheet" href="/deploy/web-design-system.min.css">
     <style>
         * {
             margin: 0;
@@ -347,7 +347,10 @@
         }
 
         /* Preview: ensure banner height adjusts to its contents (override old build rules) */
-        .nt-page-banner { height: auto !important; max-height: none !important; }
+        .nt-page-banner {
+            height: auto !important;
+            max-height: none !important;
+        }
     </style>
 </head>
 
@@ -533,6 +536,16 @@
                         data-hydration-props='{"leftContent":"<h3 style=\"margin-top: 0; color: #1f1f5f;\">📚 Documentation</h3><ul style=\"line-height: 1.8; padding-left: 1.5rem;\"><li><a href=\"#getting-started\" style=\"color: #0066cc;\">Getting Started</a></li><li><a href=\"#components\" style=\"color: #0066cc;\">Components</a></li><li><a href=\"#design-tokens\" style=\"color: #0066cc;\">Design Tokens</a></li><li><a href=\"#deployment\" style=\"color: #0066cc;\">Deployment Guide</a></li></ul>","rightContent":"<h3 style=\"margin-top: 0; color: #1f1f5f;\">🎯 Features</h3><p style=\"line-height: 1.6; margin-bottom: 1rem;\">This two-column layout component is built for Squiz DXP Component Service with:</p><ul style=\"line-height: 1.8; padding-left: 1.5rem;\"><li><strong>WYSIWYG editors</strong> for left and right content</li><li><strong>Responsive design</strong> - stacks on mobile (≤768px)</li><li><strong>Configurable widths</strong> using CSS grid values</li><li><strong>Optional backgrounds</strong> per column</li><li><strong>Server-rendered</strong> - no client JS required</li></ul>","leftWidth":"1fr","rightWidth":"2fr","gap":"2rem","leftBackground":"#f5f5f7","rightBackground":"#ffffff"}'>
                     </div>
                 </div>
+
+                <!-- Page Card Component Sample -->
+                <div class="demo-section" style="margin-bottom: 3rem;">
+                    <h2>🧩 Page Card Component</h2>
+                    <p style="margin-bottom: 1.5rem;">DXP Component Service - Card grid using the NT Design System
+                        card structure</p>
+                    <div data-hydration-component="page-card"
+                        data-hydration-props='{"PageArray":[{"PageAsset":{"url":"#business","assetId":"business-services"},"CardImage":{"url":"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=360&fit=crop","assetId":"business-services-image"},"CardTitle":"Business Licensing"},{"PageAsset":{"url":"#community","assetId":"community-grants"},"CardImage":{"url":"https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&h=360&fit=crop","assetId":"community-grants-image"},"CardTitle":"Community Grants"},{"PageAsset":{"url":"#health","assetId":"health-services"},"CardImage":{"url":"https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=640&h=360&fit=crop","assetId":"health-services-image"},"CardTitle":"Health Services"}]}'>
+                    </div>
+                </div>
             </div>
 
             <!-- Component viewer preview (auto-hydrates via ComponentViewerClient) -->
@@ -631,6 +644,7 @@
     <script type="module" src="/src/components/LeftNav/LeftNav.vanilla.ts"></script>
     <script type="module" src="/src/components/ThemeSwitcher/ThemeSwitcher.vanilla.ts"></script>
     <script type="module" src="/src/components/ComponentViewer/ComponentViewer.vanilla.ts"></script>
+    <script type="module" src="/src/components/PageCard/PageCard.vanilla.ts"></script>
 
     <!-- Two Column Component Hydration -->
     <script type="module">

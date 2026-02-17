@@ -1,74 +1,78 @@
 {
   "basic": {
-    "pages": [
+    "PageArray": [
       {
-        "assetId": "business-licensing",
-        "title": "Business Licensing",
-        "description": "Apply for licenses and permits online with fast processing",
-        "imageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=360&fit=crop",
-        "href": "/business/licensing"
+        "PageAsset": {
+          "url": "/business/licensing",
+          "text": "Business Licensing",
+          "target": "_self"
+        },
+        "CardImage": {
+          "name": "Business Licensing image",
+          "alt": "Business Licensing",
+          "caption": "Business Licensing",
+          "imageVariations": {
+            "original": {
+              "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=360&fit=crop",
+              "width": 640,
+              "height": 360,
+              "byteSize": 0,
+              "mimeType": "image/jpeg",
+              "aspectRatio": "16:9",
+              "sha1Hash": "0000000000000000000000000000000000000000"
+            }
+          }
+        },
+        "CardTitle": "Business Licensing"
       },
       {
-        "assetId": "community-grants",
-        "title": "Community Grants",
-        "description": "Funding available for local organizations and projects",
-        "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&h=360&fit=crop",
-        "href": "/grants/community"
+        "PageAsset": {
+          "url": "/grants/community",
+          "text": "Community Grants",
+          "target": "_self"
+        },
+        "CardImage": {
+          "name": "Community Grants image",
+          "alt": "Community Grants",
+          "caption": "Community Grants",
+          "imageVariations": {
+            "original": {
+              "url": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&h=360&fit=crop",
+              "width": 640,
+              "height": 360,
+              "byteSize": 0,
+              "mimeType": "image/jpeg",
+              "aspectRatio": "16:9",
+              "sha1Hash": "0000000000000000000000000000000000000000"
+            }
+          }
+        },
+        "CardTitle": "Community Grants"
       },
       {
-        "assetId": "health-services",
-        "title": "Health Services",
-        "description": "Find health facilities and book appointments online",
-        "imageUrl": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=640&h=360&fit=crop",
-        "href": "/health"
+        "PageAsset": {
+          "url": "/health",
+          "text": "Health Services",
+          "target": "_self"
+        },
+        "CardImage": {
+          "name": "Health Services image",
+          "alt": "Health Services",
+          "caption": "Health Services",
+          "imageVariations": {
+            "original": {
+              "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=640&h=360&fit=crop",
+              "width": 640,
+              "height": 360,
+              "byteSize": 0,
+              "mimeType": "image/jpeg",
+              "aspectRatio": "16:9",
+              "sha1Hash": "0000000000000000000000000000000000000000"
+            }
+          }
+        },
+        "CardTitle": "Health Services"
       }
-    ],
-    "columns": 3,
-    "gap": "var(--sp-md, 16px)"
-  },
-
-  "twoColumnNews": {
-    "pages": [
-      {
-        "assetId": "news-economic-growth",
-        "title": "Government Announces Economic Growth Initiative",
-        "description": "New $50M funding program to support small business development across NT",
-        "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&h=360&fit=crop",
-        "href": "/news/economic-growth",
-        "ariaLabel": "Read full article about economic growth initiative"
-      },
-      {
-        "assetId": "news-infrastructure",
-        "title": "Community Consultation Opens for Infrastructure Plans",
-        "description": "Have your say on proposed infrastructure projects in your region",
-        "imageUrl": "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=640&h=360&fit=crop",
-        "href": "/news/infrastructure",
-        "ariaLabel": "Read full article about community consultation"
-      }
-    ],
-    "columns": 2,
-    "gap": "var(--sp-lg, 24px)"
-  },
-
-  "minimal": {
-    "pages": [
-      {
-        "assetId": "quick-reference",
-        "title": "Quick Reference Guide",
-        "href": "/resources/guide"
-      },
-      { "assetId": "faqs", "title": "FAQs and Support", "href": "/help/faq" },
-      {
-        "assetId": "contact",
-        "title": "Contact Government",
-        "href": "/contact"
-      },
-      {
-        "assetId": "regulations",
-        "title": "Regulatory Information",
-        "href": "/resources/regulations"
-      }
-    ],
-    "columns": 4
+    ]
   }
 }

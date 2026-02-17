@@ -3,7 +3,7 @@
   "namespace": "web-design-system",
   "name": "page-card",
   "displayName": "Page Card Grid",
-  "description": "Responsive grid layout displaying ContentPage assets using Card-style layout with Image and Title",
+  "description": "Responsive grid layout displaying Card assets with Image and Title",
   "icon": {
     "id": "layers",
     "color": {
@@ -12,66 +12,78 @@
     }
   },
   "type": "edge",
-  "version": "1.0.0",
-  "mainFunction": "render",
+  "version": "1.0.6",
+  "mainFunction": "main",
   "functions": [
+    {
+      "name": "main",
+      "entry": "main.js",
+      "input": {
+        "type": "object",
+        "properties": {
+          "PageArray": {
+            "type": "array",
+            "title": "Page Array",
+            "description": "Array of card items. Each item supports a page link, an image link, and a display title.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "PageAsset": {
+                  "type": "SquizLink",
+                  "title": "Page asset"
+                },
+                "CardImage": {
+                  "type": "SquizImage",
+                  "title": "Card image"
+                },
+                "CardTitle": {
+                  "type": "string",
+                  "title": "Card title"
+                }
+              },
+              "required": ["PageAsset", "CardTitle"]
+            },
+            "minItems": 1
+          }
+        },
+        "required": []
+      },
+      "output": {
+        "responseType": "html"
+      }
+    },
     {
       "name": "render",
       "entry": "main.js",
       "input": {
         "type": "object",
         "properties": {
-          "pages": {
+          "PageArray": {
             "type": "array",
-            "title": "Content Pages (Asset IDs)",
-            "description": "Array of Squiz Matrix Asset IDs selected via the asset picker. The component will use the asset ID to resolve page metadata at render time.",
+            "title": "Page Array",
+            "description": "Array of card items. Each item supports a page link, an image link, and a display title.",
             "items": {
               "type": "object",
               "properties": {
-                "assetId": {
+                "PageAsset": {
+                  "type": "SquizLink",
+                  "title": "Page asset"
+                },
+                "CardImage": {
+                  "type": "SquizImage",
+                  "title": "Card image"
+                },
+                "CardTitle": {
                   "type": "string",
-                  "title": "Asset ID",
-                  "description": "Squiz Matrix Asset ID chosen with the asset picker"
+                  "title": "Card title"
                 }
               },
-              "required": ["assetId"]
+              "required": ["PageAsset", "CardTitle"]
             },
             "minItems": 1
-          },
-          "columns": {
-            "type": "number",
-            "title": "Grid Columns",
-            "description": "Maximum number of columns in grid layout (responsive, defaults to 3)",
-            "default": 3,
-            "minimum": 1,
-            "maximum": 6
-          },
-          "gap": {
-            "type": "string",
-            "title": "Grid Gap",
-            "description": "CSS value for spacing between cards (e.g., '16px', 'var(--sp-md)')",
-            "default": "var(--sp-md, 16px)"
-          },
-          "cardVariant": {
-            "type": "string",
-            "title": "Card Variant",
-            "description": "Variant of card layout",
-            "enum": ["full", "compact"],
-            "default": "full"
-          },
-          "clickable": {
-            "type": "boolean",
-            "title": "Clickable Cards",
-            "description": "Make entire cards clickable when href is provided",
-            "default": true
-          },
-          "cssClass": {
-            "type": "string",
-            "title": "CSS Class",
-            "description": "Additional CSS classes to apply to the component container"
           }
         },
-        "required": ["pages"]
+        "required": ["PageArray"]
       },
       "output": {
         "responseType": "html"
@@ -85,96 +97,80 @@
           "inputData": {
             "type": "inline",
             "value": {
-              "pages": [
+              "PageArray": [
                 {
-                  "assetId": "business-licensing",
-                  "title": "Business Licensing",
-                  "description": "Apply for licenses and permits online with fast processing",
-                  "imageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=360&fit=crop",
-                  "href": "/business/licensing"
+                  "PageAsset": {
+                    "url": "/business/licensing",
+                    "text": "Business Licensing",
+                    "target": "_self"
+                  },
+                  "CardImage": {
+                    "name": "Business Licensing image",
+                    "alt": "Business Licensing",
+                    "caption": "Business Licensing",
+                    "imageVariations": {
+                      "original": {
+                        "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=360&fit=crop",
+                        "width": 640,
+                        "height": 360,
+                        "byteSize": 0,
+                        "mimeType": "image/jpeg",
+                        "aspectRatio": "16:9",
+                        "sha1Hash": "0000000000000000000000000000000000000000"
+                      }
+                    }
+                  },
+                  "CardTitle": "Business Licensing"
                 },
                 {
-                  "assetId": "community-grants",
-                  "title": "Community Grants",
-                  "description": "Funding available for local organizations and projects",
-                  "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&h=360&fit=crop",
-                  "href": "/grants/community"
+                  "PageAsset": {
+                    "url": "/grants/community",
+                    "text": "Community Grants",
+                    "target": "_self"
+                  },
+                  "CardImage": {
+                    "name": "Community Grants image",
+                    "alt": "Community Grants",
+                    "caption": "Community Grants",
+                    "imageVariations": {
+                      "original": {
+                        "url": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&h=360&fit=crop",
+                        "width": 640,
+                        "height": 360,
+                        "byteSize": 0,
+                        "mimeType": "image/jpeg",
+                        "aspectRatio": "16:9",
+                        "sha1Hash": "0000000000000000000000000000000000000000"
+                      }
+                    }
+                  },
+                  "CardTitle": "Community Grants"
                 },
                 {
-                  "assetId": "health-services",
-                  "title": "Health Services",
-                  "description": "Find health facilities and book appointments online",
-                  "imageUrl": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=640&h=360&fit=crop",
-                  "href": "/health"
+                  "PageAsset": {
+                    "url": "/health",
+                    "text": "Health Services",
+                    "target": "_self"
+                  },
+                  "CardImage": {
+                    "name": "Health Services image",
+                    "alt": "Health Services",
+                    "caption": "Health Services",
+                    "imageVariations": {
+                      "original": {
+                        "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=640&h=360&fit=crop",
+                        "width": 640,
+                        "height": 360,
+                        "byteSize": 0,
+                        "mimeType": "image/jpeg",
+                        "aspectRatio": "16:9",
+                        "sha1Hash": "0000000000000000000000000000000000000000"
+                      }
+                    }
+                  },
+                  "CardTitle": "Health Services"
                 }
-              ],
-              "columns": 3,
-              "gap": "var(--sp-md, 16px)"
-            }
-          }
-        }
-      }
-    },
-    "two-column": {
-      "functionData": {
-        "render": {
-          "inputData": {
-            "type": "inline",
-            "value": {
-              "pages": [
-                {
-                  "assetId": "news-economic-growth",
-                  "title": "Government Announces Economic Growth Initiative",
-                  "description": "New $50M funding program to support small business development across NT",
-                  "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&h=360&fit=crop",
-                  "href": "/news/economic-growth",
-                  "ariaLabel": "Read full article about economic growth initiative"
-                },
-                {
-                  "assetId": "news-infrastructure",
-                  "title": "Community Consultation Opens for Infrastructure Plans",
-                  "description": "Have your say on proposed infrastructure projects in your region",
-                  "imageUrl": "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=640&h=360&fit=crop",
-                  "href": "/news/infrastructure",
-                  "ariaLabel": "Read full article about community consultation"
-                }
-              ],
-              "columns": 2,
-              "gap": "var(--sp-lg, 24px)"
-            }
-          }
-        }
-      }
-    },
-    "minimal": {
-      "functionData": {
-        "render": {
-          "inputData": {
-            "type": "inline",
-            "value": {
-              "pages": [
-                {
-                  "assetId": "quick-reference",
-                  "title": "Quick Reference Guide",
-                  "href": "/resources/guide"
-                },
-                {
-                  "assetId": "faqs",
-                  "title": "FAQs and Support",
-                  "href": "/help/faq"
-                },
-                {
-                  "assetId": "contact",
-                  "title": "Contact Government",
-                  "href": "/contact"
-                },
-                {
-                  "assetId": "regulations",
-                  "title": "Regulatory Information",
-                  "href": "/resources/regulations"
-                }
-              ],
-              "columns": 4
+              ]
             }
           }
         }

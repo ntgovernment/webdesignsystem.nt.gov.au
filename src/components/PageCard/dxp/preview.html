@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PageCard Preview - DXP Component Service</title>
 
-    <!-- Design System Styles -->
-    <link rel="stylesheet" href="../../ntg-design-system.css">
+    <!-- Design System Styles (NTG theme) -->
+    <link rel="stylesheet" href="/deploy/web-design-system.min.css">
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/9bf658a5c7.js" crossorigin="anonymous"></script>
@@ -114,22 +114,16 @@
 
     <div class="demo-section">
         <h2>📝 Input Schema</h2>
-        <p>The component accepts an array of ContentPage objects:</p>
+        <p>The component accepts an array of PageArray items:</p>
         <div class="code-block">
             <pre>{
-  "pages": [
-    {
-      "id": "unique-id",
-      "title": "Page Title (required)",
-      "imageUrl": "https://...", // optional
-      "description": "Short text", // optional
-      "href": "/link-url",         // optional
-      "ariaLabel": "Accessible..."  // optional
-    }
-  ],
-  "columns": 3,
-  "gap": "var(--sp-md, 16px)",
-  "clickable": true
+    "PageArray": [
+        {
+            "PageAsset": { "url": "/path/to/page" },
+            "CardImage": { "url": "https://..." },
+            "CardTitle": "Card title"
+        }
+    ]
 }</pre>
         </div>
     </div>
@@ -138,23 +132,7 @@
         <h2>🎨 Live Example: 3-Column Grid</h2>
         <p>Basic grid with images and descriptions:</p>
         <div data-hydration-component="page-card"
-            data-hydration-props='{"pages":[{"assetId":"12345","title":"Business Services","description":"Register, license, and manage your business online","imageUrl":"https://via.placeholder.com/640x360/FF7200/FFFFFF?text=Business+Services","href":"#business"},{"assetId":"23456","title":"Community Resources","description":"Find local services and community programs","imageUrl":"https://via.placeholder.com/640x360/44447A/FFFFFF?text=Community","href":"#community"},{"assetId":"34567","title":"Health Services","description":"Access healthcare information and appointments","imageUrl":"https://via.placeholder.com/640x360/3FB795/FFFFFF?text=Health","href":"#health"}],"columns":3,"gap":"var(--sp-md, 16px)"}'
-            style="margin-top: 1.5rem;"></div>
-    </div>
-
-    <div class="demo-section">
-        <h2>🎨 Live Example: 2-Column News Grid</h2>
-        <p>News articles with larger spacing:</p>
-        <div data-hydration-component="page-card"
-            data-hydration-props='{"pages":[{"assetId":"56789","title":"Government Announces New Initiative","description":"Breaking news about regulatory changes affecting local businesses","imageUrl":"https://via.placeholder.com/640x360/FF7200/FFFFFF?text=News+1","href":"#news1","ariaLabel":"Read news about government initiative"},{"assetId":"67890","title":"Community Feedback Survey Open","description":"Share your thoughts on our proposed projects and improvements","imageUrl":"https://via.placeholder.com/640x360/44447A/FFFFFF?text=News+2","href":"#news2","ariaLabel":"Complete community survey"}],"columns":2,"gap":"var(--sp-lg, 24px)"}'
-            style="margin-top: 1.5rem;"></div>
-    </div>
-
-    <div class="demo-section">
-        <h2>🎨 Live Example: Minimal Cards (No Images)</h2>
-        <p>Simple cards without images - useful for navigation or quick links:</p>
-        <div data-hydration-component="page-card"
-            data-hydration-props='{"pages":[{"assetId":"90123","title":"Quick Reference Guide","href":"#guide"},{"assetId":"90124","title":"FAQs and Support","href":"#faq"},{"assetId":"90125","title":"Regulations","href":"#regulations"},{"assetId":"90126","title":"Contact Us","href":"#contact"}],"columns":4}'
+            data-hydration-props='{"PageArray":[{"PageAsset":{"url":"#business","assetId":"business-services"},"CardImage":{"url":"https://via.placeholder.com/640x360/FF7200/FFFFFF?text=Business+Services","assetId":"business-services-image"},"CardTitle":"Business Services"},{"PageAsset":{"url":"#community","assetId":"community-resources"},"CardImage":{"url":"https://via.placeholder.com/640x360/44447A/FFFFFF?text=Community","assetId":"community-resources-image"},"CardTitle":"Community Resources"},{"PageAsset":{"url":"#health","assetId":"health-services"},"CardImage":{"url":"https://via.placeholder.com/640x360/3FB795/FFFFFF?text=Health","assetId":"health-services-image"},"CardTitle":"Health Services"}]}'
             style="margin-top: 1.5rem;"></div>
     </div>
 
@@ -171,28 +149,10 @@
             </thead>
             <tbody>
                 <tr>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;"><code>pages</code></td>
+                    <td style="padding: 0.75rem; border: 1px solid #ddd;"><code>PageArray</code></td>
                     <td style="padding: 0.75rem; border: 1px solid #ddd;">array</td>
                     <td style="padding: 0.75rem; border: 1px solid #ddd;">required</td>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;">Array of content page objects</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;"><code>columns</code></td>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;">number</td>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;">3</td>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;">Grid columns (1-6)</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;"><code>gap</code></td>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;">string</td>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;">var(--sp-md, 16px)</td>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;">CSS spacing between cards</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;"><code>clickable</code></td>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;">boolean</td>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;">true</td>
-                    <td style="padding: 0.75rem; border: 1px solid #ddd;">Enable clickable cards</td>
+                    <td style="padding: 0.75rem; border: 1px solid #ddd;">Array of card item objects</td>
                 </tr>
             </tbody>
         </table>
