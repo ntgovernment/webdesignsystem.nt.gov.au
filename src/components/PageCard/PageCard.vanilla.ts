@@ -46,6 +46,7 @@ export interface PageCardItem {
 export interface PageCardProps {
   PageArray?: PageCardItem[];
   pages?: PageCardItem[];
+  title?: string;
   gap?: string;
   cssClass?: string;
 }
@@ -192,14 +193,16 @@ export class PageCardClient {
     const cardTag = href ? "a" : "div";
     const hrefAttr = href ? ` href="${this.escapeAttr(href)}"` : "";
     const clickableClass = href ? " card--clickable" : "";
-    const mediaContent = imageUrl
-      ? `<img src="${this.escapeAttr(imageUrl)}" alt="${escapedTitleAttr}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover; max-height: 200px;">`
-      : `<div aria-hidden="true" style="width: 100%; height: 100%; background: var(--clr-bg-shade, #f5f5f7);"></div>`;
 
-    return `<${cardTag} class="card${clickableClass} card--full text-bg-full"${hrefAttr} style="max-width: 353px;">
-      <div class="card__media card__media--16:9">
-        ${mediaContent}
-      </div>
+    // Media section - 16:9 aspect ratio
+    const mediaSection = imageUrl
+      ? `<div class="card__media card__media--16-9">
+          <img src="${this.escapeAttr(imageUrl)}" alt="${escapedTitleAttr}" style="width: 100%; height: 100%; object-fit: cover;" />
+        </div>`
+      : "";
+
+    return `<${cardTag} class="card card--full${clickableClass}"${hrefAttr}>
+      ${mediaSection}
       <div class="card-body">
         <div class="card__body-content">
           <div class="card__body-title-wrapper">
@@ -207,15 +210,16 @@ export class PageCardClient {
           </div>
         </div>
       </div>
-      <div class="card-footer">
-        <div class="card__footer-actions"></div>
-      </div>
     </${cardTag}>`;
   }
 
   private render(): void {
     const pageArray = this.props.PageArray || this.props.pages || [];
-    const { gap = "var(--sp-md, 16px)", cssClass = "" } = this.props;
+    const {
+      title = "",
+      gap = "var(--sp-md, 16px)",
+      cssClass = "",
+    } = this.props;
 
     const containerClasses = ["nt-page-card", cssClass]
       .filter(Boolean)
@@ -226,13 +230,18 @@ export class PageCardClient {
     this.container.setAttribute("data-page-count", String(pageArray.length));
     this.container.style.display = "grid";
     this.container.style.gridTemplateColumns =
-      "repeat(auto-fill, minmax(280px, 1fr))";
+      "repeat(auto-fill, minmax(353px, 1fr))";
     this.container.style.gap = gap;
     this.container.style.width = "100%";
 
     let html = "";
+
+    // Render title section if provided
+    if (title) {
+      html += `<h2 class="nt-page-card__title">${this.escapeHtml(title)}</h2>`;
+    }
     pageArray.forEach((page, index) => {
-      html += `<div role="listitem" data-page-index="${index}">${this.renderCard(page)}</div>`;
+      html += `<div role="listitem" data-page-index="${index}" style="width: 100%; height: 100%;">${this.renderCard(page)}</div>`;
     });
 
     this.container.innerHTML = html;

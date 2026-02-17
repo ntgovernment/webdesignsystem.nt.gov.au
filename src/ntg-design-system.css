@@ -4,6 +4,10 @@
  * 
  * This file combines all design tokens and component styles
  * into a single stylesheet for easier integration with Squiz Matrix.
+ * 
+ * Theme: @ntgovernment/web-design-system
+ * Source: https://github.com/ntgovernment/web-design-system
+ * Minified Theme: https://github.com/ntgovernment/web-design-system/blob/main/dist/ntg-theme.min.css
  */
 
 /* Import Design Tokens */

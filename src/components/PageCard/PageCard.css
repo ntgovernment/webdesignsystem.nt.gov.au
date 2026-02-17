@@ -2,44 +2,18 @@
  * NT Design System - PageCard Component
  * Responsive grid layout displaying ContentPage assets as cards with Image and Title
  * 
- * Uses design tokens and theme-specific variables for consistency
- * and maintainability.
+ * Uses design tokens and web-design-system Card structure for consistency.
+ * Integrates with .card and .card--full classes from the design system.
  */
 
-/* Import theme-specific tokens for focus states and border-radius */
-@import "../../external-tokens/base-variables.css";
-@import "../../external-tokens/common.css";
-@import "../../external-tokens/theme-ntg.css";
-
-.page-card {
+.nt-page-card {
   width: 100%;
   display: grid;
 }
 
-.page-card__item {
-  /* Link/divs styling */
-  text-decoration: none;
-  color: inherit;
+/* Card base styling - inherited from web-design-system */
+.nt-page-card .card {
   display: flex;
-  flex-direction: column;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.page-card__item:focus {
-  outline: none;
-}
-
-/* Theme-specific focus state using design tokens */
-.page-card__item:focus-visible {
-  box-shadow: var(--shadow-focus-ntg);
-  border-radius: var(--radii-sm);
-}
-
-/* Card container - matches Figma design */
-.page-card__card {
-  display: inline-flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
@@ -49,73 +23,79 @@
   transition:
     box-shadow 0.2s ease,
     border-color 0.2s ease;
+  text-decoration: none;
+  color: inherit;
 }
 
-.page-card__item:hover .page-card__card {
+.nt-page-card .card--clickable {
+  cursor: pointer;
+}
+
+.nt-page-card .card--clickable:hover {
   box-shadow: var(--shadow-md);
   border-color: var(--clr-border-strong-01);
 }
 
-/* Image section - matches Figma 16:9 ratio */
-.page-card__image {
+.nt-page-card .card--clickable:focus {
+  outline: none;
+}
+
+.nt-page-card .card--clickable:focus-visible {
+  box-shadow: var(--shadow-focus-ntg);
+  border-radius: var(--radii-none);
+}
+
+/* Media section - 16:9 aspect ratio */
+.nt-page-card .card__media {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: var(--clr-bg-shade-alt);
 }
 
-.page-card__image-img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.nt-page-card .card__media--16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+.nt-page-card .card__media img {
   display: block;
-  left: 0;
-  top: 0;
-}
-
-/* Placeholder image */
-.page-card__image-placeholder {
-  position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(
-    135deg,
-    var(--clr-bg-shade-alt) 0%,
-    var(--clr-bg-shade) 100%
-  );
 }
 
-.page-card__placeholder-icon {
-  width: 48px;
-  height: 48px;
-  fill: var(--clr-text-muted);
-  opacity: 0.5;
-}
-
-/* Body content section - matches Figma design */
-.page-card__body {
+/* Body content section */
+.nt-page-card .card-body {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-sm);
   padding: var(--sp-lg) var(--sp-xl) var(--sp-xxl) var(--sp-xl);
   flex: 1;
 }
 
-/* Title wrapper */
-.page-card__title-wrapper {
-  align-self: stretch;
-  display: inline-flex;
+.nt-page-card .card__body-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+}
+
+.nt-page-card .card__body-title-wrapper {
+  display: flex;
   align-items: center;
   gap: var(--sp-xs);
 }
 
-/* Title - matches Figma typography */
-.page-card__title {
+/* Grid title (H2) */
+.nt-page-card__title {
+  margin: 0 0 var(--sp-lg) 0;
+  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
+  font-size: var(--type-heading-h2-size);
+  font-weight: var(--type-heading-h2-weight);
+  line-height: var(--type-heading-h2-lh);
+  color: var(--clr-text-default);
+  word-wrap: break-word;
+}
+
+/* Card title styling */
+.nt-page-card .card-title {
   margin: 0;
   flex: 1 1 0;
   font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
@@ -127,19 +107,8 @@
   transition: color 0.2s ease;
 }
 
-.page-card__item:hover .page-card__title {
+.nt-page-card .card--clickable:hover .card-title {
   color: var(--clr-link-hover);
-}
-
-/* Description */
-.page-card__description {
-  margin: 0;
-  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
-  font-size: var(--type-desktop-body-default-size);
-  font-weight: 400;
-  line-height: 1.5rem;
-  color: var(--clr-text-default);
-  word-wrap: break-word;
 }
 
 /* Error state */
@@ -159,60 +128,43 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .page-card__body {
+  .nt-page-card .card-body {
     padding: var(--sp-md) var(--sp-lg) var(--sp-xl) var(--sp-lg);
-    gap: var(--sp-sm);
   }
 
-  .page-card__title {
+  .nt-page-card .card-title {
     font-size: 18px;
     line-height: 22px;
-  }
-
-  .page-card__description {
-    font-size: var(--type-mobile-body-sm-size);
-    line-height: 1.4rem;
   }
 }
 
 @media (max-width: 480px) {
-  .page-card__body {
+  .nt-page-card .card-body {
     padding: var(--sp-sm) var(--sp-md) var(--sp-lg) var(--sp-md);
   }
 
-  .page-card__title {
+  .nt-page-card .card-title {
     font-size: 16px;
     line-height: 20px;
-  }
-
-  .page-card__description {
-    font-size: var(--type-mobile-body-sm-size);
-    line-height: 1.3rem;
   }
 }
 
 /* Accessibility */
-.page-card__item[aria-label] {
-  position: relative;
-}
-
-/* High contrast mode - use design token variables */
 @media (prefers-contrast: more) {
-  .page-card__card {
+  .nt-page-card .card {
     border-width: var(--border-width-lg);
   }
 
-  .page-card__item:focus-visible {
+  .nt-page-card .card--clickable:focus-visible {
     outline: var(--border-width-md) solid var(--clr-link-default);
     outline-offset: var(--sp-xs);
   }
 }
 
-/* Reduced motion - respects user preferences */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .page-card__card,
-  .page-card__item,
-  .page-card__title {
+  .nt-page-card .card,
+  .nt-page-card .card-title {
     transition: none;
   }
 }

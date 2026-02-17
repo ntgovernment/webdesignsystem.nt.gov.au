@@ -40,6 +40,37 @@ This will:
 4. Create deployment manifest
 5. Copy external design tokens to deployment
 
+### 🎨 Theme Integration
+
+This project uses the **NT Government Design System theme** from [@ntgovernment/web-design-system](https://github.com/ntgovernment/web-design-system).
+
+**Theme Details:**
+
+- **Source Repository**: https://github.com/ntgovernment/web-design-system
+- **Theme File**: [dist/ntg-theme.min.css](https://github.com/ntgovernment/web-design-system/blob/main/dist/ntg-theme.min.css)
+- **Design Tokens**: Imported from `src/external-tokens/` directory
+- **Token Files**:
+  - `base-variables.css` - Core CSS custom properties
+  - `common.css` - Common design tokens
+  - `grid.css` - Grid system variables
+  - `typography.css` - Typography tokens
+  - `typography-ntg.css` - NT Government specific typography
+  - `theme-ntg.css` - NT Government theme colors and branding
+
+**Setup:**
+
+The design tokens are automatically included in the build. To update them:
+
+```bash
+# Option 1: Via npm package (requires GitHub authentication)
+npm install
+
+# Option 2: Manual sync from repository
+# See EXTERNAL_TOKENS_SETUP.md for detailed instructions
+```
+
+See [EXTERNAL_TOKENS_SETUP.md](EXTERNAL_TOKENS_SETUP.md) for complete token integration documentation.
+
 ### Deployment to Squiz DXP
 
 The build process automatically prepares files for Squiz DXP deployment. After building, commit and push the `deploy/` directory to trigger Git File Bridge sync.

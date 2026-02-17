@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PageCard Component Preview - Squiz DXP</title>
+
+    <!-- Design System Styles (NTG theme) - use absolute URL for local dev -->
+    <link rel="stylesheet" href="https://localhost:5173/src/global-styles.ts">
+    <link rel="stylesheet" href="https://localhost:5173/src/ntg-design-system.css">
+    <link rel="stylesheet" href="https://localhost:5173/src/tokens.css">
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/9bf658a5c7.js" crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .preview-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .preview-header h1 {
+            color: #333;
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-header p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .component-output {
+            padding: 1.5rem;
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            min-height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="preview-container">
+        <div class="preview-header">
+            <h1>PageCard Component Preview</h1>
+            <p>Local preview for testing the PageCard component with mock data and wrapper context.</p>
+        </div>
+
+        <div class="component-output">
+            [component://output]
+        </div>
+    </div>
+</body>
+
+</html>

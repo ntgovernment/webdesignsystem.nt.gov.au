@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "mainFunction": "main",
   "functions": [
     {
@@ -21,6 +21,11 @@
       "input": {
         "type": "object",
         "properties": {
+          "Title": {
+            "type": "string",
+            "title": "Grid Title",
+            "description": "Optional heading for the card grid, rendered as H2"
+          },
           "PageArray": {
             "type": "array",
             "title": "Page Array",
@@ -58,6 +63,11 @@
       "input": {
         "type": "object",
         "properties": {
+          "Title": {
+            "type": "string",
+            "title": "Grid Title",
+            "description": "Optional heading for the card grid, rendered as H2"
+          },
           "PageArray": {
             "type": "array",
             "title": "Page Array",
@@ -94,9 +104,13 @@
     "basic": {
       "functionData": {
         "render": {
+          "wrapper": {
+            "path": "preview.html"
+          },
           "inputData": {
             "type": "inline",
             "value": {
+              "Title": "Key Services",
               "PageArray": [
                 {
                   "PageAsset": {
