@@ -32,3 +32,13 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/* Hydration component spacing */
+/*
+  `div[data-hydration-*]` is not a valid CSS selector (attribute-name wildcards
+  are not supported). Target the actual hydration attributes used in markup.
+*/
+div[data-hydration-component],
+div[data-hydration-props] {
+  margin-block: var(--sp-4xl);
+}

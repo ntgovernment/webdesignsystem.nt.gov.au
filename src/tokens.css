@@ -94,6 +94,8 @@
 
   /* Additional Spacing (project-specific) */
   --sp-xs-plus: 10px;
+  /* 4xl spacing token (40px) — used by hydration containers */
+  --sp-4xl: 40px;
 
   /* Content Max Width (standard for layout) */
   --content-max-width: 1200px;
