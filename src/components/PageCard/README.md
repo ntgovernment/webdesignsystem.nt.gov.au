@@ -313,9 +313,10 @@ Core props / shape:
 Quick usage example:
 
 ```html
-<div data-hydration-component="page-card"
-     data-hydration-props='{"title":"Key Services","PageArray":[...]}'>
-</div>
+<div
+  data-hydration-component="page-card"
+  data-hydration-props='{"title":"Key Services","PageArray":[...]}'
+></div>
 ```
 
 ---
