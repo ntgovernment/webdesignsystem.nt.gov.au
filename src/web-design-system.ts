@@ -11,6 +11,7 @@ import "./components/LeftNav/LeftNav.vanilla";
 import "./components/ThemeSwitcher/ThemeSwitcher.vanilla";
 import "./components/ComponentViewer/ComponentViewer.vanilla";
 import "./components/PageBanner/PageBanner.vanilla";
+import "./components/Notification/Notification.vanilla";
 import "./components/PageCard/PageCard.vanilla";
 import "./components/MiniPageCard/MiniPageCard.vanilla";
 

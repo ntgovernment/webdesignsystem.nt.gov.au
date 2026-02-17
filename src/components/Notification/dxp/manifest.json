@@ -1,0 +1,109 @@
+{
+  "$schema": "http://localhost:3000/schemas/v1.json#",
+  "namespace": "web-design-system",
+  "name": "notification",
+  "displayName": "Notification",
+  "description": "Status-specific notification with accent bar and icon",
+  "icon": {
+    "id": "notification_important",
+    "color": {
+      "type": "enum",
+      "value": "blue"
+    }
+  },
+  "type": "edge",
+  "version": "1.0.0",
+  "mainFunction": "main",
+  "functions": [
+    {
+      "name": "main",
+      "entry": "main.js",
+      "input": {
+        "type": ["object", "null"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "Notification heading",
+            "default": "Information alert"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Notification message content",
+            "default": "Your application has been submitted for review."
+          },
+          "variant": {
+            "type": "string",
+            "title": "Variant",
+            "description": "Status type",
+            "default": "info",
+            "enum": ["info", "success", "warning", "danger"]
+          },
+          "cssClass": {
+            "type": "string",
+            "title": "CSS Class",
+            "description": "Additional CSS classes to apply"
+          }
+        },
+        "required": []
+      },
+      "output": {
+        "responseType": "html"
+      }
+    },
+    {
+      "name": "render",
+      "entry": "main.js",
+      "input": {
+        "type": ["object", "null"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "Notification heading",
+            "default": "Information alert"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Notification message content",
+            "default": "Your application has been submitted for review."
+          },
+          "variant": {
+            "type": "string",
+            "title": "Variant",
+            "description": "Status type",
+            "default": "info",
+            "enum": ["info", "success", "warning", "danger"]
+          },
+          "cssClass": {
+            "type": "string",
+            "title": "CSS Class",
+            "description": "Additional CSS classes to apply"
+          }
+        },
+        "required": []
+      },
+      "output": {
+        "responseType": "html"
+      }
+    }
+  ],
+  "previews": {
+    "basic": {
+      "functionData": {
+        "render": {
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "variant": "info",
+              "title": "Information alert",
+              "message": "Your application has been submitted for review."
+            }
+          }
+        }
+      }
+    }
+  }
+}
