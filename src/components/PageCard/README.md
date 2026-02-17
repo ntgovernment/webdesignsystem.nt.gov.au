@@ -4,7 +4,7 @@
 
 ## Overview
 
-The **PageCard** component is a responsive card grid for Squiz DXP. It renders a list of cards using the **web-design-system Card component structure** with `PageArray` entries that combine `SquizLink` (destination) and `SquizImage` (image) with a required `CardTitle`.
+The **PageCard** component is a responsive card grid for Squiz DXP. It renders a list of cards using the **web-design-system Card component structure** with `Cards` entries that combine `SquizLink` (destination) and `SquizImage` (image) with a required `CardTitle`.
 
 ### Key Features
 
@@ -51,7 +51,7 @@ interface SquizImage {
 }
 ```
 
-### PageCardItem (PageArray entry)
+### PageCardItem (Cards entry)
 
 ```typescript
 interface PageCardItem {
@@ -65,12 +65,22 @@ interface PageCardItem {
 
 ```typescript
 interface PageCardProps {
-  PageArray: PageCardItem[];
+  Cards: PageCardItem[]; // Primary prop - recommended for new implementations
+  PageArray?: PageCardItem[]; // Backward compatibility (DXP Component Service)
+  pages?: PageCardItem[]; // Backward compatibility (Squiz Matrix nesters)
   title?: string; // Optional H2 title above grid (styled with --type-heading-h2-*)
   gap?: string; // CSS spacing (default: "var(--sp-md, 16px)")
   cssClass?: string; // Additional CSS classes
 }
 ```
+
+**Note**: The component supports multiple prop names for backward compatibility:
+
+- **`Cards`** (recommended) - Primary, user-friendly name for content editors
+- **`PageArray`** - Legacy DXP Component Service format
+- **`pages`** - Legacy Squiz Matrix nester format
+
+The component uses a fallback chain: `Cards` → `PageArray` → `pages`
 
 ---
 
@@ -149,7 +159,7 @@ The Squiz Component Service expects a `mainFunction` that exists in the `functio
 ```html
 <div
   data-hydration-component="page-card"
-  data-hydration-props='{"title":"Key Services","PageArray":[...]}'
+  data-hydration-props='{"title":"Key Services","Cards":[...]}'
 ></div>
 
 <script type="module" src="/path/to/page-card-client.js"></script>
@@ -170,7 +180,7 @@ render(input) {
 ```json
 {
   "title": "Key Services",
-  "PageArray": [
+  "Cards": [
     {
       "PageAsset": {
         "url": "/business/licensing",
@@ -208,15 +218,15 @@ render(input) {
 ```html
 <div
   data-hydration-component="page-card"
-  data-hydration-props='{"PageArray":[]}'
+  data-hydration-props='{"Cards":[]}'
 ></div>
 ```
 
 ```php
 <?php
-$pageArray = array();
+$cards = array();
 foreach ($children as $asset_id => $asset) {
-  $pageArray[] = array(
+  $cards[] = array(
     "PageAsset" => array(
       "url" => $asset->getUrl(),
       "text" => $asset->name,
@@ -227,16 +237,18 @@ foreach ($children as $asset_id => $asset) {
 }
 
 $hydration_props = json_encode(array(
-  "PageArray" => $pageArray
+  "Cards" => $cards
 ));
 ?>
 ```
+
+**Note**: Legacy implementations using `PageArray` or `pages` will continue to work.
 
 ### Custom CMS Integration
 
 ```javascript
 const props = {
-  PageArray: data.map((page) => ({
+  Cards: data.map((page) => ({
     PageAsset: {
       url: page.url,
       text: page.title,
@@ -306,7 +318,9 @@ File locations you’ll use most:
 
 Core props / shape:
 
-- `PageArray: PageCardItem[]` — array of items
+- `Cards: PageCardItem[]` — array of card items (recommended)
+- `PageArray?: PageCardItem[]` — legacy prop (backward compatible)
+- `pages?: PageCardItem[]` — legacy prop (backward compatible)
 - `title?: string` — optional H2 grid title (uses H2 design tokens)
 - `gap?: string` — CSS gap (default: `var(--sp-md)`)
 
@@ -315,7 +329,7 @@ Quick usage example:
 ```html
 <div
   data-hydration-component="page-card"
-  data-hydration-props='{"title":"Key Services","PageArray":[...]}'
+  data-hydration-props='{"title":"Key Services","Cards":[...]}'
 ></div>
 ```
 
@@ -334,7 +348,7 @@ Quick usage example:
 
 ## Testing & validation checklist 🧪
 
-- [ ] Component renders with `PageArray` input in preview
+- [ ] Component renders with `Cards` input in preview
 - [ ] Title renders (when `title` provided) using H2 token styles
 - [ ] Cards are keyboard-focusable and show focus ring (`--shadow-focus-ntg`, `--radii-none`)
 - [ ] Images maintain 16:9 aspect ratio or show placeholder

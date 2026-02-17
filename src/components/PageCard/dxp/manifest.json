@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "mainFunction": "main",
   "functions": [
     {
@@ -26,10 +26,10 @@
             "title": "Grid Title",
             "description": "Optional heading for the card grid, rendered as H2"
           },
-          "PageArray": {
+          "Cards": {
             "type": "array",
-            "title": "Page Array",
-            "description": "Array of card items. Each item supports a page link, an image link, and a display title.",
+            "title": "Cards",
+            "description": "Collection of cards to display in the grid. Each card includes a link, optional image, and title.",
             "items": {
               "type": "object",
               "properties": {
@@ -68,10 +68,10 @@
             "title": "Grid Title",
             "description": "Optional heading for the card grid, rendered as H2"
           },
-          "PageArray": {
+          "Cards": {
             "type": "array",
-            "title": "Page Array",
-            "description": "Array of card items. Each item supports a page link, an image link, and a display title.",
+            "title": "Cards",
+            "description": "Collection of cards to display in the grid. Each card includes a link, optional image, and title.",
             "items": {
               "type": "object",
               "properties": {
@@ -93,7 +93,7 @@
             "minItems": 1
           }
         },
-        "required": ["PageArray"]
+        "required": ["Cards"]
       },
       "output": {
         "responseType": "html"
@@ -111,7 +111,7 @@
             "type": "inline",
             "value": {
               "Title": "Key Services",
-              "PageArray": [
+              "Cards": [
                 {
                   "PageAsset": {
                     "url": "/business/licensing",

@@ -5,6 +5,9 @@
  * Loaded globally and auto-detects all [data-hydration-component="component-viewer"] elements.
  */
 
+import { escapeHtml } from "../../utils/sanitize";
+import { debugError, debugWarn } from "../../utils/debug";
+
 // Type definitions for external libraries
 declare global {
   interface Window {
@@ -42,7 +45,7 @@ export class ComponentViewerClient {
     try {
       this.props = JSON.parse(container.dataset.hydrationProps || "{}");
     } catch (error) {
-      console.error("Failed to parse hydration props:", error);
+      debugError("Failed to parse hydration props:", error);
       this.props = {
         storybookUrl: "",
       };
@@ -139,7 +142,7 @@ export class ComponentViewerClient {
 
     this.container.innerHTML = `
       <!-- Preview Section -->
-      <div class="component-viewer__preview" style="height: ${this.escapeHtml(height)}">
+      <div class="component-viewer__preview" style="height: ${escapeHtml(height)}">
         <div class="component-viewer__iframe-wrapper">
           
           <!-- Toolbar -->
@@ -159,7 +162,7 @@ export class ComponentViewerClient {
           <!-- Iframe Content -->
           <div class="component-viewer__iframe-content" data-zoom-container>
             <iframe
-              src="${this.escapeHtml(storybookUrl)}"
+              src="${escapeHtml(storybookUrl)}"
               class="component-viewer__iframe"
               title="Component Preview"
               frameborder="0"
@@ -275,7 +278,7 @@ export class ComponentViewerClient {
         }, 2000);
       }
     } catch (err) {
-      console.error("Copy failed:", err);
+      debugError("Copy failed:", err);
     }
   }
 
@@ -326,7 +329,7 @@ export class ComponentViewerClient {
         this.iframe.contentDocument || this.iframe.contentWindow?.document;
 
       if (!iframeDoc) {
-        console.warn("Cannot access iframe document");
+        debugWarn("Cannot access iframe document");
         this.formatCode(
           this.props.codeExample || "<!-- Unable to access iframe -->",
         );
@@ -372,7 +375,7 @@ export class ComponentViewerClient {
         this.formatCode(this.props.codeExample || "");
       }
     } catch (error) {
-      console.error("Error extracting iframe content:", error);
+      debugError("Error extracting iframe content:", error);
       this.formatCode(
         this.props.codeExample || "<!-- Error extracting content -->",
       );
@@ -440,7 +443,7 @@ export class ComponentViewerClient {
         this.extractedCode = dedentedCode;
       }
     } catch (error) {
-      console.error("Failed to format code:", error);
+      debugError("Failed to format code:", error);
       this.extractedCode = dedentedCode;
     }
 

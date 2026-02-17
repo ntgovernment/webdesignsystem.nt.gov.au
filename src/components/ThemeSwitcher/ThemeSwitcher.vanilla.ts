@@ -7,6 +7,8 @@
  */
 
 import "./ThemeSwitcher.css";
+import { escapeHtml } from "../../utils/sanitize";
+import { debugLog, debugError, debugWarn } from "../../utils/debug";
 
 export interface ThemeItem {
   name: string;
@@ -28,12 +30,12 @@ export class ThemeSwitcherClient {
   constructor(container: HTMLElement) {
     this.container = container;
 
-    console.log("[ThemeSwitcher] Initializing for container:", container);
-    console.log(
+    debugLog("[ThemeSwitcher] Initializing for container:", container);
+    debugLog(
       "[ThemeSwitcher] Raw data-hydration-props:",
       container.getAttribute("data-hydration-props"),
     );
-    console.log(
+    debugLog(
       "[ThemeSwitcher] Dataset hydrationProps:",
       container.dataset.hydrationProps,
     );
@@ -41,10 +43,10 @@ export class ThemeSwitcherClient {
     // Parse props from data-hydration-props
     try {
       this.props = JSON.parse(container.dataset.hydrationProps || "{}");
-      console.log("[ThemeSwitcher] Parsed props successfully:", this.props);
+      debugLog("[ThemeSwitcher] Parsed props successfully:", this.props);
     } catch (error) {
-      console.error("[ThemeSwitcher] Failed to parse hydration props:", error);
-      console.error(
+      debugError("[ThemeSwitcher] Failed to parse hydration props:", error);
+      debugError(
         "[ThemeSwitcher] Raw value:",
         container.dataset.hydrationProps,
       );
@@ -59,16 +61,13 @@ export class ThemeSwitcherClient {
 
     // Validate props
     if (!this.props.themes || this.props.themes.length === 0) {
-      console.error("[ThemeSwitcher] No themes provided in props");
+      debugError("[ThemeSwitcher] No themes provided in props");
       this.renderError("No themes provided");
       return;
     }
 
     if (this.props.themes.length > 3) {
-      console.error(
-        "[ThemeSwitcher] Too many themes:",
-        this.props.themes.length,
-      );
+      debugError("[ThemeSwitcher] Too many themes:", this.props.themes.length);
       this.renderError("Maximum 3 themes allowed");
       return;
     }
@@ -76,13 +75,13 @@ export class ThemeSwitcherClient {
     // Validate each theme
     for (const theme of this.props.themes) {
       if (!theme.name || !theme.url) {
-        console.error("[ThemeSwitcher] Invalid theme object:", theme);
+        debugError("[ThemeSwitcher] Invalid theme object:", theme);
         this.renderError("Each theme must have a name and url");
         return;
       }
     }
 
-    console.log(
+    debugLog(
       "[ThemeSwitcher] Validation passed, rendering",
       this.props.themes.length,
       "theme(s)",
@@ -97,7 +96,7 @@ export class ThemeSwitcherClient {
     // Setup event listeners
     this.setupEventListeners();
 
-    console.log("[ThemeSwitcher] Initialization complete");
+    debugLog("[ThemeSwitcher] Initialization complete");
   }
 
   private getInitialThemeIndex(): number {
@@ -197,15 +196,6 @@ export class ThemeSwitcherClient {
       });
   }
 
-  private escapeHtml(str: string): string {
-    return (str || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
   private setupEventListeners(): void {
     // Get all tab buttons
     const tabs = this.container.querySelectorAll(".nt-theme-switcher__tab");
@@ -257,49 +247,49 @@ export class ThemeSwitcherClient {
 (function () {
   if (typeof document !== "undefined") {
     const initThemeSwitchers = () => {
-      console.log(
+      debugLog(
         "[ThemeSwitcher] Auto-initialization starting, readyState:",
         document.readyState,
       );
       const containers = document.querySelectorAll(
         '[data-hydration-component="theme-switcher"]',
       );
-      console.log(
+      debugLog(
         "[ThemeSwitcher] Found",
         containers.length,
         "container(s) to hydrate",
       );
 
       if (containers.length === 0) {
-        console.warn(
+        debugWarn(
           '[ThemeSwitcher] No elements found with data-hydration-component="theme-switcher"',
         );
       }
 
       containers.forEach((container, index) => {
-        console.log(
+        debugLog(
           `[ThemeSwitcher] Hydrating container ${index + 1}/${containers.length}`,
         );
         try {
           new ThemeSwitcherClient(container as HTMLElement);
         } catch (error) {
-          console.error(
+          debugError(
             `[ThemeSwitcher] Failed to initialize container ${index + 1}:`,
             error,
           );
         }
       });
 
-      console.log("[ThemeSwitcher] Auto-initialization complete");
+      debugLog("[ThemeSwitcher] Auto-initialization complete");
     };
 
     if (document.readyState === "loading") {
-      console.log(
+      debugLog(
         "[ThemeSwitcher] Document still loading, waiting for DOMContentLoaded",
       );
       document.addEventListener("DOMContentLoaded", initThemeSwitchers);
     } else {
-      console.log(
+      debugLog(
         "[ThemeSwitcher] Document already loaded, initializing immediately",
       );
       initThemeSwitchers();

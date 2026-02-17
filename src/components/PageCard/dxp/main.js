@@ -5,17 +5,10 @@
  * client-side JavaScript (page-card-client.js) handles full rendering and interactivity.
  */
 
+import { escapeHtml } from "../../../utils/sanitize.js";
+
 const render = async (input) => {
   const hydrationProps = JSON.stringify(input || {});
-
-  // Escape for HTML attribute
-  const escapeHtml = (str) =>
-    (str || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
 
   // Return minimal hydration container
   return `<div class="nt-page-card" data-hydration-component="page-card" data-hydration-props="${escapeHtml(hydrationProps)}"></div>`;

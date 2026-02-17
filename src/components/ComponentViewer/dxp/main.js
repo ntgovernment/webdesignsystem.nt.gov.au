@@ -4,7 +4,8 @@
  * Uses hydration pattern: server renders minimal container with data attributes,
  * client-side JavaScript (component-viewer-client.js) handles full rendering and interactivity.
  */
-
+import { escapeHtml } from "../../../utils/sanitize.js";
+import { generateInstanceId } from "../../../utils/instance-id.js";
 export default {
   async render(input) {
     const {
@@ -19,7 +20,7 @@ export default {
     } = input;
 
     // Generate unique ID for this instance
-    const instanceId = `cv-${Math.random().toString(36).substring(2, 11)}`;
+    const instanceId = generateInstanceId("cv");
 
     // Encode props as JSON for hydration
     const hydrationProps = JSON.stringify({
@@ -31,15 +32,6 @@ export default {
       enableCopy,
       enableZoom,
     });
-
-    // Escape for HTML attribute
-    const escapeHtml = (str) =>
-      (str || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
 
     // Return minimal hydration container
     return `<div class="nt-component-viewer ${cssClass}" data-hydration-component="component-viewer" data-hydration-props="${escapeHtml(hydrationProps)}" data-instance-id="${instanceId}"></div>`;

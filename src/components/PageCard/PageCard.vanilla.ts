@@ -7,6 +7,8 @@
  */
 
 import "./PageCard.css";
+import { escapeHtml, escapeAttr } from "../../utils/sanitize";
+import { debugLog, debugError } from "../../utils/debug";
 
 export type SquizLinkValue =
   | string
@@ -44,8 +46,10 @@ export interface PageCardItem {
 }
 
 export interface PageCardProps {
-  PageArray?: PageCardItem[];
-  pages?: PageCardItem[];
+  Cards?: PageCardItem[]; // Primary prop - content editor friendly
+  PageArray?: PageCardItem[]; // DXP Component Service compatibility
+  pages?: PageCardItem[]; // Squiz Matrix nester compatibility
+  Title?: string;
   title?: string;
   gap?: string;
   cssClass?: string;
@@ -63,8 +67,8 @@ export class PageCardClient {
   constructor(container: HTMLElement) {
     this.container = container;
 
-    console.log("[PageCard] Initializing for container:", container);
-    console.log(
+    debugLog("[PageCard] Initializing for container:", container);
+    debugLog(
       "[PageCard] Raw data-hydration-props:",
       container.getAttribute("data-hydration-props"),
     );
@@ -72,10 +76,10 @@ export class PageCardClient {
     // Parse props from data-hydration-props
     try {
       this.props = JSON.parse(container.dataset.hydrationProps || "{}");
-      console.log("[PageCard] Parsed props successfully:", this.props);
+      debugLog("[PageCard] Parsed props successfully:", this.props);
     } catch (error) {
-      console.error("[PageCard] Failed to parse hydration props:", error);
-      console.error("[PageCard] Raw value:", container.dataset.hydrationProps);
+      debugError("[PageCard] Failed to parse hydration props:", error);
+      debugError("[PageCard] Raw value:", container.dataset.hydrationProps);
       this.renderError(
         `Failed to parse props: ${error instanceof Error ? error.message : String(error)}`,
       );
@@ -84,14 +88,15 @@ export class PageCardClient {
     }
 
     // Validate props
-    const pageArray = this.props.PageArray || this.props.pages || [];
+    const pageArray =
+      this.props.Cards || this.props.PageArray || this.props.pages || [];
     if (!pageArray || pageArray.length === 0) {
-      console.error("[PageCard] No pages provided in props");
+      debugError("[PageCard] No pages provided in props");
       this.renderError("No content pages provided");
       return;
     }
 
-    console.log(
+    debugLog(
       "[PageCard] Validation passed, rendering",
       pageArray.length,
       "page(s)",
@@ -100,22 +105,7 @@ export class PageCardClient {
     // Render the HTML
     this.render();
 
-    console.log("[PageCard] Initialization complete");
-  }
-
-  private escapeHtml(str: string): string {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
-  private escapeAttr(str: string): string {
-    return (str || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+    debugLog("[PageCard] Initialization complete");
   }
 
   private resolveLinkUrl(link?: SquizLinkValue): string {
@@ -186,18 +176,18 @@ export class PageCardClient {
     const href = this.resolveLinkUrl(page.PageAsset);
     const imageUrl = this.resolveImageUrl(page.CardImage);
     const title = page.CardTitle || this.resolveLinkTitle(page.PageAsset) || "";
-    const escapedTitle = this.escapeHtml(title);
-    const escapedTitleAttr = this.escapeAttr(
+    const escapedTitle = escapeHtml(title);
+    const escapedTitleAttr = escapeAttr(
       this.resolveImageAlt(page.CardImage, title || "Card"),
     );
     const cardTag = href ? "a" : "div";
-    const hrefAttr = href ? ` href="${this.escapeAttr(href)}"` : "";
+    const hrefAttr = href ? ` href="${escapeAttr(href)}"` : "";
     const clickableClass = href ? " card--clickable" : "";
 
     // Media section - 16:9 aspect ratio
     const mediaSection = imageUrl
       ? `<div class="card__media card__media--16-9">
-          <img src="${this.escapeAttr(imageUrl)}" alt="${escapedTitleAttr}" style="width: 100%; height: 100%; object-fit: cover;" />
+          <img src="${escapeAttr(imageUrl)}" alt="${escapedTitleAttr}" style="width: 100%; height: 100%; object-fit: cover;" />
         </div>`
       : "";
 
@@ -214,12 +204,10 @@ export class PageCardClient {
   }
 
   private render(): void {
-    const pageArray = this.props.PageArray || this.props.pages || [];
-    const {
-      title = "",
-      gap = "var(--sp-md, 16px)",
-      cssClass = "",
-    } = this.props;
+    const pageArray =
+      this.props.Cards || this.props.PageArray || this.props.pages || [];
+    const title = this.props.Title || this.props.title || "";
+    const { gap = "var(--sp-md, 16px)", cssClass = "" } = this.props;
 
     const containerClasses = ["nt-page-card", cssClass]
       .filter(Boolean)
@@ -238,7 +226,7 @@ export class PageCardClient {
 
     // Render title section if provided
     if (title) {
-      html += `<h2 class="nt-page-card__title">${this.escapeHtml(title)}</h2>`;
+      html += `<h2 class="nt-page-card__title">${escapeHtml(title)}</h2>`;
     }
     pageArray.forEach((page, index) => {
       html += `<div role="listitem" data-page-index="${index}" style="width: 100%; height: 100%;">${this.renderCard(page)}</div>`;
@@ -251,7 +239,7 @@ export class PageCardClient {
     this.container.innerHTML = `
       <div class="page-card-error" role="alert" aria-live="polite" style="padding: 24px; text-align: center; color: var(--clr-status-danger, #d32f2f);">
         <h3 style="margin: 0 0 8px 0;"><strong>PageCard Component Error</strong></h3>
-        <p style="margin: 0;">${this.escapeHtml(message)}</p>
+        <p style="margin: 0;">${escapeHtml(message)}</p>
       </div>
     `;
   }
