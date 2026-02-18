@@ -37,6 +37,15 @@
   gap: var(--sp-md, 16px);
 }
 
+.notification__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: var(--sp-xs, 8px);
+  flex: 1 1 0;
+}
+
 .notification__icon {
   width: var(--sp-xxl, 32px);
   height: var(--sp-xxl, 32px);

@@ -89,11 +89,13 @@ export class NotificationClient {
       <div class="notification__content">
         <div class="notification__header">
           <div class="notification__icon" aria-hidden="true">
-            <i class="${escapeAttr(iconClass)}"></i>
+            <i class="${escapeAttr(iconClass)}" aria-hidden="true"></i>
           </div>
-          <div class="notification__title">${escapeHtml(title)}</div>
+          <div class="notification__text">
+            <div class="notification__title">${escapeHtml(title)}</div>
+            <div class="notification__message">${escapeHtml(message)}</div>
+          </div>
         </div>
-        <div class="notification__message">${escapeHtml(message)}</div>
       </div>
     `;
   }

@@ -98,12 +98,14 @@ Uses design tokens (see `src/tokens.css`) for:
 ## Implementation details
 
 ### Architecture
+
 - Vanilla client: `src/components/Notification/Notification.vanilla.ts`
 - Styling: `src/components/Notification/Notification.css`
 - DXP manifest & renderer: `src/components/Notification/dxp/manifest.json` and `src/components/Notification/dxp/main.js`
 - Auto-mount selector: `[data-hydration-component="notification"]`
 
 ### Design Token Strategy
+
 This component imports all design tokens (colors, spacing, typography) from `@ntgovernment/web-design-system` via `src/external-tokens/`, ensuring a single source of truth and automatic upstream alignment. The component CSS is local because the vanilla hydration implementation has a different DOM structure than the upstream React component. This mirrors the upstream repo's pattern where component layout CSS remains local while design tokens are shared system-wide.
 
 ## Examples
