@@ -1,0 +1,178 @@
+/**
+ * NT Design System - PageTile Component
+ * Text-only tile grid layout for ContentPage assets without imagery.
+ *
+ * Design tokens imported from external-tokens for theme consistency.
+ * Supports icon-based content organization with responsive grid sizing.
+ */
+
+@import "../../external-tokens/base-variables.css";
+@import "../../external-tokens/common.css";
+@import "../../external-tokens/theme-ntg.css";
+
+.nt-page-tile {
+  width: 100%;
+  display: block;
+}
+
+.nt-page-tile__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  width: 100%;
+}
+
+/* Tile base styling - inherited from web-design-system */
+.nt-page-tile .tile {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--clr-bg-default);
+  border: var(--border-width-md) solid var(--clr-border-subtle);
+  overflow: hidden;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--ntg-radii-none);
+}
+
+.nt-page-tile .tile--clickable {
+  cursor: pointer;
+}
+
+.nt-page-tile .tile--clickable:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--clr-border-subtle);
+}
+
+.nt-page-tile .tile--clickable:focus {
+  outline: none;
+}
+
+.nt-page-tile .tile--clickable:focus-visible {
+  box-shadow: var(--shadow-focus-ntg);
+  border-radius: var(--ntg-radii-none);
+}
+
+.nt-page-tile .tile-body {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-lg) var(--sp-xl);
+  flex: 1;
+}
+
+.nt-page-tile__content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-md);
+}
+
+.page-tile__icon {
+  display: none;
+}
+
+.page-tile__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-xs);
+  flex: 1;
+}
+
+/* Grid title (H2) */
+.nt-page-tile__title {
+  margin: 0 0 var(--sp-lg) 0;
+  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
+  font-size: var(--type-heading-h2-size);
+  font-weight: var(--type-heading-h2-weight);
+  line-height: var(--type-heading-h2-lh);
+  color: var(--clr-text-default);
+  word-wrap: break-word;
+}
+
+.nt-page-tile__description {
+  margin: 0 0 var(--sp-lg) 0;
+  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
+  font-size: var(--type-body-md-size, 16px);
+  line-height: var(--type-body-md-lh, 24px);
+  color: var(--clr-text-default);
+  max-width: 72ch;
+}
+
+/* Tile title styling */
+.nt-page-tile .tile-title {
+  margin: 0;
+  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  color: var(--clr-link-default);
+  word-wrap: break-word;
+  transition: color 0.2s ease;
+}
+
+.nt-page-tile .tile--clickable:hover .tile-title {
+  color: var(--clr-link-hover);
+}
+
+/* Error state */
+.page-tile-error {
+  background: var(--clr-status-danger-bg);
+  border: var(--border-width-md) solid var(--clr-status-danger);
+  border-radius: var(--ntg-radii-none);
+  padding: var(--sp-xl);
+  margin: var(--sp-md);
+  text-align: center;
+}
+
+.page-tile-error p {
+  margin: var(--sp-sm) 0;
+  color: var(--clr-status-danger);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .nt-page-tile .tile-body {
+    padding: var(--sp-md) var(--sp-lg);
+  }
+
+  .nt-page-tile .tile-title {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .page-tile__icon {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nt-page-tile .tile-body {
+    padding: var(--sp-md);
+  }
+
+  .page-tile__icon {
+    font-size: 18px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-contrast: more) {
+  .nt-page-tile .tile {
+    border-width: var(--border-width-lg);
+  }
+
+  .nt-page-tile .tile--clickable:focus-visible {
+    outline: var(--border-width-md) solid var(--clr-link-default);
+    outline-offset: var(--sp-xs);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nt-page-tile .tile,
+  .nt-page-tile .tile-title {
+    transition: none;
+  }
+}

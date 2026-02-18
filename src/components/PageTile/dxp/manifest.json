@@ -1,0 +1,106 @@
+{
+  "$schema": "http://localhost:3000/schemas/v1.json#",
+  "namespace": "web-design-system",
+  "name": "page-tile",
+  "displayName": "Page Tile",
+  "description": "Text-only tile grid layout for page assets without imagery. Ideal for resource links, navigation sections, and compact content organization.",
+  "icon": {
+    "id": "grid_view",
+    "color": {
+      "type": "enum",
+      "value": "orange"
+    }
+  },
+  "type": "edge",
+  "version": "1.0.1",
+  "mainFunction": "main",
+  "functions": [
+    {
+      "name": "main",
+      "entry": "main.js",
+      "input": {
+        "type": "object",
+        "properties": {
+          "Title": {
+            "type": "string",
+            "title": "Grid Title",
+            "description": "Optional heading for the tile grid, rendered as H2"
+          },
+          "Description": {
+            "type": "string",
+            "title": "Grid Description",
+            "description": "Optional description displayed below the grid title"
+          },
+          "Cards": {
+            "type": "array",
+            "title": "Tiles",
+            "description": "Collection of tiles to display in the grid. Each tile includes a link and title.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "PageAsset": {
+                  "type": "SquizLink",
+                  "title": "Page asset"
+                },
+                "CardTitle": {
+                  "type": "string",
+                  "title": "Tile title"
+                }
+              },
+              "required": ["PageAsset", "CardTitle"]
+            },
+            "minItems": 1
+          }
+        },
+        "required": ["Cards"]
+      },
+      "output": {
+        "responseType": "html"
+      }
+    }
+  ],
+  "previews": {
+    "basic": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "Title": "Resources",
+              "Description": "The NTG design system defines the foundations of user interfaces across NTG's websites and web services.",
+              "Cards": [
+                {
+                  "PageAsset": {
+                    "url": "/feedback",
+                    "text": "Feedback",
+                    "target": "_self"
+                  },
+                  "CardTitle": "Feedback"
+                },
+                {
+                  "PageAsset": {
+                    "url": "/contribute",
+                    "text": "Contribute",
+                    "target": "_self"
+                  },
+                  "CardTitle": "Contribute"
+                },
+                {
+                  "PageAsset": {
+                    "url": "/support",
+                    "text": "Support",
+                    "target": "_self"
+                  },
+                  "CardTitle": "Support"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -14,6 +14,7 @@ import "./components/PageBanner/PageBanner.vanilla";
 import "./components/Notification/Notification.vanilla";
 import "./components/PageCard/PageCard.vanilla";
 import "./components/MiniPageCard/MiniPageCard.vanilla";
+import "./components/PageTile/PageTile.vanilla";
 
 // Import global stylesheet (consolidated with all component styles via @import)
 import "./global-styles";
