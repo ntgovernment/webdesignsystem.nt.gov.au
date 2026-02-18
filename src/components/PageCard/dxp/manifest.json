@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "mainFunction": "main",
   "functions": [
     {
@@ -61,59 +61,12 @@
       "output": {
         "responseType": "html"
       }
-    },
-    {
-      "name": "render",
-      "entry": "main.js",
-      "input": {
-        "type": "object",
-        "properties": {
-          "Title": {
-            "type": "string",
-            "title": "Grid Title",
-            "description": "Optional heading for the card grid, rendered as H2"
-          },
-          "Description": {
-            "type": "string",
-            "title": "Grid Description",
-            "description": "Optional description displayed below the grid title"
-          },
-          "Cards": {
-            "type": "array",
-            "title": "Cards",
-            "description": "Collection of cards to display in the grid. Each card includes a link, optional image, and title.",
-            "items": {
-              "type": "object",
-              "properties": {
-                "PageAsset": {
-                  "type": "SquizLink",
-                  "title": "Page asset"
-                },
-                "CardImage": {
-                  "type": "SquizImage",
-                  "title": "Card image"
-                },
-                "CardTitle": {
-                  "type": "string",
-                  "title": "Card title"
-                }
-              },
-              "required": ["PageAsset", "CardTitle"]
-            },
-            "minItems": 1
-          }
-        },
-        "required": ["Cards"]
-      },
-      "output": {
-        "responseType": "html"
-      }
     }
   ],
   "previews": {
     "basic": {
       "functionData": {
-        "render": {
+        "main": {
           "wrapper": {
             "path": "preview.html"
           },

@@ -300,7 +300,7 @@ const props = {
 
 ## Delivery summary 📦
 
-- Version: **1.0.9** — Title property added, preview simplified, footer removed from cards; merged duplicate docs and updated DXP manifest.
+- Version: **1.0.11** — Finalized SSR & CSS cleanup: removed remaining inline styles, improved preview, and bumped component manifest to `1.0.11`. (See changelog/history for prior releases.)
 - Client bundle: `page-card-client.js` (~5 KB minified) — vanilla JS hydration.
 - Styles bundled into `web-design-system.min.css` (deploy bundle).
 - DXP preview and manifest configured with inline preview data (Title: "Key Services").

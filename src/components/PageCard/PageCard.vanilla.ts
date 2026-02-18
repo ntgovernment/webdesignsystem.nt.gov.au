@@ -1,5 +1,10 @@
 /**
- * PageCard Vanilla JS - Client-Side Hydration
+ * PageCard Vanilla JS - Development/Preview Only
+ *
+ * ⚠️ This component is for development and preview environments only.
+ * In production, PageCard is rendered completely server-side (dxp/main.js).
+ * This client component auto-initializes for [data-hydration-component="page-card"] elements,
+ * which is useful for local testing and DXP dev-ui preview functionality.
  *
  * Displays a list of ContentPage assets using Card layout
  * with Image and Title displayed in a responsive grid.

@@ -12,7 +12,6 @@ const main = async (input) => {
     Title = "",
     Description = "",
     Cards = [],
-    gap = "var(--sp-md, 16px)",
     cssClass = "",
   } = input || {};
 
@@ -24,7 +23,7 @@ const main = async (input) => {
     const hrefAttr = href ? ` href="${escapeHtml(href)}"` : "";
     const clickableClass = href ? " tile--clickable" : "";
 
-    return `<div role="listitem" data-page-index="${index}" style="width: 100%; height: 100%;">
+    return `<div role="listitem" data-page-index="${index}">
       <${tileTag} class="tile tile--text${clickableClass}"${hrefAttr}>
         <div class="tile-body">
           <div class="page-tile__content">
@@ -37,7 +36,7 @@ const main = async (input) => {
     </div>`;
   }).join("");
 
-  let html = `<div class="nt-page-tile ${cssClass}" style="width: 100%;">`;
+  let html = `<div class="nt-page-tile ${cssClass}">`;
 
   if (Title) {
     html += `<h2 class="nt-page-tile__title">${escapeHtml(Title)}</h2>`;
@@ -46,7 +45,7 @@ const main = async (input) => {
     html += `<p class="nt-page-tile__description">${escapeHtml(Description)}</p>`;
   }
 
-  html += `<div class="nt-page-tile__grid" role="list" data-component-type="page-tile-grid" data-page-count="${Cards.length}" style="gap: ${gap};">
+  html += `<div class="nt-page-tile__grid" role="list" data-component-type="page-tile-grid" data-page-count="${Cards.length}">
     ${tilesHtml}
   </div>
   </div>`;
