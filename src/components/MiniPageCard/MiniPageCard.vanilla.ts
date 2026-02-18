@@ -149,7 +149,6 @@ export class MiniPageCardClient {
       .filter(Boolean)
       .join(" ");
     this.container.className = containerClasses;
-    this.container.style.width = "100%";
 
     let html = "";
 
@@ -160,9 +159,9 @@ export class MiniPageCardClient {
       html += `<p class="nt-mini-page-card__description">${escapeHtml(description)}</p>`;
     }
 
-    html += `<div class="nt-mini-page-card__grid" role="list" data-component-type="mini-page-card-grid" data-page-count="${pageArray.length}" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: ${escapeAttr(gap)}; width: 100%;">`;
+    html += `<div class="nt-mini-page-card__grid" role="list" data-component-type="mini-page-card-grid" data-page-count="${pageArray.length}" style="--grid-gap: ${escapeAttr(gap)};">`;
     pageArray.forEach((page, index) => {
-      html += `<div role="listitem" data-page-index="${index}" style="width: 100%; height: 100%;">${this.renderCard(page)}</div>`;
+      html += `<div role="listitem" data-page-index="${index}">${this.renderCard(page)}</div>`;
     });
     html += "</div>";
 
@@ -171,9 +170,9 @@ export class MiniPageCardClient {
 
   private renderError(message: string): void {
     this.container.innerHTML = `
-      <div class="page-card-error" role="alert" aria-live="polite" style="padding: 24px; text-align: center; color: var(--clr-status-danger, #d32f2f);">
-        <h3 style="margin: 0 0 8px 0;"><strong>MiniPageCard Component Error</strong></h3>
-        <p style="margin: 0;">${escapeHtml(message)}</p>
+      <div class="page-card-error" role="alert" aria-live="polite">
+        <h3><strong>MiniPageCard Component Error</strong></h3>
+        <p>${escapeHtml(message)}</p>
       </div>
     `;
   }

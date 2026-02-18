@@ -549,4 +549,5 @@ A: No negative impact. Tiles render as semantic `<a>` links with descriptive tex
 **Status:** Production-ready
 
 ### Changelog
+
 - **1.0.2** — Minor documentation & preview cleanup; migrated remaining inline styles to CSS and bumped DXP manifest version.

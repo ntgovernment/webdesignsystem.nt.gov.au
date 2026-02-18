@@ -13,6 +13,13 @@
 .nt-mini-page-card__grid {
   display: grid;
   width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--grid-gap, var(--sp-md, 16px));
+}
+
+.nt-mini-page-card__grid > div {
+  width: 100%;
+  height: 100%;
 }
 
 /* Card base styling - inherited from web-design-system */
@@ -37,7 +44,7 @@
 
 .nt-mini-page-card .card--clickable:hover {
   box-shadow: var(--shadow-md);
-  border-color: var(--clr-border-strong-01);
+  border-color: var(--clr-border-subtle);
 }
 
 .nt-mini-page-card .card--clickable:focus {
@@ -59,7 +66,7 @@
 .nt-mini-page-card__content {
   display: flex;
   align-items: center;
-  gap: var(--sp-md);
+  gap: var(--sp-xs);
 }
 
 .mini-page-card__icon {
@@ -123,8 +130,13 @@
   text-align: center;
 }
 
+.page-card-error h3 {
+  margin: 0 0 var(--sp-xs) 0;
+  color: var(--clr-status-danger);
+}
+
 .page-card-error p {
-  margin: var(--sp-sm) 0;
+  margin: 0;
   color: var(--clr-status-danger);
 }
 

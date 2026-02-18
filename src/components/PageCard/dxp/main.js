@@ -146,5 +146,4 @@ const main = async (input) => {
 
 export default {
   main,
-  render: main,
 };

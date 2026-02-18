@@ -1,1 +1,212 @@
-[component://output]
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniPageCard Component Preview</title>
+
+    <script src="https://kit.fontawesome.com/d8e5f638f7.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Lato", system-ui, sans-serif;
+            background: #ffffff;
+            color: #1F1E27;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* MiniPageCard Component Root */
+        .nt-mini-page-card {
+            width: 100%;
+            display: block;
+            --nt-mini-card-icon-color: #c33826;
+        }
+
+        .nt-mini-page-card__grid {
+            display: grid;
+            width: 100%;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .nt-mini-page-card__grid>div {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Card base styling */
+        .nt-mini-page-card .card {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            border: 1px solid #d3d3d7;
+            overflow: hidden;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .nt-mini-page-card .card--clickable {
+            cursor: pointer;
+        }
+
+        .nt-mini-page-card .card--clickable:hover {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: #d3d3d7;
+        }
+
+        .nt-mini-page-card .card--clickable:focus {
+            outline: none;
+        }
+
+        .nt-mini-page-card .card--clickable:focus-visible {
+            box-shadow: 0px 0px 0px 4px #FFAB00;
+            border-radius: 0px;
+        }
+
+        /* Card body content */
+        .nt-mini-page-card .card-body {
+            display: flex;
+            flex-direction: column;
+            padding: 16px 24px 24px 24px;
+            flex: 1;
+        }
+
+        .nt-mini-page-card__content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mini-page-card__icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--nt-mini-card-icon-color);
+            font-size: 22px;
+            flex: 0 0 auto;
+        }
+
+        .mini-page-card__text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* Grid title (H2) */
+        .nt-mini-page-card__title {
+            margin: 0 0 12px 0;
+            font-family: "Lato", system-ui, sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.33;
+            color: #1F1E27;
+            word-wrap: break-word;
+        }
+
+        .nt-mini-page-card__description {
+            margin: 0 0 24px 0;
+            font-family: "Lato", system-ui, sans-serif;
+            font-size: 16px;
+            line-height: 24px;
+            color: #1F1E27;
+            max-width: 72ch;
+        }
+
+        /* Card title styling */
+        .nt-mini-page-card .card-title {
+            margin: 0;
+            font-family: "Lato", system-ui, sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 22px;
+            color: #1f1f5f;
+            word-wrap: break-word;
+            transition: color 0.2s ease;
+        }
+
+        .nt-mini-page-card .card--clickable:hover .card-title {
+            color: #0046a8;
+        }
+
+        /* Error state */
+        .page-card-error {
+            background: #fde3e3;
+            border: 1px solid #d32f2f;
+            border-radius: 4px;
+            padding: 32px;
+            margin: 16px;
+            text-align: center;
+        }
+
+        .page-card-error h3 {
+            margin: 0 0 8px 0;
+            color: #d32f2f;
+        }
+
+        .page-card-error p {
+            margin: 0;
+            color: #d32f2f;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nt-mini-page-card .card-body {
+                padding: 16px;
+            }
+
+            .nt-mini-page-card .card-title {
+                font-size: 16px;
+                line-height: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nt-mini-page-card .card-body {
+                padding: 12px;
+            }
+
+            .mini-page-card__icon {
+                font-size: 20px;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-contrast: more) {
+            .nt-mini-page-card .card {
+                border-width: 2px;
+            }
+
+            .nt-mini-page-card .card--clickable:focus-visible {
+                outline: 1px solid #1f1f5f;
+                outline-offset: 8px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+
+            .nt-mini-page-card .card,
+            .nt-mini-page-card .card-title {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    [component://output]
+</body>
+
+</html>
