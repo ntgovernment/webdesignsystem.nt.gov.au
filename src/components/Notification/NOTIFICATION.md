@@ -33,7 +33,10 @@ The Notification component displays contextual, status-specific callouts used wi
 Client-side auto-mount (hydration container):
 
 ```html
-<div data-hydration-component="notification" data-hydration-props='{"variant":"info","title":"Information","message":"Important info here."}'></div>
+<div
+  data-hydration-component="notification"
+  data-hydration-props='{"variant":"info","title":"Information","message":"Important info here."}'
+></div>
 ```
 
 Manual JS instantiation:
@@ -41,7 +44,11 @@ Manual JS instantiation:
 ```ts
 import { NotificationClient } from "./components/Notification/Notification.vanilla";
 const el = document.getElementById("my-notification");
-new NotificationClient(el, { variant: "success", title: "Saved", message: "Your changes have been saved." });
+new NotificationClient(el, {
+  variant: "success",
+  title: "Saved",
+  message: "Your changes have been saved.",
+});
 ```
 
 ## Usage (DXP)
@@ -58,7 +65,11 @@ Example manifest usage in DXP:
 The server renderer outputs the same hydration container used by the vanilla client:
 
 ```html
-<div class="notification" data-hydration-component="notification" data-hydration-props="{ ... }"></div>
+<div
+  class="notification"
+  data-hydration-component="notification"
+  data-hydration-props="{ ... }"
+></div>
 ```
 
 ## Props (Vanilla / DXP)
@@ -79,30 +90,39 @@ All props are accepted as either camelCase or PascalCase keys in hydration JSON 
 ## Theming & Design Tokens
 
 Uses design tokens (see `src/tokens.css`) for:
+
 - Colors: `--clr-status-info`, `--clr-status-success`, `--clr-status-warning`, `--clr-status-danger`
 - Spacing: `--sp-xs`, `--sp-md`, `--sp-xl`, `--sp-xxl`
 - Typography: `--type-body-default-size`, `--type-desktop-h3-size`
 
 ## Implementation details
 
+### Architecture
 - Vanilla client: `src/components/Notification/Notification.vanilla.ts`
 - Styling: `src/components/Notification/Notification.css`
 - DXP manifest & renderer: `src/components/Notification/dxp/manifest.json` and `src/components/Notification/dxp/main.js`
 - Auto-mount selector: `[data-hydration-component="notification"]`
+
+### Design Token Strategy
+This component imports all design tokens (colors, spacing, typography) from `@ntgovernment/web-design-system` via `src/external-tokens/`, ensuring a single source of truth and automatic upstream alignment. The component CSS is local because the vanilla hydration implementation has a different DOM structure than the upstream React component. This mirrors the upstream repo's pattern where component layout CSS remains local while design tokens are shared system-wide.
 
 ## Examples
 
 Info notification (HTML):
 
 ```html
-<div class="notification notification--info">
+<div class="notification notification--info" role="status">
   <div class="notification__accent-bar" aria-hidden="true"></div>
   <div class="notification__content">
     <div class="notification__header">
-      <div class="notification__icon" aria-hidden="true"><i class="fa-light fa-circle-info"></i></div>
-      <div class="notification__title">Information</div>
+      <div class="notification__icon" aria-hidden="true">
+        <i class="fa-light fa-circle-info" aria-hidden="true"></i>
+      </div>
+      <div class="notification__text">
+        <div class="notification__title">Information</div>
+        <div class="notification__message">Your request has been received.</div>
+      </div>
     </div>
-    <div class="notification__message">Your request has been received.</div>
   </div>
 </div>
 ```
