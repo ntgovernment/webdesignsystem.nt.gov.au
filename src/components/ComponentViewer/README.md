@@ -7,6 +7,7 @@ Interactive component preview with code display, zoom controls, and Storybook in
 ComponentViewer enables documentation sites to showcase design system components with live, interactive previews. It uses a hybrid architecture: server-side rendering for static structure and client-side hydration for interactivity (zoom, code extraction, syntax highlighting).
 
 ## Files
+
 - `manifest.json` — Component metadata and input schema
 - `main.js` — Server-side renderer
 - `preview.html` — Local development preview
@@ -14,13 +15,13 @@ ComponentViewer enables documentation sites to showcase design system components
 
 ## Props
 
-| Property | Type | Default | Description |
-| --- | --- | --- | --- |
-| `storybookUrl` | string | `/storybook/iframe.html` | Base URL for Storybook iframe |
-| `storyId` | string | `components-button--primary` | Storybook story ID |
-| `height` | string | `200px` | Preview height |
-| `initialZoom` | number | `1.0` | Starting zoom level |
-| `showCodeByDefault` | boolean | `false` | Whether code panel is visible |
+| Property            | Type    | Default                      | Description                   |
+| ------------------- | ------- | ---------------------------- | ----------------------------- |
+| `storybookUrl`      | string  | `/storybook/iframe.html`     | Base URL for Storybook iframe |
+| `storyId`           | string  | `components-button--primary` | Storybook story ID            |
+| `height`            | string  | `200px`                      | Preview height                |
+| `initialZoom`       | number  | `1.0`                        | Starting zoom level           |
+| `showCodeByDefault` | boolean | `false`                      | Whether code panel is visible |
 
 ## How it works
 

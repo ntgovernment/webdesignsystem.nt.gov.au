@@ -17,17 +17,20 @@ The ThemeSwitcher component allows users to switch between different theme varia
 
 ## Props
 
-| Prop           | Type   | Required | Default     | Description                                                 |
-| -------------- | ------ | -------- | ----------- | ----------------------------------------------------------- |
-| `themes`       | Array  | Yes      | -           | Array of theme objects with `name` and `url`                |
-| `height`       | String | No       | `600px`     | Height of iframe container                                  |
-| `defaultTheme` | String | No       | First theme | Theme displayed by default                                  |
-| `cssClass`     | String | No       | `""`       | Additional CSS classes for the container                    |
+| Prop           | Type   | Required | Default     | Description                                  |
+| -------------- | ------ | -------- | ----------- | -------------------------------------------- |
+| `themes`       | Array  | Yes      | -           | Array of theme objects with `name` and `url` |
+| `height`       | String | No       | `600px`     | Height of iframe container                   |
+| `defaultTheme` | String | No       | First theme | Theme displayed by default                   |
+| `cssClass`     | String | No       | `""`        | Additional CSS classes for the container     |
 
 ## Theme Object
 
 ```ts
-{ name: string; url: string; }
+{
+  name: string;
+  url: string;
+}
 ```
 
 ## Local Preview
@@ -43,8 +46,8 @@ The ThemeSwitcher component allows users to switch between different theme varia
 ```json
 {
   "themes": [
-    {"name":"Light","url":"https://example.com/light"},
-    {"name":"Dark","url":"https://example.com/dark"}
+    { "name": "Light", "url": "https://example.com/light" },
+    { "name": "Dark", "url": "https://example.com/dark" }
   ],
   "height": "500px"
 }

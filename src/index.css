@@ -24,9 +24,9 @@ body {
   min-height: 100vh;
 }
 
-/* Ensure page content has the design-system spacing token (24px) */
+/* Ensure page content has the design-system spacing token (now uses sp/4xl) */
 #content {
-  padding: var(--sp-xl, 24px);
+  padding: var(--sp-4xl, 40px);
 }
 
 * {
@@ -41,4 +41,9 @@ body {
 div[data-hydration-component],
 div[data-hydration-props] {
   margin-block: var(--sp-4xl);
+}
+
+/* Vertical gaps between direct children inside `#content.ntg-body` — uses token `--sp-4xl` */
+#content.ntg-body > * + * {
+  margin-block-start: var(--sp-4xl);
 }

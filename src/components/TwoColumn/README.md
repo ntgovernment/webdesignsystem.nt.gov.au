@@ -7,6 +7,7 @@ Responsive two-column layout with WYSIWYG content areas for Squiz DXP Component 
 TwoColumn provides a flexible grid-based layout for displaying content side-by-side on desktop and stacked on mobile. Perfect for documentation, sidebars, feature comparisons, and multi-section content.
 
 Key features:
+
 - WYSIWYG editors for left and right content
 - Configurable column widths (CSS grid values)
 - Optional background colors per column
@@ -23,14 +24,14 @@ Key features:
 
 | Property          | Type          | Default | Description                                           |
 | ----------------- | ------------- | ------- | ----------------------------------------------------- |
-| `leftContent`     | FormattedText | ``      | HTML content for left column (WYSIWYG editor)        |
-| `rightContent`    | FormattedText | ``      | HTML content for right column (WYSIWYG editor)       |
-| `leftWidth`       | string        | `1fr`   | CSS grid width for left column (e.g., '1fr', '300px')|
+| `leftContent`     | FormattedText | ``      | HTML content for left column (WYSIWYG editor)         |
+| `rightContent`    | FormattedText | ``      | HTML content for right column (WYSIWYG editor)        |
+| `leftWidth`       | string        | `1fr`   | CSS grid width for left column (e.g., '1fr', '300px') |
 | `rightWidth`      | string        | `1fr`   | CSS grid width for right column                       |
 | `gap`             | string        | `2rem`  | Space between columns (e.g., '2rem', '32px')          |
-| `leftBackground`  | string        | ``      | CSS background color for left column (optional)      |
-| `rightBackground` | string        | ``      | CSS background color for right column (optional)     |
-| `cssClass`        | string        | ``      | Additional CSS classes for container                 |
+| `leftBackground`  | string        | ``      | CSS background color for left column (optional)       |
+| `rightBackground` | string        | ``      | CSS background color for right column (optional)      |
+| `cssClass`        | string        | ``      | Additional CSS classes for container                  |
 
 ## Local Preview
 
