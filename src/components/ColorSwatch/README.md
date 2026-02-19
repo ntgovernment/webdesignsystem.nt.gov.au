@@ -25,15 +25,15 @@ The palette icon was chosen because it clearly represents color display and sele
 
 The component follows the Figma specification:
 
-- **Container**: 136px width (fixed)
-- **Color sample**: 136px width × 99px height with 8px border-radius
+- **Container**: 152px width (fixed)
+- **Color sample**: 152px width × 99px height with 0px border-radius
 - **Container padding**: 8px padding with subtle 1px border
 - **Content area**: 8px padding with 4px gap between label and hex code
 - **Typography**: Lato font family with 700 weight for labels, 400 for hex codes
 
 ## Features
 
-- **Grid layout**: Responsive grid displaying multiple color swatches with auto-fill columns (136px fixed width)
+- **Grid layout**: Responsive grid displaying multiple color swatches with auto-fill columns (152px fixed width)
 - **Formatted introduction**: Rich text rendered above the swatch grid (DXP FormattedText)
 - **Server-side & client-side rendering**: Works with both DXP SSR and vanilla JS hydration
 - **Design token integration**: Uses CSS custom properties for consistent theming
@@ -176,9 +176,10 @@ The component automatically parses each Value string (format: "Name #HexValue") 
 | ------------------------------------ | ----------------------------------------------------------- |
 | `.nt-color-swatch-grid`              | Root container for the entire component                     |
 | `.nt-color-swatch-grid__description` | Formatted introduction (rich text above the swatch grid)    |
-| `.nt-color-swatch-grid__container`   | Grid container with auto-fill layout (136px columns)        |
+| `.nt-color-swatch-grid__container`   | Grid container with auto-fill layout (152px columns)        |
+| `.nt-color-swatch-grid--no-intro`    | Reduces top margin when no introduction is provided         |
 | `.nt-color-swatch`                   | Individual swatch card with border, padding, and background |
-| `.nt-color-swatch__sample`           | Color display area (99px height, 136px width)               |
+| `.nt-color-swatch__sample`           | Color display area (99px height, 152px width)               |
 | `.nt-color-swatch__content`          | Text container with padding and gap                         |
 | `.nt-color-swatch__label`            | Color name (bold, 16px)                                     |
 | `.nt-color-swatch__hex`              | Hex code text (muted, 14px)                                 |
@@ -190,8 +191,8 @@ The component leverages the following design tokens for consistent theming:
 ```css
 /* Spacing */
 --sp-xxs: 4px /* Gap between label and hex code */ --sp-xs: 8px
-  /* Container and content padding */ --sp-md: 24px
-  /* Grid gap and margin below introduction */ /* Border & Background */
+  /* Container and content padding */ --sp-md: 16px
+  /* Grid gap and default grid top margin */ /* Border & Background */
   --border-width-md: 1px --clr-border-subtle: #d3d3d7 --clr-bg-default: #ffffff
   --radii-none: 0px /* Border radius (sharp corners) */ /* Typography */
   --clr-text-default: #1f1e27 /* Introduction and label color */

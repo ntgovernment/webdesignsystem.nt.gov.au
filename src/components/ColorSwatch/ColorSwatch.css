@@ -11,6 +11,10 @@
   width: 100%;
 }
 
+.nt-color-swatch-grid--no-intro {
+  margin-top: var(--sp-md, 16px) !important;
+}
+
 .nt-color-swatch-grid__description {
   color: var(--clr-text-default, #1f1e27);
   font-size: 16px;
@@ -22,14 +26,10 @@
 
 .nt-color-swatch-grid__container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 136px);
-  gap: var(--sp-md, 24px);
-  margin-top: var(--sp-lg, 32px);
+  grid-template-columns: repeat(auto-fill, 152px);
+  gap: 16px;
+  margin-top: var(--sp-md, 16px);
   width: 100%;
-}
-
-.nt-color-swatch-grid--no-intro .nt-color-swatch-grid__container {
-  margin-top: var(--sp-md, 24px);
 }
 
 /* Error message styling */
