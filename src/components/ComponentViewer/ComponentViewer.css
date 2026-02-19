@@ -201,7 +201,8 @@
 
 .component-viewer__code--visible {
   opacity: 1;
-  max-height: 2000px;
+  max-height: 600px;
+  overflow-y: auto;
   padding: var(--sp-md, 16px);
 }
 

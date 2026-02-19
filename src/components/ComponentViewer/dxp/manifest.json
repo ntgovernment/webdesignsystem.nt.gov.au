@@ -22,10 +22,10 @@
         "type": "object",
         "properties": {
           "Introduction": {
-            "type": "FormattedText",
+            "type": "string",
             "format": "multi-line",
             "title": "Introduction",
-            "description": "Optional introduction text displayed above the component preview. Supports rich formatting (paragraphs, lists, links, emphasis)."
+            "description": "Optional introduction text displayed above the component preview. Plain text only."
           },
           "storybookUrl": {
             "type": "string",
@@ -90,7 +90,7 @@
             "type": "inline",
             "value": {
               "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-header--default&viewMode=story",
-              "Introduction": "<p>This is an <strong>interactive preview</strong> of the Header component. You can <em>zoom in and out</em> using the controls, and view the underlying HTML code by clicking the 'See code' button below.</p>\n<ul>\n<li>Zoom controls for detailed inspection</li>\n<li>Code panel with syntax highlighting</li>\n<li>Open in new tab for full testing</li>\n</ul>",
+              "Introduction": "This is an interactive preview of the Header component.\nYou can zoom in and out using the controls, and view the underlying HTML code by clicking the 'See code' button below.\n\n- Zoom controls for detailed inspection\n- Code panel with syntax highlighting\n- Open in new tab for full testing",
               "height": "300px",
               "showCodeByDefault": true,
               "codeExample": "<header class=\"nt-header\">\n  <h1>Example Header</h1>\n</header>"

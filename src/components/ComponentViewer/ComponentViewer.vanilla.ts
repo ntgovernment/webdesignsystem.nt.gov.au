@@ -298,15 +298,49 @@ export class ComponentViewerClient {
     return dedented.trim();
   }
 
+  /**
+   * For any <p> or <li> whose text content exceeds 72 characters:
+   * strips all inner tags, then truncates at the next space or full stop
+   * after position 72, appending an ellipsis.
+   */
+  private shortenLongElements(html: string): string {
+    try {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      let modified = false;
+
+      doc.querySelectorAll("p, li").forEach((el) => {
+        const text = (el.textContent || "").trim();
+        if (text.length <= 72) return;
+
+        // Find the next space or '.' at or after position 72
+        let cutAt = -1;
+        for (let i = 72; i < text.length; i++) {
+          if (text[i] === " " || text[i] === ".") {
+            cutAt = i;
+            break;
+          }
+        }
+        if (cutAt === -1) cutAt = 72;
+
+        el.innerHTML = text.slice(0, cutAt).trimEnd() + "\u2026";
+        modified = true;
+      });
+
+      return modified ? doc.body.innerHTML : html;
+    } catch {
+      return html;
+    }
+  }
+
   private async formatCode(code: string): Promise<void> {
-    // Remove common leading indentation from all lines
     const dedentedCode = this.dedentCode(code);
-    this.extractedCode = dedentedCode;
+    const shortenedCode = this.shortenLongElements(dedentedCode);
+    this.extractedCode = shortenedCode;
 
     try {
       // Check if Prettier is available globally
       if (window.prettier && window.prettierPlugins) {
-        const formatted = await window.prettier.format(dedentedCode, {
+        const formatted = await window.prettier.format(shortenedCode, {
           parser: "html",
           plugins: window.prettierPlugins.html
             ? [window.prettierPlugins.html]
@@ -320,11 +354,11 @@ export class ComponentViewerClient {
         this.extractedCode = formatted;
       } else {
         // Fallback without Prettier
-        this.extractedCode = dedentedCode;
+        this.extractedCode = shortenedCode;
       }
     } catch (error) {
       debugError("Failed to format code:", error);
-      this.extractedCode = dedentedCode;
+      this.extractedCode = shortenedCode;
     }
 
     // Only display (with typing effect) when the code panel is visible
@@ -334,12 +368,6 @@ export class ComponentViewerClient {
       // keep code panel empty until user opens it
       this.codeDisplay.textContent = "";
     }
-  }
-
-  private escapeHtml(text: string): string {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
   }
 
   private animateTyping(code: string, avgDelay = 12): void {
