@@ -115,8 +115,8 @@ a:hover {
   text-decoration: none;
 }
 
-a:not(.card):focus,
-a:not(.card):focus-visible {
+a:not(.card):not(.tile):focus,
+a:not(.card):not(.tile):focus-visible {
   background: var(--ntg-clr-focus-focus);
   border-bottom: 4px solid var(--ntg-clr-border-strong-01);
   text-decoration: none;
