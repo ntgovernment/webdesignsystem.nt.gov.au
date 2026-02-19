@@ -213,9 +213,10 @@
   line-height: var(--type-body-default-lh, 1.5rem);
   color: #e6e6e6;
   overflow-x: auto;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  white-space: pre;
+  word-wrap: normal;
   width: 100%;
+  background: transparent;
 }
 
 .component-viewer__code-content code {
@@ -223,8 +224,45 @@
   padding: 0;
   margin: 0;
   display: block;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  white-space: pre;
+  word-wrap: normal;
+  background: transparent;
+  color: inherit;
+}
+
+/* Prism token styling - these override Prism defaults for content compatibility */
+.component-viewer__code-content .token {
+  color: #e6e6e6;
+}
+
+.component-viewer__code-content .token.comment,
+.component-viewer__code-content .token.prolog,
+.component-viewer__code-content .token.doctype,
+.component-viewer__code-content .token.cdata {
+  color: #75715e;
+}
+
+.component-viewer__code-content .token.punctuation {
+  color: #f8f8f2;
+}
+
+.component-viewer__code-content .token.property,
+.component-viewer__code-content .token.tag,
+.component-viewer__code-content .token.boolean,
+.component-viewer__code-content .token.number,
+.component-viewer__code-content .token.constant,
+.component-viewer__code-content .token.symbol,
+.component-viewer__code-content .token.deleted {
+  color: #ae81ff;
+}
+
+.component-viewer__code-content .token.selector,
+.component-viewer__code-content .token.attr-name,
+.component-viewer__code-content .token.string,
+.component-viewer__code-content .token.char,
+.component-viewer__code-content .token.builtin,
+.component-viewer__code-content .token.inserted {
+  color: #a6e22e;
 }
 
 /* Typing cursor animation */

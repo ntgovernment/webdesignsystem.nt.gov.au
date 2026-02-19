@@ -336,6 +336,12 @@ export class ComponentViewerClient {
     }
   }
 
+  private escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
   private animateTyping(code: string, avgDelay = 12): void {
     if (!this.codeDisplay) return;
 
@@ -350,6 +356,7 @@ export class ComponentViewerClient {
 
     // If code is longer than 200 characters, skip animation and display immediately
     if (len > 200) {
+      // Use textContent to set code, then let Prism handle the highlighting
       this.codeDisplay.textContent = code;
       this.codeDisplay.classList.remove("typing-cursor");
       if (window.Prism) {
@@ -365,7 +372,7 @@ export class ComponentViewerClient {
     let i = 0;
 
     const tick = () => {
-      // Append next character
+      // Append next character using textContent (safer for typing animation)
       this.codeDisplay!.textContent += code.charAt(i);
       i += 1;
 
@@ -375,6 +382,7 @@ export class ComponentViewerClient {
         setTimeout(tick, Math.max(4, avgDelay + jitter));
       } else {
         // Finished typing: remove cursor and apply Prism highlighting
+        // Prism will read textContent and generate proper HTML with syntax highlighting
         setTimeout(() => {
           this.codeDisplay!.classList.remove("typing-cursor");
           if (window.Prism) {
