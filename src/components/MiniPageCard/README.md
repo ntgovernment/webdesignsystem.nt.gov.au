@@ -22,17 +22,20 @@ MiniPageCard renders a grid of icon-based cards, each linking to a page asset. I
 Unlike older hydration patterns, MiniPageCard uses **complete server-side rendering**:
 
 **Server (dxp/main.js)**:
+
 - Receives input with Title, Description, and Cards array
 - Validates required props (Cards must be non-empty)
 - Generates complete HTML string with all card markup
 - Returns ready-to-display HTML (no JavaScript needed)
 
 **Client (MiniPageCard.vanilla.ts)**:
+
 - Provided for **dev/preview only** (auto-initialization with `[data-hydration-component]`)
 - Not used in production DXP deployment
 - Imports CSS and manages component lifecycle for local testing
 
 **Why Full SSR?**
+
 - Icons are static FontAwesome classes (no dynamic rendering)
 - No complex interactivity requiring client state
 - Reduces client-side bundle size
@@ -56,21 +59,21 @@ Unlike older hydration patterns, MiniPageCard uses **complete server-side render
 
 ```typescript
 interface MiniPageCardItem {
-  PageAsset: SquizLink;              // Required: link object with url, text, target
-  CardTitle: string;                 // Required: card title text
-  IconCode?: string;                 // Optional: FontAwesome class (e.g., 'fa-light fa-circle-info')
+  PageAsset: SquizLink; // Required: link object with url, text, target
+  CardTitle: string; // Required: card title text
+  IconCode?: string; // Optional: FontAwesome class (e.g., 'fa-light fa-circle-info')
 }
 
-type SquizLink = 
-  | string                           // Plain URL
+type SquizLink =
+  | string // Plain URL
   | {
-      url?: string;                  // URL
-      href?: string;                 // Alternative URL property
-      text?: string;                 // Link text
-      title?: string;                // Alternative text property
-      name?: string;                 // Alternative text property (fallback)
-      target?: string;               // Link target (_self, _blank, etc.)
-    }
+      url?: string; // URL
+      href?: string; // Alternative URL property
+      text?: string; // Link text
+      title?: string; // Alternative text property
+      name?: string; // Alternative text property (fallback)
+      target?: string; // Link target (_self, _blank, etc.)
+    };
 ```
 
 ### Example Input
@@ -106,6 +109,7 @@ type SquizLink =
 ### CSS Variables Used
 
 **Colors**:
+
 - `--clr-bg-default`: Card background (#ffffff)
 - `--clr-border-subtle`: Card border color (#d3d3d7)
 - `--clr-text-default`: Title/description text color (#1F1E27)
@@ -116,6 +120,7 @@ type SquizLink =
 - `--clr-status-danger-bg`: Error background (#fde3e3)
 
 **Spacing**:
+
 - `--sp-xs`: Icon-to-title gap (8px)
 - `--sp-md`: Card padding internal gaps (16px)
 - `--sp-lg`: Card body padding (24px)
@@ -123,16 +128,19 @@ type SquizLink =
 - `--sp-xl`: Error box padding (32px)
 
 **Typography**:
+
 - `--type-font-default`: Primary font ("Lato", system-ui, sans-serif)
 - `--type-heading-h2-*`: Grid/description title styles
 - `--type-body-md-*`: Description text styles
 
 **Effects**:
+
 - `--shadow-md`: Card hover shadow
 - `--shadow-focus-ntg`: Focus ring glow
 - `--radii-none`: Border radius (0px)
 
 **Border**:
+
 - `--border-width-md`: 1px (default)
 - `--border-width-lg`: 2px (high contrast mode)
 
@@ -239,17 +247,20 @@ The DXP deployment uses `dxp/main.js` exclusively. The vanilla component is for 
 To dynamically change grid gap from props, the component uses CSS custom properties:
 
 **In SSR** (dxp/main.js):
+
 ```javascript
 // Future: could support dynamic gap if needed
 // style="--grid-gap: ${escapeAttr(gap)}"
 ```
 
 **In CSS**:
+
 ```css
 gap: var(--grid-gap, var(--sp-md, 16px));
 ```
 
 This allows three levels of fallback:
+
 1. Inline style (if provided)
 2. CSS variable `--sp-md` (16px)
 3. Hardcoded fallback (16px)
@@ -257,6 +268,7 @@ This allows three levels of fallback:
 ### Error Handling
 
 When Cards array is empty or missing:
+
 - Renders error container with semantic `role="alert"`
 - Displays user-friendly message
 - Uses danger color tokens for visibility
@@ -265,6 +277,7 @@ When Cards array is empty or missing:
 ### Sanitization
 
 All user input is escaped:
+
 - `escapeHtml()`: For text content (titles, descriptions)
 - `escapeAttr()`: For HTML attributes (hrefs, classes)
 - Prevents XSS attacks in DXP environment
@@ -291,6 +304,7 @@ All user input is escaped:
 ## Integration with Web Design System
 
 MiniPageCard aligns with design system patterns:
+
 - Uses same color tokens as other components
 - Card styling inherited from `.card` base class
 - Spacing and typography follow system scale

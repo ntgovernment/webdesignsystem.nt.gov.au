@@ -12,51 +12,14 @@
     }
   },
   "type": "edge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "mainFunction": "main",
   "functions": [
     {
       "name": "main",
       "entry": "main.js",
       "input": {
-        "type": ["object", "null"],
-        "properties": {
-          "title": {
-            "type": "string",
-            "title": "Title",
-            "description": "Notification heading",
-            "default": "Information alert"
-          },
-          "message": {
-            "type": "string",
-            "title": "Message",
-            "description": "Notification message content",
-            "default": "Your application has been submitted for review."
-          },
-          "variant": {
-            "type": "string",
-            "title": "Variant",
-            "description": "Status type",
-            "default": "info",
-            "enum": ["info", "success", "warning", "danger"]
-          },
-          "cssClass": {
-            "type": "string",
-            "title": "CSS Class",
-            "description": "Additional CSS classes to apply"
-          }
-        },
-        "required": []
-      },
-      "output": {
-        "responseType": "html"
-      }
-    },
-    {
-      "name": "render",
-      "entry": "main.js",
-      "input": {
-        "type": ["object", "null"],
+        "type": "object",
         "properties": {
           "title": {
             "type": "string",
@@ -93,7 +56,10 @@
   "previews": {
     "basic": {
       "functionData": {
-        "render": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
           "inputData": {
             "type": "inline",
             "value": {
