@@ -52,3 +52,7 @@ The ThemeSwitcher component allows users to switch between different theme varia
   "height": "500px"
 }
 ```
+
+## Versioning
+
+Any changes to `dxp/manifest.json` (schema, properties, defaults) or `dxp/main.js` (render logic) **must** be accompanied by a version increment in the `"version"` field of `manifest.json`. Follow semantic versioning: patch (`x.x.1`) for fixes, minor (`x.1.0`) for new features, major (`1.0.0`) for breaking changes.

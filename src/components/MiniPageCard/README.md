@@ -282,6 +282,10 @@ All user input is escaped:
 - `escapeAttr()`: For HTML attributes (hrefs, classes)
 - Prevents XSS attacks in DXP environment
 
+## Versioning
+
+Any changes to `dxp/manifest.json` (schema, properties, defaults) or `dxp/main.js` (render logic) **must** be accompanied by a version increment in the `"version"` field of `manifest.json`. Follow semantic versioning: patch (`x.x.1`) for fixes, minor (`x.1.0`) for new features, major (`1.0.0`) for breaking changes.
+
 ## Usage Example in DXP
 
 ```json

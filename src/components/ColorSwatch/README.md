@@ -599,6 +599,11 @@ When modifying this component:
 5. **Test both client and server** rendering
 6. **Run build** and verify output
 7. **Test in DXP dev-ui** preview mode
+8. **Increment the version** in `dxp/manifest.json` if you changed `manifest.json` or `dxp/main.js` (see [Versioning](#versioning) below)
+
+## Versioning
+
+Any changes to `dxp/manifest.json` (schema, properties, defaults) or `dxp/main.js` (render logic) **must** be accompanied by a version increment in the `"version"` field of `manifest.json`. Follow semantic versioning: patch (`x.x.1`) for fixes, minor (`x.1.0`) for new features, major (`1.0.0`) for breaking changes.
 
 ## License
 
