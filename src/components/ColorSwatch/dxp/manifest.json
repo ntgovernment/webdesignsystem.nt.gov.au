@@ -1,0 +1,91 @@
+{
+  "$schema": "http://localhost:3000/schemas/v1.json#",
+  "namespace": "web-design-system",
+  "name": "color-swatch",
+  "displayName": "Color Swatch",
+  "description": "Displays a color swatch card with color sample, label, and hex code",
+  "icon": {
+    "id": "palette",
+    "color": {
+      "type": "enum",
+      "value": "orange"
+    }
+  },
+  "type": "edge",
+  "version": "2.0.1",
+  "mainFunction": "main",
+  "functions": [
+    {
+      "name": "main",
+      "entry": "main.js",
+      "input": {
+        "type": "object",
+        "properties": {
+          "Title": {
+            "type": "string",
+            "title": "Grid Title",
+            "description": "Optional heading for the color swatch grid, rendered as H2"
+          },
+          "Description": {
+            "type": "string",
+            "title": "Grid Description",
+            "description": "Optional description displayed below the grid title"
+          },
+          "ColorValues": {
+            "type": "array",
+            "title": "Color Swatches",
+            "description": "Collection of color swatches to display. Each color value represents one swatch card.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Value": {
+                  "type": "string",
+                  "title": "Color Value",
+                  "description": "Enter color in format: Name #HexValue (e.g., 'Blue 03 #1F1F5F')"
+                }
+              },
+              "required": ["Value"]
+            },
+            "minItems": 1
+          }
+        },
+        "required": []
+      },
+      "output": {
+        "responseType": "html"
+      }
+    }
+  ],
+  "previews": {
+    "basic": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "inline",
+            "value": {
+              "Title": "Extended Palette",
+              "Description": "The extended color palette provides a range of shades for each base color.",
+              "ColorValues": [
+                {
+                  "Value": "Blue 03 #1F1F5F"
+                },
+                {
+                  "Value": "Orange 03 #E35205"
+                },
+                {
+                  "Value": "Ochre 02 #C33826"
+                },
+                {
+                  "Value": "Coral 03 #C25062"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

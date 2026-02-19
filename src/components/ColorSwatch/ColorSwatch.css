@@ -1,0 +1,127 @@
+/**
+ * ColorSwatch Component Styles
+ *
+ * A grid-based component displaying multiple color swatches with optional title and description.
+ * Each swatch is a card displaying a color sample with label and hex code.
+ * Uses design tokens for consistent spacing, borders, and typography.
+ */
+
+/* Grid Container */
+.nt-color-swatch-grid {
+  width: 100%;
+}
+
+.nt-color-swatch-grid__title {
+  color: var(--clr-text-default, #1f1e27);
+  font-size: 28px;
+  font-family: var(--font-family-primary, Lato);
+  font-weight: 700;
+  line-height: 36px;
+  margin: 0 0 var(--sp-sm, 16px) 0;
+}
+
+.nt-color-swatch-grid__description {
+  color: var(--clr-text-default, #1f1e27);
+  font-size: 16px;
+  font-family: var(--font-family-primary, Lato);
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0 0 var(--sp-md, 24px) 0;
+}
+
+.nt-color-swatch-grid__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 136px);
+  gap: var(--sp-md, 24px);
+  width: 100%;
+}
+
+/* Error message styling */
+.color-swatch-error {
+  padding: var(--sp-md, 24px);
+  background: var(--clr-bg-muted, #f5f5f5);
+  border-left: 4px solid var(--clr-error, #c33826);
+  margin: var(--sp-md, 24px) 0;
+}
+
+.color-swatch-error h3 {
+  margin: 0 0 var(--sp-xs, 8px) 0;
+  color: var(--clr-error, #c33826);
+}
+
+.color-swatch-error p {
+  margin: 0;
+  color: var(--clr-text-default, #1f1e27);
+}
+
+/* Individual Swatch Card */
+.nt-color-swatch {
+  /* Layout */
+  width: 136px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  /* Spacing */
+  padding: var(--sp-xs, 8px);
+
+  /* Borders & Background */
+  background: var(--clr-bg-default, white);
+  outline: var(--border-width-md, 1px) solid var(--clr-border-subtle, #d3d3d7);
+  outline-offset: -1px;
+  border-radius: var(--radii-none, 0px);
+}
+
+.nt-color-swatch__sample {
+  /* Fixed dimensions per Figma spec */
+  width: 136px;
+  height: 99px;
+  align-self: stretch;
+
+  /* Visual styling */
+  border-radius: var(--radii-none, 0px);
+
+  /* Focus state for potential interactive features */
+  &:focus-visible {
+    box-shadow: var(--shadow-focus-ntg, 0px 0px 0px 4px #ec8c58ff);
+    outline: none;
+  }
+}
+
+.nt-color-swatch__content {
+  /* Layout */
+  align-self: stretch;
+  padding: var(--sp-xs, 8px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: var(--sp-xxs, 4px);
+}
+
+.nt-color-swatch__label {
+  /* Layout */
+  align-self: stretch;
+
+  /* Typography - Title */
+  color: var(--clr-text-default, #1f1e27);
+  font-size: 16px;
+  font-family: var(--font-family-primary, Lato);
+  font-weight: 700;
+  line-height: 24px;
+  word-wrap: break-word;
+}
+
+.nt-color-swatch__hex {
+  /* Layout */
+  align-self: stretch;
+
+  /* Typography - Text */
+  color: var(--clr-text-muted, #666774);
+  font-size: 14px;
+  font-family: var(--font-family-primary, Lato);
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}

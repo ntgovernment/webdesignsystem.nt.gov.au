@@ -58,7 +58,6 @@ The script copies the preview files into your Storybook project's `./.storybook/
    ```
 
 2. Edit the copied `component-viewer-preview.html` to update import and asset paths:
-
    - `import render from './main.js'` → `import render from './component-viewer-main.js'`
    - `fetch('./example.data.json')` → `fetch('./component-viewer-data.json')`
    - stylesheet `<link>` paths → `./web-design-system.css`
@@ -98,8 +97,6 @@ The script copies the preview files into your Storybook project's `./.storybook/
 - Spacing above the action buttons was reduced to the `--sp-xxs` token (4px) to match updated design tokens.
 
 ---
-
-
 
 ## Usage (DXP)
 
