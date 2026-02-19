@@ -15,13 +15,14 @@ ComponentViewer enables documentation sites to showcase design system components
 
 ## Props
 
-| Property            | Type    | Default                      | Description                   |
-| ------------------- | ------- | ---------------------------- | ----------------------------- |
-| `storybookUrl`      | string  | `/storybook/iframe.html`     | Base URL for Storybook iframe |
-| `storyId`           | string  | `components-button--primary` | Storybook story ID            |
-| `height`            | string  | `200px`                      | Preview height                |
-| `initialZoom`       | number  | `1.0`                        | Starting zoom level           |
-| `showCodeByDefault` | boolean | `false`                      | Whether code panel is visible |
+| Property            | Type          | Default                      | Description                                                                        |
+| ------------------- | ------------- | ---------------------------- | ---------------------------------------------------------------------------------- |
+| `storybookUrl`      | string        | `/storybook/iframe.html`     | Base URL for Storybook iframe                                                      |
+| `Introduction`      | FormattedText | —                            | Optional introduction text above preview. Supports rich formatting (lists, links). |
+| `storyId`           | string        | `components-button--primary` | Storybook story ID                                                                 |
+| `height`            | string        | `200px`                      | Preview height                                                                     |
+| `initialZoom`       | number        | `1.0`                        | Starting zoom level                                                                |
+| `showCodeByDefault` | boolean       | `false`                      | Whether code panel is visible                                                      |
 
 ## How it works
 
@@ -95,6 +96,33 @@ The script copies the preview files into your Storybook project's `./.storybook/
 - `codeExample` is a `FormattedText` field with `format: "multi-line"` (textarea / WYSIWYG in the DXP UI).
 
 - Spacing above the action buttons was reduced to the `--sp-xxs` token (4px) to match updated design tokens.
+
+#### Squiz Nester / DXP Nester (usage & dependencies)
+
+This component includes a Nester template used by Squiz Matrix. The Nester provides server-side rendering and maps Squiz metadata fields to the component's attributes.
+
+USAGE:
+1. Create a Standard Page asset in Squiz Matrix.
+2. Add the following metadata fields to the asset (examples / defaults shown where applicable):
+   - `storybookUrl` (default: `/storybook/iframe.html`)
+   - `storyId` (required, e.g. `components-button--primary`)
+   - `Introduction` (optional — supports rich FormattedText/WYSIWYG)
+   - `codeExample` (optional fallback code)
+   - `height` (default: `200px`)
+   - `initialZoom` (default: `1.0`)
+   - `showCodeByDefault` (boolean)
+   - `enableCopy` (boolean, default: `true`)
+   - `enableZoom` (boolean, default: `true`)
+3. Use the nester in your paint layout to render the component server-side.
+
+DEPENDENCIES:
+- `head.html` or equivalent must include Prism.js CSS for syntax highlighting.
+- `footer-js.html` (or your page footer) must include the client script (`component-viewer-client.js`) plus Prism.js and Prettier if you rely on client-side code extraction/formatting.
+
+NESTER TEMPLATE LOCATION:
+- `deploy/nesters/component-viewer.html` (this file is deprecated in the repo once README is the single source of truth)
+
+> Note: the Manifest exposes the inputs editors should use — the nester maps metadata keys to those props when rendering in Squiz.
 
 ---
 

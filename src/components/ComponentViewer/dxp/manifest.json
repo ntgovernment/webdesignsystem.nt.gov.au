@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.1.5",
+  "version": "1.2.6",
   "mainFunction": "main",
   "functions": [
     {
@@ -21,6 +21,12 @@
       "input": {
         "type": "object",
         "properties": {
+          "Introduction": {
+            "type": "FormattedText",
+            "format": "multi-line",
+            "title": "Introduction",
+            "description": "Optional introduction text displayed above the component preview. Supports rich formatting (paragraphs, lists, links, emphasis)."
+          },
           "storybookUrl": {
             "type": "string",
             "title": "Storybook URL",
@@ -84,6 +90,7 @@
             "type": "inline",
             "value": {
               "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-header--default&viewMode=story",
+              "Introduction": "<p>This is an <strong>interactive preview</strong> of the Header component. You can <em>zoom in and out</em> using the controls, and view the underlying HTML code by clicking the 'See code' button below.</p>\n<ul>\n<li>Zoom controls for detailed inspection</li>\n<li>Code panel with syntax highlighting</li>\n<li>Open in new tab for full testing</li>\n</ul>",
               "height": "300px",
               "showCodeByDefault": true,
               "codeExample": "<header class=\"nt-header\">\n  <h1>Example Header</h1>\n</header>"
