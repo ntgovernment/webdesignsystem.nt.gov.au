@@ -1,6 +1,6 @@
 # ColorSwatch Component
 
-A display component that presents color swatches in a grid layout with optional title and description. Each swatch displays a color sample with its label and hex code in a card format. Part of the NT Government Web Design System, designed for showcasing colors from the extended color palette in design documentation and theming interfaces.
+A display component that presents color swatches in a grid layout with an optional formatted introduction. Each swatch displays a color sample with its label and hex code in a card format. Part of the NT Government Web Design System, designed for showcasing colors from the extended color palette in design documentation and theming interfaces.
 
 ## Overview
 
@@ -12,8 +12,7 @@ The ColorSwatch component renders a responsive grid of color cards, each display
 
 The component supports:
 
-- **Optional grid title** (H2 heading)
-- **Optional grid description** (paragraph text)
+- **Formatted introduction** (rich text rendered above the swatch grid)
 - **Multiple color swatches** displayed in a responsive grid layout
 
 ### Icon Rationale
@@ -35,13 +34,13 @@ The component follows the Figma specification:
 ## Features
 
 - **Grid layout**: Responsive grid displaying multiple color swatches with auto-fill columns (136px fixed width)
-- **Optional heading & description**: Add context with title (H2) and description text
+- **Formatted introduction**: Rich text rendered above the swatch grid (DXP FormattedText)
 - **Server-side & client-side rendering**: Works with both DXP SSR and vanilla JS hydration
 - **Design token integration**: Uses CSS custom properties for consistent theming
 - **Accessible markup**: Semantic HTML with proper ARIA attributes
 - **Responsive design**: Grid adapts to container width with auto-fill columns
 - **Auto-initialization**: Automatically mounts on DOM ready via data attributes (client-side)
-- **Sanitization**: All user inputs are escaped to prevent XSS vulnerabilities
+- **Sanitization**: Most user inputs are escaped; Introduction is rendered as HTML when using FormattedText
 
 ## Props / Input Properties
 
@@ -49,12 +48,11 @@ The component follows the Figma specification:
 
 The DXP component accepts the following properties for rendering a grid of color swatches:
 
-| Property      | Type     | Required | Description                                                | Example                                    |
-| ------------- | -------- | -------- | ---------------------------------------------------------- | ------------------------------------------ |
-| `Title`       | `string` | No       | Optional heading for the color swatch grid, rendered as H2 | `"Extended Palette"`                       |
-| `Description` | `string` | No       | Optional description displayed below the grid title        | `"The extended color palette provides..."` |
-| `ColorValues` | `array`  | Yes      | Collection of color swatches to display (minimum 1 item)   | `[{ "Value": "Blue 03 #1F1F5F" }]`         |
-| `cssClass`    | `string` | No       | Additional CSS class(es) to apply to the grid container    | `"custom-grid"`                            |
+| Property       | Type            | Required | Description                                              | Example                                                 |
+| -------------- | --------------- | -------- | -------------------------------------------------------- | ------------------------------------------------------- |
+| `Introduction` | `FormattedText` | No       | Optional formatted text displayed above the swatch grid  | "<p>The extended palette <strong>range</strong>...</p>" |
+| `ColorValues`  | `array`         | Yes      | Collection of color swatches to display (minimum 1 item) | `[{ "Value": "Blue 03 #1F1F5F" }]`                      |
+| `cssClass`     | `string`        | No       | Additional CSS class(es) to apply to the grid container  | "custom-grid"                                           |
 
 #### ColorValues Array Item Structure
 
@@ -135,9 +133,8 @@ const swatch = new ColorSwatchClient(container, {
 import colorSwatchComponent from "./src/components/ColorSwatch/dxp/main.js";
 
 const html = await colorSwatchComponent.main({
-  Title: "Extended Palette",
-  Description:
-    "The extended color palette provides a range of shades for each base color.",
+  Introduction:
+    "<p>The extended color palette provides a <strong>range</strong> of shades for each base color.</p>",
   ColorValues: [
     { Value: "Blue 03 #1F1F5F" },
     { Value: "Orange 03 #E35205" },
@@ -149,8 +146,7 @@ const html = await colorSwatchComponent.main({
 
 console.log(html);
 // Outputs: <div class="nt-color-swatch-grid my-custom-grid">
-//            <h2 class="nt-color-swatch-grid__title">Extended Palette</h2>
-//            <p class="nt-color-swatch-grid__description">The extended color palette...</p>
+//            <div class="nt-color-swatch-grid__description">...</div>
 //            <div class="nt-color-swatch-grid__container">
 //              [4 color swatches rendered here]
 //            </div>
@@ -162,13 +158,13 @@ console.log(html);
 1. **Deploy the component** via Git File Bridge (automatic on push to `dev` branch)
 2. **Add to Matrix page** via DXP Component Services interface
 3. **Configure inputs** in the component editor:
-   - **Grid Title** (optional): `Extended Palette`
-   - **Grid Description** (optional): `The extended color palette provides a range of shades for each base color.`
-   - **Color Swatches** (array): Add multiple items
-     - Color Value 1: `Blue 03 #1F1F5F`
-     - Color Value 2: `Orange 03 #E35205`
-     - Color Value 3: `Ochre 02 #C33826`
-     - Color Value 4: `Coral 03 #C25062`
+
+- **Grid Introduction** (FormattedText, optional): `The extended color palette provides a <strong>range</strong> of shades for each base color.`
+- **Color Swatches** (array): Add multiple items
+  - Color Value 1: `Blue 03 #1F1F5F`
+  - Color Value 2: `Orange 03 #E35205`
+  - Color Value 3: `Ochre 02 #C33826`
+  - Color Value 4: `Coral 03 #C25062`
 
 The component automatically parses each Value string (format: "Name #HexValue") and renders the grid with all swatches.
 
@@ -179,8 +175,7 @@ The component automatically parses each Value string (format: "Name #HexValue") 
 | Class                                | Description                                                 |
 | ------------------------------------ | ----------------------------------------------------------- |
 | `.nt-color-swatch-grid`              | Root container for the entire component                     |
-| `.nt-color-swatch-grid__title`       | Grid title (H2 heading, 28px font size)                     |
-| `.nt-color-swatch-grid__description` | Grid description (paragraph text, 16px font size)           |
+| `.nt-color-swatch-grid__description` | Formatted introduction (rich text above the swatch grid)    |
 | `.nt-color-swatch-grid__container`   | Grid container with auto-fill layout (136px columns)        |
 | `.nt-color-swatch`                   | Individual swatch card with border, padding, and background |
 | `.nt-color-swatch__sample`           | Color display area (99px height, 136px width)               |
@@ -195,12 +190,11 @@ The component leverages the following design tokens for consistent theming:
 ```css
 /* Spacing */
 --sp-xxs: 4px /* Gap between label and hex code */ --sp-xs: 8px
-  /* Container and content padding */ --sp-sm: 16px /* Margin below title */
-  --sp-md: 24px /* Grid gap and margin below description */
-  /* Border & Background */ --border-width-md: 1px --clr-border-subtle: #d3d3d7
-  --clr-bg-default: #ffffff --radii-none: 0px
-  /* Border radius (sharp corners) */ /* Typography */
-  --clr-text-default: #1f1e27 /* Title, description, and label color */
+  /* Container and content padding */ --sp-md: 24px
+  /* Grid gap and margin below introduction */ /* Border & Background */
+  --border-width-md: 1px --clr-border-subtle: #d3d3d7 --clr-bg-default: #ffffff
+  --radii-none: 0px /* Border radius (sharp corners) */ /* Typography */
+  --clr-text-default: #1f1e27 /* Introduction and label color */
   --clr-text-muted: #666774 /* Hex code color */ --font-family-primary: Lato
   /* Focus State */ --shadow-focus-ntg: 0px 0px 0px 4px #ec8c58ff;
 ```
@@ -213,7 +207,6 @@ Add custom styles via the `cssClass` prop in the DXP component:
 
 ```javascript
 const html = await colorSwatchComponent.main({
-  Title: "Extended Palette",
   ColorValues: [{ Value: "Blue 03 #1F1F5F" }, { Value: "Orange 03 #E35205" }],
   cssClass: "compact-grid",
 });
@@ -300,20 +293,27 @@ The `manifest.json` defines the component for Squiz DXP:
 
 ```json
 {
-  "Color": {
-    "type": "string",
-    "title": "Color Value",
-    "description": "Hex color code (e.g., #1F1F5F) or CSS custom property"
+  "Description": {
+    "type": "FormattedText",
+    "title": "Grid Introduction",
+    "description": "Optional formatted text displayed above the swatch grid"
   },
-  "Label": {
-    "type": "string",
-    "title": "Color Name",
-    "description": "Display label for the color (e.g., 'Blue 03')"
-  },
-  "HexCode": {
-    "type": "string",
-    "title": "Hex Code",
-    "description": "Hex code to display below the label (e.g., '#1F1F5F')"
+  "ColorValues": {
+    "type": "array",
+    "title": "Color Swatches",
+    "description": "Collection of color swatches to display. Each color value represents one swatch card.",
+    "items": {
+      "type": "object",
+      "properties": {
+        "Value": {
+          "type": "string",
+          "title": "Color Value",
+          "description": "Enter color in format: Name #HexValue (e.g., 'Blue 03 #1F1F5F')"
+        }
+      },
+      "required": ["Value"]
+    },
+    "minItems": 1
   }
 }
 ```
@@ -334,9 +334,11 @@ The component includes an inline preview in the manifest:
           "inputData": {
             "type": "inline",
             "value": {
-              "Color": "#1F1F5F",
-              "Label": "Blue 03",
-              "HexCode": "#1F1F5F"
+              "Introduction": "The extended palette provides a <strong>range</strong> of shades for each base color.",
+              "ColorValues": [
+                { "Value": "Blue 03 #1F1F5F" },
+                { "Value": "Orange 03 #E35205" }
+              ]
             }
           }
         }
@@ -360,9 +362,10 @@ The component includes an inline preview in the manifest:
 3. Search for "Color Swatch" or filter by "web-design-system" namespace
 4. Drag onto the page or insert via component picker
 5. Configure the input properties in the editor:
-   - **Color Value**: Enter a hex code (e.g., `#1F1F5F`)
-   - **Color Name**: Enter the color label (e.g., `Blue 03`)
-   - **Hex Code**: Enter hex code for display (e.g., `#1F1F5F`)
+
+- **Grid Introduction** (FormattedText, optional): Add rich text (e.g., with bold or links)
+- **Color Swatches**: Add one or more items, each with a `Value` in the format `Name #HexValue`
+
 6. Save and publish
 
 ## Development
@@ -382,7 +385,7 @@ Open `http://localhost:5173/preview/color-swatch.html` to view the component pre
 
 ```bash
 # Test server-side rendering
-node -e "import('./src/components/ColorSwatch/dxp/main.js').then(m => console.log(m.default.main({Color:'#1F1F5F',Label:'Test',HexCode:'#1F1F5F'})))"
+node -e "import('./src/components/ColorSwatch/dxp/main.js').then(m => console.log(m.default.main({Introduction:'<p>Sample <strong>introduction</strong>.</p>',ColorValues:[{Value:'Blue 03 #1F1F5F'}]})))"
 ```
 
 ### Build Process
@@ -448,7 +451,7 @@ if (typeof document !== "undefined") {
 
 ### Sanitization
 
-All user inputs are sanitized to prevent XSS attacks:
+Most user inputs are sanitized to prevent XSS attacks. Introduction (FormattedText) is rendered as HTML and should be treated as trusted content:
 
 ```typescript
 import { escapeHtml, escapeAttr } from "../../utils/sanitize";

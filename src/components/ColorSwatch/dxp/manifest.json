@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "2.0.1",
+  "version": "2.0.4",
   "mainFunction": "main",
   "functions": [
     {
@@ -21,15 +21,10 @@
       "input": {
         "type": "object",
         "properties": {
-          "Title": {
-            "type": "string",
-            "title": "Grid Title",
-            "description": "Optional heading for the color swatch grid, rendered as H2"
-          },
-          "Description": {
-            "type": "string",
-            "title": "Grid Description",
-            "description": "Optional description displayed below the grid title"
+          "Introduction": {
+            "type": "FormattedText",
+            "title": "Grid Introduction",
+            "description": "Optional formatted text displayed above the swatch grid"
           },
           "ColorValues": {
             "type": "array",
@@ -66,8 +61,7 @@
           "inputData": {
             "type": "inline",
             "value": {
-              "Title": "Extended Palette",
-              "Description": "The extended color palette provides a range of shades for each base color.",
+              "Introduction": "The extended color palette provides a <strong>range</strong> of shades for each base color.",
               "ColorValues": [
                 {
                   "Value": "Blue 03 #1F1F5F"

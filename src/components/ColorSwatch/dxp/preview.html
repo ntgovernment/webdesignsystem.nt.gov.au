@@ -40,14 +40,6 @@
             width: 100%;
         }
 
-        .nt-color-swatch-grid__title {
-            font-size: 28px;
-            font-weight: 700;
-            line-height: 36px;
-            color: #1F1E27;
-            margin: 0 0 16px 0;
-        }
-
         .nt-color-swatch-grid__description {
             font-size: 16px;
             font-weight: 400;
@@ -60,12 +52,17 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, 136px);
             gap: var(--sp-md, 24px);
+            margin-top: 32px;
             width: 100%;
+        }
+
+        .nt-color-swatch-grid--no-intro .nt-color-swatch-grid__container {
+            margin-top: 24px;
         }
 
         /* Component override styles using raw values */
         .nt-color-swatch {
-            width: 152px;
+            width: 136px;
             padding: 8px;
             background: white;
             border: 1px solid #D3D3D7;

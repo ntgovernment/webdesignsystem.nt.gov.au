@@ -1,7 +1,7 @@
 /**
  * ColorSwatch DXP Component Service - Server-Side Renderer
  *
- * Renders a grid of color swatch cards with optional title and description.
+ * Renders a grid of color swatch cards with an optional introduction.
  * Each swatch displays a color sample, label, and hex code.
  * Supports multiple color values in an array format.
  */
@@ -50,12 +50,7 @@ const renderSwatch = (colorValue, index) => {
  * Main server-side render function
  */
 const main = async (input) => {
-  const {
-    Title = "",
-    Description = "",
-    ColorValues = [],
-    cssClass = "",
-  } = input || {};
+  const { Introduction = "", ColorValues = [], cssClass = "" } = input || {};
 
   // Validate required props
   if (!ColorValues || ColorValues.length === 0) {
@@ -73,18 +68,21 @@ const main = async (input) => {
   ).join("");
 
   // Build container classes
-  const containerClasses = ["nt-color-swatch-grid", cssClass]
+  const introductionHtml = typeof Introduction === "string" ? Introduction : "";
+  const hasIntroduction = introductionHtml.trim().length > 0;
+  const containerClasses = [
+    "nt-color-swatch-grid",
+    hasIntroduction ? "" : "nt-color-swatch-grid--no-intro",
+    cssClass,
+  ]
     .filter(Boolean)
     .join(" ");
 
   // Assemble complete component HTML
   let html = `<div class="${containerClasses}">`;
 
-  if (Title) {
-    html += `<h2 class="nt-color-swatch-grid__title">${escapeHtml(Title)}</h2>`;
-  }
-  if (Description) {
-    html += `<p class="nt-color-swatch-grid__description">${escapeHtml(Description)}</p>`;
+  if (hasIntroduction) {
+    html += `<div class="nt-color-swatch-grid__description">${introductionHtml}</div>`;
   }
 
   html += `<div class="nt-color-swatch-grid__container" role="list" data-component-type="color-swatch-grid" data-swatch-count="${ColorValues.length}">
