@@ -1,11 +1,10 @@
 /**
  * ComponentViewer Vanilla JS - Client-Side Hydration
  *
- * Reads minimal server-rendered container and renders full HTML with interactivity.
- * Loaded globally and auto-detects all [data-hydration-component="component-viewer"] elements.
+ * Enhances server-rendered HTML with interactivity (zoom, code toggle, copy).
+ * No longer re-renders - server provides complete HTML structure.
  */
 
-import { escapeHtml } from "../../utils/sanitize";
 import { debugError, debugWarn } from "../../utils/debug";
 
 // Type definitions for external libraries
@@ -55,10 +54,7 @@ export class ComponentViewerClient {
     this.currentZoom = this.props.initialZoom || 1;
     this.isCodeVisible = this.props.showCodeByDefault || false;
 
-    // Render the HTML
-    this.render();
-
-    // Get rendered elements
+    // Get already-rendered elements (server-rendered HTML)
     this.iframe = container.querySelector("[data-iframe]") as HTMLIFrameElement;
     this.zoomContainer = container.querySelector(
       "[data-zoom-container]",
@@ -84,122 +80,6 @@ export class ComponentViewerClient {
     if (this.currentZoom !== 1) {
       this.applyZoom();
     }
-  }
-
-  private render(): void {
-    const {
-      storybookUrl,
-      height = "200px",
-      showCodeByDefault = false,
-      enableCopy = true,
-      enableZoom = true,
-    } = this.props;
-
-    const zoomControls = enableZoom
-      ? `
-            <div class="component-viewer__zoom-controls">
-              <button 
-                class="component-viewer__control-btn" 
-                data-action="zoom-in"
-                aria-label="Zoom in"
-                title="Zoom in"
-              >
-                <i class="fa-light fa-magnifying-glass-plus" aria-hidden="true"></i>
-                <span class="component-viewer__control-label">Zoom in</span>
-              </button>
-              <button 
-                class="component-viewer__control-btn" 
-                data-action="zoom-out"
-                aria-label="Zoom out"
-                title="Zoom out"
-              >
-                <i class="fa-light fa-magnifying-glass-minus" aria-hidden="true"></i>
-                <span class="component-viewer__control-label">Zoom out</span>
-              </button>
-              <button 
-                class="component-viewer__control-btn" 
-                data-action="zoom-reset"
-                aria-label="Reset zoom"
-                title="Reset zoom"
-              >
-                <i class="fa-light fa-arrows-rotate" aria-hidden="true"></i>
-                <span class="component-viewer__control-label">Reset zoom</span>
-              </button>
-            </div>`
-      : "";
-
-    const copyButton = enableCopy
-      ? `
-        <button 
-          class="component-viewer__button" 
-          data-action="copy"
-          aria-label="Copy code to clipboard"
-        >
-          <i class="fa-light fa-copy" aria-hidden="true"></i>
-          <span data-copy-text>Copy</span>
-        </button>`
-      : "";
-
-    this.container.innerHTML = `
-      <!-- Preview Section -->
-      <div class="component-viewer__preview" style="height: ${escapeHtml(height)}">
-        <div class="component-viewer__iframe-wrapper">
-          
-          <!-- Toolbar -->
-          <div class="component-viewer__toolbar">
-            ${zoomControls}
-            <button 
-              class="component-viewer__control-btn" 
-              data-action="open-new-tab"
-              aria-label="Open canvas in new tab"
-              title="Open canvas in new tab"
-            >
-              <i class="fa-light fa-arrow-up-right-from-square" aria-hidden="true"></i>
-              <span class="component-viewer__control-label">Open canvas in new tab</span>
-            </button>
-          </div>
-
-          <!-- Iframe Content -->
-          <div class="component-viewer__iframe-content" data-zoom-container>
-            <iframe
-              src="${escapeHtml(storybookUrl)}"
-              class="component-viewer__iframe"
-              title="Component Preview"
-              frameborder="0"
-              sandbox="allow-scripts allow-same-origin"
-              data-iframe
-            ></iframe>
-          </div>
-        </div>
-      </div>
-
-      <!-- Code Display Section -->
-      <div class="component-viewer__code ${showCodeByDefault ? "component-viewer__code--visible" : ""}" data-code-panel>
-        <pre class="component-viewer__code-content"><code class="language-html" data-code-display></code></pre>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="component-viewer__actions">
-        ${copyButton}
-        <button 
-          class="component-viewer__button" 
-          data-action="toggle-code"
-          aria-label="${showCodeByDefault ? "Hide code" : "See code"}"
-        >
-          <i class="fa-light fa-code" aria-hidden="true"></i>
-          <span data-code-toggle-text>${showCodeByDefault ? "Hide code" : "See code"}</span>
-        </button>
-      </div>
-    `;
-  }
-
-  private escapeHtml(str: string): string {
-    return (str || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
   }
 
   private setupEventListeners(): void {

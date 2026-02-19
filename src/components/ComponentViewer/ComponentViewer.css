@@ -188,7 +188,7 @@
 
 /* Action Buttons */
 .component-viewer__actions {
-  padding: var(--sp-md, 16px) 0;
+  padding: var(--sp-xxs, 4px) 0; /* sp-xxs token: 4px top/bottom */
   display: flex;
   justify-content: flex-end;
   gap: var(--sp-sm, 12px);

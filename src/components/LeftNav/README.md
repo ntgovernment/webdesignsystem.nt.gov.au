@@ -29,18 +29,30 @@ LeftNav provides a two-level, accessible side navigation with a mobile drawer fa
 ## Usage — React
 
 ```tsx
-import { LeftNav, type NavItem } from "@ntgovernment/web-design-system/components/LeftNav";
+import {
+  LeftNav,
+  type NavItem,
+} from "@ntgovernment/web-design-system/components/LeftNav";
 
 const navItems: NavItem[] = [
-  { id: 'home', label: 'Home', href: '/home', icon: 'fa-light fa-home', isActive: true },
-  { id: 'foundations', label: 'Foundations', children: [
-      { id: 'colour', label: 'Colour', href: '/colour' },
-      { id: 'typography', label: 'Typography', href: '/typography' }
-    ]
-  }
+  {
+    id: "home",
+    label: "Home",
+    href: "/home",
+    icon: "fa-light fa-home",
+    isActive: true,
+  },
+  {
+    id: "foundations",
+    label: "Foundations",
+    children: [
+      { id: "colour", label: "Colour", href: "/colour" },
+      { id: "typography", label: "Typography", href: "/typography" },
+    ],
+  },
 ];
 
-<LeftNav items={navItems} defaultExpanded={["foundations"]} />
+<LeftNav items={navItems} defaultExpanded={["foundations"]} />;
 ```
 
 ## Usage — Squiz Matrix / Vanilla JS
@@ -48,7 +60,10 @@ const navItems: NavItem[] = [
 1. Add design-system stylesheet to the page head:
 
 ```html
-<link rel="stylesheet" href="%globals_asset_url:1590990%/web-design-system.css" />
+<link
+  rel="stylesheet"
+  href="%globals_asset_url:1590990%/web-design-system.css"
+/>
 ```
 
 2. Include the component script in `footer-js` nester:
@@ -64,14 +79,26 @@ const navItems: NavItem[] = [
   <nav class="nt-leftnav" aria-label="Main navigation">
     <ul class="nt-leftnav__list">
       <li class="nt-leftnav__item">
-        <a href="/" class="nt-leftnav__link" aria-current="page"><span>Home</span></a>
+        <a href="/" class="nt-leftnav__link" aria-current="page"
+          ><span>Home</span></a
+        >
       </li>
       <li class="nt-leftnav__item">
-        <button class="nt-leftnav__toggle" aria-expanded="false" aria-controls="submenu-foundations">
+        <button
+          class="nt-leftnav__toggle"
+          aria-expanded="false"
+          aria-controls="submenu-foundations"
+        >
           <span>Foundations</span>
         </button>
-        <ul id="submenu-foundations" class="nt-leftnav__submenu" aria-hidden="true">
-          <li class="nt-leftnav__item"><a class="nt-leftnav__link" href="/foundations/colour">Colour</a></li>
+        <ul
+          id="submenu-foundations"
+          class="nt-leftnav__submenu"
+          aria-hidden="true"
+        >
+          <li class="nt-leftnav__item">
+            <a class="nt-leftnav__link" href="/foundations/colour">Colour</a>
+          </li>
           <!-- ... -->
         </ul>
       </li>
@@ -104,4 +131,4 @@ const navItems: NavItem[] = [
 
 ---
 
-*Canonical component documentation — keep this README as the single source of truth for LeftNav.*
+_Canonical component documentation — keep this README as the single source of truth for LeftNav._

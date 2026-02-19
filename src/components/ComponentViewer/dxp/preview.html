@@ -1,154 +1,345 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ComponentViewer Preview - DXP Component Service</title>
-
-    <!-- Design System Styles -->
-    <link rel="stylesheet" href="../../web-design-system.css">
-
-    <!-- Prism.js Theme -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism-okaidia.min.css">
+    <title>ComponentViewer Preview</title>
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/9bf658a5c7.js" crossorigin="anonymous"></script>
 
     <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: Lato, sans-serif;
+            background: #ffffff;
+            color: #1F1E27;
             padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            background: #f5f5f5;
+            min-height: 100vh;
         }
 
-        h1 {
-            color: #333;
-            margin-bottom: 0.5rem;
+        /* ComponentViewer Component Styles */
+        .nt-component-viewer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            font-family: Lato, sans-serif;
         }
 
-        .intro {
-            color: #666;
-            margin-bottom: 3rem;
+        /* Preview Section */
+        .component-viewer__preview {
+            background: #e7e7ea;
+            border: 1px solid #d3d3d7;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
         }
 
-        .preview-section {
-            margin: 2rem 0;
-            padding: 2rem;
+        .component-viewer__iframe-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
-        .preview-section h2 {
-            margin-top: 0;
-            color: #444;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 0.5rem;
+        .component-viewer__toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
         }
 
-        .preview-section h3 {
-            color: #666;
-            font-size: 0.9rem;
-            font-weight: normal;
-            margin: 0.5rem 0 1rem 0;
+        .component-viewer__iframe-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            transform-origin: center center;
+            transition: transform 0.2s ease;
+            overflow: auto;
         }
 
-        .note {
-            background: #fffbea;
-            border-left: 4px solid #f5c330;
-            padding: 1rem;
-            margin: 2rem 0;
+        .component-viewer__iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        /* Overlay Controls */
+        .component-viewer__overlay-controls {
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .component-viewer__zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .component-viewer__control-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            height: 28px;
+            padding: 0 8px;
+            background: transparent;
+            border: none;
             border-radius: 4px;
+            cursor: pointer;
+            color: #333;
+            transition: background-color 0.2s ease;
+            font-family: Lato, sans-serif;
+            font-size: 0.875rem;
+            white-space: nowrap;
         }
 
-        .note strong {
+        .component-viewer__control-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .component-viewer__control-btn:active {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .component-viewer__control-label {
+            font-size: 0.875rem;
+            color: #333;
+        }
+
+        .component-viewer__show-code-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0;
+            padding: 4px 12px;
+            font-family: Lato, sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+        }
+
+        .component-viewer__show-code-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .component-viewer__show-code-btn:active {
+            transform: translateY(1px);
+        }
+
+        .component-viewer__show-code-btn--active {
+            border-bottom-color: #1f1f5f;
+        }
+
+        /* Code Display Section */
+        .component-viewer__code {
+            padding: 16px;
+            background: #272822;
+            display: flex;
+            align-items: flex-start;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition:
+                opacity 0.3s ease,
+                max-height 0.3s ease,
+                padding 0.3s ease;
+        }
+
+        .component-viewer__code--visible {
+            opacity: 1;
+            max-height: 2000px;
+            padding: 16px;
+        }
+
+        .component-viewer__code-content {
+            margin: 0;
+            padding: 0;
+            font-family: "Roboto Mono", monospace;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            color: #e6e6e6;
+            overflow-x: auto;
+            white-space: pre;
+            width: 100%;
+        }
+
+        .component-viewer__code-content code {
+            font-family: inherit;
+            padding: 0;
+            margin: 0;
             display: block;
-            margin-bottom: 0.5rem;
+        }
+
+        /* Typing cursor animation */
+        .typing-cursor::after {
+            content: "|";
+            animation: blink 0.7s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Action Buttons */
+        .component-viewer__actions {
+            padding: 4px 0;
+            /* sp-xxs token: 4px top/bottom */
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            /* sp-sm token */
+        }
+
+        .component-viewer__button {
+            padding: 12px 16px;
+            background: white;
+            border: 1px solid #1f1f5f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            font-family: Lato, sans-serif;
+            font-size: 0.875rem;
+            font-weight: 700;
+            line-height: 1.25rem;
+            color: #1f1f5f;
+            transition: all 0.2s ease;
+        }
+
+        .component-viewer__button:hover {
+            background: #e7e7ea;
+        }
+
+        .component-viewer__button:active {
+            transform: translateY(1px);
+        }
+
+        .component-viewer__button i {
+            font-size: 16px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .component-viewer__toolbar {
+                padding: 4px;
+            }
+
+            .component-viewer__code {
+                padding: 12px;
+            }
+
+            .component-viewer__code-content {
+                font-size: 0.875rem;
+            }
+
+            .component-viewer__actions {
+                flex-direction: column;
+            }
+
+            .component-viewer__button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .component-viewer__toolbar {
+                padding: 4px;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-contrast: more) {
+            .component-viewer__button {
+                border-width: 2px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+
+            .component-viewer__code,
+            .component-viewer__button,
+            .component-viewer__control-btn,
+            .component-viewer__iframe-content {
+                transition: none;
+            }
         }
     </style>
 </head>
 
 <body>
-    <h1>ComponentViewer - DXP Component Preview</h1>
-    <p class="intro">Testing the ComponentViewer DXP Component Service with different configurations.</p>
+    [component://output]
 
-    <div class="note">
-        <strong>âš ï¸ Note:</strong>
-        This preview requires a local server to load ES modules. The Storybook URLs point to
-        <code>/storybook/iframe.html</code>
-        which may not be available. Update the <code>storybookUrl</code> in <code>example.data.json</code> to match your
-        setup.
-    </div>
+    <!-- Client-Side Hydration Script -->
+    <script>
+        (function () {
+            'use strict';
 
-    <!-- Basic Example -->
-    <div class="preview-section">
-        <h2>1. Basic Example</h2>
-        <h3>Default component with all controls enabled</h3>
-        <div id="preview-basic"></div>
-    </div>
-
-    <!-- With Code Visible -->
-    <div class="preview-section">
-        <h2>2. With Code Visible by Default</h2>
-        <h3>Code panel shown on load with fallback example</h3>
-        <div id="preview-with-code"></div>
-    </div>
-
-    <!-- Custom Zoom -->
-    <div class="preview-section">
-        <h2>3. Custom Initial Zoom (1.5x)</h2>
-        <h3>Component loads zoomed in at 1.5x scale</h3>
-        <div id="preview-zoom"></div>
-    </div>
-
-    <!-- Minimal (No Controls) -->
-    <div class="preview-section">
-        <h2>4. Minimal (No Copy, No Zoom)</h2>
-        <h3>Simplified view without zoom or copy controls</h3>
-        <div id="preview-minimal"></div>
-    </div>
-
-    <!-- Load the server-side rendering function -->
-    <script type="module">
-        import component from './main.js';
-
-        // Import example data
-        const response = await fetch('./example.data.json');
-        const exampleData = await response.json();
-
-        // Render each example
-        document.getElementById('preview-basic').innerHTML = await component.render(exampleData.basic);
-        document.getElementById('preview-with-code').innerHTML = await component.render(exampleData.withCode);
-        document.getElementById('preview-zoom').innerHTML = await component.render(exampleData.customZoom);
-        document.getElementById('preview-minimal').innerHTML = await component.render(exampleData.minimal);
-
-        console.log('âœ“ All ComponentViewer examples rendered');
-    </script>
-
-    <!-- Global Client-Side Bundle (for interactivity) -->
-    <!-- Note: This would normally be built from ComponentViewer.vanilla.ts -->
-    <!-- For now, we'll inline a simplified version for preview -->
-    <script type="module">
-        // Check if the built bundle exists, otherwise use inline initialization
-        try {
-            const { ComponentViewerClient } = await import('../../js/component-viewer-client.js');
-            console.log('âœ“ Loaded component-viewer-client.js');
-        } catch (err) {
-            console.warn('âš ï¸ Built bundle not found. Build with: npm run build:squiz');
-            console.log('Using inline initialization for preview...');
-
-            // Simplified inline version for preview only
             class ComponentViewerClient {
                 constructor(container) {
                     this.container = container;
-                    this.iframe = container.querySelector('[data-iframe]');
-                    this.codeDisplay = container.querySelector('[data-code-display]');
-                    this.currentZoom = parseFloat(container.dataset.initialZoom || '1');
-                    this.isCodeVisible = container.dataset.showCode === 'true';
+                    this.iframe = null;
+                    this.zoomContainer = null;
+                    this.codePanel = null;
+                    this.codeDisplay = null;
+                    this.currentZoom = 1;
+                    this.isCodeVisible = false;
                     this.extractedCode = '';
+
+                    // Parse props from data-hydration-props
+                    try {
+                        const propsData = container.dataset.hydrationProps;
+                        this.props = propsData ? JSON.parse(propsData) : {};
+                    } catch (error) {
+                        console.error('Failed to parse hydration props:', error);
+                        this.props = {};
+                    }
+
+                    this.currentZoom = this.props.initialZoom || 1;
+                    this.isCodeVisible = this.props.showCodeByDefault || false;
+
+                    // Query DOM elements after render
+                    this.iframe = container.querySelector('[data-iframe]');
+                    this.zoomContainer = container.querySelector('[data-zoom-container]');
+                    this.codePanel = container.querySelector('[data-code-panel]');
+                    this.codeDisplay = container.querySelector('[data-code-display]');
 
                     this.setupEventListeners();
 
@@ -161,11 +352,6 @@
                         this.iframe.addEventListener('load', () => {
                             setTimeout(() => this.extractIframeContent(), 1000);
                         });
-                    }
-
-                    // If code should be visible by default, show it
-                    if (this.isCodeVisible && !this.extractedCode) {
-                        setTimeout(() => this.extractIframeContent(), 1200);
                     }
                 }
 
@@ -198,25 +384,22 @@
                 }
 
                 applyZoom() {
-                    const zoomContainer = this.container.querySelector('[data-zoom-container]');
-                    if (zoomContainer) {
-                        zoomContainer.style.transform = `scale(${this.currentZoom})`;
+                    if (this.zoomContainer) {
+                        this.zoomContainer.style.transform = 'scale(' + this.currentZoom + ')';
                     }
                 }
 
                 handleToggleCode() {
                     this.isCodeVisible = !this.isCodeVisible;
-                    const codePanel = this.container.querySelector('[data-code-panel]');
 
-                    if (codePanel) {
+                    if (this.codePanel) {
                         if (this.isCodeVisible) {
-                            codePanel.classList.add('component-viewer__code--visible');
-                            // Extract code if not already done
+                            this.codePanel.classList.add('component-viewer__code--visible');
                             if (!this.extractedCode) {
                                 this.extractIframeContent();
                             }
                         } else {
-                            codePanel.classList.remove('component-viewer__code--visible');
+                            this.codePanel.classList.remove('component-viewer__code--visible');
                         }
                     }
 
@@ -234,15 +417,15 @@
                 extractIframeContent() {
                     try {
                         if (!this.iframe) {
-                            this.formatCode(this.container.dataset.codeExample || '<!-- Iframe not found -->');
+                            this.displayCode(this.props.codeExample || '<!-- Iframe not found -->');
                             return;
                         }
 
-                        const iframeDoc = this.iframe.contentDocument || this.iframe.contentWindow?.document;
+                        const iframeDoc = this.iframe.contentDocument || (this.iframe.contentWindow && this.iframe.contentWindow.document);
 
                         if (!iframeDoc) {
                             console.warn('Cannot access iframe document');
-                            this.formatCode(this.container.dataset.codeExample || '<!-- Unable to access iframe -->');
+                            this.displayCode(this.props.codeExample || '<!-- Unable to access iframe -->');
                             return;
                         }
 
@@ -258,8 +441,8 @@
                         ];
 
                         let root = null;
-                        for (const selector of selectors) {
-                            const element = iframeDoc.querySelector(selector);
+                        for (let i = 0; i < selectors.length; i++) {
+                            const element = iframeDoc.querySelector(selectors[i]);
                             if (element && element.innerHTML.trim()) {
                                 root = element;
                                 break;
@@ -277,95 +460,67 @@
                                 extractedHTML = tempDiv.children[0].innerHTML.trim();
                             }
 
-                            this.formatCode(extractedHTML);
+                            this.displayCode(extractedHTML);
                         } else {
-                            this.formatCode(this.container.dataset.codeExample || '');
+                            this.displayCode(this.props.codeExample || '');
                         }
                     } catch (error) {
                         console.error('Error extracting iframe content:', error);
-                        this.formatCode(this.container.dataset.codeExample || '<!-- Error extracting content -->');
-                    }
-                }
-
-                async formatCode(code) {
-                    this.extractedCode = code;
-
-                    try {
-                        // Check if Prettier is available globally
-                        if (window.prettier && window.prettierPlugins) {
-                            const formatted = await window.prettier.format(code, {
-                                parser: 'html',
-                                plugins: window.prettierPlugins.html ? [window.prettierPlugins.html] : [],
-                                printWidth: 80,
-                                tabWidth: 2,
-                                useTabs: false,
-                                htmlWhitespaceSensitivity: 'css'
-                            });
-
-                            this.displayCode(formatted);
-                        } else {
-                            // Fallback without Prettier
-                            this.displayCode(code);
-                        }
-                    } catch (error) {
-                        console.error('Failed to format code:', error);
-                        this.displayCode(code);
+                        this.displayCode(this.props.codeExample || '<!-- Error extracting content -->');
                     }
                 }
 
                 displayCode(code) {
+                    this.extractedCode = code;
+
                     if (this.codeDisplay) {
                         this.codeDisplay.textContent = code;
-
-                        // Apply Prism syntax highlighting if available
-                        if (window.Prism) {
-                            window.Prism.highlightElement(this.codeDisplay);
-                        }
                     }
                 }
 
-                async handleCopy() {
+                handleCopy() {
                     const copyTextEl = this.container.querySelector('[data-copy-text]');
-                    const code = this.extractedCode || this.container.dataset.codeExample || '';
-                    try {
-                        await navigator.clipboard.writeText(code);
-                        if (copyTextEl) {
-                            const originalText = copyTextEl.textContent;
-                            copyTextEl.textContent = 'Copied!';
-                            setTimeout(() => {
-                                copyTextEl.textContent = originalText;
-                            }, 2000);
-                        }
-                    } catch (err) {
-                        console.error('Copy failed:', err);
+                    const code = this.extractedCode || this.props.codeExample || '';
+
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(code).then(function () {
+                            if (copyTextEl) {
+                                const originalText = copyTextEl.textContent;
+                                copyTextEl.textContent = 'Copied!';
+                                setTimeout(function () {
+                                    copyTextEl.textContent = originalText;
+                                }, 2000);
+                            }
+                        }).catch(function (err) {
+                            console.error('Copy failed:', err);
+                        });
                     }
                 }
 
                 handleOpenNewTab() {
-                    const iframe = this.container.querySelector('[data-iframe]');
-                    if (iframe) {
-                        const src = iframe.getAttribute('src');
+                    if (this.iframe) {
+                        const src = this.iframe.getAttribute('src');
                         if (src) window.open(src, '_blank');
                     }
                 }
             }
 
-            // Initialize all instances
-            document.querySelectorAll('[data-hydration-component="component-viewer"]').forEach(container => {
-                new ComponentViewerClient(container);
-            });
+            // Initialize all ComponentViewer instances
+            function initComponentViewers() {
+                const containers = document.querySelectorAll('[data-hydration-component="component-viewer"]');
+                containers.forEach(function (container) {
+                    new ComponentViewerClient(container);
+                });
+            }
 
-            console.log('âœ“ Initialized ComponentViewer instances (preview mode)');
-        }
+            // Auto-initialize on DOMContentLoaded
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initComponentViewers);
+            } else {
+                initComponentViewers();
+            }
+        })();
     </script>
-
-    <!-- Prism.js -->
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markup.min.js"></script>
-
-    <!-- Prettier (for code formatting) -->
-    <script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/standalone.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/plugins/html.js"></script>
 </body>
 
 </html>

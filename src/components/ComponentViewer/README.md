@@ -29,9 +29,77 @@ ComponentViewer enables documentation sites to showcase design system components
 2. The client bundle (`component-viewer-client.js`) hydrates each instance and provides UI controls.
 3. Extracts iframe contents from Storybook and applies syntax highlighting (Prism) and formatting (Prettier).
 
-## Local Preview
+## Local Preview (development)
 
-Run a static server and open `dxp/preview.html` to test examples and behaviors.
+This project includes a self-contained `dxp/preview.html` used to test the ComponentViewer examples locally. The full setup and recommended workflow are copied here from the component's previous `dxp/PREVIEW-SETUP.md` so the README is the single source of truth.
+
+### Quick start
+
+- Windows
+  ```bash
+  .\deploy\dxp-components\component-viewer\serve-preview.bat
+  ```
+- Mac / Linux
+  ```bash
+  bash deploy/dxp-components/component-viewer/serve-preview.sh
+  ```
+
+The script copies the preview files into your Storybook project's `./.storybook/public/` directory so the preview runs on the same origin as Storybook (prevents CORS and enables iframe content extraction).
+
+### Manual setup
+
+1. Copy files into your Storybook project `./.storybook/public/`:
+
+   ```bash
+   copy ..\webdesignsystem.nt.gov.au\deploy\dxp-components\component-viewer\preview.html .storybook\public\component-viewer-preview.html
+   copy ..\webdesignsystem.nt.gov.au\deploy\dxp-components\component-viewer\main.js .storybook\public\component-viewer-main.js
+   copy ..\webdesignsystem.nt.gov.au\deploy\dxp-components\component-viewer\example.data.json .storybook\public\component-viewer-data.json
+   copy ..\webdesignsystem.nt.gov.au\deploy\web-design-system.css .storybook\public\
+   ```
+
+2. Edit the copied `component-viewer-preview.html` to update import and asset paths:
+
+   - `import render from './main.js'` → `import render from './component-viewer-main.js'`
+   - `fetch('./example.data.json')` → `fetch('./component-viewer-data.json')`
+   - stylesheet `<link>` paths → `./web-design-system.css`
+
+3. Start Storybook and open the preview page:
+
+   ```bash
+   npm run storybook
+   # then open http://localhost:6006/component-viewer-preview.html
+   ```
+
+### Why serve from the same origin?
+
+- No CORS errors — iframe content is accessible.
+- Code extraction from Storybook works reliably (necessary for `See code` feature).
+- Live reloading works during development.
+
+### Troubleshooting
+
+- Iframes empty: confirm Storybook is running and story IDs in `example.data.json` are correct.
+- CORS errors: ensure preview is served from the same host/port as Storybook.
+- Changes not showing: hard-refresh or verify the preview files were copied to Storybook's `public/` folder.
+
+### Development workflow
+
+1. Make changes to files in `src/components/ComponentViewer/`.
+2. Run the preview setup script (or copy files manually) into your Storybook project.
+3. Refresh the preview page.
+4. Repeat.
+
+### Production / DXP notes
+
+- The DXP `manifest.json` controls which inputs are exposed to Squiz Matrix editors. Some runtime defaults (e.g., `initialZoom`, `enableCopy`, `enableZoom`) are provided by the server-side renderer and are not exposed in the manifest.
+
+- `codeExample` is a `FormattedText` field with `format: "multi-line"` (textarea / WYSIWYG in the DXP UI).
+
+- Spacing above the action buttons was reduced to the `--sp-xxs` token (4px) to match updated design tokens.
+
+---
+
+
 
 ## Usage (DXP)
 

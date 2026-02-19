@@ -13,10 +13,10 @@
   },
   "type": "edge",
   "version": "1.1.4",
-  "mainFunction": "render",
+  "mainFunction": "main",
   "functions": [
     {
-      "name": "render",
+      "name": "main",
       "entry": "main.js",
       "input": {
         "type": "object",
@@ -27,7 +27,8 @@
             "description": "Full Storybook iframe URL including story ID and parameters (e.g., 'https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story')"
           },
           "codeExample": {
-            "type": "string",
+            "type": "FormattedText",
+            "format": "multi-line",
             "title": "Code Example",
             "description": "HTML code example to display in code panel"
           },
@@ -37,31 +38,11 @@
             "description": "Iframe height (e.g., '400px', '50vh')",
             "default": "400px"
           },
-          "initialZoom": {
-            "type": "number",
-            "title": "Initial Zoom",
-            "description": "Initial zoom level (e.g., 1, 1.5, 0.75)",
-            "default": 1,
-            "minimum": 0.25,
-            "maximum": 3
-          },
           "showCodeByDefault": {
             "type": "boolean",
             "title": "Show Code by Default",
             "description": "Whether to show code panel on initial load",
             "default": false
-          },
-          "enableCopy": {
-            "type": "boolean",
-            "title": "Enable Copy",
-            "description": "Enable copy to clipboard button",
-            "default": true
-          },
-          "enableZoom": {
-            "type": "boolean",
-            "title": "Enable Zoom",
-            "description": "Enable zoom controls",
-            "default": true
           },
           "cssClass": {
             "type": "string",
@@ -79,7 +60,10 @@
   "previews": {
     "basic": {
       "functionData": {
-        "render": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
           "inputData": {
             "type": "inline",
             "value": {
@@ -92,7 +76,10 @@
     },
     "with-code": {
       "functionData": {
-        "render": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
           "inputData": {
             "type": "inline",
             "value": {
@@ -107,15 +94,15 @@
     },
     "custom-zoom": {
       "functionData": {
-        "render": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
           "inputData": {
             "type": "inline",
             "value": {
               "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-card--default&viewMode=story",
-              "height": "400px",
-              "initialZoom": 1.5,
-              "enableCopy": true,
-              "enableZoom": true
+              "height": "400px"
             }
           }
         }
@@ -123,14 +110,15 @@
     },
     "minimal": {
       "functionData": {
-        "render": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
           "inputData": {
             "type": "inline",
             "value": {
               "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--secondary&viewMode=story",
-              "height": "150px",
-              "enableCopy": false,
-              "enableZoom": false
+              "height": "150px"
             }
           }
         }
