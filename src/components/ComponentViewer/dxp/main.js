@@ -14,6 +14,7 @@ import { generateInstanceId } from "../../../utils/instance-id.js";
 const main = async (input) => {
   const {
     storybookUrl = "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story",
+    Introduction = "",
     codeExample = "",
     height = "200px",
     initialZoom = 1.0,
@@ -23,12 +24,66 @@ const main = async (input) => {
     cssClass = "",
   } = input || {};
 
+  /**
+   * Convert Storybook documentation/story URL to iframe URL
+   * Transforms:
+   *   - ?path=/docs/components-accordion--docs
+   *     → iframe.html?id=components-accordion--default&viewMode=story
+   *   - ?path=/story/components-accordion--default
+   *     → iframe.html?id=components-accordion--default&viewMode=story
+   */
+  const convertStorybookUrl = (url) => {
+    try {
+      // Check if URL contains the path parameter pattern
+      if (url.includes("?path=/")) {
+        const urlObj = new URL(url);
+        const pathParam = urlObj.searchParams.get("path");
+
+        if (pathParam) {
+          let storyId = null;
+
+          // Handle /docs/ pattern
+          if (pathParam.startsWith("/docs/")) {
+            storyId = pathParam.replace("/docs/", "");
+            // Replace --docs with --default (common convention)
+            if (storyId.endsWith("--docs")) {
+              storyId = storyId.replace("--docs", "--default");
+            }
+          }
+          // Handle /story/ pattern
+          else if (pathParam.startsWith("/story/")) {
+            storyId = pathParam.replace("/story/", "");
+          }
+
+          // Build the iframe URL if we extracted a story ID
+          if (storyId) {
+            const baseUrl = urlObj.origin + urlObj.pathname.replace(/\/$/, "");
+            return `${baseUrl}/iframe.html?id=${storyId}&viewMode=story`;
+          }
+        }
+      }
+
+      // Return original URL if no conversion needed
+      return url;
+    } catch (error) {
+      // If URL parsing fails, return original URL
+      return url;
+    }
+  };
+
+  // Convert the Storybook URL if needed
+  const processedStorybookUrl = convertStorybookUrl(storybookUrl);
+
   // Generate unique ID for this instance
   const instanceId = generateInstanceId("cv");
 
+  // Process introduction
+  const introductionHtml = typeof Introduction === "string" ? Introduction : "";
+  const hasIntroduction = introductionHtml.trim().length > 0;
+
   // Encode props as JSON for hydration
   const hydrationProps = JSON.stringify({
-    storybookUrl,
+    storybookUrl: processedStorybookUrl,
     codeExample,
     height,
     initialZoom,
@@ -93,12 +148,21 @@ const main = async (input) => {
     : "";
 
   // Assemble complete component HTML
-  const html = `<div 
+  let html = `<div 
     class="${containerClasses}" 
     data-hydration-component="component-viewer" 
     data-hydration-props="${escapeAttr(hydrationProps)}" 
     data-instance-id="${instanceId}"
-  >
+  >`;
+
+  // Add introduction if provided
+  if (hasIntroduction) {
+    html += `
+    <!-- Introduction Section -->
+    <div class="component-viewer__introduction">${introductionHtml}</div>`;
+  }
+
+  html += `
     <!-- Preview Section -->
     <div class="component-viewer__preview" style="height: ${escapeAttr(height)}">
       <div class="component-viewer__iframe-wrapper">
@@ -120,7 +184,7 @@ const main = async (input) => {
         <!-- Iframe Content -->
         <div class="component-viewer__iframe-content" data-zoom-container>
           <iframe
-            src="${escapeAttr(storybookUrl)}"
+            src="${escapeAttr(processedStorybookUrl)}"
             class="component-viewer__iframe"
             title="Component Preview"
             frameborder="0"

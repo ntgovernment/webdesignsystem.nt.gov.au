@@ -5,6 +5,62 @@
   font-family: Lato, sans-serif;
 }
 
+/* Introduction Section */
+.component-viewer__introduction {
+  color: var(--clr-text-default, #1f1e27);
+  font-size: 16px;
+  font-family: var(--font-family-primary, Lato);
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0 0 var(--sp-xl, 32px) 0;
+  max-width: 72ch;
+}
+
+.component-viewer__introduction p {
+  margin: 0 0 var(--sp-md, 16px) 0;
+}
+
+.component-viewer__introduction p:last-child {
+  margin-bottom: 0;
+}
+
+.component-viewer__introduction ul,
+.component-viewer__introduction ol {
+  margin: 0 0 var(--sp-md, 16px) 0;
+  padding-left: var(--sp-lg, 24px);
+}
+
+.component-viewer__introduction li {
+  margin-bottom: var(--sp-xs, 8px);
+}
+
+.component-viewer__introduction li:last-child {
+  margin-bottom: 0;
+}
+
+.component-viewer__introduction strong {
+  font-weight: 700;
+}
+
+.component-viewer__introduction em {
+  font-style: italic;
+}
+
+.component-viewer__introduction a {
+  color: var(--clr-action-primary, #1f1f5f);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.component-viewer__introduction a:hover {
+  color: var(--clr-action-primary-hover, #16163d);
+}
+
+.component-viewer__introduction a:focus {
+  outline: 2px solid var(--clr-action-primary, #1f1f5f);
+  outline-offset: 2px;
+}
+
 /* Preview Section */
 .component-viewer__preview {
   background: var(--clr-bg-shade-alt, #e7e7ea);

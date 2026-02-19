@@ -102,6 +102,7 @@ The script copies the preview files into your Storybook project's `./.storybook/
 This component includes a Nester template used by Squiz Matrix. The Nester provides server-side rendering and maps Squiz metadata fields to the component's attributes.
 
 USAGE:
+
 1. Create a Standard Page asset in Squiz Matrix.
 2. Add the following metadata fields to the asset (examples / defaults shown where applicable):
    - `storybookUrl` (default: `/storybook/iframe.html`)
@@ -116,10 +117,12 @@ USAGE:
 3. Use the nester in your paint layout to render the component server-side.
 
 DEPENDENCIES:
+
 - `head.html` or equivalent must include Prism.js CSS for syntax highlighting.
 - `footer-js.html` (or your page footer) must include the client script (`component-viewer-client.js`) plus Prism.js and Prettier if you rely on client-side code extraction/formatting.
 
 NESTER TEMPLATE LOCATION:
+
 - `deploy/nesters/component-viewer.html` (this file is deprecated in the repo once README is the single source of truth)
 
 > Note: the Manifest exposes the inputs editors should use — the nester maps metadata keys to those props when rendering in Squiz.

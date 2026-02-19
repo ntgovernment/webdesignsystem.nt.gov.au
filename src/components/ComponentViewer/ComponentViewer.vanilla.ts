@@ -339,12 +339,30 @@ export class ComponentViewerClient {
   private animateTyping(code: string, avgDelay = 12): void {
     if (!this.codeDisplay) return;
 
+    const len = code.length;
+
+    // If code is empty, clear and return
+    if (len === 0) {
+      this.codeDisplay.textContent = "";
+      this.codeDisplay.classList.remove("typing-cursor");
+      return;
+    }
+
+    // If code is longer than 200 characters, skip animation and display immediately
+    if (len > 200) {
+      this.codeDisplay.textContent = code;
+      this.codeDisplay.classList.remove("typing-cursor");
+      if (window.Prism) {
+        window.Prism.highlightElement(this.codeDisplay);
+      }
+      return;
+    }
+
     // Clear existing content and add typing cursor class
     this.codeDisplay.textContent = "";
     this.codeDisplay.classList.add("typing-cursor");
 
     let i = 0;
-    const len = code.length;
 
     const tick = () => {
       // Append next character
@@ -365,14 +383,6 @@ export class ComponentViewerClient {
         }, 120);
       }
     };
-
-    // Start
-    if (len === 0) {
-      // Nothing to type — immediately remove cursor and clear
-      this.codeDisplay.classList.remove("typing-cursor");
-      this.codeDisplay.textContent = "";
-      return;
-    }
 
     // Kick off the first tick
     setTimeout(tick, avgDelay);
