@@ -77,13 +77,9 @@ const main = async (input) => {
   // Generate unique ID for this instance
   const instanceId = generateInstanceId("cv");
 
-  // Process introduction (plain text)
-  const introductionText = typeof Introduction === "string" ? Introduction : "";
-  const hasIntroduction = introductionText.trim().length > 0;
-  const introductionHtml = escapeHtml(introductionText).replace(
-    /\n/g,
-    "<br />",
-  );
+  // Process introduction (FormattedText — rendered as HTML)
+  const introductionHtml = typeof Introduction === "string" ? Introduction : "";
+  const hasIntroduction = introductionHtml.trim().length > 0;
 
   // Encode props as JSON for hydration
   const hydrationProps = JSON.stringify({

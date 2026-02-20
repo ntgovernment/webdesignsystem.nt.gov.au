@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "mainFunction": "main",
   "functions": [
     {
@@ -22,10 +22,9 @@
         "type": "object",
         "properties": {
           "Introduction": {
-            "type": "string",
-            "format": "multi-line",
+            "type": "FormattedText",
             "title": "Introduction",
-            "description": "Optional introduction text displayed above the component preview. Plain text only."
+            "description": "Optional introduction text displayed above the component preview. Supports rich formatting (lists, links)."
           },
           "storybookUrl": {
             "type": "string",
@@ -33,10 +32,10 @@
             "description": "Full Storybook iframe URL including story ID and parameters (e.g., 'https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story')"
           },
           "codeExample": {
-            "type": "FormattedText",
+            "type": "string",
             "format": "multi-line",
             "title": "Code Example",
-            "description": "HTML code example to display in code panel"
+            "description": "Plain text HTML code example to display in the code panel (used as fallback when iframe extraction is unavailable)"
           },
           "height": {
             "type": "string",
@@ -90,7 +89,7 @@
             "type": "inline",
             "value": {
               "storybookUrl": "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-header--default&viewMode=story",
-              "Introduction": "This is an interactive preview of the Header component.\nYou can zoom in and out using the controls, and view the underlying HTML code by clicking the 'See code' button below.\n\n- Zoom controls for detailed inspection\n- Code panel with syntax highlighting\n- Open in new tab for full testing",
+              "Introduction": "<p>This is an interactive preview of the <strong>Header</strong> component. You can zoom in and out using the controls, and view the underlying HTML code by clicking the <em>See code</em> button below.</p><ul><li>Zoom controls for detailed inspection</li><li>Code panel with syntax highlighting</li><li>Open in new tab for full testing</li></ul>",
               "height": "300px",
               "showCodeByDefault": true,
               "codeExample": "<header class=\"nt-header\">\n  <h1>Example Header</h1>\n</header>"
