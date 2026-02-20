@@ -145,6 +145,6 @@ Info notification (HTML):
 - Test responsive layout and accessibility (screen reader announcements)
 - Check DXP preview and hydration (server renders container + client hydrates)
 
----
+## Versioning
 
-If you need this documentation split into separate developer / content-editor views or added to Storybook, I can add Story examples and Storybook stories next.
+Any changes to `dxp/manifest.json` (schema, properties, defaults) or `dxp/main.js` (render logic) **must** be accompanied by a version increment in the `"version"` field of `manifest.json`. Follow semantic versioning: patch (`x.x.1`) for fixes, minor (`x.1.0`) for new features, major (`1.0.0`) for breaking changes.

@@ -17,8 +17,8 @@ This directory contains HTML nesters designed for direct embedding in Squiz Matr
 ### Build and Deploy
 
 ```bash
-# Build Squiz nesters
-npm run build:squiz
+# Build nesters and all components
+npm run build
 ```
 
 This copies all nesters to `deploy/nesters/` along with the vanilla JS components and global stylesheet.

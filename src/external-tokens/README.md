@@ -96,8 +96,16 @@ These tokens are imported in `src/tokens.css`:
 
 ## Notes
 
-- External tokens provide the foundation
-- Local tokens in `src/tokens.css` override external tokens
-- CSS cascade order: external first, then local overrides
-- Keep this directory in `.gitignore` if using npm package
-- Commit these files if using manual sync approach
+- External tokens provide the CSS custom property foundation; local overrides in `src/tokens.css` take precedence via the cascade.
+- These files are committed directly to this repo (manual sync approach). Do **not** add `src/external-tokens/` to `.gitignore`.
+
+### Circular CSS-variable bug — workaround
+
+The upstream token build pipeline occasionally generates self-referential CSS variables (e.g. `--type-mobile-body-default-size: var(--type-mobile-body-default-size);`). These cause infinite resolution loops at runtime.
+
+**Current workaround:** explicit overrides have been added in `src/tokens.css` for the affected `--type-mobile-*` and `--type-link-*` variables so they resolve to concrete values.
+
+This is a stop-gap only. The permanent fix is:
+1. Correct the self-referential mappings in the external token source (`design-tokens/tokens.json`).
+2. Regenerate the token CSS files and update this directory.
+3. Remove the temporary overrides from `src/tokens.css`.

@@ -1,4 +1,4 @@
-﻿# Deployment Guide for Squiz Matrix
+# Deployment Guide for Squiz Matrix
 
 This guide explains how to deploy the NT Design System components to Squiz Matrix using Git File Bridge.
 
@@ -268,14 +268,7 @@ The following is a complete paint layout example showing how to integrate all ne
     <!-- Footer JavaScript Nester -->
     <MySource_AREA id_name="footer_js" design_area="nest_content" cache="1">
       <!-- Reference: deploy/nesters/footer-js.html -->
-      <script
-        src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/header.js%"
-        defer
-      ></script>
-      <script
-        src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/theme-switcher.js%"
-        defer
-      ></script>
+      <script src="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.js%" defer></script>
     </MySource_AREA>
   </body>
 </html>
@@ -359,27 +352,10 @@ In your Squiz Matrix paint layouts, reference the compiled files:
 
 ```html
 <!-- Global Design System Stylesheet -->
-<link
-  rel="stylesheet"
-  href="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.css%"
-/>
+<link rel="stylesheet" href="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.css%" />
 
-<!-- Vanilla JS Components -->
-<script
-  type="module"
-  src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/header.js%"
-  defer
-></script>
-<script
-  type="module"
-  src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/left-nav.js%"
-  defer
-></script>
-<script
-  type="module"
-  src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/theme-switcher.js%"
-  defer
-></script>
+<!-- All Components (single IIFE bundle) -->
+<script src="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.js%" defer></script>
 ```
 
 Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
@@ -448,7 +424,7 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 
 ### Bundle Size Issues
 
-- **Check build output** - Run `npm run build` and verify file sizes in `deploy/js/`
+- **Check build output** - Run `npm run build` and verify that `deploy/web-design-system.min.js` and `deploy/web-design-system.min.css` are present
 - **Minimize Font Awesome** - Use kit configuration to include only needed icons
 - **Code splitting** - Components are automatically split into separate bundles
 - **Review dependencies** - Check package.json for unnecessary dependencies
@@ -467,13 +443,23 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 
 ### Vanilla JS Components
 
-| Component      | File                            | Size  | Auto-Mount ID                |
-| -------------- | ------------------------------- | ----- | ---------------------------- |
-| Header         | `js/header.js`                  | ~25KB | `#nt-header-root`            |
-| Left Nav       | `js/left-nav.js`                | ~5KB  | `#nt-leftnav-root`           |
-| Theme Switcher | `js/theme-switcher.js`          | ~10KB | `#nt-theme-switcher-root`    |
-| Two Column     | `js/two-column.js`              | ~8KB  | `#nt-twocolumn-root`         |
-| Viewer Client  | `js/component-viewer-client.js` | ~15KB | `[data-hydration-component]` |
+All components are bundled together. There is no individual component JS file any more.
+
+| Bundle file | Size | Global |
+| ----------- | ---- | ------ |
+| `deploy/web-design-system.min.js` | ~60–90 KB (all components) | `window.NTGDesignSystem` |
+| `deploy/web-design-system.min.css` | ~20–30 KB | — |
+
+Auto-mount IDs:
+
+| Component | Auto-mount ID |
+| --------- | ------------- |
+| Header | `#nt-header-root` |
+| LeftNav | `#nt-leftnav-root` |
+| ThemeSwitcher | `#nt-theme-switcher-root` |
+| TwoColumn | `#nt-twocolumn-root` |
+| PageBanner | `#nt-page-banner-content` |
+| ComponentViewer | `[data-hydration-component="component-viewer"]` |
 
 ### Configuration Reference
 
