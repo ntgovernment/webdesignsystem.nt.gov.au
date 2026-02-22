@@ -4,10 +4,10 @@ Component library for the Northern Territory Government, deployed to Squiz Matri
 
 All components compile to a single **IIFE bundle** (`NTGDesignSystem`) with no framework dependencies. Two component types:
 
-| Type | Description | Deployment |
-| ---- | ----------- | ---------- |
-| **Vanilla JS** | Client-side, data-attribute driven, auto-initializes on page load | `deploy/web-design-system.min.js` |
-| **DXP Edge** | Server-side rendered via Squiz DXP Component Services | Deployed via `dxp-next cmp deploy` |
+| Type           | Description                                                       | Deployment                         |
+| -------------- | ----------------------------------------------------------------- | ---------------------------------- |
+| **Vanilla JS** | Client-side, data-attribute driven, auto-initializes on page load | `deploy/web-design-system.min.js`  |
+| **DXP Edge**   | Server-side rendered via Squiz DXP Component Services             | Deployed via `dxp-next cmp deploy` |
 
 ## Quick Start
 
@@ -23,30 +23,30 @@ npm run build    # Build bundle and prepare deployment files
 
 Auto-initialized from element IDs or data attributes on `DOMContentLoaded`:
 
-| Component | Mount point | README |
-| --------- | ----------- | ------ |
-| **Header** | `#nt-header-root` | src/components/Header/README.md |
-| **LeftNav** | `#nt-leftnav-root` | src/components/LeftNav/README.md |
-| **ThemeSwitcher** | `#nt-theme-switcher-root` | src/components/ThemeSwitcher/README.md |
-| **TwoColumn** | `#nt-twocolumn-root` | src/components/TwoColumn/README.md |
-| **PageBanner** | `#nt-page-banner-content` | src/components/PageBanner/README.md |
-| **Tab** | auto-initialized via data attributes (`data-tab-container`) | src/components/Tab/README.md |
+| Component         | Mount point                                                 | README                                 |
+| ----------------- | ----------------------------------------------------------- | -------------------------------------- |
+| **Header**        | `#nt-header-root`                                           | src/components/Header/README.md        |
+| **LeftNav**       | `#nt-leftnav-root`                                          | src/components/LeftNav/README.md       |
+| **ThemeSwitcher** | `#nt-theme-switcher-root`                                   | src/components/ThemeSwitcher/README.md |
+| **TwoColumn**     | `#nt-twocolumn-root`                                        | src/components/TwoColumn/README.md     |
+| **PageBanner**    | `#nt-page-banner-content`                                   | src/components/PageBanner/README.md    |
+| **Tab**           | auto-initialized via data attributes (`data-tab-container`) | src/components/Tab/README.md           |
 
 ### DXP Edge Components
 
 Server-rendered components deployed independently via `dxp-next`. Each has `dxp/manifest.json` (schema) and `dxp/main.js` (server-side renderer):
 
-| Component | DXP name | README |
-| --------- | -------- | ------ |
-| **ColorSwatch** | `web-design-system/color-swatch` | src/components/ColorSwatch/README.md |
-| **ComponentViewer** | `web-design-system/component-viewer` | src/components/ComponentViewer/README.md |
-| **MiniPageCard** | `web-design-system/mini-page-card` | src/components/MiniPageCard/README.md |
-| **Notification** | `web-design-system/notification` | src/components/Notification/README.md |
-| **PageCard** | `web-design-system/page-card` | src/components/PageCard/README.md |
-| **PageTile** | `web-design-system/page-tile` | src/components/PageTile/README.md |
-| **ThemeSwitcher** *(DXP)* | `web-design-system/theme-switcher` | src/components/ThemeSwitcher/README.md |
-| **Tab** *(DXP)* | `web-design-system/tab` | src/components/Tab/README.md |
-| **TwoColumn** *(DXP)* | `web-design-system/two-column` | src/components/TwoColumn/README.md |
+| Component                 | DXP name                             | README                                   |
+| ------------------------- | ------------------------------------ | ---------------------------------------- |
+| **ColorSwatch**           | `web-design-system/color-swatch`     | src/components/ColorSwatch/README.md     |
+| **ComponentViewer**       | `web-design-system/component-viewer` | src/components/ComponentViewer/README.md |
+| **MiniPageCard**          | `web-design-system/mini-page-card`   | src/components/MiniPageCard/README.md    |
+| **Notification**          | `web-design-system/notification`     | src/components/Notification/README.md    |
+| **PageCard**              | `web-design-system/page-card`        | src/components/PageCard/README.md        |
+| **PageTile**              | `web-design-system/page-tile`        | src/components/PageTile/README.md        |
+| **ThemeSwitcher** _(DXP)_ | `web-design-system/theme-switcher`   | src/components/ThemeSwitcher/README.md   |
+| **Tab** _(DXP)_           | `web-design-system/tab`              | src/components/Tab/README.md             |
+| **TwoColumn** _(DXP)_     | `web-design-system/two-column`       | src/components/TwoColumn/README.md       |
 
 ## Project Structure
 
@@ -140,13 +140,13 @@ See [src/external-tokens/README.md](src/external-tokens/README.md) for token ref
 
 ## Scripts
 
-| Command | Description |
-| ------- | ----------- |
-| `npm run dev` | Dev server at `http://localhost:5173/preview/` |
-| `npm run build` | Build bundle + run deploy script |
-| `npm run deploy` | Run deploy script without rebuilding |
-| `npm run lint` | ESLint |
-| `npm run preview` | Preview built output |
+| Command           | Description                                    |
+| ----------------- | ---------------------------------------------- |
+| `npm run dev`     | Dev server at `http://localhost:5173/preview/` |
+| `npm run build`   | Build bundle + run deploy script               |
+| `npm run deploy`  | Run deploy script without rebuilding           |
+| `npm run lint`    | ESLint                                         |
+| `npm run preview` | Preview built output                           |
 
 ## Tech Stack
 

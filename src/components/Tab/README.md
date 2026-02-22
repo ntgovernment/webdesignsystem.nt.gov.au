@@ -126,8 +126,8 @@ around a page and then add the corresponding content immediately after each mark
 
 ```json
 {
-  "title": "Overview",        // required string
-  "anchor": "overview"        // optional string; defaults to a kebab‑case version of the title
+  "title": "Overview", // required string
+  "anchor": "overview" // optional string; defaults to a kebab‑case version of the title
 }
 ```
 
@@ -139,16 +139,18 @@ marker.
 ```html
 <div class="content" data-tab-container=".content">
   <!-- Tab instance #1 -->
-  <div data-dxp-component="web-design-system/tab"
-       data-dxp-props='{"title":"Overview"}'>
-  </div>
+  <div
+    data-dxp-component="web-design-system/tab"
+    data-dxp-props='{"title":"Overview"}'
+  ></div>
   <h2>Overview Section</h2>
   <p>Page introduction…</p>
 
   <!-- Tab instance #2 -->
-  <div data-dxp-component="web-design-system/tab"
-       data-dxp-props='{"title":"Fees and Charges","anchor":"fees"}'>
-  </div>
+  <div
+    data-dxp-component="web-design-system/tab"
+    data-dxp-props='{"title":"Fees and Charges","anchor":"fees"}'
+  ></div>
   <h2>Fees and Charges</h2>
   <p>Details about fees…</p>
 
@@ -170,7 +172,6 @@ internally to identify tabs and will activate the tab if its id matches
 Use `dxp-next cmp dev-ui src/components/Tab/dxp` to see a live preview of the
 marker inside a Squiz page layout; the preview file includes multiple markers plus
 sample content.
-
 
 ## Data Attributes
 

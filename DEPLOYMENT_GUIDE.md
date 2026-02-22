@@ -39,6 +39,11 @@ npm run dev
 npm run build
 
 # Deploy without rebuilding
+```
+
+> 📌 **Note:** For detailed usage, configuration options, data-attribute documentation, and examples for each component, see the README in the corresponding directory under `src/components/<Component>/README.md`.
+
+
 npm run deploy
 ```
 
@@ -298,32 +303,7 @@ Upload each nester as a file asset in Squiz Matrix and reference it:
 **Pros:** Centralized updates, easier maintenance  
 **Cons:** Additional asset dependencies, less cache control
 
-### Configuring Components via Data Attributes
-
-All vanilla JS components support configuration via `data-*` attributes:
-
-#### Header Configuration
-
-```html
-<div
-  id="nt-header-root"
-  data-title="My Application Name"
-  data-logo-src="https://custom-logo-url.png"
-  data-logo-alt="Custom Alt Text"
-  data-icon="fa-bars"
-></div>
-```
-
-#### Theme Switcher Configuration
-
-```html
-<div
-  id="nt-theme-switcher-root"
-  data-themes="light,dark,high-contrast"
-  data-default-theme="light"
-  data-storage-key="my-app-theme"
-></div>
-```
+<!-- Component configuration examples have been removed from this guide. Refer to the individual component README files under `src/components/<Component>/README.md` for up‑to‑date usage and data‑attribute documentation. -->
 
 ## Using in Squiz Matrix
 
@@ -431,6 +411,10 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 
 ## Component Reference
 
+Detailed, component‑specific documentation (props, configuration, API, examples, tokens, accessibility, etc.) is maintained inside each component directory. Please consult the README in `src/components/<Component>/README.md` for the latest information.
+
+The remainder of this guide focuses on Squiz Matrix deployment and global setup; it does not duplicate component API details.
+
 ### Available Squiz Matrix Nesters
 
 | Nester            | MySource_AREA    | Purpose                              | Cache Setting |
@@ -441,46 +425,7 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 | `footer.html`     | `footer_content` | Footer navigation and branding       | `cache="1"`   |
 | `footer-js.html`  | `footer_js`      | JavaScript component loading         | `cache="1"`   |
 
-### Vanilla JS Components
-
-All components are bundled together. There is no individual component JS file any more.
-
-| Bundle file | Size | Global |
-| ----------- | ---- | ------ |
-| `deploy/web-design-system.min.js` | ~60–90 KB (all components) | `window.NTGDesignSystem` |
-| `deploy/web-design-system.min.css` | ~20–30 KB | — |
-
-Auto-mount IDs:
-
-| Component | Auto-mount ID |
-| --------- | ------------- |
-| Header | `#nt-header-root` |
-| LeftNav | `#nt-leftnav-root` |
-| ThemeSwitcher | `#nt-theme-switcher-root` |
-| TwoColumn | `#nt-twocolumn-root` |
-| PageBanner | `#nt-page-banner-content` |
-| ComponentViewer | `[data-hydration-component="component-viewer"]` |
-
-### Configuration Reference
-
-#### Header Data Attributes
-
-| Attribute       | Type   | Default               | Description             |
-| --------------- | ------ | --------------------- | ----------------------- |
-| `data-title`    | string | "Web Design System"   | Header title text       |
-| `data-logo-src` | URL    | NT Gov logo           | Logo image URL          |
-| `data-logo-alt` | string | "NT Government Logo"  | Logo alt text           |
-| `data-icon`     | string | "fa-magnifying-glass" | Font Awesome icon class |
-
-#### Theme Switcher Data Attributes
-
-| Attribute            | Type       | Default                   | Description            |
-| -------------------- | ---------- | ------------------------- | ---------------------- |
-| `data-themes`        | CSV string | "light,dark"              | Available themes       |
-| `data-default-theme` | string     | "light"                   | Default theme          |
-| `data-storage-key`   | string     | "web-design-system-theme" | localStorage key       |
-| `data-class`         | string     | ""                        | Additional CSS classes |
-
+<!-- build outputs, auto-mount IDs, and configuration tables intentionally omitted in favor of component READMEs -->
 ## File Size Reference
 
 ### Vanilla JS Build
