@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab Component - NT Design System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            padding-top: 76px;
+            /* Account for fake header */
+        }
+
+        /* Fake header to simulate sticky offset */
+        .fake-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 76px;
+            background: #1f1f5f;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .fake-header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .demo-section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #d3d3d7;
+        }
+
+        .demo-header h2 {
+            color: #1f1f2e;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-header p {
+            color: #666774;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #1f1f5f;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Content styling for demo */
+        .content h2,
+        .content h3 {
+            color: #1f1f2e;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .content p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .content ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .content code {
+            background: #f5f5f7;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .alert.info {
+            background: #e7f3ff;
+            border-color: #1f1f5f;
+            color: #1f1f2e;
+        }
+
+        .alert.success {
+            background: #e6f7e6;
+            border-color: #2d7d2d;
+            color: #1f2e1f;
+        }
+
+        .longcontent {
+            height: 600px;
+            background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        /* Tab marker is normally hidden - shown here for demo */
+        .nt-tab-marker {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fake-header">
+        <h1>NT Government Web Design System</h1>
+    </div>
+
+    <div class="container">
+        <a href="./" class="back-link">← Back to all components</a>
+
+        <div class="demo-section">
+            <div class="demo-header">
+                <h2>Tab Component</h2>
+                <p>Organize content into sections with sticky tab navigation. Navigation appears when 2+ tabs are
+                    detected.</p>
+            </div>
+
+            <div class="alert info">
+                <strong>How it works:</strong> The Tab component scans for <code>.nt-tab-marker</code> elements
+                with <code>data-tab-title</code> attributes. Content after each marker is grouped into that tab's panel.
+                When more than 1 tab is found, a sticky navigation is generated.
+            </div>
+        </div>
+
+        <!-- Example 1: Basic 3-tab layout -->
+        <div class="demo-section">
+            <h3 style="margin-bottom: 1rem;">Example 1: Basic Tab Usage</h3>
+
+            <div class="content" data-tab-container=".content">
+                <!-- Tab 1 -->
+                <div class="nt-tab-marker" data-tab-title="Overview"></div>
+                <h2>Overview</h2>
+                <p>Welcome to the NT Government Web Design System. This design system provides a comprehensive
+                    set of components and guidelines for building accessible, consistent web experiences.</p>
+
+                <p>The system is built with vanilla JavaScript and CSS, ensuring maximum compatibility and
+                    minimal dependencies. All components follow accessibility best practices and are optimized
+                    for government websites.</p>
+
+                <ul>
+                    <li>Fully accessible components with ARIA support</li>
+                    <li>Responsive design for all screen sizes</li>
+                    <li>Keyboard navigation ready</li>
+                    <li>Consistent design tokens and theming</li>
+                    <li>Zero external dependencies</li>
+                </ul>
+
+                <!-- Tab 2 -->
+                <div class="nt-tab-marker" data-tab-title="Features"></div>
+                <h2>Features</h2>
+                <p>The Tab component provides a powerful way to organize complex content:</p>
+
+                <h3>Automatic Detection</h3>
+                <p>Simply add <code>.nt-tab-marker</code> elements with <code>data-tab-title</code>
+                    attributes throughout your content. The component automatically detects them and creates
+                    the navigation.</p>
+
+                <h3>Sticky Navigation</h3>
+                <p>Tab navigation sticks below the header as you scroll, ensuring users can always
+                    switch between sections. The sticky offset is configurable via CSS variables or data attributes.</p>
+
+                <h3>Keyboard Accessible</h3>
+                <p>Full keyboard support with Arrow keys for navigation and Home/End for jumping to
+                    first/last tabs. Follows W3C ARIA tabs pattern.</p>
+
+                <h3>Smart Rendering</h3>
+                <p>When only a single tab is detected, the navigation is automatically hidden to maintain
+                    a clean, simple layout.</p>
+
+                <!-- Tab 3 -->
+                <div class="nt-tab-marker" data-tab-title="Usage Guide"></div>
+                <h2>Usage Guide</h2>
+                <p>Implementing tabs in your page is straightforward:</p>
+
+                <div class="alert success">
+                    <strong>Step 1:</strong> Add a container element with <code>data-tab-container</code> attribute
+                </div>
+
+                <div class="alert success">
+                    <strong>Step 2:</strong> Insert
+                    <code>&lt;div class="nt-tab-marker" data-tab-title="Your Title"&gt;&lt;/div&gt;</code>
+                    where you want each tab to start
+                </div>
+
+                <div class="alert success">
+                    <strong>Step 3:</strong> Add your content after each marker. Everything until the next marker
+                    (or end of container) belongs to that tab
+                </div>
+
+                <p>The component will automatically initialize on page load and create the tab navigation.</p>
+            </div>
+        </div>
+
+        <!-- Example 2: Many tabs to test scrolling -->
+        <div class="demo-section">
+            <h3 style="margin-bottom: 1rem;">Example 2: Multiple Tabs (with Horizontal Scroll)</h3>
+
+            <div class="content" data-tab-container=".content">
+                <div class="nt-tab-marker" data-tab-title="Introduction"></div>
+                <h2>Introduction</h2>
+                <p>This example demonstrates the Tab component with many tabs. On smaller screens,
+                    the tab navigation becomes horizontally scrollable.</p>
+
+                <div class="nt-tab-marker" data-tab-title="Getting Started"></div>
+                <h2>Getting Started</h2>
+                <p>Learn how to get started with the NT Government Web Design System.</p>
+
+                <div class="nt-tab-marker" data-tab-title="Components"></div>
+                <h2>Components</h2>
+                <p>Explore the available components in the design system.</p>
+
+                <div class="nt-tab-marker" data-tab-title="Guidelines"></div>
+                <h2>Guidelines</h2>
+                <p>Follow our design guidelines for consistent experiences.</p>
+
+                <div class="nt-tab-marker" data-tab-title="Accessibility"></div>
+                <h2>Accessibility</h2>
+                <p>All components are built with accessibility in mind.</p>
+
+                <div class="nt-tab-marker" data-tab-title="Resources"></div>
+                <h2>Resources</h2>
+                <p>Additional resources and documentation links.</p>
+            </div>
+        </div>
+
+        <!-- Example 3: Long content to test sticky behavior -->
+        <div class="demo-section">
+            <h3 style="margin-bottom: 1rem;">Example 3: Long Content (Test Sticky Navigation)</h3>
+            <p style="margin-bottom: 1rem; color: #666;">Scroll down to see the tab navigation stick to the top!</p>
+
+            <div class="content" data-tab-container=".content">
+                <div class="nt-tab-marker" data-tab-title="Section A"></div>
+                <h2>Section A - Long Content</h2>
+                <p>This section has extra-long content to demonstrate the sticky navigation behavior.</p>
+                <div class="longcontent">
+                    <p style="color: #666; font-size: 1.5rem;">Long Content Area</p>
+                </div>
+                <p>As you scroll down, the tab navigation should stick to the top of the viewport
+                    (or below the header, depending on configuration).</p>
+
+                <div class="nt-tab-marker" data-tab-title="Section B"></div>
+                <h2>Section B - More Content</h2>
+                <p>Another section with substantial content.</p>
+                <div class="longcontent">
+                    <p style="color: #666; font-size: 1.5rem;">More Long Content</p>
+                </div>
+                <p>The sticky behavior ensures users can always access the tab navigation.</p>
+
+                <div class="nt-tab-marker" data-tab-title="Section C"></div>
+                <h2>Section C - Final Section</h2>
+                <p>The last section in this example.</p>
+                <p>Try using keyboard navigation: Arrow keys to move between tabs, Home/End for first/last.</p>
+            </div>
+        </div>
+
+        <!-- Example 4: Single tab (navigation should not render) -->
+        <div class="demo-section">
+            <h3 style="margin-bottom: 1rem;">Example 4: Single Tab (No Navigation)</h3>
+            <p style="margin-bottom: 1rem; color: #666;">With only 1 tab, navigation is hidden automatically.</p>
+
+            <div class="content" data-tab-container=".content">
+                <div class="nt-tab-marker" data-tab-title="Only Tab"></div>
+                <h2>Single Tab Content</h2>
+                <p>When only a single tab is detected, the component smartly hides the tab navigation
+                    to maintain a clean layout. There's no need for tab switching UI in this case.</p>
+
+                <p>This is useful when you have a template that may sometimes have multiple tabs,
+                    but in certain cases only has one section of content.</p>
+
+                <div class="alert info">
+                    Notice there's no tab navigation above this content because only one tab exists.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load the Tab component -->
+    <script type="module" src="/src/components/Tab/Tab.vanilla.ts"></script>
+</body>
+
+</html>

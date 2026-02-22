@@ -8,6 +8,7 @@
 // Import all components - these register auto-initialization on DOMContentLoaded
 import "./components/Header/Header.vanilla";
 import "./components/LeftNav/LeftNav.vanilla";
+import "./components/Tab/Tab.vanilla";
 import "./components/ThemeSwitcher/ThemeSwitcher.vanilla";
 import "./components/ComponentViewer/ComponentViewer.vanilla";
 import "./components/PageBanner/PageBanner.vanilla";

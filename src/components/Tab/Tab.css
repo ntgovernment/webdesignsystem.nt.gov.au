@@ -1,0 +1,166 @@
+/**
+ * Tab Component Styles
+ * Sticky tab navigation with content panels
+ */
+
+/* Tab navigation container - sticky positioning */
+.nt-tab__nav {
+  display: flex;
+  gap: 0;
+  position: sticky;
+  top: var(--tab-sticky-offset, 76px);
+  z-index: 100;
+  background: var(--clr-bg-shade, #f5f5f7);
+  border-bottom: var(--border-width-lg, 2px) solid
+    var(--clr-border-subtle, #d3d3d7);
+  margin-bottom: var(--sp-xl, 24px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Individual tab button */
+.nt-tab__button {
+  flex: 1;
+  max-width: 250px;
+  min-width: 120px;
+  padding: var(--sp-md, 16px) var(--sp-xl, 24px);
+  border: none;
+  background: transparent;
+  color: var(--clr-text-muted, #666774);
+  font-size: var(--type-body-default-size, 1rem);
+  font-weight: 500;
+  font-family: var(--font-family-primary, "Lato", sans-serif);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: var(--border-width-xl, 4px) solid transparent;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hover state */
+.nt-tab__button:hover {
+  background: var(--clr-bg-default, white);
+  color: var(--clr-link-default, #1f1f5f);
+}
+
+/* Focus state */
+.nt-tab__button:focus {
+  outline: var(--border-width-lg, 2px) solid var(--clr-link-default, #1f1f5f);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+/* Active tab state */
+.nt-tab__button--active {
+  background: var(--clr-bg-default, white);
+  color: var(--clr-link-default, #1f1f5f);
+  border-bottom-color: var(--clr-link-default, #1f1f5f);
+  font-weight: 600;
+}
+
+.nt-tab__button--active:hover {
+  color: var(--clr-link-hover, #c33826);
+  border-bottom-color: var(--clr-link-hover, #c33826);
+}
+
+/* Tab panel - content container */
+.nt-tab__panel {
+  display: block;
+  width: 100%;
+}
+
+.nt-tab__panel[hidden] {
+  display: none;
+}
+
+/* Focus management - ensure content doesn't steal focus */
+.nt-tab__panel:focus {
+  outline: none;
+}
+
+/* Responsive adjustments for tablets */
+@media (max-width: 1024px) {
+  .nt-tab__button {
+    max-width: 200px;
+    min-width: 100px;
+    padding: var(--sp-sm, 12px) var(--sp-lg, 20px);
+  }
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .nt-tab__nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0;
+    margin-bottom: var(--sp-lg, 20px);
+    /* Update sticky position for mobile if needed */
+    top: 0;
+  }
+
+  .nt-tab__button {
+    flex: 0 0 auto;
+    min-width: 100px;
+    max-width: none;
+    padding: var(--sp-sm, 12px) var(--sp-md, 16px);
+    font-size: var(--type-body-sm-size, 0.875rem);
+  }
+
+  /* Custom scrollbar for mobile */
+  .nt-tab__nav::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .nt-tab__nav::-webkit-scrollbar-track {
+    background: var(--clr-bg-shade, #f5f5f7);
+  }
+
+  .nt-tab__nav::-webkit-scrollbar-thumb {
+    background: var(--clr-border-subtle, #d3d3d7);
+    border-radius: 2px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .nt-tab__button {
+    min-width: 90px;
+    padding: var(--sp-sm, 12px);
+    font-size: var(--type-body-sm-size, 0.875rem);
+  }
+
+  .nt-tab__nav {
+    margin-bottom: var(--sp-md, 16px);
+  }
+}
+
+/* Accessibility: Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .nt-tab__button {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .nt-tab__button {
+    border: 1px solid currentColor;
+  }
+
+  .nt-tab__button--active {
+    border-width: 2px;
+  }
+}
+
+/* Print styles - show all content */
+@media print {
+  .nt-tab__nav {
+    display: none;
+  }
+
+  .nt-tab__panel[hidden] {
+    display: block !important;
+  }
+}

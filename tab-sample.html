@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Licensing - Northern Territory Government</title>
+    <link rel="icon" type="image/svg+xml" href="https://nt.gov.au/_design/latest/images/favicon.svg">
+
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/d8e5f638f7.js" crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Design tokens */
+            --clr-bg-default: #ffffff;
+            --clr-bg-shade: #f5f5f7;
+            --clr-text-default: #1f1f2e;
+            --clr-text-muted: #666774;
+            --clr-link-default: #1f1f5f;
+            --clr-link-hover: #c33826;
+            --clr-border-subtle: #d3d3d7;
+            --font-family-primary: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --sp-sm: 12px;
+            --sp-md: 16px;
+            --sp-lg: 20px;
+            --sp-xl: 24px;
+            --sp-xxl: 32px;
+            --header-height: 76px;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            color: var(--clr-text-default);
+            background: var(--clr-bg-shade);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: var(--clr-link-default);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--sp-xl);
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .site-header__logo {
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--sp-md);
+        }
+
+        .site-header__logo i {
+            font-size: 1.5rem;
+        }
+
+        .site-header__nav {
+            display: flex;
+            gap: var(--sp-lg);
+            list-style: none;
+        }
+
+        .site-header__nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .site-header__nav a:hover {
+            opacity: 0.8;
+        }
+
+        /* Main content */
+        .main-wrapper {
+            padding-top: var(--header-height);
+            min-height: 100vh;
+        }
+
+        /* Banner */
+        .page-banner {
+            background: linear-gradient(135deg, #1f1f5f 0%, #3a3a8f 100%);
+            color: white;
+            padding: var(--sp-xxl) var(--sp-xl);
+            margin-bottom: 0;
+        }
+
+        .page-banner__container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-banner__breadcrumb {
+            font-size: 0.875rem;
+            margin-bottom: var(--sp-sm);
+            opacity: 0.9;
+        }
+
+        .page-banner__breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .page-banner__breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .page-banner__title {
+            font-size: 2.5rem;
+            margin-bottom: var(--sp-md);
+            font-weight: 700;
+        }
+
+        .page-banner__description {
+            font-size: 1.125rem;
+            opacity: 0.95;
+            max-width: 800px;
+        }
+
+        /* Content container */
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--clr-bg-default);
+            min-height: calc(100vh - var(--header-height) - 200px);
+        }
+
+        .content {
+            padding: var(--sp-xl);
+        }
+
+        /* Typography */
+        .content h2 {
+            font-size: 1.875rem;
+            margin-bottom: var(--sp-lg);
+            color: var(--clr-link-default);
+            border-bottom: 3px solid var(--clr-link-default);
+            padding-bottom: var(--sp-sm);
+        }
+
+        .content h3 {
+            font-size: 1.5rem;
+            margin-top: var(--sp-xl);
+            margin-bottom: var(--sp-md);
+            color: var(--clr-text-default);
+        }
+
+        .content h4 {
+            font-size: 1.25rem;
+            margin-top: var(--sp-lg);
+            margin-bottom: var(--sp-sm);
+            color: var(--clr-text-default);
+        }
+
+        .content p {
+            margin-bottom: var(--sp-md);
+        }
+
+        .content ul,
+        .content ol {
+            margin-bottom: var(--sp-md);
+            margin-left: var(--sp-xl);
+        }
+
+        .content li {
+            margin-bottom: var(--sp-sm);
+        }
+
+        .content a {
+            color: var(--clr-link-default);
+            text-decoration: underline;
+        }
+
+        .content a:hover {
+            color: var(--clr-link-hover);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background: var(--clr-bg-shade);
+            border-left: 4px solid var(--clr-link-default);
+            padding: var(--sp-lg);
+            margin-bottom: var(--sp-lg);
+            border-radius: 4px;
+        }
+
+        .info-box--warning {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .info-box--success {
+            border-left-color: #10b981;
+            background: #ecfdf5;
+        }
+
+        .info-box__title {
+            font-weight: 600;
+            margin-bottom: var(--sp-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--sp-sm);
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--sp-lg);
+            margin-bottom: var(--sp-xl);
+        }
+
+        .card {
+            background: var(--clr-bg-shade);
+            padding: var(--sp-lg);
+            border-radius: 8px;
+            border: 1px solid var(--clr-border-subtle);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card__icon {
+            font-size: 2rem;
+            margin-bottom: var(--sp-md);
+            color: var(--clr-link-default);
+        }
+
+        .card__title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--sp-sm);
+        }
+
+        .card__description {
+            color: var(--clr-text-muted);
+            font-size: 0.9375rem;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: var(--sp-xl);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: var(--sp-md);
+            text-align: left;
+            border-bottom: 1px solid var(--clr-border-subtle);
+        }
+
+        .data-table th {
+            background: var(--clr-bg-shade);
+            font-weight: 600;
+            color: var(--clr-link-default);
+        }
+
+        .data-table tr:hover {
+            background: var(--clr-bg-shade);
+        }
+
+        /* Button */
+        .btn {
+            display: inline-block;
+            padding: var(--sp-md) var(--sp-xl);
+            background: var(--clr-link-default);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+            margin-right: var(--sp-md);
+            margin-bottom: var(--sp-md);
+        }
+
+        .btn:hover {
+            background: var(--clr-link-hover);
+            color: white;
+        }
+
+        .btn--secondary {
+            background: white;
+            color: var(--clr-link-default);
+            border: 2px solid var(--clr-link-default);
+        }
+
+        .btn--secondary:hover {
+            background: var(--clr-bg-shade);
+        }
+
+        /* Process steps */
+        .process-steps {
+            counter-reset: step;
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .process-steps li {
+            counter-increment: step;
+            position: relative;
+            padding-left: 3.5rem;
+            margin-bottom: var(--sp-xl);
+        }
+
+        .process-steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--clr-link-default);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .process-steps li strong {
+            display: block;
+            font-size: 1.125rem;
+            margin-bottom: var(--sp-sm);
+        }
+
+        /* Footer */
+        .site-footer {
+            background: var(--clr-text-default);
+            color: white;
+            padding: var(--sp-xl);
+            text-align: center;
+            margin-top: var(--sp-xxl);
+        }
+
+        .site-footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-banner__title {
+                font-size: 1.875rem;
+            }
+
+            .site-header__nav {
+                display: none;
+            }
+
+            .content h2 {
+                font-size: 1.5rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="site-header__logo">
+            <i class="fa-solid fa-landmark"></i>
+            <span>NT Government</span>
+        </div>
+        <nav>
+            <ul class="site-header__nav">
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Business</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main-wrapper">
+        <!-- Banner -->
+        <section class="page-banner">
+            <div class="page-banner__container">
+                <nav class="page-banner__breadcrumb">
+                    <a href="#">Home</a> / <a href="#">Business</a> / <a href="#">Licensing</a> / Business Licenses
+                </nav>
+                <h1 class="page-banner__title">Business Licensing in the Northern Territory</h1>
+                <p class="page-banner__description">
+                    Everything you need to know about obtaining and maintaining business licenses in the NT
+                </p>
+            </div>
+        </section>
+
+        <!-- Main content with tabs -->
+        <main class="content-container">
+            <div class="content" data-tab-container=".content" data-tab-sticky-offset="var(--header-height, 76px)">
+
+                <!-- TAB 1: Overview -->
+                <div class="nt-tab-marker" data-tab-title="Overview"></div>
+
+                <h2>Overview</h2>
+
+                <p>Operating a business in the Northern Territory requires compliance with various licensing
+                    requirements. This guide provides comprehensive information about business licenses, permits, and
+                    registrations needed for different types of businesses.</p>
+
+                <div class="info-box info-box--warning">
+                    <div class="info-box__title">
+                        <i class="fa-solid fa-exclamation-triangle"></i>
+                        Important Notice
+                    </div>
+                    <p>Starting a business without the required licenses may result in fines, penalties, or legal
+                        action. Ensure you understand all requirements before commencing operations.</p>
+                </div>
+
+                <h3>Who Needs a Business License?</h3>
+                <p>Most businesses operating in the NT require some form of licensing or registration. The specific
+                    requirements depend on:</p>
+
+                <ul>
+                    <li>Type of business activity</li>
+                    <li>Location of operations</li>
+                    <li>Number of employees</li>
+                    <li>Industry sector (e.g., food, construction, hospitality)</li>
+                    <li>Whether you're operating from home or commercial premises</li>
+                </ul>
+
+                <h3>Common License Types</h3>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card__icon">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <h4 class="card__title">Food Business License</h4>
+                        <p class="card__description">Required for restaurants, cafes, food trucks, and any business
+                            handling food.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__icon">
+                            <i class="fa-solid fa-hard-hat"></i>
+                        </div>
+                        <h4 class="card__title">Builder's License</h4>
+                        <p class="card__description">Required for construction, building, and renovation work above
+                            specified thresholds.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__icon">
+                            <i class="fa-solid fa-wine-glass"></i>
+                        </div>
+                        <h4 class="card__title">Liquor License</h4>
+                        <p class="card__description">Required for businesses selling, serving, or distributing alcohol.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__icon">
+                            <i class="fa-solid fa-hotel"></i>
+                        </div>
+                        <h4 class="card__title">Accommodation License</h4>
+                        <p class="card__description">Required for hotels, motels, hostels, and short-term rental
+                            properties.</p>
+                    </div>
+                </div>
+
+                <div class="info-box info-box--success">
+                    <div class="info-box__title">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        Tip
+                    </div>
+                    <p>Many businesses require multiple licenses. Use our <a href="#">License Finder Tool</a> to
+                        identify all licenses you need for your specific business type.</p>
+                </div>
+
+                <!-- TAB 2: Application Process -->
+                <div class="nt-tab-marker" data-tab-title="Application Process"></div>
+
+                <h2>How to Apply</h2>
+
+                <p>The application process varies depending on the license type, but generally follows these steps:</p>
+
+                <ol class="process-steps">
+                    <li>
+                        <strong>Determine License Requirements</strong>
+                        <p>Identify which licenses and permits your business needs. Consider consulting with a business
+                            advisor or using our online license finder tool.</p>
+                    </li>
+                    <li>
+                        <strong>Gather Required Documents</strong>
+                        <p>Collect all necessary documentation including business registration, identification, proof of
+                            premises, and any industry-specific certificates.</p>
+                    </li>
+                    <li>
+                        <strong>Complete Application Forms</strong>
+                        <p>Fill out the application forms accurately and completely. Incomplete applications will be
+                            returned and delay processing.</p>
+                    </li>
+                    <li>
+                        <strong>Pay Application Fees</strong>
+                        <p>Submit the required fees with your application. Fees vary by license type and are generally
+                            non-refundable, even if your application is not approved.</p>
+                    </li>
+                    <li>
+                        <strong>Submit Application</strong>
+                        <p>Submit your application online through the NT Business Portal or by mail to the relevant
+                            licensing authority.</p>
+                    </li>
+                    <li>
+                        <strong>Await Assessment</strong>
+                        <p>Applications are assessed by the relevant authority. Processing times vary from 2-12 weeks
+                            depending on license type and application complexity.</p>
+                    </li>
+                    <li>
+                        <strong>Receive License</strong>
+                        <p>Once approved, you'll receive your license certificate. Some licenses must be displayed at
+                            your business premises.</p>
+                    </li>
+                </ol>
+
+                <h3>Documents You'll Need</h3>
+
+                <ul>
+                    <li><strong>Proof of identity</strong> – Driver's license or passport</li>
+                    <li><strong>Business registration</strong> – ABN and business name registration</li>
+                    <li><strong>Premises documentation</strong> – Lease agreement or proof of ownership</li>
+                    <li><strong>Floor plans</strong> – For food and retail premises</li>
+                    <li><strong>Insurance certificates</strong> – Public liability insurance</li>
+                    <li><strong>Qualifications</strong> – Industry certifications where required</li>
+                    <li><strong>Police clearances</strong> – For certain license types</li>
+                </ul>
+
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Online Applications
+                    </div>
+                    <p>Most licenses can be applied for online through the <strong>NT Business Portal</strong>. Online
+                        applications are processed faster and allow you to track application status in real-time.</p>
+                </div>
+
+                <p style="margin-top: 2rem;">
+                    <a href="#" class="btn">Start Online Application</a>
+                    <a href="#" class="btn btn--secondary">Download PDF Forms</a>
+                </p>
+
+                <!-- TAB 3: Fees & Processing -->
+                <div class="nt-tab-marker" data-tab-title="Fees & Processing"></div>
+
+                <h2>Fees and Processing Times</h2>
+
+                <p>License fees vary depending on the type of license, business size, and duration. Below are the
+                    current fees for common business licenses:</p>
+
+                <h3>License Fee Schedule</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>License Type</th>
+                            <th>Application Fee</th>
+                            <th>Annual Fee</th>
+                            <th>Processing Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Food Business License (Low Risk)</td>
+                            <td>$150</td>
+                            <td>$300</td>
+                            <td>2-3 weeks</td>
+                        </tr>
+                        <tr>
+                            <td>Food Business License (High Risk)</td>
+                            <td>$250</td>
+                            <td>$600</td>
+                            <td>4-6 weeks</td>
+                        </tr>
+                        <tr>
+                            <td>Builder's License (Class A)</td>
+                            <td>$500</td>
+                            <td>$800</td>
+                            <td>6-8 weeks</td>
+                        </tr>
+                        <tr>
+                            <td>Builder's License (Class B)</td>
+                            <td>$350</td>
+                            <td>$550</td>
+                            <td>4-6 weeks</td>
+                        </tr>
+                        <tr>
+                            <td>Liquor License (On-Premises)</td>
+                            <td>$1,200</td>
+                            <td>$1,800</td>
+                            <td>8-12 weeks</td>
+                        </tr>
+                        <tr>
+                            <td>Liquor License (Off-Premises)</td>
+                            <td>$800</td>
+                            <td>$1,200</td>
+                            <td>6-10 weeks</td>
+                        </tr>
+                        <tr>
+                            <td>Accommodation License</td>
+                            <td>$400</td>
+                            <td>$650</td>
+                            <td>3-4 weeks</td>
+                        </tr>
+                        <tr>
+                            <td>Home Business Permit</td>
+                            <td>$100</td>
+                            <td>$200</td>
+                            <td>1-2 weeks</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box info-box--warning">
+                    <div class="info-box__title">
+                        <i class="fa-solid fa-calendar-alt"></i>
+                        Fees Subject to Change
+                    </div>
+                    <p>All fees are current as of July 2025 and are subject to annual review. Check the official NT
+                        Business Portal for the most up-to-date fee schedule.</p>
+                </div>
+
+                <h3>Payment Methods</h3>
+
+                <p>License fees can be paid by:</p>
+                <ul>
+                    <li>Credit or debit card (online applications)</li>
+                    <li>BPAY</li>
+                    <li>Cheque or money order (mail applications)</li>
+                    <li>In person at NT Government service centers</li>
+                </ul>
+
+                <h3>Refund Policy</h3>
+
+                <p>Application fees are generally <strong>non-refundable</strong>, even if your application is withdrawn
+                    or refused. However, you may be eligible for a refund in certain circumstances:</p>
+
+                <ul>
+                    <li>License authority error or duplication</li>
+                    <li>Overpayment of fees</li>
+                    <li>Application withdrawn before assessment begins</li>
+                </ul>
+
+                <h4>Processing Time Factors</h4>
+
+                <p>Several factors can affect how long your application takes to process:</p>
+
+                <ul>
+                    <li><strong>Application completeness</strong> – Incomplete applications are returned</li>
+                    <li><strong>License complexity</strong> – Some licenses require site inspections or consultations
+                    </li>
+                    <li><strong>Public notification period</strong> – Some licenses require public comment periods</li>
+                    <li><strong>Peak periods</strong> – Applications lodged in December-January may take longer</li>
+                    <li><strong>Additional checks</strong> – Police checks, background verification can add time</li>
+                </ul>
+
+                <!-- TAB 4: Renewals & Compliance -->
+                <div class="nt-tab-marker" data-tab-title="Renewals & Compliance"></div>
+
+                <h2>License Renewals and Compliance</h2>
+
+                <p>Most business licenses are not permanent and must be renewed periodically. Maintaining compliance
+                    with license conditions is essential to avoid penalties and ensure uninterrupted operations.</p>
+
+                <h3>Renewal Process</h3>
+
+                <p>License renewal reminders are typically sent 4-6 weeks before expiration. To renew your license:</p>
+
+                <ol>
+                    <li>Check your license expiry date</li>
+                    <li>Review any changes to licensing requirements</li>
+                    <li>Update your business details if changed</li>
+                    <li>Pay the renewal fee</li>
+                    <li>Submit any required updated documentation</li>
+                </ol>
+
+                <div class="info-box info-box--warning">
+                    <div class="info-box__title">
+                        <i class="fa-solid fa-exclamation-circle"></i>
+                        Don't Let Your License Lapse
+                    </div>
+                    <p>Operating with an expired license is illegal and can result in fines up to $10,000 and immediate
+                        closure orders. Set calendar reminders well before your expiry date.</p>
+                </div>
+
+                <h3>Compliance Requirements</h3>
+
+                <p>License holders must comply with various conditions depending on the license type:</p>
+
+                <h4>General Compliance</h4>
+                <ul>
+                    <li>Display licenses at business premises where required</li>
+                    <li>Maintain required insurance coverage</li>
+                    <li>Keep accurate business records</li>
+                    <li>Notify authorities of business changes</li>
+                    <li>Allow inspections by licensing officers</li>
+                    <li>Maintain health and safety standards</li>
+                </ul>
+
+                <h4>Industry-Specific Compliance</h4>
+
+                <p><strong>Food Businesses:</strong></p>
+                <ul>
+                    <li>Food safety training for all food handlers</li>
+                    <li>Regular health inspections</li>
+                    <li>Temperature monitoring and record keeping</li>
+                    <li>Pest control programs</li>
+                </ul>
+
+                <p><strong>Licensed Builders:</strong></p>
+                <ul>
+                    <li>Maintain required insurance levels</li>
+                    <li>Complete continuing professional development</li>
+                    <li>Comply with building codes and standards</li>
+                    <li>Maintain complaint handling procedures</li>
+                </ul>
+
+                <p><strong>Liquor Licensees:</strong></p>
+                <ul>
+                    <li>Responsible service of alcohol training</li>
+                    <li>Comply with trading hour restrictions</li>
+                    <li>Maintain incident registers</li>
+                    <li>Follow advertising regulations</li>
+                </ul>
+
+                <h3>Inspections and Audits</h3>
+
+                <p>Licensed businesses may be subject to inspections by NT Government licensing officers. Inspections
+                    can be:</p>
+
+                <ul>
+                    <li><strong>Scheduled</strong> – Advance notice provided</li>
+                    <li><strong>Unannounced</strong> – Random compliance checks</li>
+                    <li><strong>Complaint-triggered</strong> – Following public complaints</li>
+                    <li><strong>Incident-based</strong> – After accidents or violations</li>
+                </ul>
+
+                <h3>Penalties for Non-Compliance</h3>
+
+                <p>Failure to comply with license conditions can result in:</p>
+
+                <ul>
+                    <li>Warning notices</li>
+                    <li>Infringement notices and fines</li>
+                    <li>License suspension</li>
+                    <li>License cancellation</li>
+                    <li>Prosecution and criminal penalties</li>
+                </ul>
+
+                <div class="info-box info-box--success">
+                    <div class="info-box__title">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                        Stay Compliant
+                    </div>
+                    <p>Subscribe to our compliance newsletter to receive updates about regulatory changes, upcoming
+                        inspections, and best practice guidance for your industry.</p>
+                    <p style="margin-top: 1rem;"><a href="#" class="btn">Subscribe to Updates</a></p>
+                </div>
+
+                <!-- TAB 5: Resources & Support -->
+                <div class="nt-tab-marker" data-tab-title="Resources & Support"></div>
+
+                <h2>Resources and Support</h2>
+
+                <p>The NT Government provides a range of resources and support services to help business owners navigate
+                    the licensing process.</p>
+
+                <h3>Online Tools</h3>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card__icon">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <h4 class="card__title">License Finder</h4>
+                        <p class="card__description">Interactive tool to identify which licenses your business needs
+                            based on your business activities.</p>
+                        <p style="margin-top: 1rem;"><a href="#">Use License Finder →</a></p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__icon">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <h4 class="card__title">Fee Calculator</h4>
+                        <p class="card__description">Calculate total licensing costs for your business including
+                            application and annual fees.</p>
+                        <p style="margin-top: 1rem;"><a href="#">Calculate Fees →</a></p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__icon">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <h4 class="card__title">Application Checklist</h4>
+                        <p class="card__description">Downloadable checklists for each license type to ensure you have
+                            all required documents.</p>
+                        <p style="margin-top: 1rem;"><a href="#">Download Checklists →</a></p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__icon">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                        <h4 class="card__title">24/7 Support Portal</h4>
+                        <p class="card__description">Access FAQs, submit inquiries, and track your application status
+                            online anytime.</p>
+                        <p style="margin-top: 1rem;"><a href="#">Access Portal →</a></p>
+                    </div>
+                </div>
+
+                <h3>Contact Information</h3>
+
+                <h4>Business Licensing Office</h4>
+                <p>
+                    <strong>Phone:</strong> 1300 123 456<br>
+                    <strong>Email:</strong> licensing@nt.gov.au<br>
+                    <strong>Hours:</strong> Monday-Friday, 8:30am-4:30pm (ACST)
+                </p>
+
+                <h4>Office Locations</h4>
+
+                <p><strong>Darwin</strong><br>
+                    69 Mitchell Street, Darwin NT 0800<br>
+                    Open: Monday-Friday, 9:00am-5:00pm</p>
+
+                <p><strong>Alice Springs</strong><br>
+                    Ground Floor, Alice Plaza, 36 Todd Mall, Alice Springs NT 0870<br>
+                    Open: Monday-Friday, 9:00am-5:00pm</p>
+
+                <p><strong>Katherine</strong><br>
+                    First Street, Katherine NT 0850<br>
+                    Open: Monday-Friday, 9:00am-5:00pm</p>
+
+                <h3>Additional Resources</h3>
+
+                <ul>
+                    <li><a href="#">Business Licensing Handbook (PDF)</a></li>
+                    <li><a href="#">Industry-Specific Guidelines</a></li>
+                    <li><a href="#">Frequently Asked Questions</a></li>
+                    <li><a href="#">Video Tutorials: How to Apply</a></li>
+                    <li><a href="#">Webinars and Training Sessions</a></li>
+                    <li><a href="#">Complaints and Appeals Process</a></li>
+                </ul>
+
+                <h3>Business Advisory Services</h3>
+
+                <p>Free one-on-one advisory services are available to help you:</p>
+
+                <ul>
+                    <li>Understand licensing requirements for your business</li>
+                    <li>Complete application forms</li>
+                    <li>Prepare required documentation</li>
+                    <li>Develop compliance systems</li>
+                    <li>Plan for license renewals</li>
+                </ul>
+
+                <p><a href="#" class="btn">Book an Appointment</a></p>
+
+                <div class="info-box">
+                    <div class="info-box__title">
+                        <i class="fa-solid fa-envelope"></i>
+                        Subscribe for Updates
+                    </div>
+                    <p>Sign up for our monthly newsletter to receive:</p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Regulatory updates and changes</li>
+                        <li>Licensing tips and best practices</li>
+                        <li>Deadline reminders</li>
+                        <li>Industry news and events</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><a href="#" class="btn btn--secondary">Subscribe Now</a></p>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <p>&copy; 2026 Northern Territory Government. All rights reserved.</p>
+            <p>
+                <a href="#">Privacy</a> |
+                <a href="#">Accessibility</a> |
+                <a href="#">Disclaimer</a> |
+                <a href="#">Contact Us</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Load Tab Component -->
+    <script type="module" src="/src/components/Tab/Tab.vanilla.ts"></script>
+</body>
+
+</html>

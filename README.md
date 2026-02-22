@@ -30,6 +30,7 @@ Auto-initialized from element IDs or data attributes on `DOMContentLoaded`:
 | **ThemeSwitcher** | `#nt-theme-switcher-root` | src/components/ThemeSwitcher/README.md |
 | **TwoColumn** | `#nt-twocolumn-root` | src/components/TwoColumn/README.md |
 | **PageBanner** | `#nt-page-banner-content` | src/components/PageBanner/README.md |
+| **Tab** | auto-initialized via data attributes (`data-tab-container`) | src/components/Tab/README.md |
 
 ### DXP Edge Components
 
@@ -44,6 +45,7 @@ Server-rendered components deployed independently via `dxp-next`. Each has `dxp/
 | **PageCard** | `web-design-system/page-card` | src/components/PageCard/README.md |
 | **PageTile** | `web-design-system/page-tile` | src/components/PageTile/README.md |
 | **ThemeSwitcher** *(DXP)* | `web-design-system/theme-switcher` | src/components/ThemeSwitcher/README.md |
+| **Tab** *(DXP)* | `web-design-system/tab` | src/components/Tab/README.md |
 | **TwoColumn** *(DXP)* | `web-design-system/two-column` | src/components/TwoColumn/README.md |
 
 ## Project Structure
