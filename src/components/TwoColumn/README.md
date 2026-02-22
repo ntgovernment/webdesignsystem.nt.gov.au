@@ -35,16 +35,16 @@ src/components/TwoColumn/
 
 ## Input / Props
 
-| Property          | Type            | Default | Description                                              |
-| ----------------- | --------------- | ------- | -------------------------------------------------------- |
-| `leftContent`     | `FormattedText` | `""`    | HTML content for the left column (WYSIWYG editor)        |
-| `rightContent`    | `FormattedText` | `""`    | HTML content for the right column (WYSIWYG editor)       |
-| `leftWidth`       | `string`        | `"1fr"` | CSS grid track value for the left column (e.g., `"1fr"`, `"300px"`) |
-| `rightWidth`      | `string`        | `"1fr"` | CSS grid track value for the right column                |
-| `gap`             | `string`        | `"2rem"`| Space between columns (e.g., `"2rem"`, `"32px"`)         |
-| `leftBackground`  | `string`        | `""`    | CSS background color for the left column (optional)      |
-| `rightBackground` | `string`        | `""`    | CSS background color for the right column (optional)     |
-| `cssClass`        | `string`        | `""`    | Additional CSS classes for the root container            |
+| Property          | Type            | Default  | Description                                                         |
+| ----------------- | --------------- | -------- | ------------------------------------------------------------------- |
+| `leftContent`     | `FormattedText` | `""`     | HTML content for the left column (WYSIWYG editor)                   |
+| `rightContent`    | `FormattedText` | `""`     | HTML content for the right column (WYSIWYG editor)                  |
+| `leftWidth`       | `string`        | `"1fr"`  | CSS grid track value for the left column (e.g., `"1fr"`, `"300px"`) |
+| `rightWidth`      | `string`        | `"1fr"`  | CSS grid track value for the right column                           |
+| `gap`             | `string`        | `"2rem"` | Space between columns (e.g., `"2rem"`, `"32px"`)                    |
+| `leftBackground`  | `string`        | `""`     | CSS background color for the left column (optional)                 |
+| `rightBackground` | `string`        | `""`     | CSS background color for the right column (optional)                |
+| `cssClass`        | `string`        | `""`     | Additional CSS classes for the root container                       |
 
 ### `FormattedText` type
 
@@ -52,11 +52,11 @@ src/components/TwoColumn/
 
 ## CSS Classes
 
-| Class                 | Element          | Notes                                            |
-| --------------------- | ---------------- | ------------------------------------------------ |
-| `.nt-two-column`      | Root `<div>`     | CSS Grid container; column widths/gap are inline |
-| `.nt-two-column__left` | Left `<div>`    | `min-width: 0` prevents grid overflow            |
-| `.nt-two-column__right` | Right `<div>`  | `min-width: 0` prevents grid overflow            |
+| Class                   | Element       | Notes                                            |
+| ----------------------- | ------------- | ------------------------------------------------ |
+| `.nt-two-column`        | Root `<div>`  | CSS Grid container; column widths/gap are inline |
+| `.nt-two-column__left`  | Left `<div>`  | `min-width: 0` prevents grid overflow            |
+| `.nt-two-column__right` | Right `<div>` | `min-width: 0` prevents grid overflow            |
 
 When a column has a `background` inline style, `padding: var(--sp-xl, 24px)` is applied automatically via the CSS attribute selector `[style*="background"]`.
 
@@ -64,9 +64,9 @@ On mobile (≤768px), `grid-template-columns` is forced to `1fr` by a `!importan
 
 ## Design Tokens
 
-| Token     | Usage                        | Fallback |
-| --------- | ---------------------------- | -------- |
-| `--sp-xl` | Column padding when background is set | `24px` |
+| Token     | Usage                                 | Fallback |
+| --------- | ------------------------------------- | -------- |
+| `--sp-xl` | Column padding when background is set | `24px`   |
 
 Column widths, gap, and background colors are passed as inline styles from `main.js` (not CSS tokens), so they can vary per instance independently.
 
@@ -100,10 +100,12 @@ Current version: **1.0.1** (see `dxp/manifest.json`).
   style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;"
 >
   <div class="nt-two-column__left">
-    <h3>Sidebar</h3><p>Navigation</p>
+    <h3>Sidebar</h3>
+    <p>Navigation</p>
   </div>
   <div class="nt-two-column__right">
-    <h2>Main content</h2><p>Text here</p>
+    <h2>Main content</h2>
+    <p>Text here</p>
   </div>
 </div>
 ```
@@ -112,10 +114,10 @@ Current version: **1.0.1** (see `dxp/manifest.json`).
 
 Three preview configurations are defined in `manifest.json`:
 
-| Preview           | Description                                      |
-| ----------------- | ------------------------------------------------ |
-| `basic`           | Equal-width two columns (1fr / 1fr)              |
-| `sidebar`         | Sidebar + main (1fr / 2fr)                       |
+| Preview            | Description                                      |
+| ------------------ | ------------------------------------------------ |
+| `basic`            | Equal-width two columns (1fr / 1fr)              |
+| `sidebar`          | Sidebar + main (1fr / 2fr)                       |
 | `with-backgrounds` | Demonstrates per-column background color support |
 
 ## Local Preview

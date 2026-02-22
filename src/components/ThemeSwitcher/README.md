@@ -30,19 +30,19 @@ src/components/ThemeSwitcher/
 
 ## Props
 
-| Prop           | Type            | Required | Default       | Description                                       |
-| -------------- | --------------- | -------- | ------------- | ------------------------------------------------- |
-| `themes`       | `ThemeItem[]`   | **Yes**  | -             | 1–3 theme objects each with `name` and `url`      |
-| `height`       | `string`        | No       | `"600px"`     | CSS height of the iframe container                |
-| `defaultTheme` | `string`        | No       | First theme   | `name` of the theme to display initially          |
-| `cssClass`     | `string`        | No       | `""`          | Additional CSS classes for the root container     |
+| Prop           | Type          | Required | Default     | Description                                   |
+| -------------- | ------------- | -------- | ----------- | --------------------------------------------- |
+| `themes`       | `ThemeItem[]` | **Yes**  | -           | 1–3 theme objects each with `name` and `url`  |
+| `height`       | `string`      | No       | `"600px"`   | CSS height of the iframe container            |
+| `defaultTheme` | `string`      | No       | First theme | `name` of the theme to display initially      |
+| `cssClass`     | `string`      | No       | `""`        | Additional CSS classes for the root container |
 
 ### `ThemeItem` interface
 
 ```ts
 interface ThemeItem {
-  name: string;   // Tab label
-  url: string;    // URL loaded in the iframe
+  name: string; // Tab label
+  url: string; // URL loaded in the iframe
 }
 ```
 
@@ -87,38 +87,38 @@ dxp-next cmp dev-ui src/components/ThemeSwitcher/dxp   # Local preview
 
 ## CSS Classes
 
-| Class                            | Purpose                                               |
-| -------------------------------- | ----------------------------------------------------- |
-| `.nt-theme-switcher`             | Root container (flex column)                          |
-| `.nt-theme-switcher__tabs`       | Tab bar; scrollable on mobile                         |
-| `.nt-theme-switcher__tab`        | Individual `<button>` tab                             |
-| `.nt-theme-switcher__tab--active`| Active tab state (underline + color change)           |
-| `.nt-theme-switcher__content`    | Iframe container; bordered                            |
-| `.nt-theme-switcher__iframe`     | The `<iframe>` element                                |
-| `.nt-theme-switcher-error`       | Error state container (renders on validation failure) |
+| Class                             | Purpose                                               |
+| --------------------------------- | ----------------------------------------------------- |
+| `.nt-theme-switcher`              | Root container (flex column)                          |
+| `.nt-theme-switcher__tabs`        | Tab bar; scrollable on mobile                         |
+| `.nt-theme-switcher__tab`         | Individual `<button>` tab                             |
+| `.nt-theme-switcher__tab--active` | Active tab state (underline + color change)           |
+| `.nt-theme-switcher__content`     | Iframe container; bordered                            |
+| `.nt-theme-switcher__iframe`      | The `<iframe>` element                                |
+| `.nt-theme-switcher-error`        | Error state container (renders on validation failure) |
 
 ## Design Tokens
 
-| Token                  | Usage                                 | Fallback     |
-| ---------------------- | ------------------------------------- | ------------ |
-| `--clr-bg-shade`       | Tab bar and scrollbar track background| `#f5f5f7`    |
-| `--clr-bg-default`     | Active tab and content background     | `white`      |
-| `--clr-border-subtle`  | Tab bar bottom border, content border | `#d3d3d7`    |
-| `--clr-text-muted`     | Inactive tab text                     | `#666774`    |
-| `--clr-link-default`   | Active tab text and underline         | `#1f1f5f`    |
-| `--clr-link-hover`     | Hovered active tab text/underline     | `#c33826`    |
-| `--clr-status-danger`  | Error state border and text           | `#a60f37`    |
-| `--clr-status-danger-bg` | Error state background              | `#f7e7eb`    |
-| `--sp-sm`              | Tab padding (vertical)                | `12px`       |
-| `--sp-md`              | Mobile tab padding (horizontal)       | `16px`       |
-| `--sp-xl`              | Tab padding (horizontal, desktop)     | `24px`       |
-| `--sp-xxl`             | Root bottom margin                    | `32px`       |
-| `--border-width-md`    | Content area border width             | `1px`        |
-| `--border-width-lg`    | Tab bar border, active underline, focus| `2px`       |
-| `--radii-sm`           | Error state border-radius             | `4px`        |
-| `--ntg-neutral-03`     | Mobile scrollbar thumb                | `#d3d3d7`    |
-| `--type-body-default-size` | Tab font size                     | `1rem`       |
-| `--type-body-sm-size`  | Tab font size on mobile               | `0.875rem`   |
+| Token                      | Usage                                   | Fallback   |
+| -------------------------- | --------------------------------------- | ---------- |
+| `--clr-bg-shade`           | Tab bar and scrollbar track background  | `#f5f5f7`  |
+| `--clr-bg-default`         | Active tab and content background       | `white`    |
+| `--clr-border-subtle`      | Tab bar bottom border, content border   | `#d3d3d7`  |
+| `--clr-text-muted`         | Inactive tab text                       | `#666774`  |
+| `--clr-link-default`       | Active tab text and underline           | `#1f1f5f`  |
+| `--clr-link-hover`         | Hovered active tab text/underline       | `#c33826`  |
+| `--clr-status-danger`      | Error state border and text             | `#a60f37`  |
+| `--clr-status-danger-bg`   | Error state background                  | `#f7e7eb`  |
+| `--sp-sm`                  | Tab padding (vertical)                  | `12px`     |
+| `--sp-md`                  | Mobile tab padding (horizontal)         | `16px`     |
+| `--sp-xl`                  | Tab padding (horizontal, desktop)       | `24px`     |
+| `--sp-xxl`                 | Root bottom margin                      | `32px`     |
+| `--border-width-md`        | Content area border width               | `1px`      |
+| `--border-width-lg`        | Tab bar border, active underline, focus | `2px`      |
+| `--radii-sm`               | Error state border-radius               | `4px`      |
+| `--ntg-neutral-03`         | Mobile scrollbar thumb                  | `#d3d3d7`  |
+| `--type-body-default-size` | Tab font size                           | `1rem`     |
+| `--type-body-sm-size`      | Tab font size on mobile                 | `0.875rem` |
 
 ## Accessibility
 
@@ -131,6 +131,7 @@ dxp-next cmp dev-ui src/components/ThemeSwitcher/dxp   # Local preview
 ## Error Handling
 
 The component renders a visible error state (`.nt-theme-switcher-error`) for:
+
 - `themes` array missing or empty
 - More than 3 themes provided
 - Any theme object missing `name` or `url`

@@ -70,11 +70,11 @@ header.destroy();
 
 ```ts
 interface HeaderConfig {
-  title?: string;     // Site title (default: "Web Design System")
-  logoSrc?: string;   // Logo image URL
-  logoAlt?: string;   // Logo alt text
-  icon?: string;      // Font Awesome icon class, e.g. "fa-magnifying-glass"
-  onMenuClick?: () => void;  // Callback fired when the action button is clicked
+  title?: string; // Site title (default: "Web Design System")
+  logoSrc?: string; // Logo image URL
+  logoAlt?: string; // Logo alt text
+  icon?: string; // Font Awesome icon class, e.g. "fa-magnifying-glass"
+  onMenuClick?: () => void; // Callback fired when the action button is clicked
 }
 ```
 
@@ -82,33 +82,33 @@ interface HeaderConfig {
 
 ## CSS Classes
 
-| Class                      | Element              | Notes                                   |
-| -------------------------- | -------------------- | --------------------------------------- |
-| `.nt-header`               | Root `<div>`         | Full-width flex container               |
-| `.nt-header__inner`        | Inner wrapper        | Space-between layout for left/right     |
-| `.nt-header__left`         | Left section         | Logo + title group                      |
-| `.nt-header__logo-section` | Logo + title wrapper | Flex row, `var(--sp-xs)` gap            |
-| `.nt-header__logo`         | `<img>`              | 28px height, auto width                 |
-| `.nt-header__title`        | Site title `<div>`   | H5-sized, bold, inverse text color      |
-| `.nt-header__right`        | Right section        | Holds action buttons                    |
-| `.nt-header__actions`      | Actions container    | Vertical flex, `var(--sp-md)` left pad  |
-| `.nt-header__menu-button`  | `<button>`           | Transparent, no border; fires `onMenuClick` |
-| `.nt-header__icon-container` | Icon wrapper `<div>` | 24×24px, centers the `<i>` icon        |
+| Class                        | Element              | Notes                                       |
+| ---------------------------- | -------------------- | ------------------------------------------- |
+| `.nt-header`                 | Root `<div>`         | Full-width flex container                   |
+| `.nt-header__inner`          | Inner wrapper        | Space-between layout for left/right         |
+| `.nt-header__left`           | Left section         | Logo + title group                          |
+| `.nt-header__logo-section`   | Logo + title wrapper | Flex row, `var(--sp-xs)` gap                |
+| `.nt-header__logo`           | `<img>`              | 28px height, auto width                     |
+| `.nt-header__title`          | Site title `<div>`   | H5-sized, bold, inverse text color          |
+| `.nt-header__right`          | Right section        | Holds action buttons                        |
+| `.nt-header__actions`        | Actions container    | Vertical flex, `var(--sp-md)` left pad      |
+| `.nt-header__menu-button`    | `<button>`           | Transparent, no border; fires `onMenuClick` |
+| `.nt-header__icon-container` | Icon wrapper `<div>` | 24×24px, centers the `<i>` icon             |
 
 ## Design Tokens
 
-| Token                  | Usage                        | Fallback         |
-| ---------------------- | ---------------------------- | ---------------- |
-| `--clr-bg-header`      | Header background color      | `#1f1f5f`        |
-| `--clr-text-inverse`   | Title and icon color         | `white`          |
-| `--sp-md`              | Header padding               | `16px`           |
-| `--sp-xs`              | Logo-to-title gap            | `8px`            |
-| `--sp-xl`              | Right section gap            | `24px`           |
-| `--sp-sm`              | Action group gap             | `12px`           |
-| `--shadow-md`          | Drop shadow below header     | —                |
-| `--type-heading-h5-size`   | Title font size          | `1.125rem`       |
-| `--type-heading-h5-weight` | Title font weight        | `700`            |
-| `--type-heading-h5-lh`     | Title line height        | `1.25rem`        |
+| Token                      | Usage                    | Fallback             |
+| -------------------------- | ------------------------ | -------------------- |
+| `--clr-bg-header`          | Header background color  | `#1f1f5f`            |
+| `--clr-text-inverse`       | Title and icon color     | `white`              |
+| `--sp-md`                  | Header padding           | `16px`               |
+| `--sp-xs`                  | Logo-to-title gap        | `8px`                |
+| `--sp-xl`                  | Right section gap        | `24px`               |
+| `--sp-sm`                  | Action group gap         | `12px`               |
+| `--shadow-md`              | Drop shadow below header | —                    |
+| `--type-heading-h5-size`   | Title font size          | `1.125rem`           |
+| `--type-heading-h5-weight` | Title font weight        | `700`                |
+| `--type-heading-h5-lh`     | Title line height        | `1.25rem`            |
 | `--font-family-primary`    | Title font family        | `"Lato", sans-serif` |
 
 ## Rendered HTML Structure

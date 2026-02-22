@@ -109,10 +109,10 @@ const navItems: NavItem[] = [
 
 ## Data Attributes (auto-mount)
 
-| Attribute                    | Default  | Description                                              |
-| ---------------------------- | -------- | -------------------------------------------------------- |
-| `data-default-expanded`      | `""`     | Comma-separated section IDs to expand on initialization  |
-| `data-mobile-breakpoint`     | `"768"`  | Pixel width below which the mobile drawer is triggered   |
+| Attribute                | Default | Description                                             |
+| ------------------------ | ------- | ------------------------------------------------------- |
+| `data-default-expanded`  | `""`    | Comma-separated section IDs to expand on initialization |
+| `data-mobile-breakpoint` | `"768"` | Pixel width below which the mobile drawer is triggered  |
 
 ## JavaScript API
 
@@ -125,17 +125,17 @@ const nav = new LeftNavComponent(container, {
   mobileBreakpoint: 768,
 });
 
-nav.toggleSection("foundations");   // Expand or collapse a section by ID
-nav.updateConfig({ defaultExpanded: ["components"] });  // Reconfigure
-nav.destroy();                       // Remove all event listeners and clear DOM
+nav.toggleSection("foundations"); // Expand or collapse a section by ID
+nav.updateConfig({ defaultExpanded: ["components"] }); // Reconfigure
+nav.destroy(); // Remove all event listeners and clear DOM
 ```
 
 ### `LeftNavConfig` interface
 
 ```ts
 interface LeftNavConfig {
-  defaultExpanded?: string[];   // Section IDs to expand initially
-  mobileBreakpoint?: number;    // Default: 768
+  defaultExpanded?: string[]; // Section IDs to expand initially
+  mobileBreakpoint?: number; // Default: 768
 }
 ```
 
@@ -169,55 +169,55 @@ On initialization, `convertParentLinksWithChildren()` wraps each `.nt-leftnav__l
 
 ## CSS Classes Reference
 
-| Class                             | Purpose                                                |
-| --------------------------------- | ------------------------------------------------------ |
-| `.nt-leftnav`                     | `<nav>` root; fixed on desktop, drawer on mobile       |
-| `.nt-leftnav__list`               | `<ul>` navigation list                                 |
-| `.nt-leftnav__item`               | `<li>` for each top-level item                         |
-| `.nt-leftnav__link`               | `<a>` or text link                                     |
-| `.nt-leftnav__link--parent`       | Link variant shown inside a parent-wrapper              |
-| `.nt-leftnav__toggle`             | `<button>` chevron-only toggle for expand/collapse     |
-| `.nt-leftnav__parent-wrapper`     | Flex row containing parent link + toggle button        |
-| `.nt-leftnav__chevron`            | `<i>` icon inside toggle; rotates 180° when expanded   |
-| `.nt-leftnav__submenu`            | `<ul>` collapsible submenu (max-height transition)     |
-| `.nt-leftnav__submenu--expanded`  | Open state; sets `max-height: 2000px`                  |
-| `.nt-leftnav__subitem`            | `<li>` for each child item                             |
-| `.nt-leftnav__mobile-toggle`      | `<button>` hamburger button (mobile only)              |
-| `.nt-leftnav__overlay`            | `<div>` backdrop shown behind open drawer              |
-| `.nt-leftnav__overlay--visible`   | Overlay visible state                                  |
-| `.nt-leftnav__close`              | `<button>` close button inside drawer (mobile only)     |
-| `.nt-leftnav--open`               | Applied to `<nav>` when drawer is open                 |
-| `.nt-page-layout`                 | Two-column flex wrapper (nav left, content right)      |
-| `.nt-main-content`                | Content area to the right of the nav                   |
+| Class                            | Purpose                                              |
+| -------------------------------- | ---------------------------------------------------- |
+| `.nt-leftnav`                    | `<nav>` root; fixed on desktop, drawer on mobile     |
+| `.nt-leftnav__list`              | `<ul>` navigation list                               |
+| `.nt-leftnav__item`              | `<li>` for each top-level item                       |
+| `.nt-leftnav__link`              | `<a>` or text link                                   |
+| `.nt-leftnav__link--parent`      | Link variant shown inside a parent-wrapper           |
+| `.nt-leftnav__toggle`            | `<button>` chevron-only toggle for expand/collapse   |
+| `.nt-leftnav__parent-wrapper`    | Flex row containing parent link + toggle button      |
+| `.nt-leftnav__chevron`           | `<i>` icon inside toggle; rotates 180° when expanded |
+| `.nt-leftnav__submenu`           | `<ul>` collapsible submenu (max-height transition)   |
+| `.nt-leftnav__submenu--expanded` | Open state; sets `max-height: 2000px`                |
+| `.nt-leftnav__subitem`           | `<li>` for each child item                           |
+| `.nt-leftnav__mobile-toggle`     | `<button>` hamburger button (mobile only)            |
+| `.nt-leftnav__overlay`           | `<div>` backdrop shown behind open drawer            |
+| `.nt-leftnav__overlay--visible`  | Overlay visible state                                |
+| `.nt-leftnav__close`             | `<button>` close button inside drawer (mobile only)  |
+| `.nt-leftnav--open`              | Applied to `<nav>` when drawer is open               |
+| `.nt-page-layout`                | Two-column flex wrapper (nav left, content right)    |
+| `.nt-main-content`               | Content area to the right of the nav                 |
 
 ## Design Tokens
 
-| Token                  | Usage                              | Fallback         |
-| ---------------------- | ---------------------------------- | ---------------- |
-| `--clr-nav-bg`         | Navigation background              | —                |
-| `--clr-nav-bg-active`  | Background for active item         | —                |
-| `--clr-nav-bg-hover`   | Background on hover                | —                |
-| `--clr-nav-text`       | Navigation text color              | —                |
-| `--clr-nav-text-active`| Text color for active item         | —                |
-| `--clr-nav-overlay`    | Mobile drawer backdrop color       | —                |
-| `--clr-link-default`   | Link and chevron color             | `#1f1f5f`        |
-| `--clr-bg-shade`       | Hover and expanded backgrounds     | `#f5f5f7`        |
-| `--clr-border-subtle`  | Item divider and nav right border  | `#d3d3d7`        |
-| `--clr-border-accent`  | Left accent on expanded items      | `#c33826`        |
-| `--border-width-md`    | Divider/border width               | `1px`            |
-| `--border-width-lg`    | Focus outline width                | `2px`            |
-| `--border-width-xl`    | Left accent border width           | `4px`            |
-| `--nav-width`          | Navigation panel width             | —                |
-| `--nav-gap`            | Icon-to-text gap in nav items      | —                |
-| `--nav-icon-size`      | Icon dimensions                    | —                |
-| `--nav-transition`     | Hover/expand transitions           | —                |
-| `--nav-drawer-transition` | Mobile drawer slide transition  | —                |
-| `--header-height`      | Top offset for mobile toggle button| `76px`           |
-| `--sp-md`              | Link vertical padding              | `16px`           |
-| `--sp-xxl`             | Submenu link left indent           | `32px`           |
-| `--type-heading-h5-size`   | Top-level link font size       | `1.125rem`       |
-| `--type-body-default-size` | Submenu link font size         | `1rem`           |
-| `--font-family-primary`    | All nav text                   | —                |
+| Token                      | Usage                               | Fallback   |
+| -------------------------- | ----------------------------------- | ---------- |
+| `--clr-nav-bg`             | Navigation background               | —          |
+| `--clr-nav-bg-active`      | Background for active item          | —          |
+| `--clr-nav-bg-hover`       | Background on hover                 | —          |
+| `--clr-nav-text`           | Navigation text color               | —          |
+| `--clr-nav-text-active`    | Text color for active item          | —          |
+| `--clr-nav-overlay`        | Mobile drawer backdrop color        | —          |
+| `--clr-link-default`       | Link and chevron color              | `#1f1f5f`  |
+| `--clr-bg-shade`           | Hover and expanded backgrounds      | `#f5f5f7`  |
+| `--clr-border-subtle`      | Item divider and nav right border   | `#d3d3d7`  |
+| `--clr-border-accent`      | Left accent on expanded items       | `#c33826`  |
+| `--border-width-md`        | Divider/border width                | `1px`      |
+| `--border-width-lg`        | Focus outline width                 | `2px`      |
+| `--border-width-xl`        | Left accent border width            | `4px`      |
+| `--nav-width`              | Navigation panel width              | —          |
+| `--nav-gap`                | Icon-to-text gap in nav items       | —          |
+| `--nav-icon-size`          | Icon dimensions                     | —          |
+| `--nav-transition`         | Hover/expand transitions            | —          |
+| `--nav-drawer-transition`  | Mobile drawer slide transition      | —          |
+| `--header-height`          | Top offset for mobile toggle button | `76px`     |
+| `--sp-md`                  | Link vertical padding               | `16px`     |
+| `--sp-xxl`                 | Submenu link left indent            | `32px`     |
+| `--type-heading-h5-size`   | Top-level link font size            | `1.125rem` |
+| `--type-body-default-size` | Submenu link font size              | `1rem`     |
+| `--font-family-primary`    | All nav text                        | —          |
 
 ## Accessibility
 

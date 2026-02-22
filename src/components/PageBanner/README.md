@@ -61,36 +61,36 @@ Place an empty container with `id="nt-page-banner-content"` and annotate with `d
 
 ### ID-based pattern (`#nt-page-banner-content`)
 
-| Attribute                        | Type   | Default     | Description                              |
-| -------------------------------- | ------ | ----------- | ---------------------------------------- |
-| `data-page-banner-title`         | string | `""`        | Banner heading rendered as `<h1>`        |
-| `data-page-banner-description`   | string | `""`        | Description paragraph below the title   |
-| `data-page-banner-type`          | string | `"Primary"` | Variant: `"Primary"` or `"Secondary"`   |
-| `data-page-banner-image`         | string | `""`        | Optional image URL (hidden on mobile)    |
-| `data-page-banner-figma-url`     | string | `""`        | CTA link to Figma file                   |
-| `data-page-banner-storybook-url` | string | `""`        | CTA link to Storybook story              |
+| Attribute                        | Type   | Default     | Description                           |
+| -------------------------------- | ------ | ----------- | ------------------------------------- |
+| `data-page-banner-title`         | string | `""`        | Banner heading rendered as `<h1>`     |
+| `data-page-banner-description`   | string | `""`        | Description paragraph below the title |
+| `data-page-banner-type`          | string | `"Primary"` | Variant: `"Primary"` or `"Secondary"` |
+| `data-page-banner-image`         | string | `""`        | Optional image URL (hidden on mobile) |
+| `data-page-banner-figma-url`     | string | `""`        | CTA link to Figma file                |
+| `data-page-banner-storybook-url` | string | `""`        | CTA link to Storybook story           |
 
 ### Hydration-attribute pattern (`[data-hydration-component="page-banner"]`)
 
-| Attribute             | Type   | Default     | Description                              |
-| --------------------- | ------ | ----------- | ---------------------------------------- |
-| `data-title`          | string | `""`        | Banner heading rendered as `<h1>`        |
-| `data-description`    | string | `""`        | Description paragraph                    |
-| `data-type`           | string | `"Primary"` | Variant: `"Primary"` or `"Secondary"`   |
-| `data-image`          | string | `""`        | Optional image URL                       |
-| `data-figma-url`      | string | `""`        | Figma CTA link                           |
-| `data-storybook-url`  | string | `""`        | Storybook CTA link                       |
+| Attribute            | Type   | Default     | Description                           |
+| -------------------- | ------ | ----------- | ------------------------------------- |
+| `data-title`         | string | `""`        | Banner heading rendered as `<h1>`     |
+| `data-description`   | string | `""`        | Description paragraph                 |
+| `data-type`          | string | `"Primary"` | Variant: `"Primary"` or `"Secondary"` |
+| `data-image`         | string | `""`        | Optional image URL                    |
+| `data-figma-url`     | string | `""`        | Figma CTA link                        |
+| `data-storybook-url` | string | `""`        | Storybook CTA link                    |
 
 ## Props Interface (`PageBannerProps`)
 
 ```ts
 interface PageBannerProps {
-  title?: string;       // Heading text (rendered as <h1>)
+  title?: string; // Heading text (rendered as <h1>)
   description?: string; // Body paragraph
-  type?: string;        // "Primary" (default) | "Secondary"
-  image?: string;       // Optional image URL
-  figmaUrl?: string;    // Optional Figma CTA URL
-  storybookUrl?: string;// Optional Storybook CTA URL
+  type?: string; // "Primary" (default) | "Secondary"
+  image?: string; // Optional image URL
+  figmaUrl?: string; // Optional Figma CTA URL
+  storybookUrl?: string; // Optional Storybook CTA URL
 }
 ```
 
@@ -109,44 +109,44 @@ banner.destroy(); // Clears innerHTML and removes variant CSS classes
 
 ## CSS Classes
 
-| Class                       | Element              | Notes                                             |
-| --------------------------- | -------------------- | ------------------------------------------------- |
-| `.nt-page-banner`           | Root container       | Added to the element by the component             |
-| `.nt-page-banner--primary`  | Root (variant)       | Dark blue background (`--clr-bg-dark-alt`)        |
-| `.nt-page-banner--secondary`| Root (variant)       | Light grey background (`--clr-bg-muted`)          |
-| `.nt-page-banner__inner`    | Inner width wrapper  | Max-width 1200px, centered                        |
-| `.nt-page-banner__content`  | Text content column  | Flex column, grows to fill space                  |
-| `.nt-page-banner__title`    | `<h1>` heading       | H1-sized, bold, inverse text                      |
-| `.nt-page-banner__description` | `<p>` body text   | Body size, inverse text                           |
-| `.nt-page-banner__actions`  | CTA row              | Flex row with `--sp-md` gap                       |
-| `.nt-page-banner__cta`      | `<a>` CTA link       | Inline SVG icon + text; underline on hover        |
-| `.nt-page-banner__graphics` | Image wrapper        | Hidden on mobile (`≤768px`)                       |
-| `.nt-page-banner__image`    | `<img>`              | Max-height 191px, `object-fit: cover`             |
+| Class                          | Element             | Notes                                      |
+| ------------------------------ | ------------------- | ------------------------------------------ |
+| `.nt-page-banner`              | Root container      | Added to the element by the component      |
+| `.nt-page-banner--primary`     | Root (variant)      | Dark blue background (`--clr-bg-dark-alt`) |
+| `.nt-page-banner--secondary`   | Root (variant)      | Light grey background (`--clr-bg-muted`)   |
+| `.nt-page-banner__inner`       | Inner width wrapper | Max-width 1200px, centered                 |
+| `.nt-page-banner__content`     | Text content column | Flex column, grows to fill space           |
+| `.nt-page-banner__title`       | `<h1>` heading      | H1-sized, bold, inverse text               |
+| `.nt-page-banner__description` | `<p>` body text     | Body size, inverse text                    |
+| `.nt-page-banner__actions`     | CTA row             | Flex row with `--sp-md` gap                |
+| `.nt-page-banner__cta`         | `<a>` CTA link      | Inline SVG icon + text; underline on hover |
+| `.nt-page-banner__graphics`    | Image wrapper       | Hidden on mobile (`≤768px`)                |
+| `.nt-page-banner__image`       | `<img>`             | Max-height 191px, `object-fit: cover`      |
 
 ## Design Tokens
 
-| Token                          | Usage                              | Fallback         |
-| ------------------------------ | ---------------------------------- | ---------------- |
-| `--clr-bg-dark-alt`            | Primary variant background          | `#44447a`        |
-| `--clr-bg-muted`               | Secondary variant background        | `#f5f5f7`        |
-| `--clr-text-inverse`           | Text color on dark backgrounds      | `#ffffff`        |
-| `--clr-text-default`           | Text color on light (secondary)     | `#1f1f27`        |
-| `--clr-link-inverse`           | CTA link color on dark backgrounds  | `white`          |
-| `--sp-xs`                      | CTA icon-to-text gap                | `8px`            |
-| `--sp-xxs`                     | SVG icon margin                     | `4px`            |
-| `--sp-md`                      | CTA row gap                         | `16px`           |
-| `--sp-xl`                      | Inner side padding                  | `24px`           |
-| `--sp-xxl`                     | Left padding                        | `32px`           |
-| `--sp-xxxl`                    | Bottom padding                      | `48px`           |
-| `--sp-sm`                      | Container gap between sections      | `12px`           |
-| `--type-heading-h1-size`       | Title font size                     | `2.5rem`         |
-| `--type-heading-h1-weight`     | Title font weight                   | `700`            |
-| `--type-heading-h1-lh`         | Title line height                   | `2.75rem`        |
-| `--type-mobile-h2-size`        | Title on mobile                     | `1.75rem`        |
-| `--type-body-default-size`     | Description font size               | `1rem`           |
-| `--type-body-sm-bold-size`     | CTA font size                       | `0.875rem`       |
-| `--type-body-sm-bold-weight`   | CTA font weight                     | `700`            |
-| `--font-family-primary`        | All text                            | `"Lato", sans-serif` |
+| Token                        | Usage                              | Fallback             |
+| ---------------------------- | ---------------------------------- | -------------------- |
+| `--clr-bg-dark-alt`          | Primary variant background         | `#44447a`            |
+| `--clr-bg-muted`             | Secondary variant background       | `#f5f5f7`            |
+| `--clr-text-inverse`         | Text color on dark backgrounds     | `#ffffff`            |
+| `--clr-text-default`         | Text color on light (secondary)    | `#1f1f27`            |
+| `--clr-link-inverse`         | CTA link color on dark backgrounds | `white`              |
+| `--sp-xs`                    | CTA icon-to-text gap               | `8px`                |
+| `--sp-xxs`                   | SVG icon margin                    | `4px`                |
+| `--sp-md`                    | CTA row gap                        | `16px`               |
+| `--sp-xl`                    | Inner side padding                 | `24px`               |
+| `--sp-xxl`                   | Left padding                       | `32px`               |
+| `--sp-xxxl`                  | Bottom padding                     | `48px`               |
+| `--sp-sm`                    | Container gap between sections     | `12px`               |
+| `--type-heading-h1-size`     | Title font size                    | `2.5rem`             |
+| `--type-heading-h1-weight`   | Title font weight                  | `700`                |
+| `--type-heading-h1-lh`       | Title line height                  | `2.75rem`            |
+| `--type-mobile-h2-size`      | Title on mobile                    | `1.75rem`            |
+| `--type-body-default-size`   | Description font size              | `1rem`               |
+| `--type-body-sm-bold-size`   | CTA font size                      | `0.875rem`           |
+| `--type-body-sm-bold-weight` | CTA font weight                    | `700`                |
+| `--font-family-primary`      | All text                           | `"Lato", sans-serif` |
 
 ## Placement in Squiz Matrix
 
