@@ -103,7 +103,7 @@
   --ntg-clr-text-emphasis: var(--ntg-ochre-02-d);
   --ntg-clr-link-default: var(--ntg-blue-03-d);
   --ntg-clr-link-hover: var(--ntg-ochre-02-d);
-  --ntg-clr-link-visited: #7c19aa;
+  --ntg-clr-link-visited: var(--ntg-blue-03-d);
   --ntg-clr-link-inverse: var(--ntg-neutral-white);
   --ntg-clr-link-inverse-hover: var(--ntg-blue-01);
   --ntg-clr-link-inverse-visited: var(--ntg-orange-01);
@@ -503,9 +503,9 @@
   --ntg-clr-link-hover-g: var(--ntg-ochre-02-d-g);
   --ntg-clr-link-hover-b: var(--ntg-ochre-02-d-b);
   --ntg-clr-link-hover-rgb: var(--ntg-clr-link-hover-r), var(--ntg-clr-link-hover-g), var(--ntg-clr-link-hover-b);
-  --ntg-clr-link-visited-r: 124;
-  --ntg-clr-link-visited-g: 25;
-  --ntg-clr-link-visited-b: 170;
+  --ntg-clr-link-visited-r: var(--ntg-blue-03-d-r);
+  --ntg-clr-link-visited-g: var(--ntg-blue-03-d-g);
+  --ntg-clr-link-visited-b: var(--ntg-blue-03-d-b);
   --ntg-clr-link-visited-rgb: var(--ntg-clr-link-visited-r), var(--ntg-clr-link-visited-g), var(--ntg-clr-link-visited-b);
   --ntg-clr-link-inverse-r: var(--ntg-neutral-white-r);
   --ntg-clr-link-inverse-g: var(--ntg-neutral-white-g);

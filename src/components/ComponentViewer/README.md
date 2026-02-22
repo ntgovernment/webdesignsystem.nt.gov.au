@@ -8,37 +8,37 @@ ComponentViewer embeds a Storybook story in an iframe alongside a code panel. It
 
 ## Files
 
-| File | Role |
-| ---- | ---- |
-| `dxp/manifest.json` | DXP schema + input definitions |
-| `dxp/main.js` | Server-side renderer |
-| `dxp/preview.html` | DXP dev-ui preview wrapper |
-| `dxp/example.data.json` | Example props for local preview |
-| `dxp/serve-preview.bat` / `.sh` | Copy preview files into a running Storybook |
-| `ComponentViewer.vanilla.ts` | Client-side hydration (zoom, copy, code extraction) |
+| File                            | Role                                                |
+| ------------------------------- | --------------------------------------------------- |
+| `dxp/manifest.json`             | DXP schema + input definitions                      |
+| `dxp/main.js`                   | Server-side renderer                                |
+| `dxp/preview.html`              | DXP dev-ui preview wrapper                          |
+| `dxp/example.data.json`         | Example props for local preview                     |
+| `dxp/serve-preview.bat` / `.sh` | Copy preview files into a running Storybook         |
+| `ComponentViewer.vanilla.ts`    | Client-side hydration (zoom, copy, code extraction) |
 
 ## DXP Props
 
 These props are defined in `manifest.json` and are exposed to Squiz Matrix editors:
 
-| Property | Type | Default | Required | Description |
-| -------- | ---- | ------- | -------- | ----------- |
-| `storybookUrl` | string | — | **yes** | Full URL to the Storybook story for the iframe. Accepts `?path=/docs/` and `?path=/story/` patterns — `main.js` converts them to `iframe.html?id=` format automatically. |
-| `Introduction` | FormattedText | — | no | Rich text displayed above the preview. Rendered as raw HTML (supports lists, links, etc.). |
-| `codeExample` | string (multi-line) | — | no | Plain-text code snippet shown in the code panel. If empty, the client attempts to extract code from the iframe document. |
-| `height` | string | `400px` | no | Height of the preview iframe. |
-| `showCodeByDefault` | boolean | `false` | no | Opens the code panel on load. |
-| `cssClass` | string | — | no | Additional CSS classes on the root element. |
+| Property            | Type                | Default | Required | Description                                                                                                                                                              |
+| ------------------- | ------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `storybookUrl`      | string              | —       | **yes**  | Full URL to the Storybook story for the iframe. Accepts `?path=/docs/` and `?path=/story/` patterns — `main.js` converts them to `iframe.html?id=` format automatically. |
+| `Introduction`      | FormattedText       | —       | no       | Rich text displayed above the preview. Rendered as raw HTML (supports lists, links, etc.).                                                                               |
+| `codeExample`       | string (multi-line) | —       | no       | Plain-text code snippet shown in the code panel. If empty, the client attempts to extract code from the iframe document.                                                 |
+| `height`            | string              | `400px` | no       | Height of the preview iframe.                                                                                                                                            |
+| `showCodeByDefault` | boolean             | `false` | no       | Opens the code panel on load.                                                                                                                                            |
+| `cssClass`          | string              | —       | no       | Additional CSS classes on the root element.                                                                                                                              |
 
 ### Server-side-only props (not in manifest)
 
 These are hardcoded defaults in `main.js` and not exposed to editors:
 
-| Property | Default | Description |
-| -------- | ------- | ----------- |
-| `initialZoom` | `1.0` | Starting zoom level. |
-| `enableCopy` | `true` | Show copy-to-clipboard button. |
-| `enableZoom` | `true` | Show zoom controls. |
+| Property      | Default | Description                    |
+| ------------- | ------- | ------------------------------ |
+| `initialZoom` | `1.0`   | Starting zoom level.           |
+| `enableCopy`  | `true`  | Show copy-to-clipboard button. |
+| `enableZoom`  | `true`  | Show zoom controls.            |
 
 ## How it works
 
@@ -61,11 +61,13 @@ The `serve-preview` scripts copy the preview files into a running Storybook proj
 ### Quick start
 
 **Windows:**
+
 ```bat
 src\components\ComponentViewer\dxp\serve-preview.bat
 ```
 
 **Mac / Linux:**
+
 ```bash
 bash src/components/ComponentViewer/dxp/serve-preview.sh
 ```
@@ -105,17 +107,18 @@ Before running, open the script and set `STORYBOOK_DIR` to the absolute path of 
 
 Add a ComponentViewer to a page by setting these metadata fields on a Squiz Standard Page asset:
 
-| Field | Notes |
-| ----- | ----- |
-| `storybookUrl` | URL of the Storybook story (required) |
-| `Introduction` | Rich text above preview (optional) |
-| `codeExample` | Fallback code snippet (optional) |
-| `height` | Preview iframe height, e.g. `400px` |
-| `showCodeByDefault` | `true` / `false` |
+| Field               | Notes                                 |
+| ------------------- | ------------------------------------- |
+| `storybookUrl`      | URL of the Storybook story (required) |
+| `Introduction`      | Rich text above preview (optional)    |
+| `codeExample`       | Fallback code snippet (optional)      |
+| `height`            | Preview iframe height, e.g. `400px`   |
+| `showCodeByDefault` | `true` / `false`                      |
 
 The nester template at `deploy/nesters/component-viewer.html` maps these fields to the component's props.
 
 **Dependencies** — the paint layout must include:
+
 - `head.html` nester for Prism.js CSS
 - `footer-js.html` nester for `web-design-system.min.js` (includes Prism and Prettier)
 

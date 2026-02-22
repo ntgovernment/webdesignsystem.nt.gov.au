@@ -44,7 +44,7 @@
   --clr-text-emphasis: var(--ntg-ochre-02-d);
   --clr-link-default: var(--ntg-blue-03-d);
   --clr-link-hover: var(--ntg-ochre-02-d);
-  --clr-link-visited: #7c19aa;
+  --clr-link-visited: var(--ntg-blue-03-d);
   --clr-link-inverse: var(--ntg-neutral-white);
   --clr-link-inverse-hover: var(--ntg-blue-01);
   --clr-link-inverse-visited: var(--ntg-orange-01);

@@ -106,6 +106,7 @@ The upstream token build pipeline occasionally generates self-referential CSS va
 **Current workaround:** explicit overrides have been added in `src/tokens.css` for the affected `--type-mobile-*` and `--type-link-*` variables so they resolve to concrete values.
 
 This is a stop-gap only. The permanent fix is:
+
 1. Correct the self-referential mappings in the external token source (`design-tokens/tokens.json`).
 2. Regenerate the token CSS files and update this directory.
 3. Remove the temporary overrides from `src/tokens.css`.
