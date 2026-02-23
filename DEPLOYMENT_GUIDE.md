@@ -43,8 +43,8 @@ npm run build
 
 > 📌 **Note:** For detailed usage, configuration options, data-attribute documentation, and examples for each component, see the README in the corresponding directory under `src/components/<Component>/README.md`.
 
-
 npm run deploy
+
 ```
 
 ## Architecture: Why Vanilla JavaScript?
@@ -66,9 +66,11 @@ The NT Design System is built with **vanilla JavaScript instead of React** for s
 **Bundle Size Comparison:**
 
 ```
+
 Vanilla JS Components: 1.41 - 8.07 KB each
 React Component: 380 KB+ for same functionality
-```
+
+````
 
 **User Experience Improvements:**
 
@@ -89,7 +91,7 @@ npm run deploy:squiz        # Deploy
 
 # After (Vanilla JS)
 npm run build   # Build everything once
-```
+````
 
 **Component Development Time:**
 
@@ -273,7 +275,10 @@ The following is a complete paint layout example showing how to integrate all ne
     <!-- Footer JavaScript Nester -->
     <MySource_AREA id_name="footer_js" design_area="nest_content" cache="1">
       <!-- Reference: deploy/nesters/footer-js.html -->
-      <script src="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.js%" defer></script>
+      <script
+        src="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.js%"
+        defer
+      ></script>
     </MySource_AREA>
   </body>
 </html>
@@ -332,10 +337,16 @@ In your Squiz Matrix paint layouts, reference the compiled files:
 
 ```html
 <!-- Global Design System Stylesheet -->
-<link rel="stylesheet" href="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.css%" />
+<link
+  rel="stylesheet"
+  href="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.css%"
+/>
 
 <!-- All Components (single IIFE bundle) -->
-<script src="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.js%" defer></script>
+<script
+  src="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.js%"
+  defer
+></script>
 ```
 
 Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
@@ -426,6 +437,7 @@ The remainder of this guide focuses on Squiz Matrix deployment and global setup;
 | `footer-js.html`  | `footer_js`      | JavaScript component loading         | `cache="1"`   |
 
 <!-- build outputs, auto-mount IDs, and configuration tables intentionally omitted in favor of component READMEs -->
+
 ## File Size Reference
 
 ### Vanilla JS Build
@@ -485,4 +497,3 @@ deploy/
 
 - Check that localStorage is enabled in the browser
 - Verify no conflicting theme scripts on the page
-
