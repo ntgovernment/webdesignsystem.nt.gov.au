@@ -32,6 +32,7 @@
 @import "./external-tokens/typography-literals.css";
 @import "./external-tokens/typography-ntg.css";
 @import "./external-tokens/theme-ntg.css";
+@import "./external-tokens/table.css";
 
 /* Import Lato font */
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");

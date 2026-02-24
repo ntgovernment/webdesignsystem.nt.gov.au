@@ -518,28 +518,28 @@ The Tab Marker Transformer is an alternative tab implementation that converts si
   <!-- Page content before tabs -->
   <h1>Page Title</h1>
   <p>Introduction paragraph...</p>
-  
+
   <!-- Tab 1 Marker -->
-  <hr>
+  <hr />
   <p>Overview</p>
-  <hr>
+  <hr />
   <p></p>
-  
+
   <!-- Tab 1 Content -->
   <h2>Overview Section</h2>
   <p>Content for the overview tab...</p>
   <div>More content...</div>
-  
+
   <!-- Tab 2 Marker -->
-  <hr>
+  <hr />
   <p>Usage</p>
-  <hr>
+  <hr />
   <p></p>
-  
+
   <!-- Tab 2 Content -->
   <h2>Usage Guidelines</h2>
   <p>Content for the usage tab...</p>
-  
+
   <!-- Additional tabs follow the same pattern -->
 </div>
 ```
@@ -550,9 +550,9 @@ The transformer is included in the unified `web-design-system.min.js` bundle and
 
 ```javascript
 // Included in deploy/nesters/footer-js.html
-document.addEventListener('DOMContentLoaded', function() {
-  if (window.transformTabMarkers && document.getElementById('content')) {
-    window.transformTabMarkers('#content');
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.transformTabMarkers && document.getElementById("content")) {
+    window.transformTabMarkers("#content");
   }
 });
 ```
@@ -560,6 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
 ### How It Works
 
 **Algorithm:**
+
 1. Scans container for `<hr><p>Title</p><hr>` patterns
 2. Extracts tab titles from paragraph text
 3. Hides marker elements using `display: none`
@@ -569,6 +570,7 @@ document.addEventListener('DOMContentLoaded', function() {
 7. Shows first tab content, hides all others
 
 **Content Management:**
+
 - Tracks marker position indices
 - Calculates content boundaries between tabs
 - Shows/hides content by setting `display` property
@@ -579,47 +581,60 @@ document.addEventListener('DOMContentLoaded', function() {
 Generated navigation uses nested divs with DXP data-attributes and inline styles:
 
 ```html
-<div data-breakpoint="xl +lg + md" 
-     data-scroll-left="false" 
-     data-scroll-right="false"
-     style="width: 100%; position: sticky; top: 0; z-index: 100; background: var(--clr-bg-default, white); border-top: 1px var(--clr-border-subtle, #D3D3D7) solid; border-bottom: 1px var(--clr-border-subtle, #D3D3D7) solid; display: flex; justify-content: center;">
-  
-  <div style="width: 100%; max-width: 1200px; padding: 0 var(--sp-xl, 24px); display: flex; justify-content: flex-start; align-items: center;">
-    
+<div
+  data-breakpoint="xl +lg + md"
+  data-scroll-left="false"
+  data-scroll-right="false"
+  style="width: 100%; position: sticky; top: 0; z-index: 100; background: var(--clr-bg-default, white); border-top: 1px var(--clr-border-subtle, #D3D3D7) solid; border-bottom: 1px var(--clr-border-subtle, #D3D3D7) solid; display: flex; justify-content: center;"
+>
+  <div
+    style="width: 100%; max-width: 1200px; padding: 0 var(--sp-xl, 24px); display: flex; justify-content: flex-start; align-items: center;"
+  >
     <!-- Tab Button 1 (Active) -->
-    <div data-active="True"
-         data-horizontal="true"
-         data-left-icon="false"
-         data-show-badge="false"
-         data-state="idle"
-         data-tab-index="0"
-         style="cursor: pointer; min-width: 64px; padding: 16px; border-bottom: 4px var(--clr-border-accent, #C33826) solid;">
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+    <div
+      data-active="True"
+      data-horizontal="true"
+      data-left-icon="false"
+      data-show-badge="false"
+      data-state="idle"
+      data-tab-index="0"
+      style="cursor: pointer; min-width: 64px; padding: 16px; border-bottom: 4px var(--clr-border-accent, #C33826) solid;"
+    >
+      <div
+        style="display: flex; flex-direction: column; align-items: center; gap: 4px;"
+      >
         <div style="display: flex; align-items: center; gap: 8px;">
-          <div style="color: var(--clr-link-default, #1F1F5F); font-size: 16px; font-family: Lato; font-weight: 700; line-height: 24px;">
+          <div
+            style="color: var(--clr-link-default, #1F1F5F); font-size: 16px; font-family: Lato; font-weight: 700; line-height: 24px;"
+          >
             Overview
           </div>
         </div>
       </div>
     </div>
-    
+
     <!-- Tab Button 2 (Inactive) -->
-    <div data-active="False"
-         data-horizontal="true"
-         data-left-icon="false"
-         data-show-badge="false"
-         data-state="idle"
-         data-tab-index="1"
-         style="cursor: pointer; min-width: 64px; padding: 16px;">
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+    <div
+      data-active="False"
+      data-horizontal="true"
+      data-left-icon="false"
+      data-show-badge="false"
+      data-state="idle"
+      data-tab-index="1"
+      style="cursor: pointer; min-width: 64px; padding: 16px;"
+    >
+      <div
+        style="display: flex; flex-direction: column; align-items: center; gap: 4px;"
+      >
         <div style="display: flex; align-items: center; gap: 8px;">
-          <div style="color: var(--clr-link-default, #1F1F5F); font-size: 16px; font-family: Lato; font-weight: 400; line-height: 24px;">
+          <div
+            style="color: var(--clr-link-default, #1F1F5F); font-size: 16px; font-family: Lato; font-weight: 400; line-height: 24px;"
+          >
             Usage
           </div>
         </div>
       </div>
     </div>
-    
   </div>
 </div>
 ```
@@ -627,6 +642,7 @@ Generated navigation uses nested divs with DXP data-attributes and inline styles
 ### Tab Button Styling
 
 **Data Attributes:**
+
 - `data-active` — "True" for active tab, "False" for inactive
 - `data-horizontal` — Always "true" for horizontal layout
 - `data-left-icon` — "false" (no icons in basic implementation)
@@ -635,17 +651,16 @@ Generated navigation uses nested divs with DXP data-attributes and inline styles
 - `data-tab-index` — Zero-based tab index
 
 **Inline Styles:**
-- **All tabs:** 
+
+- **All tabs:**
   - `cursor: pointer`
   - `min-width: 64px`
   - `padding: 16px`
   - Font: Lato, 16px, line-height 24px
   - Color: `var(--clr-link-default, #1F1F5F)`
-  
 - **Active tab:**
   - `border-bottom: 4px var(--clr-border-accent, #C33826) solid`
   - `font-weight: 700`
-  
 - **Inactive tabs:**
   - No bottom border
   - `font-weight: 400`
@@ -657,14 +672,14 @@ If you need to call the transformer manually or use a different container select
 
 ```javascript
 // Default selector is '#colour-content'
-window.transformTabMarkers('#content');
+window.transformTabMarkers("#content");
 
 // Custom container
-window.transformTabMarkers('.my-container');
+window.transformTabMarkers(".my-container");
 
 // Check if function exists before calling
-if (typeof window.transformTabMarkers === 'function') {
-  const tabCount = window.transformTabMarkers('#content');
+if (typeof window.transformTabMarkers === "function") {
+  const tabCount = window.transformTabMarkers("#content");
   console.log(`Transformed ${tabCount} tabs`);
 }
 ```
@@ -692,12 +707,15 @@ The footer-js nester automatically initializes the transformer:
 
 ```html
 <!-- deploy/nesters/footer-js.html -->
-<script src="%globals_asset_url_with_hash:1590990:deploy/web-design-system.min.js%" defer></script>
+<script
+  src="%globals_asset_url_with_hash:1590990:deploy/web-design-system.min.js%"
+  defer
+></script>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    if (window.transformTabMarkers && document.getElementById('content')) {
-      window.transformTabMarkers('#content');
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.transformTabMarkers && document.getElementById("content")) {
+      window.transformTabMarkers("#content");
     }
   });
 </script>
@@ -725,27 +743,31 @@ Ensure your Paint Layout has a main content container with `id="content"`:
 ```javascript
 // Example console output:
 if (tabs.length < 2) {
-  console.log(`[TabMarkerTransformer] Found ${tabs.length} tab(s). Skipping navigation render.`);
+  console.log(
+    `[TabMarkerTransformer] Found ${tabs.length} tab(s). Skipping navigation render.`,
+  );
   return tabs.length;
 }
 
-console.log(`[TabMarkerTransformer] Created DXP tab navigation with ${tabs.length} tabs.`);
+console.log(
+  `[TabMarkerTransformer] Created DXP tab navigation with ${tabs.length} tabs.`,
+);
 ```
 
 ### Comparison: Standard vs. Transformer
 
-| Feature                  | Standard Tab Component            | Tab Marker Transformer             |
-| ------------------------ | --------------------------------- | ---------------------------------- |
-| **Activation Pattern**   | `<div class="nt-tab-marker">`     | `<hr><p>Title</p><hr>`             |
-| **Styling**              | External CSS classes              | Inline styles + data-attributes    |
-| **Best For**             | JavaScript applications           | Squiz Matrix WYSIWYG               |
-| **ARIA Support**         | Full (role="tab", aria-controls)  | Basic (click handlers)             |
-| **Keyboard Nav**         | Yes (Arrow keys, Home, End)       | Basic (Tab key only)               |
-| **URL Hash**             | Yes                               | No                                 |
-| **Sticky Positioning**   | Yes (configurable offset)         | Yes (top: 0, z-index: 100)         |
-| **Content Authors**      | Requires HTML knowledge           | Easy (WYSIWYG-friendly)            |
-| **SEO**                  | Better (semantic markup)          | Good (content visible to crawlers) |
-| **Mobile Support**       | Full responsive                   | Full responsive                    |
+| Feature                | Standard Tab Component           | Tab Marker Transformer             |
+| ---------------------- | -------------------------------- | ---------------------------------- |
+| **Activation Pattern** | `<div class="nt-tab-marker">`    | `<hr><p>Title</p><hr>`             |
+| **Styling**            | External CSS classes             | Inline styles + data-attributes    |
+| **Best For**           | JavaScript applications          | Squiz Matrix WYSIWYG               |
+| **ARIA Support**       | Full (role="tab", aria-controls) | Basic (click handlers)             |
+| **Keyboard Nav**       | Yes (Arrow keys, Home, End)      | Basic (Tab key only)               |
+| **URL Hash**           | Yes                              | No                                 |
+| **Sticky Positioning** | Yes (configurable offset)        | Yes (top: 0, z-index: 100)         |
+| **Content Authors**    | Requires HTML knowledge          | Easy (WYSIWYG-friendly)            |
+| **SEO**                | Better (semantic markup)         | Good (content visible to crawlers) |
+| **Mobile Support**     | Full responsive                  | Full responsive                    |
 
 ### Technical Implementation
 
@@ -758,7 +780,9 @@ The transformer is implemented in `src/web-design-system.ts` and bundled into th
 function transformTabMarkers(containerSelector = "#colour-content") {
   const container = document.querySelector(containerSelector);
   if (!container) {
-    console.warn(`[TabMarkerTransformer] Container not found: ${containerSelector}`);
+    console.warn(
+      `[TabMarkerTransformer] Container not found: ${containerSelector}`,
+    );
     return 0;
   }
 
@@ -768,7 +792,7 @@ function transformTabMarkers(containerSelector = "#colour-content") {
   // 4. Insert before content container
   // 5. Attach click handlers
   // 6. Initialize: show first tab content only
-  
+
   return tabs.length;
 }
 ```
@@ -783,6 +807,7 @@ function transformTabMarkers(containerSelector = "#colour-content") {
 ### Troubleshooting
 
 **Tabs not appearing:**
+
 1. Check browser console for warnings
 2. Verify `window.transformTabMarkers` function exists
 3. Confirm `#content` container exists in DOM
@@ -790,11 +815,13 @@ function transformTabMarkers(containerSelector = "#colour-content") {
 5. Check marker pattern: must be exact `<hr><p>Text</p><hr><p></p>` sequence
 
 **Styling issues:**
+
 1. Verify CSS custom properties are defined (tokens.css)
 2. Check z-index conflicts with other sticky elements
 3. Ensure Lato font is loaded
 
 **Content not switching:**
+
 1. Check browser console for JavaScript errors
 2. Verify tab button click handlers are attached
 3. Confirm content elements are properly detected between markers
@@ -804,10 +831,11 @@ function transformTabMarkers(containerSelector = "#colour-content") {
 To convert from standard Tab component to Transformer:
 
 1. Replace `<div class="nt-tab-marker" data-tab-title="Title"></div>` with:
+
    ```html
-   <hr>
+   <hr />
    <p>Title</p>
-   <hr>
+   <hr />
    <p></p>
    ```
 

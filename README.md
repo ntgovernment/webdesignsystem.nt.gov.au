@@ -148,6 +148,46 @@ CSS custom properties sourced from `src/external-tokens/` (committed from [ntgov
 
 See [src/external-tokens/README.md](src/external-tokens/README.md) for token reference and update process.
 
+## Table Component Styles
+
+**Added:** February 2026
+
+Table component styles have been imported from `@ntgovernment/web-design-system` and are available via the `.content-table__*` class namespace:
+
+```html
+<table class="table table-striped table-hover content-table__table">
+  <caption class="content-table__caption">Table description</caption>
+  <thead>
+    <tr>
+      <th>
+        <div class="content-table__header">
+          <span>Column Name</span>
+          <div class="content-table__sort">
+            <i class="fa-solid fa-caret-up content-table__sort-icon"></i>
+            <i class="fa-solid fa-caret-down content-table__sort-icon"></i>
+          </div>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Data</td></tr>
+  </tbody>
+</table>
+```
+
+**Features:**
+- Striped rows (`.table-striped`)
+- Hover states (`.table-hover`)
+- Sortable headers with indicators
+- Accessible caption styling
+- Responsive and design token-driven
+
+**Documentation:** [src/external-tokens/table.css](src/external-tokens/table.css)  
+**Demo:** [preview/table.html](preview/table.html)
+
+Table styles are automatically bundled in `deploy/web-design-system.min.css`.
+
 ## Scripts
 
 | Command           | Description                                    |

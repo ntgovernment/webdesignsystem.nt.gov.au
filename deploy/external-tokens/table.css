@@ -1,0 +1,94 @@
+/**
+ * Table Styles
+ * Extracted from @ntgovernment/web-design-system
+ * 
+ * Provides styling for content tables with:
+ * - Responsive table layouts
+ * - Striped and hover states
+ * - Sortable headers
+ * - Caption styling
+ */
+
+/* Base Table Styles */
+.content-table__table {
+  /* Bootstrap table custom properties */
+  --bs-table-color: var(--clr-text-default);
+  --bs-table-bg: var(--clr-bg-default);
+  --bs-table-border-color: var(--clr-border-subtle);
+  --bs-table-border-width: var(--border-width-md);
+
+  /* Striped rows */
+  --bs-table-striped-bg: var(--clr-bg-shade);
+  --bs-table-striped-color: var(--clr-text-default);
+
+  /* Hover states */
+  --bs-table-hover-bg: var(--clr-bg-shade-alt);
+  --bs-table-hover-color: var(--clr-text-default);
+
+  /* Active states */
+  --bs-table-active-bg: var(--clr-bg-shade-alt);
+  --bs-table-active-color: var(--clr-text-default);
+
+  /* Cell padding */
+  --bs-table-cell-padding-x: var(--sp-xs);
+  --bs-table-cell-padding-y: var(--sp-md);
+
+  /* Caption */
+  --bs-table-caption-color: var(--clr-text-muted);
+
+  margin-bottom: 0;
+}
+
+/* Table Header Styles */
+.content-table__table thead th {
+  background-color: var(--clr-bg-default);
+  border-bottom-color: var(--clr-border-strong-03);
+  color: var(--clr-link-default);
+  font-size: var(--type-uppercase-default-size);
+  font-weight: var(--type-uppercase-default-weight);
+  line-height: var(--type-uppercase-default-lh);
+  letter-spacing: var(--type-uppercase-default-ls);
+  text-transform: var(--literal-text-transform-uppercase-default);
+  vertical-align: middle;
+}
+
+/* Table Body Styles */
+.content-table__table tbody th,
+.content-table__table tbody td {
+  color: var(--clr-text-default);
+  font-size: var(--type-body-default-size);
+  font-weight: var(--type-body-default-weight);
+  line-height: var(--type-body-default-lh);
+  border-bottom-color: var(--clr-border-subtle);
+}
+
+/* Table Header Content */
+.content-table__header {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-xs);
+}
+
+/* Sort Indicator */
+.content-table__sort {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  line-height: 1;
+}
+
+.content-table__sort-icon {
+  color: var(--clr-text-muted);
+  font-size: 0.625rem;
+  line-height: 1;
+}
+
+/* Table Caption */
+.content-table__caption {
+  caption-side: top;
+  padding-bottom: var(--sp-xs);
+  color: var(--clr-text-muted);
+  font-size: var(--type-body-sm-size);
+  line-height: var(--type-body-sm-lh);
+}

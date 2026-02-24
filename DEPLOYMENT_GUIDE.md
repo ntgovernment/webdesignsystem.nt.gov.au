@@ -441,12 +441,14 @@ The remainder of this guide focuses on Squiz Matrix deployment and global setup;
 The footer-js nester includes automatic initialization of the Tab Marker Transformer, which converts simple `<hr><p>Title</p><hr>` patterns into interactive DXP-formatted tabs.
 
 **What it does:**
+
 - Scans the page container (default: `#content`) for HR/paragraph/HR patterns
 - Transforms these patterns into clickable tab navigation
 - Automatically hides/shows content sections based on active tab
 - Only renders navigation if 2+ tabs are detected
 
 **Content author workflow (WYSIWYG):**
+
 1. Insert Horizontal Rule (Insert > Horizontal Rule)
 2. Add paragraph with tab title text (e.g., "Overview")
 3. Insert another Horizontal Rule
@@ -455,20 +457,21 @@ The footer-js nester includes automatic initialization of the Tab Marker Transfo
 6. Repeat for each additional tab
 
 **Example HTML pattern:**
+
 ```html
 <div id="content" class="ntg-body">
   <!-- Tab 1 -->
-  <hr>
+  <hr />
   <p>Overview</p>
-  <hr>
+  <hr />
   <p></p>
   <h2>Overview Section</h2>
   <p>Content for overview...</p>
-  
+
   <!-- Tab 2 -->
-  <hr>
+  <hr />
   <p>Usage</p>
-  <hr>
+  <hr />
   <p></p>
   <h2>Usage Guidelines</h2>
   <p>Content for usage...</p>
@@ -476,6 +479,7 @@ The footer-js nester includes automatic initialization of the Tab Marker Transfo
 ```
 
 **Benefits:**
+
 - No HTML knowledge required for content authors
 - Works with standard WYSIWYG editor tools
 - Automatically styled with DXP-compliant inline styles
