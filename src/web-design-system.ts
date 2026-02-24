@@ -83,10 +83,17 @@ function transformTabMarkers(containerSelector = "#colour-content") {
   // Step 2: Create DXP-formatted tab navigation
   const tabNav = createDxpTabNavigation(tabs);
 
-  // Step 3: Insert navigation BEFORE the content container (not inside it) to avoid padding gaps
+  // Step 3: Insert navigation BEFORE the content container (not inside it)
+  // This positions tabs after the banner but before content padding
   if (tabs.length > 0) {
-    const contentContainer = document.querySelector(containerSelector);
-    contentContainer?.parentNode?.insertBefore(tabNav, contentContainer);
+    const contentContainer = document.getElementById('content');
+    if (contentContainer && contentContainer.parentNode) {
+      contentContainer.parentNode.insertBefore(tabNav, contentContainer);
+    } else {
+      // Fallback: insert before first marker if content container not found
+      const firstMarkerElement = children[tabs[0].markerIndex];
+      firstMarkerElement.parentNode?.insertBefore(tabNav, firstMarkerElement);
+    }
   }
 
   // Step 4: Wire tab click handlers
@@ -114,15 +121,14 @@ function createDxpTabNavigation(
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
-    margin: 0;
-    margin-left: calc(-50vw + 50%);
-    padding-left: 16px;
+    z-index: 100;
+    margin-left: calc(-1 * max(0px, (100vw - 1240px) / 2));
+    padding-left: max(16px, calc((100vw - 1240px) / 2 + 280px + 16px));
     padding-right: 16px;
     background: var(--clr-bg-default, white);
     border-top: 1px var(--clr-border-subtle, #D3D3D7) solid;
     border-bottom: 1px var(--clr-border-subtle, #D3D3D7) solid;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 10px;
     display: flex;
@@ -131,7 +137,7 @@ function createDxpTabNavigation(
   const innerContainer = document.createElement("div");
   innerContainer.style.cssText = `
     flex: 1 1 0;
-    max-width: 1168px;
+    max-width: 888px;
     width: 100%;
     justify-content: flex-start;
     align-items: center;
