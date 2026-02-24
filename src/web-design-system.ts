@@ -109,23 +109,29 @@ function createDxpTabNavigation(
   navContainer.setAttribute("data-scroll-left", "false");
   navContainer.setAttribute("data-scroll-right", "false");
   navContainer.style.cssText = `
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    margin-left: calc(-50vw + 50%);
     padding-left: 16px;
     padding-right: 16px;
     background: var(--clr-bg-default, white);
     border-top: 1px var(--clr-border-subtle, #D3D3D7) solid;
     border-bottom: 1px var(--clr-border-subtle, #D3D3D7) solid;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     gap: 10px;
-    display: inline-flex;
+    display: flex;
   `;
 
   const innerContainer = document.createElement("div");
   innerContainer.style.cssText = `
     flex: 1 1 0;
     max-width: 1168px;
+    width: 100%;
     justify-content: flex-start;
     align-items: center;
     display: flex;
