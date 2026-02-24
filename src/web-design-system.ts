@@ -116,32 +116,28 @@ function createDxpTabNavigation(
   navContainer.setAttribute("data-scroll-left", "false");
   navContainer.setAttribute("data-scroll-right", "false");
   navContainer.style.cssText = `
-    width: 100vw;
+    width: 100%;
     position: sticky;
     top: 0;
     left: 0;
     right: 0;
     z-index: 100;
-    margin-left: calc(-1 * max(0px, (100vw - 1240px) / 2));
-    padding-left: max(16px, calc((100vw - 1240px) / 2 + 280px + 16px));
-    padding-right: 16px;
     background: var(--clr-bg-default, white);
     border-top: 1px var(--clr-border-subtle, #D3D3D7) solid;
     border-bottom: 1px var(--clr-border-subtle, #D3D3D7) solid;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
     display: flex;
+    justify-content: center;
+    align-items: center;
   `;
 
   const innerContainer = document.createElement("div");
   innerContainer.style.cssText = `
-    flex: 1 1 0;
-    max-width: 888px;
     width: 100%;
+    max-width: 1200px;
+    padding: 0 var(--sp-xl, 24px);
+    display: flex;
     justify-content: flex-start;
     align-items: center;
-    display: flex;
   `;
 
   // Create tab button for each tab
