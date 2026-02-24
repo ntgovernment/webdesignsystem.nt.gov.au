@@ -83,12 +83,14 @@ npm install
 **Configure GitHub Authentication:**
 
 Create `~/.npmrc` (home directory):
+
 ```
 //npm.pkg.github.com/:_authToken=YOUR_GITHUB_PERSONAL_ACCESS_TOKEN
 @ntgovernment:registry=https://npm.pkg.github.com
 ```
 
 Or use Git credential helper:
+
 ```bash
 git config --global credential.helper manager
 npm install  # Will use git credentials
@@ -138,6 +140,7 @@ Tokens are imported hierarchically in `src/tokens.css`:
 ```
 
 **Token Hierarchy:**
+
 1. External tokens provide base values
 2. Local tokens in `src/tokens.css` can override externals
 3. Component styles consume tokens via CSS custom properties
@@ -145,6 +148,7 @@ Tokens are imported hierarchically in `src/tokens.css`:
 ## 🏗️ Build Integration
 
 The build process automatically:
+
 1. Imports tokens into the main CSS bundle via `src/web-design-system.css`
 2. Copies individual token files to `deploy/external-tokens/` for reference
 3. Bundles everything into `deploy/web-design-system.min.css`
@@ -168,23 +172,27 @@ Tokens follow a consistent naming pattern:
 ## 🔍 For Developers & AI Agents
 
 **Token Discovery:**
+
 - All tokens are defined as CSS custom properties (variables)
 - Use browser DevTools to inspect computed token values
 - Token files are well-commented with usage context
 
 **Best Practices:**
+
 - Always use tokens rather than hardcoded values
 - Check `src/tokens.css` for local overrides before adding new ones
 - Tokens are cascade-aware: later imports override earlier ones
 - Local project tokens (in `src/tokens.css`) take precedence over external tokens
 
 **Adding New Tokens:**
+
 1. Check if the token exists in external files first
 2. If creating local tokens, add them to `src/tokens.css`
 3. Follow the existing naming convention
 4. Document the purpose and usage
 
 **Version Tracking:**
+
 - External token versions are tied to the `@ntgovernment/web-design-system` package version in `package.json`
 - Track significant token updates in commit messages
 - Test thoroughly after token updates as they affect all components
@@ -192,14 +200,18 @@ Tokens follow a consistent naming pattern:
 ## 🎯 Key Token Categories
 
 ### Colors
+
 See `theme-ntg.css` for the complete color system including:
+
 - NT Government brand colors
 - Semantic color assignments
 - State colors (hover, active, focus)
 - Status colors (success, warning, danger, info)
 
 ### Spacing
+
 See `base-variables.css` for the spacing scale:
+
 - `--sp-xs`: 8px
 - `--sp-sm`: 12px
 - `--sp-md`: 16px
@@ -209,7 +221,9 @@ See `base-variables.css` for the spacing scale:
 - `--sp-xxxl`: 48px
 
 ### Typography
+
 See `typography.css` and `typography-ntg.css` for:
+
 - Heading scales (h1-h6)
 - Body text sizes (default, small)
 - Link styles

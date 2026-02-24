@@ -156,7 +156,9 @@ Table component styles have been imported from `@ntgovernment/web-design-system`
 
 ```html
 <table class="table table-striped table-hover content-table__table">
-  <caption class="content-table__caption">Table description</caption>
+  <caption class="content-table__caption">
+    Table description
+  </caption>
   <thead>
     <tr>
       <th>
@@ -171,12 +173,15 @@ Table component styles have been imported from `@ntgovernment/web-design-system`
     </tr>
   </thead>
   <tbody>
-    <tr><td>Data</td></tr>
+    <tr>
+      <td>Data</td>
+    </tr>
   </tbody>
 </table>
 ```
 
 **Features:**
+
 - Striped rows (`.table-striped`)
 - Hover states (`.table-hover`)
 - Sortable headers with indicators

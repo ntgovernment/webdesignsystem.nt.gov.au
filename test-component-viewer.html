@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComponentViewer Button Toggle Test</title>
+
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/d8e5f638f7.js" crossorigin="anonymous"></script>
+
+    <!-- Prism.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism-okaidia.min.css">
+
+    <!-- Global styles -->
+    <link rel="stylesheet" href="/src/index.css">
+
+    <!-- Web Design System styles -->
+    <link rel="stylesheet" href="/deploy/web-design-system.min.css">
+
+    <style>
+        body {
+            font-family: Lato, sans-serif;
+            background: #f5f5f5;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .test-instructions {
+            background: #e8f4f8;
+            border-left: 4px solid #1f1f5f;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .test-instructions h2 {
+            margin-top: 0;
+            color: #1f1f5f;
+            font-size: 1.1rem;
+        }
+
+        .test-instructions ol {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .test-instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .component-test-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border: 1px solid #d3d3d7;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .component-test-section h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .status-pass {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-watch {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-container">
+        <h1>ComponentViewer Button Toggle Test</h1>
+
+        <div class="test-instructions">
+            <h2>Test Instructions</h2>
+            <ol>
+                <li><strong>Observe initial state:</strong> Note the position of the "Copy" and "See Code" buttons</li>
+                <li><strong>Click "See Code":</strong> The code panel should expand below the preview</li>
+                <li><strong>Monitor button position:</strong> Watch if the buttons move or stay at the same height
+                    during the expansion</li>
+                <li><strong>Expected behavior:</strong> Buttons should NOT move - they should stay in the same position
+                    while code expands below them</li>
+                <li><strong>Click again:</strong> Collapse the code panel and verify buttons don't move during collapse
+                </li>
+                <li><strong>Result:</strong> If buttons stay fixed while code panel animates, the fix is working! ✓</li>
+            </ol>
+        </div>
+
+        <!-- ComponentViewer Test Component -->
+        <div class="component-test-section">
+            <h3>ComponentViewer with Toggle Test</h3>
+
+            <div class="nt-component-viewer" data-hydration-component="component-viewer"
+                data-hydration-props='{"storybookUrl":"https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story","Introduction":"<p>Test component for verifying button position stays fixed when toggling code panel.</p>","codeExample":"<div class=\"nt-card\">\n  <h3 class=\"nt-card__title\">Example Card</h3>\n  <p class=\"nt-card__description\">This is a longer example to test scrolling in the code panel.</p>\n  <ul class=\"nt-list\">\n    <li>First item</li>\n    <li>Second item</li>\n    <li>Third item</li>\n  </ul>\n  <button class=\"nt-button nt-button--primary\">Primary Action</button>\n  <button class=\"nt-button nt-button--secondary\">Secondary Action</button>\n</div>\n<section class=\"nt-section\">\n  <h4>More Content</h4>\n  <p>Additional lines to ensure the code block is tall enough to scroll.</p>\n  <p>Line 1</p>\n  <p>Line 2</p>\n  <p>Line 3</p>\n  <p>Line 4</p>\n  <p>Line 5</p>\n</section>","height":"250px","initialZoom":1.0,"showCodeByDefault":false,"enableCopy":true,"enableZoom":true,"cssClass":""}'
+                data-instance-id="test-component-001">
+
+                <!-- Introduction Section -->
+                <div class="component-viewer__introduction">
+                    <p>Test component for verifying button position stays fixed when toggling code panel.</p>
+                </div>
+
+                <!-- Preview Section -->
+                <div class="component-viewer__preview" style="height: 250px">
+                    <div class="component-viewer__iframe-wrapper">
+
+                        <!-- Toolbar -->
+                        <div class="component-viewer__toolbar">
+                            <div class="component-viewer__zoom-controls">
+                                <button class="component-viewer__control-btn" data-action="zoom-in" aria-label="Zoom in"
+                                    title="Zoom in">
+                                    <i class="fa-light fa-magnifying-glass-plus" aria-hidden="true"></i>
+                                    <span class="component-viewer__control-label">Zoom in</span>
+                                </button>
+                                <button class="component-viewer__control-btn" data-action="zoom-out"
+                                    aria-label="Zoom out" title="Zoom out">
+                                    <i class="fa-light fa-magnifying-glass-minus" aria-hidden="true"></i>
+                                    <span class="component-viewer__control-label">Zoom out</span>
+                                </button>
+                                <button class="component-viewer__control-btn" data-action="zoom-reset"
+                                    aria-label="Reset zoom" title="Reset zoom">
+                                    <i class="fa-light fa-arrows-rotate" aria-hidden="true"></i>
+                                    <span class="component-viewer__control-label">Reset zoom</span>
+                                </button>
+                            </div>
+                            <button class="component-viewer__control-btn" data-action="open-new-tab"
+                                aria-label="Open canvas in new tab" title="Open canvas in new tab">
+                                <i class="fa-light fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                                <span class="component-viewer__control-label">Open canvas</span>
+                            </button>
+                        </div>
+
+                        <!-- Iframe Content -->
+                        <div class="component-viewer__iframe-content" data-zoom-container>
+                            <iframe
+                                src="https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story"
+                                class="component-viewer__iframe" title="Component Preview" frameborder="0"
+                                sandbox="allow-scripts allow-same-origin" data-iframe></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Display Section -->
+                <div class="component-viewer__code" data-code-panel>
+                    <pre class="component-viewer__code-content"><code class="language-html" data-code-display>&lt;div class="nt-card"&gt;
+    &lt;h3 class="nt-card__title"&gt;Example Card&lt;/h3&gt;
+    &lt;p class="nt-card__description"&gt;This is a longer example to test scrolling in the code panel.&lt;/p&gt;
+    &lt;ul class="nt-list"&gt;
+        &lt;li&gt;First item&lt;/li&gt;
+        &lt;li&gt;Second item&lt;/li&gt;
+        &lt;li&gt;Third item&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;button class="nt-button nt-button--primary"&gt;Primary Action&lt;/button&gt;
+    &lt;button class="nt-button nt-button--secondary"&gt;Secondary Action&lt;/button&gt;
+&lt;/div&gt;
+&lt;section class="nt-section"&gt;
+    &lt;h4&gt;More Content&lt;/h4&gt;
+    &lt;p&gt;Additional lines to ensure the code block is tall enough to scroll.&lt;/p&gt;
+    &lt;p&gt;Line 1&lt;/p&gt;
+    &lt;p&gt;Line 2&lt;/p&gt;
+    &lt;p&gt;Line 3&lt;/p&gt;
+    &lt;p&gt;Line 4&lt;/p&gt;
+    &lt;p&gt;Line 5&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="component-viewer__actions">
+                    <button class="component-viewer__button" data-action="copy" aria-label="Copy code to clipboard">
+                        <i class="fa-light fa-copy" aria-hidden="true"></i>
+                        <span data-copy-text>Copy</span>
+                    </button>
+                    <button class="component-viewer__button" data-action="toggle-code" aria-label="See code">
+                        <i class="fa-light fa-code" aria-hidden="true"></i>
+                        <span data-code-toggle-text>See code</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="status-indicator status-watch">
+                👁️ Watch the buttons above - they should stay in place when toggling code
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Prism.js for syntax highlighting -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markup.min.js"></script>
+
+    <!-- Load Prettier for code formatting -->
+    <script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/standalone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/parser-html.js"></script>
+
+    <!-- Load the web design system bundle -->
+    <script src="/deploy/web-design-system.min.js"></script>
+</body>
+
+</html>

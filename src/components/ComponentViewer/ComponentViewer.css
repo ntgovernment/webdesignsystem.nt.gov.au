@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   font-family: Lato, sans-serif;
+  position: relative;
 }
 
 /* Introduction Section */
@@ -186,7 +187,8 @@
 
 /* Code Display Section */
 .component-viewer__code {
-  padding: var(--sp-md, 16px);
+  width: 100%;
+  padding: 64px var(--sp-md, 16px) var(--sp-md, 16px) var(--sp-md, 16px);
   background: #272822;
   display: flex;
   align-items: flex-start;
@@ -197,13 +199,31 @@
     opacity 0.3s ease,
     max-height 0.3s ease,
     padding 0.3s ease;
+  box-sizing: border-box;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
 }
 
 .component-viewer__code--visible {
   opacity: 1;
   max-height: 600px;
   overflow-y: auto;
-  padding: var(--sp-md, 16px);
+  padding: 64px var(--sp-md, 16px) var(--sp-md, 16px) var(--sp-md, 16px);
+}
+
+.component-viewer__code::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.component-viewer__code::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.component-viewer__code::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
 }
 
 .component-viewer__code-content {
@@ -218,6 +238,22 @@
   word-wrap: normal;
   width: 100%;
   background: transparent;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+
+.component-viewer__code-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.component-viewer__code-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.component-viewer__code-content::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
 }
 
 .component-viewer__code-content code {
@@ -286,10 +322,17 @@
 
 /* Action Buttons */
 .component-viewer__actions {
-  padding: var(--sp-xxs, 4px) 0; /* sp-xxs token: 4px top/bottom */
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: var(--sp-xxs, 4px) var(--sp-md, 16px);
   display: flex;
   justify-content: flex-end;
   gap: var(--sp-sm, 12px);
+  background: transparent;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 20;
 }
 
 .component-viewer__button {
@@ -317,6 +360,10 @@
   transform: translateY(1px);
 }
 
+.component-viewer__actions .component-viewer__button:nth-child(2) {
+  width: 128px;
+}
+
 .component-viewer__button i {
   font-size: 16px;
 }
@@ -337,6 +384,7 @@
 
   .component-viewer__actions {
     flex-direction: column;
+    padding: var(--sp-xs, 8px) var(--sp-md, 16px);
   }
 
   .component-viewer__button {

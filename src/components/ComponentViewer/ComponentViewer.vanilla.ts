@@ -66,6 +66,12 @@ export class ComponentViewerClient {
       "[data-code-display]",
     ) as HTMLElement;
 
+    // Position buttons based on preview height
+    this.positionActionButtons();
+
+    // Update "Open canvas" button to "Open in Storybook" with Storybook icon
+    this.updateOpenTabButton();
+
     // Setup event listeners
     this.setupEventListeners();
 
@@ -110,6 +116,51 @@ export class ComponentViewerClient {
           break;
       }
     });
+  }
+
+  private updateOpenTabButton(): void {
+    const btn = this.container.querySelector(
+      '[data-action="open-new-tab"]',
+    ) as HTMLElement;
+    if (!btn) return;
+
+    btn.setAttribute("aria-label", "Open in Storybook");
+    btn.setAttribute("title", "Open in Storybook");
+
+    const storybookSvg = `<svg width="11" height="13" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3.16667 8.5C3.56667 9.5 4.25933 9.83333 5.35533 9.83333H5.16667C6.36667 9.83333 7.16667 9.184 7.16667 8.21C7.16667 7.414 6.61267 7.01067 5.73533 6.65467L4.41867 6.12C3.652 5.80867 3.16667 5.172 3.16667 4.47533C3.16667 3.82867 3.766 3.28467 4.558 3.21333L4.96667 3.17667C5.98533 3.08467 6.96667 3.68467 7.16667 4.5M7.83333 0.833333V1.5M0.5 1.16667L0.833333 12.1667L9.83333 12.5V0.5L0.5 1.16667Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+    const iconEl = btn.querySelector("i");
+    if (iconEl) {
+      iconEl.outerHTML = storybookSvg;
+    }
+
+    const labelEl = btn.querySelector(".component-viewer__control-label");
+    if (labelEl) {
+      labelEl.textContent = "Open in Storybook";
+    }
+  }
+
+  private positionActionButtons(): void {
+    const preview = this.container.querySelector(
+      ".component-viewer__preview",
+    ) as HTMLElement;
+    const actionsContainer = this.container.querySelector(
+      ".component-viewer__actions",
+    ) as HTMLElement;
+
+    if (!preview || !actionsContainer) {
+      return;
+    }
+
+    // Get preview height from style attribute
+    const previewHeightStr = preview.style.height || "200px";
+    const previewHeightPx = parseInt(previewHeightStr, 10);
+
+    // Calculate top position as preview height + 64px
+    const topPosition = previewHeightPx + 64;
+
+    // Set the top position of the buttons container
+    actionsContainer.style.top = `${topPosition}px`;
   }
 
   private handleZoomIn(): void {
