@@ -139,6 +139,7 @@ This component uses the **web-design-system Card component** (`.card .card--full
 - **Focus State**: Uses `--shadow-focus-ntg` with `--radii-none` border-radius (NT Government theme)
 - **H2 Title Styling**: Uses `--type-heading-h2-size`, `--type-heading-h2-weight`, `--type-heading-h2-lh` design tokens
 - **Transitions**: Smooth 0.2s ease transitions on hover and focus
+- **Link styling**: card title links include a `:visited` rule mirroring the default colour (`--clr-link-default`) to avoid browser purple.
 
 ---
 

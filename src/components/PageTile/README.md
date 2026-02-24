@@ -548,6 +548,11 @@ A: No negative impact. Tiles render as semantic `<a>` links with descriptive tex
 ---
 
 **Last Updated:** February 19, 2026  
+
+## CSS Notes
+
+- Tile title links have an explicit `:visited` rule matching the default colour (`--clr-link-default`) so visited tiles don’t turn purple in the browser.
+
 **Component Version:** 1.0.2  
 **Design System:** NT Government Design System  
 **Status:** Production-ready

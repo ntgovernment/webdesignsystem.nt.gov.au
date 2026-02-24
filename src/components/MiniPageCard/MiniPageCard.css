@@ -120,6 +120,11 @@
   color: var(--clr-link-hover);
 }
 
+/* keep visited colour identical to default to prevent purple browser default */
+.nt-mini-page-card a:visited .card-title {
+  color: var(--clr-link-default);
+}
+
 /* Error state */
 .page-card-error {
   background: var(--clr-status-danger-bg);

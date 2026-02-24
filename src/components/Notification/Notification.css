@@ -80,6 +80,11 @@
   color: var(--clr-link-default, #1f1f5f);
 }
 
+/* keep visited colour identical to default to prevent purple browser default */
+.notification a:visited {
+  color: var(--clr-link-default, #1f1f5f);
+}
+
 /* Variant colors */
 .notification--info {
   outline-color: var(--clr-status-info, #107cc0);

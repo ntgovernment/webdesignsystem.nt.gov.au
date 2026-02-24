@@ -176,6 +176,7 @@ The banner container must be placed **outside and immediately above** the page `
 - **Icons & CTAs**: Figma and Storybook icons are rendered as inline SVGs using `fill="currentColor"` / `stroke="currentColor"`, so they inherit the CTA text color automatically
 - **Height behavior**: the banner uses `height: auto` and adjusts to its content; no fixed viewport height
 - **Hover behaviour**: CTA hover color is the same as the default; hover only adds an underline
+- **Visited link colour**: `.nt-page-banner__cta:visited` is explicitly set to match the default (white) to prevent browsers from applying their purple default. See CSS for the rule.
 - The component is **vanilla JS only** — there is no DXP edge component for PageBanner
 
 ## Versioning

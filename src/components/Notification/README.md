@@ -139,6 +139,8 @@ Info notification (HTML):
   - `warning` → `fa-triangle-exclamation`
   - `danger` → `fa-circle-exclamation`
 
+- **Link styling update**: Notification links now explicitly set `:visited` to the default colour to avoid purple visited links.
+
 ## Tests & Visual QA
 
 - Verify all variants render correctly and match the design tokens

@@ -97,6 +97,11 @@
   text-decoration: underline;
 }
 
+/* keep visited colour identical to default to prevent purple browser default */
+.nt-page-banner__cta:visited {
+  color: var(--clr-link-inverse, white);
+}
+
 /* Ensure inline SVG icons render and align */
 .nt-page-banner__cta svg {
   width: 16px;

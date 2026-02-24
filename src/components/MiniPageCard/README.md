@@ -328,3 +328,7 @@ MiniPageCard aligns with design system patterns:
 - Customizable icon position (left/right/top)
 - Card count display option
 - Lazy loading for large grids
+
+## CSS Notes
+
+- Card title links include an explicit `:visited` rule matching the default colour (`--clr-link-default`), preventing the browser's purple visited link color.

@@ -190,6 +190,10 @@ On initialization, `convertParentLinksWithChildren()` wraps each `.nt-leftnav__l
 | `.nt-page-layout`                | Two-column flex wrapper (nav left, content right)    |
 | `.nt-main-content`               | Content area to the right of the nav                 |
 
+## CSS Notes
+
+- The component defines an explicit `:visited` rule for `.nt-leftnav__link` to keep visited items the same colour as unvisited links (using `--clr-link-default`). This prevents unexpected purple from browser defaults.
+
 ## Design Tokens
 
 | Token                      | Usage                               | Fallback   |
