@@ -64,31 +64,7 @@ Each nester can be customized by editing the HTML files in this directory. After
 2. Update the corresponding MySource_AREA in your paint layout
 3. Commit and push to trigger Git File Bridge sync
 
-## Component Configuration
-
-Components support configuration via `data-*` attributes:
-
-### Header
-
-```html
-<div
-  id="nt-header-root"
-  data-title="My Site Name"
-  data-logo-src="/path/to/logo.svg"
-  data-icon="fa-bars"
-></div>
-```
-
-### Theme Switcher
-
-```html
-<div
-  id="nt-theme-switcher-root"
-  data-themes="light,dark"
-  data-default-theme="light"
-></div>
-```
-
 ## Documentation
 
 See [DEPLOYMENT_GUIDE.md](../DEPLOYMENT_GUIDE.md) for complete Squiz Matrix integration documentation.
+For component-specific usage, data attributes, and examples, use each component's README under `src/components/<Component>/README.md`.

@@ -61,7 +61,7 @@
 
 /* keep visited colour identical to default to prevent purple browser default */
 .nt-leftnav__link:visited {
-  color: var(--clr-link-default, #1f1f5f);
+  color: var(--clr-link-default, #1f1f5f) !important;
 }
 
 .nt-leftnav__link:hover,

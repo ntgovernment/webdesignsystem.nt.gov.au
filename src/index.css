@@ -44,10 +44,13 @@ div[data-hydration-props] {
 }
 
 /* Keep component links from showing browser default visited purple */
-.nt-page-banner__cta:visited,
+.nt-page-banner__cta:visited {
+  color: var(--clr-link-inverse, white) !important;
+}
+
 .nt-leftnav__link:visited,
 .nt-footer__link:visited {
-  color: var(--clr-link-default, #1f1f5f);
+  color: var(--clr-link-default, #1f1f5f) !important;
 }
 
 /* Vertical gaps between direct children inside `#content.ntg-body` — uses token `--sp-4xl` */
