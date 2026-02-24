@@ -19,10 +19,11 @@
   --bs-table-active-bg: rgba(0, 0, 0, 0.1);
   --bs-table-hover-color: currentColor;
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
-  
+
   width: 100%;
   margin-bottom: 1rem;
   color: var(--bs-table-color);
+  font-family: var(--font-family-primary, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
   vertical-align: top;
   border-color: var(--bs-table-border-color);
   border-collapse: collapse;
