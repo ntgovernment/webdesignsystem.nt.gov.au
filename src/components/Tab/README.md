@@ -496,6 +496,339 @@ When printing:
 - **ThemeSwitcher** — Tab-based theme preview component
 - **PageBanner** — Hero banner that tabs position below
 
+## Tab Marker Transformer (DXP Format)
+
+### Overview
+
+The Tab Marker Transformer is an alternative tab implementation that converts simple `<hr><p>Title</p><hr>` patterns into DXP-formatted interactive tabs. This approach is specifically designed for Squiz Matrix content authors and supports inline styles with data-attributes.
+
+**Key Difference:** While the standard Tab component uses `data-tab-marker` elements with `data-tab-title` attributes, the Transformer uses a simpler HTML pattern that's easier for content editors to create in WYSIWYG editors.
+
+### When to Use
+
+- **Squiz Matrix Pages:** Content edited in Paint Layouts or Standard Pages
+- **Legacy Content Migration:** Converting existing HR-based section dividers to tabs
+- **Simple Content Pages:** Pages without complex nested structures
+- **WYSIWYG Editing:** When content authors use visual editors
+
+### HTML Pattern
+
+```html
+<div id="content" class="ntg-body">
+  <!-- Page content before tabs -->
+  <h1>Page Title</h1>
+  <p>Introduction paragraph...</p>
+  
+  <!-- Tab 1 Marker -->
+  <hr>
+  <p>Overview</p>
+  <hr>
+  <p></p>
+  
+  <!-- Tab 1 Content -->
+  <h2>Overview Section</h2>
+  <p>Content for the overview tab...</p>
+  <div>More content...</div>
+  
+  <!-- Tab 2 Marker -->
+  <hr>
+  <p>Usage</p>
+  <hr>
+  <p></p>
+  
+  <!-- Tab 2 Content -->
+  <h2>Usage Guidelines</h2>
+  <p>Content for the usage tab...</p>
+  
+  <!-- Additional tabs follow the same pattern -->
+</div>
+```
+
+### Auto-Initialization
+
+The transformer is included in the unified `web-design-system.min.js` bundle and exposed globally as `window.transformTabMarkers`. It's automatically called by the footer-js nester:
+
+```javascript
+// Included in deploy/nesters/footer-js.html
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.transformTabMarkers && document.getElementById('content')) {
+    window.transformTabMarkers('#content');
+  }
+});
+```
+
+### How It Works
+
+**Algorithm:**
+1. Scans container for `<hr><p>Title</p><hr>` patterns
+2. Extracts tab titles from paragraph text
+3. Hides marker elements using `display: none`
+4. Creates DXP-formatted navigation with inline styles
+5. Inserts navigation before the content container
+6. Attaches click handlers for tab switching
+7. Shows first tab content, hides all others
+
+**Content Management:**
+- Tracks marker position indices
+- Calculates content boundaries between tabs
+- Shows/hides content by setting `display` property
+- Next tab's first marker marks the end of current tab content
+
+### DXP Tab Navigation Structure
+
+Generated navigation uses nested divs with DXP data-attributes and inline styles:
+
+```html
+<div data-breakpoint="xl +lg + md" 
+     data-scroll-left="false" 
+     data-scroll-right="false"
+     style="width: 100%; position: sticky; top: 0; z-index: 100; background: var(--clr-bg-default, white); border-top: 1px var(--clr-border-subtle, #D3D3D7) solid; border-bottom: 1px var(--clr-border-subtle, #D3D3D7) solid; display: flex; justify-content: center;">
+  
+  <div style="width: 100%; max-width: 1200px; padding: 0 var(--sp-xl, 24px); display: flex; justify-content: flex-start; align-items: center;">
+    
+    <!-- Tab Button 1 (Active) -->
+    <div data-active="True"
+         data-horizontal="true"
+         data-left-icon="false"
+         data-show-badge="false"
+         data-state="idle"
+         data-tab-index="0"
+         style="cursor: pointer; min-width: 64px; padding: 16px; border-bottom: 4px var(--clr-border-accent, #C33826) solid;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="color: var(--clr-link-default, #1F1F5F); font-size: 16px; font-family: Lato; font-weight: 700; line-height: 24px;">
+            Overview
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tab Button 2 (Inactive) -->
+    <div data-active="False"
+         data-horizontal="true"
+         data-left-icon="false"
+         data-show-badge="false"
+         data-state="idle"
+         data-tab-index="1"
+         style="cursor: pointer; min-width: 64px; padding: 16px;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="color: var(--clr-link-default, #1F1F5F); font-size: 16px; font-family: Lato; font-weight: 400; line-height: 24px;">
+            Usage
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+```
+
+### Tab Button Styling
+
+**Data Attributes:**
+- `data-active` — "True" for active tab, "False" for inactive
+- `data-horizontal` — Always "true" for horizontal layout
+- `data-left-icon` — "false" (no icons in basic implementation)
+- `data-show-badge` — "false" (no badges in basic implementation)
+- `data-state` — "idle" (interactive state)
+- `data-tab-index` — Zero-based tab index
+
+**Inline Styles:**
+- **All tabs:** 
+  - `cursor: pointer`
+  - `min-width: 64px`
+  - `padding: 16px`
+  - Font: Lato, 16px, line-height 24px
+  - Color: `var(--clr-link-default, #1F1F5F)`
+  
+- **Active tab:**
+  - `border-bottom: 4px var(--clr-border-accent, #C33826) solid`
+  - `font-weight: 700`
+  
+- **Inactive tabs:**
+  - No bottom border
+  - `font-weight: 400`
+  - Hover: background color change
+
+### Programmatic Usage
+
+If you need to call the transformer manually or use a different container selector:
+
+```javascript
+// Default selector is '#colour-content'
+window.transformTabMarkers('#content');
+
+// Custom container
+window.transformTabMarkers('.my-container');
+
+// Check if function exists before calling
+if (typeof window.transformTabMarkers === 'function') {
+  const tabCount = window.transformTabMarkers('#content');
+  console.log(`Transformed ${tabCount} tabs`);
+}
+```
+
+### Integration with Squiz Matrix
+
+**1. Content Structure**
+
+In Squiz Matrix Paint Layouts or Standard Pages, use the WYSIWYG editor to create tab markers:
+
+```html
+<MySource_AREA id_name="body" design_area="body">
+  <!-- Content authors insert: -->
+  <!-- Horizontal Rule (Insert > Horizontal Rule) -->
+  <!-- Paragraph with tab title text -->
+  <!-- Horizontal Rule (Insert > Horizontal Rule) -->
+  <!-- Empty paragraph -->
+  <!-- Then add tab content below -->
+</MySource_AREA>
+```
+
+**2. Footer JS Nester**
+
+The footer-js nester automatically initializes the transformer:
+
+```html
+<!-- deploy/nesters/footer-js.html -->
+<script src="%globals_asset_url_with_hash:1590990:deploy/web-design-system.min.js%" defer></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.transformTabMarkers && document.getElementById('content')) {
+      window.transformTabMarkers('#content');
+    }
+  });
+</script>
+```
+
+**3. Content Container**
+
+Ensure your Paint Layout has a main content container with `id="content"`:
+
+```html
+<main class="nt-main-content" style="padding:0">
+  <div id="nt-page-banner-content" ...></div>
+  <div id="content" class="ntg-body">
+    <MySource_AREA id_name="body" design_area="body" />
+  </div>
+</main>
+```
+
+### Smart Rendering Rules
+
+- **Minimum 2 tabs required:** Navigation only renders if 2+ tab markers are found
+- **Single tab behavior:** If only 1 tab marker exists, no navigation is generated
+- **No tabs:** If no markers are found, content displays normally without modification
+
+```javascript
+// Example console output:
+if (tabs.length < 2) {
+  console.log(`[TabMarkerTransformer] Found ${tabs.length} tab(s). Skipping navigation render.`);
+  return tabs.length;
+}
+
+console.log(`[TabMarkerTransformer] Created DXP tab navigation with ${tabs.length} tabs.`);
+```
+
+### Comparison: Standard vs. Transformer
+
+| Feature                  | Standard Tab Component            | Tab Marker Transformer             |
+| ------------------------ | --------------------------------- | ---------------------------------- |
+| **Activation Pattern**   | `<div class="nt-tab-marker">`     | `<hr><p>Title</p><hr>`             |
+| **Styling**              | External CSS classes              | Inline styles + data-attributes    |
+| **Best For**             | JavaScript applications           | Squiz Matrix WYSIWYG               |
+| **ARIA Support**         | Full (role="tab", aria-controls)  | Basic (click handlers)             |
+| **Keyboard Nav**         | Yes (Arrow keys, Home, End)       | Basic (Tab key only)               |
+| **URL Hash**             | Yes                               | No                                 |
+| **Sticky Positioning**   | Yes (configurable offset)         | Yes (top: 0, z-index: 100)         |
+| **Content Authors**      | Requires HTML knowledge           | Easy (WYSIWYG-friendly)            |
+| **SEO**                  | Better (semantic markup)          | Good (content visible to crawlers) |
+| **Mobile Support**       | Full responsive                   | Full responsive                    |
+
+### Technical Implementation
+
+The transformer is implemented in `src/web-design-system.ts` and bundled into the unified JavaScript file:
+
+```typescript
+// Exposed globally for use in HTML pages
+(window as any).transformTabMarkers = transformTabMarkers;
+
+function transformTabMarkers(containerSelector = "#colour-content") {
+  const container = document.querySelector(containerSelector);
+  if (!container) {
+    console.warn(`[TabMarkerTransformer] Container not found: ${containerSelector}`);
+    return 0;
+  }
+
+  // 1. Extract tab info from HR/P/HR patterns
+  // 2. Hide marker elements
+  // 3. Create DXP-formatted navigation
+  // 4. Insert before content container
+  // 5. Attach click handlers
+  // 6. Initialize: show first tab content only
+  
+  return tabs.length;
+}
+```
+
+### Browser Support
+
+- Modern browsers (Chrome, Firefox, Safari, Edge)
+- Uses CSS custom properties for theming
+- Data attributes for DXP component structure
+- ES6 JavaScript features
+
+### Troubleshooting
+
+**Tabs not appearing:**
+1. Check browser console for warnings
+2. Verify `window.transformTabMarkers` function exists
+3. Confirm `#content` container exists in DOM
+4. Ensure minimum 2 tab markers are present
+5. Check marker pattern: must be exact `<hr><p>Text</p><hr><p></p>` sequence
+
+**Styling issues:**
+1. Verify CSS custom properties are defined (tokens.css)
+2. Check z-index conflicts with other sticky elements
+3. Ensure Lato font is loaded
+
+**Content not switching:**
+1. Check browser console for JavaScript errors
+2. Verify tab button click handlers are attached
+3. Confirm content elements are properly detected between markers
+
+### Migration from Standard Tabs
+
+To convert from standard Tab component to Transformer:
+
+1. Replace `<div class="nt-tab-marker" data-tab-title="Title"></div>` with:
+   ```html
+   <hr>
+   <p>Title</p>
+   <hr>
+   <p></p>
+   ```
+
+2. Remove `data-tab-container` attribute from parent
+
+3. Ensure content container has `id="content"`
+
+4. Call transformer with correct selector
+
+### Future Enhancements
+
+Potential improvements (not yet implemented):
+
+- Keyboard navigation (Arrow keys)
+- Smooth scroll to tab content
+- Persist active tab in URL hash
+- Animation transitions between tabs
+- Accessibility improvements (ARIA attributes)
+- Theme switcher integration
+- Right-to-left (RTL) support
+
 ## Examples
 
 See `preview/tab.html` for live examples including:

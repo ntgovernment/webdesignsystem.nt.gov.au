@@ -86,7 +86,7 @@ function transformTabMarkers(containerSelector = "#colour-content") {
   // Step 3: Insert navigation BEFORE the content container (not inside it)
   // This positions tabs after the banner but before content padding
   if (tabs.length > 0) {
-    const contentContainer = document.getElementById('content');
+    const contentContainer = document.getElementById("content");
     if (contentContainer && contentContainer.parentNode) {
       contentContainer.parentNode.insertBefore(tabNav, contentContainer);
     } else {

@@ -34,6 +34,14 @@ Auto-initialized from element IDs or data attributes on `DOMContentLoaded`:
 | **PageBanner**    | `#nt-page-banner-content`                                   | src/components/PageBanner/README.md    |
 | **Tab**           | auto-initialized via data attributes (`data-tab-container`) | src/components/Tab/README.md           |
 
+#### Tab Marker Transformer
+
+The bundle also includes `window.transformTabMarkers()`, a helper function that converts simple `<hr><p>Title</p><hr>` patterns into DXP-formatted tabs. This is automatically called by the footer-js nester for containers with `id="content"`.
+
+**Use case:** Squiz Matrix WYSIWYG editors where content authors create tabs using horizontal rules instead of custom data-attributes.
+
+See [src/components/Tab/README.md](src/components/Tab/README.md#tab-marker-transformer-dxp-format) for complete documentation.
+
 ### DXP Edge Components
 
 Server-rendered components deployed independently via `dxp-next`. Each has `dxp/manifest.json` (schema) and `dxp/main.js` (server-side renderer):

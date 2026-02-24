@@ -11,10 +11,15 @@
   3. Theme Switcher component (vanilla JS)
   4. Component Viewer component (vanilla JS)
   5. Page Banner component (vanilla JS)
+  6. Tab Marker Transformer (auto-initializes for #content)
   
   SQUIZ MATRIX USAGE:
   Asset URLs use %globals_asset_url_with_hash: for automatic cache-busting.
   ASSET_ID is replaced with your Git File Bridge asset ID during build.
+  
+  TAB TRANSFORMATION:
+  Automatically converts <hr><p>Title</p><hr> patterns in #content container
+  into interactive DXP-formatted tabs. No additional configuration needed.
   
   NOTE: Scripts use 'defer' for optimal loading performance
 -->
@@ -29,6 +34,17 @@
 <!-- Prettier for ComponentViewer code formatting -->
 <script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/standalone.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/plugins/html.js" defer></script>
+
+<!-- Tab Marker Transformer Auto-Initialization -->
+<script>
+  // Auto-transform tab markers when page loads
+  // Converts <hr><p>Title</p><hr> patterns into interactive DXP tabs
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.transformTabMarkers && document.getElementById('content')) {
+      window.transformTabMarkers('#content');
+    }
+  });
+</script>
 
 <!-- Optional: Analytics or tracking scripts -->
 <!-- <script>

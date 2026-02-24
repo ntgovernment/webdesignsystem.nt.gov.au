@@ -436,6 +436,53 @@ The remainder of this guide focuses on Squiz Matrix deployment and global setup;
 | `footer.html`     | `footer_content` | Footer navigation and branding       | `cache="1"`   |
 | `footer-js.html`  | `footer_js`      | JavaScript component loading         | `cache="1"`   |
 
+### Tab Marker Transformer
+
+The footer-js nester includes automatic initialization of the Tab Marker Transformer, which converts simple `<hr><p>Title</p><hr>` patterns into interactive DXP-formatted tabs.
+
+**What it does:**
+- Scans the page container (default: `#content`) for HR/paragraph/HR patterns
+- Transforms these patterns into clickable tab navigation
+- Automatically hides/shows content sections based on active tab
+- Only renders navigation if 2+ tabs are detected
+
+**Content author workflow (WYSIWYG):**
+1. Insert Horizontal Rule (Insert > Horizontal Rule)
+2. Add paragraph with tab title text (e.g., "Overview")
+3. Insert another Horizontal Rule
+4. Add empty paragraph
+5. Add tab content below
+6. Repeat for each additional tab
+
+**Example HTML pattern:**
+```html
+<div id="content" class="ntg-body">
+  <!-- Tab 1 -->
+  <hr>
+  <p>Overview</p>
+  <hr>
+  <p></p>
+  <h2>Overview Section</h2>
+  <p>Content for overview...</p>
+  
+  <!-- Tab 2 -->
+  <hr>
+  <p>Usage</p>
+  <hr>
+  <p></p>
+  <h2>Usage Guidelines</h2>
+  <p>Content for usage...</p>
+</div>
+```
+
+**Benefits:**
+- No HTML knowledge required for content authors
+- Works with standard WYSIWYG editor tools
+- Automatically styled with DXP-compliant inline styles
+- Full theming support via CSS custom properties
+
+For complete documentation including technical details, styling, and troubleshooting, see [src/components/Tab/README.md](src/components/Tab/README.md#tab-marker-transformer-dxp-format).
+
 <!-- build outputs, auto-mount IDs, and configuration tables intentionally omitted in favor of component READMEs -->
 
 ## File Size Reference
