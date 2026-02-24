@@ -43,6 +43,13 @@ div[data-hydration-props] {
   margin-block: var(--sp-4xl);
 }
 
+/* Keep component links from showing browser default visited purple */
+.nt-page-banner__cta:visited,
+.nt-leftnav__link:visited,
+.nt-footer__link:visited {
+  color: var(--clr-link-default, #1f1f5f);
+}
+
 /* Vertical gaps between direct children inside `#content.ntg-body` — uses token `--sp-4xl` */
 #content.ntg-body > * + * {
   margin-block-start: var(--sp-4xl);

@@ -19,6 +19,9 @@ npm run build    # Build bundle and prepare deployment files
 
 ## Components
 
+> **Note:** Global CSS now includes explicit `:visited` rules for banner CTAs, left-nav links, and footer links. These are added in `src/index.css` to ensure the browser’s default purple colour never appears on visited links when component styles load late.
+
+
 ### Vanilla JS Components
 
 Auto-initialized from element IDs or data attributes on `DOMContentLoaded`:
