@@ -83,10 +83,10 @@ function transformTabMarkers(containerSelector = "#colour-content") {
   // Step 2: Create DXP-formatted tab navigation
   const tabNav = createDxpTabNavigation(tabs);
 
-  // Step 3: Insert navigation before first marker
+  // Step 3: Insert navigation BEFORE the content container (not inside it) to avoid padding gaps
   if (tabs.length > 0) {
-    const firstMarkerElement = children[tabs[0].markerIndex];
-    firstMarkerElement.parentNode?.insertBefore(tabNav, firstMarkerElement);
+    const contentContainer = document.querySelector(containerSelector);
+    contentContainer?.parentNode?.insertBefore(tabNav, contentContainer);
   }
 
   // Step 4: Wire tab click handlers
@@ -114,7 +114,8 @@ function createDxpTabNavigation(
     top: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 1000;
+    margin: 0;
     margin-left: calc(-50vw + 50%);
     padding-left: 16px;
     padding-right: 16px;
