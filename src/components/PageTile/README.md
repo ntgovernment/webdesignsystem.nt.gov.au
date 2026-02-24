@@ -547,7 +547,7 @@ A: No negative impact. Tiles render as semantic `<a>` links with descriptive tex
 
 ---
 
-**Last Updated:** February 19, 2026  
+**Last Updated:** February 19, 2026
 
 ## CSS Notes
 
