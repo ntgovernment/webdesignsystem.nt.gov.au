@@ -66,9 +66,6 @@ export class ComponentViewerClient {
       "[data-code-display]",
     ) as HTMLElement;
 
-    // Position buttons based on preview height
-    this.positionActionButtons();
-
     // Update "Open canvas" button to "Open in Storybook" with Storybook icon
     this.updateOpenTabButton();
 
@@ -138,29 +135,6 @@ export class ComponentViewerClient {
     if (labelEl) {
       labelEl.textContent = "Open in Storybook";
     }
-  }
-
-  private positionActionButtons(): void {
-    const preview = this.container.querySelector(
-      ".component-viewer__preview",
-    ) as HTMLElement;
-    const actionsContainer = this.container.querySelector(
-      ".component-viewer__actions",
-    ) as HTMLElement;
-
-    if (!preview || !actionsContainer) {
-      return;
-    }
-
-    // Get preview height from style attribute
-    const previewHeightStr = preview.style.height || "200px";
-    const previewHeightPx = parseInt(previewHeightStr, 10);
-
-    // Calculate top position as preview height + 64px
-    const topPosition = previewHeightPx + 64;
-
-    // Set the top position of the buttons container
-    actionsContainer.style.top = `${topPosition}px`;
   }
 
   private handleZoomIn(): void {

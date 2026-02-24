@@ -76,15 +76,15 @@ private positionActionButtons(): void {
   const actionsContainer = this.container.querySelector(".component-viewer__actions") as HTMLElement;
   if (!preview || !actionsContainer) return;
 
-  const previewHeightPx = parseInt(preview.style.height || "200px", 10);
-  actionsContainer.style.top = `${previewHeightPx + 64}px`;
+  // offsetTop accounts for any introduction text above the preview.
+  actionsContainer.style.top = `${preview.offsetTop + preview.offsetHeight}px`;
 }
 ```
 
-The `+ 64` offset accounts for the `toolbar` bar at the bottom of the preview area (zoom controls, refresh, etc.). This keeps the action bar visually aligned with the exact boundary between the preview and the code panel, regardless of the configured `height` prop.
+`preview.offsetTop` is the distance from the top of the root container to the top of the preview element, accounting for any introduction text rendered above it. Adding `preview.offsetHeight` gives the bottom edge of the preview — precisely where the buttons should sit.
 
 **Why `position: relative` on the code panel, not the root container?**  
-The code panel is in document flow — when hidden it has `max-height: 0` and when shown it expands. Placed as a child of `.component-viewer__code` (which has `position: relative`), the absolutely-positioned action bar sits at the top of the dark code block, covered by `64px` of top padding in the code panel so code text never renders underneath the buttons.
+The code panel is in document flow — when hidden it has `max-height: 0` and when shown it expands downward. The absolutely-positioned action bar sits just above the top of the code block. The code panel has `64px` of top padding so code text never renders underneath the buttons.
 
 ## CSS Notes
 
@@ -105,9 +105,17 @@ Both vertical (code panel) and horizontal (code line overflow) scrollbars use sl
 scrollbar-width: thin;
 scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
 
-&::-webkit-scrollbar { width: 6px; height: 6px; }
-&::-webkit-scrollbar-track { background: transparent; }
-&::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.35); border-radius: 999px; }
+&::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+&::-webkit-scrollbar-track {
+  background: transparent;
+}
+&::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+}
 ```
 
 ## "Open in Storybook" button

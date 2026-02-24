@@ -173,6 +173,18 @@
                     </div>
                 </div>
 
+                <!-- Action Buttons -->
+                <div class="component-viewer__actions">
+                    <button class="component-viewer__button" data-action="copy" aria-label="Copy code to clipboard">
+                        <i class="fa-light fa-copy" aria-hidden="true"></i>
+                        <span data-copy-text>Copy</span>
+                    </button>
+                    <button class="component-viewer__button" data-action="toggle-code" aria-label="See code">
+                        <i class="fa-light fa-code" aria-hidden="true"></i>
+                        <span data-code-toggle-text>See code</span>
+                    </button>
+                </div>
+
                 <!-- Code Display Section -->
                 <div class="component-viewer__code" data-code-panel>
                     <pre class="component-viewer__code-content"><code class="language-html" data-code-display>&lt;div class="nt-card"&gt;
@@ -196,6 +208,60 @@
     &lt;p&gt;Line 5&lt;/p&gt;
 &lt;/section&gt;</code></pre>
                 </div>
+            </div>
+
+            <div class="status-indicator status-watch">
+                👁️ Watch the buttons above - they should stay in place when toggling code
+            </div>
+        </div>
+
+        <!-- Second ComponentViewer with a different preview height -->
+        <div class="component-test-section">
+            <h3>ComponentViewer — taller preview (450px)</h3>
+
+            <div class="nt-component-viewer" data-hydration-component="component-viewer"
+                data-hydration-props='{"storybookUrl":"https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story","codeExample":"<button class=\"nt-button nt-button--primary\">Primary</button>","height":"450px","initialZoom":1.0,"showCodeByDefault":false,"enableCopy":true,"enableZoom":true,"cssClass":""}'
+                data-instance-id="test-component-002">
+
+                <!-- Preview Section -->
+                <div class="component-viewer__preview" style="height: 450px">
+                    <div class="component-viewer__iframe-wrapper">
+
+                        <!-- Toolbar -->
+                        <div class="component-viewer__toolbar">
+                            <div class="component-viewer__zoom-controls">
+                                <button class="component-viewer__control-btn" data-action="zoom-in" aria-label="Zoom in"
+                                    title="Zoom in">
+                                    <i class="fa-light fa-magnifying-glass-plus" aria-hidden="true"></i>
+                                    <span class="component-viewer__control-label">Zoom in</span>
+                                </button>
+                                <button class="component-viewer__control-btn" data-action="zoom-out"
+                                    aria-label="Zoom out" title="Zoom out">
+                                    <i class="fa-light fa-magnifying-glass-minus" aria-hidden="true"></i>
+                                    <span class="component-viewer__control-label">Zoom out</span>
+                                </button>
+                                <button class="component-viewer__control-btn" data-action="zoom-reset"
+                                    aria-label="Reset zoom" title="Reset zoom">
+                                    <i class="fa-light fa-arrows-rotate" aria-hidden="true"></i>
+                                    <span class="component-viewer__control-label">Reset zoom</span>
+                                </button>
+                            </div>
+                            <button class="component-viewer__control-btn" data-action="open-new-tab"
+                                aria-label="Open canvas in new tab" title="Open canvas in new tab">
+                                <i class="fa-light fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                                <span class="component-viewer__control-label">Open canvas</span>
+                            </button>
+                        </div>
+
+                        <!-- Iframe Content -->
+                        <div class="component-viewer__iframe-content" data-zoom-container>
+                            <iframe
+                                src="https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story"
+                                class="component-viewer__iframe" title="Component Preview" frameborder="0"
+                                sandbox="allow-scripts allow-same-origin" data-iframe></iframe>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Action Buttons -->
                 <div class="component-viewer__actions">
@@ -208,10 +274,16 @@
                         <span data-code-toggle-text>See code</span>
                     </button>
                 </div>
+
+                <!-- Code Display Section -->
+                <div class="component-viewer__code" data-code-panel>
+                    <pre
+                        class="component-viewer__code-content"><code class="language-html" data-code-display>&lt;button class="nt-button nt-button--primary"&gt;Primary&lt;/button&gt;</code></pre>
+                </div>
             </div>
 
             <div class="status-indicator status-watch">
-                👁️ Watch the buttons above - they should stay in place when toggling code
+                👁️ Buttons should be lower than the first instance (450px vs 250px preview)
             </div>
         </div>
     </div>
