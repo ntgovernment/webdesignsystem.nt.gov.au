@@ -23,7 +23,16 @@
   width: 100%;
   margin-bottom: 1rem;
   color: var(--bs-table-color);
-  font-family: var(--font-family-primary, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+  font-family: var(
+    --font-family-primary,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif
+  );
   vertical-align: top;
   border-color: var(--bs-table-border-color);
   border-collapse: collapse;
@@ -105,11 +114,13 @@
 .content-table__table thead th {
   background-color: var(--clr-bg-default);
   border-bottom-color: var(--clr-border-strong-03);
+  border-bottom-style: solid;
   color: var(--clr-link-default);
   font-size: var(--type-uppercase-default-size);
   font-weight: var(--type-uppercase-default-weight);
   line-height: var(--type-uppercase-default-lh);
   letter-spacing: var(--type-uppercase-default-ls);
+  text-align: left;
   text-transform: var(--literal-text-transform-uppercase-default);
   vertical-align: middle;
 }
@@ -122,6 +133,7 @@
   font-weight: var(--type-body-default-weight);
   line-height: var(--type-body-default-lh);
   border-bottom-color: var(--clr-border-subtle);
+  border-bottom-style: solid;
 }
 
 /* Table Header Content */
