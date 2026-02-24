@@ -18,5 +18,11 @@ import "./components/MiniPageCard/MiniPageCard.vanilla";
 import "./components/PageTile/PageTile.vanilla";
 import "./components/ColorSwatch/ColorSwatch.vanilla";
 
+// Import Tab Marker Transformer utility
+import { transformTabMarkers } from "../scripts/tab-marker-transformer";
+
+// Export transformer to global scope for use in HTML pages
+(window as any).transformTabMarkers = transformTabMarkers;
+
 // Import global stylesheet (consolidated with all component styles via @import)
 import "./global-styles";

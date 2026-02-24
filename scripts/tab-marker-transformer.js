@@ -224,9 +224,7 @@ function attachTabHandlers(navElement, tabs, allChildren) {
     if (idx !== 0) {
       const startIdx = tab.markerIndex + 3;
       const endIdx =
-        idx < tabs.length - 1
-          ? tabs[idx + 1].markerIndex
-          : allChildren.length;
+        idx < tabs.length - 1 ? tabs[idx + 1].markerIndex : allChildren.length;
 
       for (let i = startIdx; i < endIdx; i++) {
         if (allChildren[i]) {

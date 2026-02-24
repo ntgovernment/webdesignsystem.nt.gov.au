@@ -1611,6 +1611,31 @@
 <script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/standalone.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/plugins/html.js" defer></script>
 
+<!-- Initialize Tab Marker Transformer for colour page -->
+<script>
+    // Wait for DOM to be ready and min.js to be loaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeColorPageTabs);
+    } else {
+        initializeColorPageTabs();
+    }
+
+    function initializeColorPageTabs() {
+        // Check if transformTabMarkers is available from the bundle
+        if (window.transformTabMarkers) {
+            // Transform all HR/P patterns in the content container
+            const contentContainer = document.getElementById('content');
+            if (contentContainer) {
+                window.transformTabMarkers(contentContainer);
+            } else {
+                console.warn('[Colour Page] Content container not found');
+            }
+        } else {
+            console.warn('[Colour Page] transformTabMarkers not available from bundle');
+        }
+    }
+</script>
+
 <!-- Optional: Analytics or tracking scripts -->
 <!-- <script>
   // Add your analytics code here
