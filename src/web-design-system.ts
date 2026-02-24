@@ -26,7 +26,7 @@ function transformTabMarkers(containerSelector = "#colour-content") {
   const container = document.querySelector(containerSelector);
   if (!container) {
     console.warn(
-      `[TabMarkerTransformer] Container not found: ${containerSelector}`
+      `[TabMarkerTransformer] Container not found: ${containerSelector}`,
     );
     return 0;
   }
@@ -75,7 +75,7 @@ function transformTabMarkers(containerSelector = "#colour-content") {
 
   if (tabs.length < 2) {
     console.log(
-      `[TabMarkerTransformer] Found ${tabs.length} tab(s). Skipping navigation render.`
+      `[TabMarkerTransformer] Found ${tabs.length} tab(s). Skipping navigation render.`,
     );
     return tabs.length;
   }
@@ -93,7 +93,7 @@ function transformTabMarkers(containerSelector = "#colour-content") {
   attachTabHandlers(tabNav, tabs, children);
 
   console.log(
-    `[TabMarkerTransformer] Created DXP tab navigation with ${tabs.length} tabs.`
+    `[TabMarkerTransformer] Created DXP tab navigation with ${tabs.length} tabs.`,
   );
   return tabs.length;
 }
@@ -102,7 +102,7 @@ function transformTabMarkers(containerSelector = "#colour-content") {
  * Create DXP-formatted tab navigation structure
  */
 function createDxpTabNavigation(
-  tabs: Array<{ title: string; markerIndex: number; titleIndex: number }>
+  tabs: Array<{ title: string; markerIndex: number; titleIndex: number }>,
 ) {
   const navContainer = document.createElement("div");
   navContainer.setAttribute("data-breakpoint", "xl +lg + md");
@@ -208,7 +208,7 @@ function createTabButton(title: string, isActive: boolean) {
 function attachTabHandlers(
   navElement: HTMLElement,
   tabs: Array<{ markerIndex: number }>,
-  allChildren: ArrayLike<Element>
+  allChildren: ArrayLike<Element>,
 ) {
   const buttons = navElement.querySelectorAll("[data-tab-index]");
 
@@ -255,9 +255,7 @@ function attachTabHandlers(
     if (idx !== 0) {
       const startIdx = tab.markerIndex + 3;
       const endIdx =
-        idx < tabs.length - 1
-          ? tabs[idx + 1].markerIndex
-          : allChildren.length;
+        idx < tabs.length - 1 ? tabs[idx + 1].markerIndex : allChildren.length;
 
       for (let i = startIdx; i < endIdx; i++) {
         if (allChildren[i]) {
