@@ -1,0 +1,2 @@
+function c(t){return(t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}function e(t){return c(t)}var l=t=>t.toLowerCase().replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,""),i=async t=>{let{title:r="Tab",anchor:a=""}=t||{},n=a.trim()||l(r);return`<div class="nt-tab-marker" data-tab-title="${e(r)}" data-tab-id="${e(n)}"></div>`},p={main:i};export{p as default};
+//# sourceMappingURL=userCode.js.map
