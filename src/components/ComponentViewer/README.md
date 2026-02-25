@@ -45,7 +45,6 @@ These are hardcoded defaults in `main.js` and not exposed to editors:
 
 1. `main.js` renders the static HTML shell with `data-component-viewer` attributes and embeds the `storybookUrl` in the iframe `src`.
 2. On page load, `ComponentViewer.vanilla.ts` hydrates each instance:
-   - Calls `positionActionButtons()` to place the action bar at the correct vertical offset.
    - Calls `updateOpenTabButton()` to replace the default icon and label with the Storybook SVG and "Open in Storybook" text.
    - Attaches zoom/copy/code-toggle button event listeners.
    - If no `codeExample` was provided, waits for the iframe to load and extracts rendered HTML from the iframe document.
@@ -61,36 +60,29 @@ These are hardcoded defaults in `main.js` and not exposed to editors:
 
 ## Button Positioning Architecture
 
-The action toolbar (Copy, Show/Hide Code, Open in Storybook) must remain stationary when the code panel opens and closes. This is achieved with a combination of CSS and a small JS calculation at init time.
+The action toolbar (Copy, Show/Hide Code, Open in Storybook) stays anchored below the preview regardless of whether the code panel is open or closed. This is achieved entirely in CSS — no JavaScript positioning.
 
-**Layout rules:**
+**Layout:**
 
-- `.component-viewer__code` stays in **normal document flow** — it expands via `max-height` animation and pushes content below it downwards. It has `position: relative` to serve as a positioning context for the action bar.
-- `.component-viewer__actions` is `position: absolute` with `left: 0; right: 0` and a transparent background. Its `top` is **not set in CSS** — it is calculated by JS.
-
-**JS positioning (`positionActionButtons`):**
-
-```typescript
-private positionActionButtons(): void {
-  const preview = this.container.querySelector(".component-viewer__preview") as HTMLElement;
-  const actionsContainer = this.container.querySelector(".component-viewer__actions") as HTMLElement;
-  if (!preview || !actionsContainer) return;
-
-  // offsetTop accounts for any introduction text above the preview.
-  actionsContainer.style.top = `${preview.offsetTop + preview.offsetHeight}px`;
-}
+```
+.component-viewer__preview   ← fixed-height iframe box
+.component-viewer__actions   ← margin-top: 12px; z-index: 1 (sits 12px below preview)
+.component-viewer__code      ← margin-top: -66px (pulls panel top up to preview bottom)
+                               padding-top: 60px (code text appears below the buttons)
 ```
 
-`preview.offsetTop` is the distance from the top of the root container to the top of the preview element, accounting for any introduction text rendered above it. Adding `preview.offsetHeight` gives the bottom edge of the preview — precisely where the buttons should sit.
+**Why it works:**
 
-**Why `position: relative` on the code panel, not the root container?**  
-The code panel is in document flow — when hidden it has `max-height: 0` and when shown it expands downward. The absolutely-positioned action bar sits just above the top of the code block. The code panel has `64px` of top padding so code text never renders underneath the buttons.
+- `.component-viewer__actions` sits in normal document flow directly after the preview with `margin-top: 12px`. Its height is approximately 54px (button + padding).
+- `.component-viewer__code` has `margin-top: -66px` (`-(12px gap + 54px action bar)`) so its top edge aligns with the bottom of the preview. When `max-height` expands from 0 → 600px via CSS transition, the panel grows downward from that seam.
+- `z-index: 1` on `.component-viewer__actions` ensures the buttons paint above the dark code panel when it expands underneath them.
+- `padding-top: 60px` on `.component-viewer__code` reserves space so code text is never hidden under the overlapping buttons.
 
 ## CSS Notes
 
 ### Code panel top padding
 
-`.component-viewer__code` has `padding-top: 64px` (both in collapsed and expanded states). This prevents the first line of code from being obscured by the absolutely-positioned action toolbar that overlaps the top of the code panel.
+`.component-viewer__code` has `padding-top: 60px` (both in collapsed and expanded states). This reserves space between the top of the code panel and the first line of code, keeping the text below the action bar that visually overlaps the panel.
 
 ### Show Code button fixed width
 

@@ -35,89 +35,20 @@ npm install
 # Start local development with component previews
 npm run dev
 
-# Build components for deployment (vanilla JS)
+# Build all components for deployment
 npm run build
 
-# Deploy without rebuilding
+# Run deploy script without rebuilding
+npm run deploy
 ```
 
 > 📌 **Note:** For detailed usage, configuration options, data-attribute documentation, and examples for each component, see the README in the corresponding directory under `src/components/<Component>/README.md`.
 
-npm run deploy
-
-```
-
 ## Architecture: Why Vanilla JavaScript?
 
-The NT Design System is built with **vanilla JavaScript instead of React** for significant strategic and technical advantages:
+For the full strategic rationale behind the vanilla JS approach, see **[VANILLA_JS_RATIONALE.md](VANILLA_JS_RATIONALE.md)**.
 
-| Aspect             | Vanilla JS              | React Alternative       |
-| ------------------ | ----------------------- | ----------------------- |
-| **Bundle Size**    | ~30 KB (all components) | 500+ KB per component   |
-| **Load Time**      | ~50ms                   | ~500ms                  |
-| **Dependencies**   | 0 external JS libraries | 7+ npm packages         |
-| **Squiz Native**   | Direct integration      | Requires transformation |
-| **Learning Curve** | Hours (native DOM APIs) | Days/weeks (React/JSX)  |
-| **Maintenance**    | Forever compatible      | Tied to React versions  |
-| **Security**       | Minimal attack surface  | 7+ packages to audit    |
-
-### Performance Impact
-
-**Bundle Size Comparison:**
-
-```
-
-Vanilla JS Components: 1.41 - 8.07 KB each
-React Component: 380 KB+ for same functionality
-
-````
-
-**User Experience Improvements:**
-
-- Faster page loads for NT citizens and businesses
-- Better performance on slower connections (rural/remote areas)
-- Reduced data usage (important for limited bandwidth users)
-- Faster subsequent interactions (zero framework overhead)
-
-### Development Efficiency
-
-**Build Process:**
-
-```bash
-# Before (React)
-npm run build:components    # Build React components individually
-npm run build:squiz         # Build vanilla JS wrapper
-npm run deploy:squiz        # Deploy
-
-# After (Vanilla JS)
-npm run build   # Build everything once
-````
-
-**Component Development Time:**
-
-- Creating components: 50% faster (no React patterns to follow)
-- Debugging: 66% faster (no virtual DOM to understand)
-- Deployment: 60% faster (single build mode)
-
-### Squiz Matrix Integration
-
-Vanilla JS integrates directly with Squiz without transformation layers:
-
-```html
-<!-- Direct, clean integration -->
-<div id="nt-header-root" data-title="%asset_name%"></div>
-<script src="%globals_asset_url:ASSET_ID%/js/header.js"></script>
-```
-
-**No need for:**
-
-- React app bootstrap
-- Virtual DOM hydration
-- State management setup
-- Asset URL transformation
-- Component wrapper layers
-
-For complete strategic analysis, see **[VANILLA_JS_RATIONALE.md](VANILLA_JS_RATIONALE.md)**.
+**Summary:** components ship as a single ~30 KB IIFE bundle compared to 500 KB+ when using React, with zero external dependencies and native Squiz Matrix integration.
 
 ## Deployment Approach
 
@@ -144,21 +75,17 @@ After running `npm run build`, files are organized as:
 
 ```
 deploy/
-â”œâ”€â”€ nesters/                    # HTML nesters for MySource_AREA tags
-â”‚   â”œâ”€â”€ head.html               # <head> content with stylesheets
-â”‚   â”œâ”€â”€ skip-links.html         # Accessibility skip navigation
-â”‚   â”œâ”€â”€ header.html             # NT Government header
-â”‚   â”œâ”€â”€ left-nav.html           # Left navigation sidebar
-â”‚   â”œâ”€â”€ footer.html             # Footer with navigation and branding
-â”‚   â””â”€â”€ footer-js.html          # JavaScript component loading
-â”œâ”€â”€ js/                          # Vanilla JavaScript components
-â”‚   â”œâ”€â”€ header.js               # Header component (~25KB)
-â”‚   â”œâ”€â”€ left-nav.js             # Left navigation (~5KB)
-â”‚   â”œâ”€â”€ theme-switcher.js       # Theme switcher (~10KB)
-â”‚   â”œâ”€â”€ two-column.js           # Two-column layout (~8KB)
-â”‚   â””â”€â”€ component-viewer-client.js  # Component viewer client
-â”œâ”€â”€ web-design-system.css       # Global stylesheet with all design tokens
-â””â”€â”€ manifest.json               # Deployment metadata
+├── web-design-system.min.js    # Single IIFE bundle (NTGDesignSystem global, all components)
+├── web-design-system.min.css   # All component styles + design tokens
+├── external-tokens/            # Individual token CSS files
+├── nesters/                    # HTML nesters for MySource_AREA tags
+│   ├── head.html               # <head> content with stylesheets
+│   ├── skip-links.html         # Accessibility skip navigation
+│   ├── header.html             # NT Government header
+│   ├── left-nav.html           # Left navigation sidebar
+│   ├── footer.html             # Footer with navigation and branding
+│   └── footer-js.html          # JavaScript component loading
+└── manifest.json               # Deployment metadata
 ```
 
 ## Squiz Matrix Paint Layout Integration
@@ -390,7 +317,7 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 - **Verify Git File Bridge sync** - Check that files exist in Squiz Matrix asset tree
 - **Check asset URLs** - Ensure `%globals_asset_url_with_hash:ASSET_ID%` has correct Asset ID
 - **Ensure CORS settings** - Allow loading from the asset server
-- **Check file paths** - Verify paths match deployment structure (e.g., `/js/header.js`)
+- **Check file paths** - Verify paths match deployment structure (e.g., `deploy/web-design-system.min.js`)
 
 ### Styles Not Applied
 
@@ -487,36 +414,16 @@ The footer-js nester includes automatic initialization of the Tab Marker Transfo
 
 For complete documentation including technical details, styling, and troubleshooting, see [src/components/Tab/README.md](src/components/Tab/README.md#tab-marker-transformer-dxp-format).
 
-<!-- build outputs, auto-mount IDs, and configuration tables intentionally omitted in favor of component READMEs -->
-
-## File Size Reference
-
-### Vanilla JS Build
+## Bundle Size Reference
 
 ```
 deploy/
-â”œâ”€â”€ web-design-system.css    ~20-30KB (minified, all components)
-â”œâ”€â”€ js/
-â”‚   â”œâ”€â”€ header.js            ~25KB (includes dependencies)
-â”‚   â”œâ”€â”€ left-nav.js          ~5KB (minimal dependencies)
-â”‚   â”œâ”€â”€ theme-switcher.js    ~10KB (includes localStorage logic)
-â”‚   â”œâ”€â”€ two-column.js        ~8KB (lightweight layout)
-â”‚   â””â”€â”€ component-viewer-client.js  ~15KB (includes Prism.js)
-â””â”€â”€ nesters/                ~10-15KB total (5 HTML files)
+├── web-design-system.min.js    ~30 KB   (all components, single IIFE)
+├── web-design-system.min.css   ~20 KB   (all styles + tokens)
+└── nesters/                     ~10 KB   (5 HTML files)
 ```
 
-**Total bundle size:** ~90-110KB (complete design system with all components)
-
-**Performance Benefits:**
-
-- Fast load times with ES modules
-- Automatic code splitting per component
-- No framework overhead
-- Minimal runtime dependencies
-  To find the current hashes:
-
-1. Check `deploy/manifest.json` after running deployment
-2. Or check the `deploy/viewer/index.html` file which contains the correct references
+**Total:** ~60 KB for the complete design system (uncompressed). Gzip reduces this significantly on the wire.
 
 ## Best Practices
 

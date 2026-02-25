@@ -60,7 +60,7 @@ This copies all nesters to `deploy/nesters/` along with the vanilla JS component
 
 Each nester can be customized by editing the HTML files in this directory. After making changes:
 
-1. Run `npm run build:squiz` to rebuild
+1. Run `npm run build` to rebuild
 2. Update the corresponding MySource_AREA in your paint layout
 3. Commit and push to trigger Git File Bridge sync
 

@@ -188,7 +188,8 @@
 /* Code Display Section */
 .component-viewer__code {
   width: 100%;
-  padding: var(--sp-md, 16px);
+  margin-top: -66px;
+  padding: 60px var(--sp-md, 16px) var(--sp-md, 16px);
   background: #272822;
   display: flex;
   align-items: flex-start;
@@ -208,7 +209,7 @@
   opacity: 1;
   max-height: 600px;
   overflow-y: auto;
-  padding: var(--sp-md, 16px);
+  padding: 60px var(--sp-md, 16px) var(--sp-md, 16px);
 }
 
 .component-viewer__code::-webkit-scrollbar {
@@ -322,6 +323,7 @@
 /* Action Buttons */
 .component-viewer__actions {
   position: relative;
+  z-index: 1;
   padding: var(--sp-xxs, 4px) var(--sp-md, 16px);
   display: flex;
   justify-content: flex-end;
@@ -332,6 +334,7 @@
 }
 
 .component-viewer__button {
+  margin-top: 12px;
   padding: var(--sp-sm, 12px) var(--sp-md, 16px);
   background: var(--clr-action-secondary, white);
   border: var(--border-width-md, 1px) solid var(--clr-border-strong-01, #1f1f5f);
