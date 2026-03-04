@@ -4,7 +4,7 @@
  * Documentation vs Code Analyzer
  *
  * Reports the volume of documentation and comments versus actual code
- * across the source files in this repository.
+ * across the source files in this repository, in both lines and characters.
  *
  * Categorizes lines as:
  *   - Blank       : empty or whitespace-only lines
@@ -65,14 +65,17 @@ function collectFiles(dir) {
 }
 
 /**
- * Count blank, comment, and code lines in a TypeScript or JavaScript file.
+ * Count blank, comment, and code lines (and characters) in a TypeScript or JavaScript file.
  * @param {string[]} lines
- * @returns {{ blank: number, comment: number, code: number }}
+ * @returns {{ blank: number, comment: number, code: number, blankChars: number, commentChars: number, codeChars: number }}
  */
 function countTsJs(lines) {
   let blank = 0;
   let comment = 0;
   let code = 0;
+  let blankChars = 0;
+  let commentChars = 0;
+  let codeChars = 0;
   let inBlock = false;
 
   for (const raw of lines) {
@@ -80,11 +83,13 @@ function countTsJs(lines) {
 
     if (line === "") {
       blank++;
+      blankChars += raw.length;
       continue;
     }
 
     if (inBlock) {
       comment++;
+      commentChars += raw.length;
       if (line.indexOf("*/") !== -1) {
         inBlock = false;
       }
@@ -93,6 +98,7 @@ function countTsJs(lines) {
 
     if (line.startsWith("/*")) {
       comment++;
+      commentChars += raw.length;
       // Block may open and close on the same line (e.g. /* foo */)
       if (line.indexOf("*/", 2) === -1) {
         inBlock = true;
@@ -102,24 +108,29 @@ function countTsJs(lines) {
 
     if (line.startsWith("//")) {
       comment++;
+      commentChars += raw.length;
       continue;
     }
 
     code++;
+    codeChars += raw.length;
   }
 
-  return { blank, comment, code };
+  return { blank, comment, code, blankChars, commentChars, codeChars };
 }
 
 /**
- * Count blank, comment, and code lines in a CSS file.
+ * Count blank, comment, and code lines (and characters) in a CSS file.
  * @param {string[]} lines
- * @returns {{ blank: number, comment: number, code: number }}
+ * @returns {{ blank: number, comment: number, code: number, blankChars: number, commentChars: number, codeChars: number }}
  */
 function countCss(lines) {
   let blank = 0;
   let comment = 0;
   let code = 0;
+  let blankChars = 0;
+  let commentChars = 0;
+  let codeChars = 0;
   let inBlock = false;
 
   for (const raw of lines) {
@@ -127,11 +138,13 @@ function countCss(lines) {
 
     if (line === "") {
       blank++;
+      blankChars += raw.length;
       continue;
     }
 
     if (inBlock) {
       comment++;
+      commentChars += raw.length;
       if (line.indexOf("*/") !== -1) {
         inBlock = false;
       }
@@ -140,6 +153,7 @@ function countCss(lines) {
 
     if (line.startsWith("/*")) {
       comment++;
+      commentChars += raw.length;
       if (line.indexOf("*/", 2) === -1) {
         inBlock = true;
       }
@@ -147,38 +161,43 @@ function countCss(lines) {
     }
 
     code++;
+    codeChars += raw.length;
   }
 
-  return { blank, comment, code };
+  return { blank, comment, code, blankChars, commentChars, codeChars };
 }
 
 /**
- * Count all non-blank lines in a Markdown file as documentation.
+ * Count all non-blank lines (and characters) in a Markdown file as documentation.
  * @param {string[]} lines
- * @returns {{ blank: number, docs: number }}
+ * @returns {{ blank: number, docs: number, blankChars: number, docsChars: number }}
  */
 function countMd(lines) {
   let blank = 0;
   let docs = 0;
+  let blankChars = 0;
+  let docsChars = 0;
 
   for (const raw of lines) {
     if (raw.trim() === "") {
       blank++;
+      blankChars += raw.length;
     } else {
       docs++;
+      docsChars += raw.length;
     }
   }
 
-  return { blank, docs };
+  return { blank, docs, blankChars, docsChars };
 }
 
 // ── Totals ────────────────────────────────────────────────────────────────────
 
 const totals = {
-  ts: { files: 0, blank: 0, comment: 0, code: 0 },
-  js: { files: 0, blank: 0, comment: 0, code: 0 },
-  css: { files: 0, blank: 0, comment: 0, code: 0 },
-  md: { files: 0, blank: 0, docs: 0 },
+  ts: { files: 0, blank: 0, comment: 0, code: 0, blankChars: 0, commentChars: 0, codeChars: 0, docsChars: 0 },
+  js: { files: 0, blank: 0, comment: 0, code: 0, blankChars: 0, commentChars: 0, codeChars: 0, docsChars: 0 },
+  css: { files: 0, blank: 0, comment: 0, code: 0, blankChars: 0, commentChars: 0, codeChars: 0, docsChars: 0 },
+  md: { files: 0, blank: 0, docs: 0, blankChars: 0, commentChars: 0, codeChars: 0, docsChars: 0 },
 };
 
 /** @type {Array<{ file: string, blank: number, comment: number, code: number, docs: number }>} */
@@ -201,31 +220,42 @@ for (const filePath of allFiles) {
   const rel = path.relative(rootDir, filePath);
 
   if (ext === ".ts") {
-    const { blank, comment, code } = countTsJs(lines);
+    const { blank, comment, code, blankChars, commentChars, codeChars } = countTsJs(lines);
     totals.ts.files++;
     totals.ts.blank += blank;
     totals.ts.comment += comment;
     totals.ts.code += code;
+    totals.ts.blankChars += blankChars;
+    totals.ts.commentChars += commentChars;
+    totals.ts.codeChars += codeChars;
     fileRows.push({ file: rel, blank, comment, code, docs: 0 });
   } else if (ext === ".js") {
-    const { blank, comment, code } = countTsJs(lines);
+    const { blank, comment, code, blankChars, commentChars, codeChars } = countTsJs(lines);
     totals.js.files++;
     totals.js.blank += blank;
     totals.js.comment += comment;
     totals.js.code += code;
+    totals.js.blankChars += blankChars;
+    totals.js.commentChars += commentChars;
+    totals.js.codeChars += codeChars;
     fileRows.push({ file: rel, blank, comment, code, docs: 0 });
   } else if (ext === ".css") {
-    const { blank, comment, code } = countCss(lines);
+    const { blank, comment, code, blankChars, commentChars, codeChars } = countCss(lines);
     totals.css.files++;
     totals.css.blank += blank;
     totals.css.comment += comment;
     totals.css.code += code;
+    totals.css.blankChars += blankChars;
+    totals.css.commentChars += commentChars;
+    totals.css.codeChars += codeChars;
     fileRows.push({ file: rel, blank, comment, code, docs: 0 });
   } else if (ext === ".md") {
-    const { blank, docs } = countMd(lines);
+    const { blank, docs, blankChars, docsChars } = countMd(lines);
     totals.md.files++;
     totals.md.blank += blank;
     totals.md.docs += docs;
+    totals.md.blankChars += blankChars;
+    totals.md.docsChars += docsChars;
     fileRows.push({ file: rel, blank, comment: 0, code: 0, docs });
   }
 }
@@ -343,6 +373,87 @@ console.log(
     grandCode === 0
       ? "∞"
       : (docAndComment / grandCode).toFixed(2)
+  } : 1`,
+);
+console.log();
+
+// ── Character analysis ────────────────────────────────────────────────────────
+
+const grandCodeChars =
+  totals.ts.codeChars + totals.js.codeChars + totals.css.codeChars;
+const grandCommentChars =
+  totals.ts.commentChars + totals.js.commentChars + totals.css.commentChars;
+const grandDocsChars = totals.md.docsChars;
+const grandBlankChars =
+  totals.ts.blankChars +
+  totals.js.blankChars +
+  totals.css.blankChars +
+  totals.md.blankChars;
+const grandNonBlankChars = grandCodeChars + grandCommentChars + grandDocsChars;
+
+console.log("\n📏 Character Analysis (by file type):\n");
+
+const charHeader =
+  padL("Type", 10) +
+  pad("Files", 7) +
+  pad("BlankCh", 10) +
+  pad("CommentCh", 12) +
+  pad("CodeCh", 10) +
+  pad("DocsCh", 10);
+console.log(charHeader);
+console.log("─".repeat(charHeader.length));
+
+const printCharRow = (label, t) =>
+  console.log(
+    padL(label, 10) +
+      pad(t.files, 7) +
+      pad(t.blankChars.toLocaleString(), 10) +
+      pad(t.commentChars.toLocaleString(), 12) +
+      pad(t.codeChars.toLocaleString(), 10) +
+      pad(t.docsChars.toLocaleString(), 10),
+  );
+
+printCharRow(".ts", totals.ts);
+printCharRow(".js", totals.js);
+printCharRow(".css", totals.css);
+printCharRow(".md", totals.md);
+console.log("─".repeat(charHeader.length));
+console.log(
+  padL("TOTAL", 10) +
+    pad(
+      totals.ts.files + totals.js.files + totals.css.files + totals.md.files,
+      7,
+    ) +
+    pad(grandBlankChars.toLocaleString(), 10) +
+    pad(grandCommentChars.toLocaleString(), 12) +
+    pad(grandCodeChars.toLocaleString(), 10) +
+    pad(grandDocsChars.toLocaleString(), 10),
+);
+
+const pctCh = (n) =>
+  grandNonBlankChars === 0
+    ? "0.0%"
+    : ((n / grandNonBlankChars) * 100).toFixed(1) + "%";
+
+console.log("\n📈 Character composition (excluding blank lines):\n");
+console.log(`  Code chars     : ${grandCodeChars.toLocaleString()} chars  (${pctCh(grandCodeChars)})`);
+console.log(`  Comment chars  : ${grandCommentChars.toLocaleString()} chars  (${pctCh(grandCommentChars)})`);
+console.log(`  Docs chars     : ${grandDocsChars.toLocaleString()} chars  (${pctCh(grandDocsChars)})`);
+console.log(`  ─────────────────────────────────`);
+console.log(`  Total (non-blank): ${grandNonBlankChars.toLocaleString()} chars`);
+
+const docAndCommentChars = grandCommentChars + grandDocsChars;
+console.log(
+  `\n  Documentation + Comments : ${docAndCommentChars.toLocaleString()} chars (${pctCh(docAndCommentChars)})`,
+);
+console.log(
+  `  Actual code              : ${grandCodeChars.toLocaleString()} chars (${pctCh(grandCodeChars)})`,
+);
+console.log(
+  `\n  Ratio (docs+comments : code) = ${
+    grandCodeChars === 0
+      ? "∞"
+      : (docAndCommentChars / grandCodeChars).toFixed(2)
   } : 1`,
 );
 console.log();
