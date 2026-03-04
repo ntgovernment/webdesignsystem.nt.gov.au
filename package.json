@@ -8,7 +8,8 @@
     "build": "vite build && node scripts/deploy-squiz.js",
     "lint": "eslint .",
     "preview": "vite preview --open /preview/",
-    "deploy": "node scripts/deploy-squiz.js"
+    "deploy": "node scripts/deploy-squiz.js",
+    "analyze": "node scripts/analyze-docs.js"
   },
   "dependencies": {
     "@ntgovernment/web-design-system": "git+https://github.com/ntgovernment/web-design-system.git",
