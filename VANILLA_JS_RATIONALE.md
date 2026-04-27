@@ -457,7 +457,6 @@ This decision positions the NT Design System for long-term success as a performa
 
 - [README.md](README.md) - Component usage and integration guide
 - [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) - Squiz Matrix deployment instructions
-- [MIGRATION_COMPLETE.md](MIGRATION_COMPLETE.md) - Technical migration details
 - [Mozilla Web Docs - DOM API](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)
 - [Web Standards - Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements)
 

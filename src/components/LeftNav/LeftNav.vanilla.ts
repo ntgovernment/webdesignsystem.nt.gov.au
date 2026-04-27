@@ -4,6 +4,8 @@
  */
 
 import "./LeftNav.css";
+import { generateInstanceId } from "../../utils/instance-id";
+import { debugLog } from "../../utils/debug";
 
 export interface LeftNavConfig {
   defaultExpanded?: string[]; // Array of section IDs to expand by default
@@ -21,8 +23,8 @@ export class LeftNavComponent {
   private nav: HTMLElement | null = null;
 
   constructor(container: HTMLElement, config: LeftNavConfig = {}) {
-    console.log("[LeftNav] Constructor called, container:", container);
-    console.log(
+    debugLog("[LeftNav] Constructor called, container:", container);
+    debugLog(
       "[LeftNav] Container innerHTML length:",
       container.innerHTML.length,
     );
@@ -34,13 +36,13 @@ export class LeftNavComponent {
     };
     this.expandedSections = new Set(this.config.defaultExpanded);
 
-    console.log("[LeftNav] About to call convertParentLinksWithChildren...");
+    debugLog("[LeftNav] About to call convertParentLinksWithChildren...");
     this.convertParentLinksWithChildren();
-    console.log("[LeftNav] About to call render...");
+    debugLog("[LeftNav] About to call render...");
     this.render();
     this.attachEventListeners();
     this.expandActiveSection();
-    console.log("[LeftNav] Constructor complete");
+    debugLog("[LeftNav] Constructor complete");
   }
 
   private render(): void {
@@ -90,7 +92,7 @@ export class LeftNavComponent {
   private convertParentLinksWithChildren(): void {
     // Find all items that have a submenu
     const items = this.container.querySelectorAll(".nt-leftnav__item");
-    console.log(
+    debugLog(
       "[LeftNav] convertParentLinksWithChildren - found items:",
       items.length,
     );
@@ -103,7 +105,7 @@ export class LeftNavComponent {
 
       // Only process items that have a submenu
       if (submenu) {
-        console.log(
+        debugLog(
           `[LeftNav] Item ${index} has submenu, looking for direct link...`,
         );
 
@@ -112,14 +114,12 @@ export class LeftNavComponent {
         ) as HTMLAnchorElement;
 
         if (!link) {
-          console.log(
-            `[LeftNav] Item ${index} - NO DIRECT LINK FOUND, skipping`,
-          );
+          debugLog(`[LeftNav] Item ${index} - NO DIRECT LINK FOUND, skipping`);
           skippedCount++;
           return;
         }
 
-        console.log(
+        debugLog(
           `[LeftNav] Item ${index} - Creating wrapper for:`,
           link.textContent?.trim(),
         );
@@ -128,8 +128,7 @@ export class LeftNavComponent {
         const submenuId =
           submenu.id ||
           `submenu-${
-            item.getAttribute("data-asset-id") ||
-            Math.random().toString(36).substr(2, 9)
+            item.getAttribute("data-asset-id") || generateInstanceId()
           }`;
         submenu.id = submenuId;
 
@@ -162,7 +161,7 @@ export class LeftNavComponent {
         wrapper.appendChild(toggleButton);
 
         processedCount++;
-        console.log(`[LeftNav] Item ${index} - Wrapper created successfully`);
+        debugLog(`[LeftNav] Item ${index} - Wrapper created successfully`);
       }
     });
 

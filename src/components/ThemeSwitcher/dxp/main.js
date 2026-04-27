@@ -4,7 +4,8 @@
  * Uses hydration pattern: server renders minimal container with data attributes,
  * client-side JavaScript (theme-switcher.js) handles full rendering and interactivity.
  */
-
+import { escapeHtml } from "../../../utils/sanitize.js";
+import { generateInstanceId } from "../../../utils/instance-id.js";
 export default {
   async render(input) {
     const {
@@ -39,15 +40,6 @@ export default {
       height,
       defaultTheme,
     });
-
-    // Escape for HTML attribute
-    const escapeHtml = (str) =>
-      (str || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
 
     // Return minimal hydration container
     return `<div class="nt-theme-switcher ${cssClass}" data-hydration-component="theme-switcher" data-hydration-props="${escapeHtml(hydrationProps)}" data-instance-id="${instanceId}"></div>`;

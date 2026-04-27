@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Component Preview</title>
+
+    <script src="https://kit.fontawesome.com/d8e5f638f7.js" crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Lato", system-ui, sans-serif;
+            background: #ffffff;
+            color: #1F1E27;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .notification {
+            width: 100%;
+            background: #ffffff;
+            display: flex;
+            justify-content: flex-start;
+            align-items: stretch;
+            outline: 1px solid;
+            outline-offset: -1px;
+            border-radius: 0px;
+        }
+
+        .notification__accent-bar {
+            width: 8px;
+            align-self: stretch;
+        }
+
+        .notification__content {
+            flex: 1 1 0;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .notification__header {
+            align-self: stretch;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .notification__text {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 8px;
+            flex: 1 1 0;
+        }
+
+        .notification__icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notification__icon i {
+            font-size: 24px;
+            color: #1f1f5f;
+        }
+
+        .notification__title {
+            font-family: "Lato", system-ui, sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 32px;
+            color: #1f1f5f;
+        }
+
+        .notification__message {
+            font-family: "Lato", system-ui, sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            color: #1f1f5f;
+        }
+
+        .notification a {
+            color: #1f1f5f;
+        }
+
+        .notification--info {
+            outline-color: #107cc0;
+        }
+
+        .notification--info .notification__accent-bar {
+            background: #107cc0;
+        }
+
+        .notification--info .notification__icon i {
+            color: #107cc0;
+        }
+
+        .notification--success {
+            outline-color: #107810;
+        }
+
+        .notification--success .notification__accent-bar {
+            background: #107810;
+        }
+
+        .notification--success .notification__icon i {
+            color: #107810;
+        }
+
+        .notification--warning {
+            outline-color: #d6410a;
+        }
+
+        .notification--warning .notification__accent-bar {
+            background: #d6410a;
+        }
+
+        .notification--warning .notification__icon i {
+            color: #d6410a;
+        }
+
+        .notification--danger {
+            outline-color: #a60f37;
+        }
+
+        .notification--danger .notification__accent-bar {
+            background: #a60f37;
+        }
+
+        .notification--danger .notification__icon i {
+            color: #a60f37;
+        }
+
+        @media (max-width: 640px) {
+            .notification__content {
+                padding: 20px;
+            }
+
+            .notification__title {
+                font-size: 20px;
+                line-height: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    [component://output]
+</body>
+
+</html>

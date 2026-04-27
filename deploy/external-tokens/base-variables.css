@@ -44,7 +44,7 @@
   --clr-text-emphasis: var(--ntg-ochre-02-d);
   --clr-link-default: var(--ntg-blue-03-d);
   --clr-link-hover: var(--ntg-ochre-02-d);
-  --clr-link-visited: #7c19aa;
+  --clr-link-visited: var(--ntg-blue-03-d);
   --clr-link-inverse: var(--ntg-neutral-white);
   --clr-link-inverse-hover: var(--ntg-blue-01);
   --clr-link-inverse-visited: var(--ntg-orange-01);
@@ -87,22 +87,40 @@
   --type-mobile-h5-size: var(--type-mobile-heading-h5-size);
   --type-mobile-h6-size: var(--type-mobile-heading-h6-size);
   --type-mobile-body-default-size: var(--type-mobile-body-default-size);
-  --type-mobile-body-default-bold-size: var(--type-mobile-body-default-bold-size);
+  --type-mobile-body-default-bold-size: var(
+    --type-mobile-body-default-bold-size
+  );
   --type-mobile-body-sm-size: var(--type-mobile-body-sm-size);
   --type-mobile-body-sm-bold-size: var(--type-mobile-body-sm-bold-size);
   --type-mobile-button-default-size: var(--type-mobile-button-default-size);
-  --type-mobile-button-default-sm-size: var(--type-mobile-button-default-sm-size);
+  --type-mobile-button-default-sm-size: var(
+    --type-mobile-button-default-sm-size
+  );
   --type-mobile-tag-size: var(--type-mobile-tag-size);
   --type-link-default-decoration: var(--type-link-default-decoration);
-  --type-link-default-paragraph-spacing: var(--type-link-default-paragraph-spacing);
+  --type-link-default-paragraph-spacing: var(
+    --type-link-default-paragraph-spacing
+  );
   --type-link-default-bold-decoration: var(--type-link-default-bold-decoration);
-  --type-link-default-bold-paragraph-spacing: var(--type-link-default-bold-paragraph-spacing);
+  --type-link-default-bold-paragraph-spacing: var(
+    --type-link-default-bold-paragraph-spacing
+  );
   --type-link-sm-decoration: var(--type-link-sm-decoration);
-  --type-caption-default-paragraph-spacing: var(--type-caption-default-paragraph-spacing);
-  --type-uppercase-small-text-transform: var(--type-uppercase-small-text-transform);
-  --type-uppercase-default-text-transform: var(--type-uppercase-default-text-transform);
-  --type-mobile-link-default-decoration: var(--type-mobile-link-default-decoration);
-  --type-mobile-link-default-paragraph-spacing: var(--type-mobile-link-default-paragraph-spacing);
+  --type-caption-default-paragraph-spacing: var(
+    --type-caption-default-paragraph-spacing
+  );
+  --type-uppercase-small-text-transform: var(
+    --type-uppercase-small-text-transform
+  );
+  --type-uppercase-default-text-transform: var(
+    --type-uppercase-default-text-transform
+  );
+  --type-mobile-link-default-decoration: var(
+    --type-mobile-link-default-decoration
+  );
+  --type-mobile-link-default-paragraph-spacing: var(
+    --type-mobile-link-default-paragraph-spacing
+  );
   --type-mobile-link-sm-decoration: var(--type-mobile-link-sm-decoration);
   --type-mobile-tag-text-transform: var(--type-mobile-tag-text-transform);
 }

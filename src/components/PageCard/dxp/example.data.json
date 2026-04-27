@@ -1,0 +1,78 @@
+{
+  "basic": {
+    "PageArray": [
+      {
+        "PageAsset": {
+          "url": "/business/licensing",
+          "text": "Business Licensing",
+          "target": "_self"
+        },
+        "CardImage": {
+          "name": "Business Licensing image",
+          "alt": "Business Licensing",
+          "caption": "Business Licensing",
+          "imageVariations": {
+            "original": {
+              "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=360&fit=crop",
+              "width": 640,
+              "height": 360,
+              "byteSize": 0,
+              "mimeType": "image/jpeg",
+              "aspectRatio": "16:9",
+              "sha1Hash": "0000000000000000000000000000000000000000"
+            }
+          }
+        },
+        "CardTitle": "Business Licensing"
+      },
+      {
+        "PageAsset": {
+          "url": "/grants/community",
+          "text": "Community Grants",
+          "target": "_self"
+        },
+        "CardImage": {
+          "name": "Community Grants image",
+          "alt": "Community Grants",
+          "caption": "Community Grants",
+          "imageVariations": {
+            "original": {
+              "url": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&h=360&fit=crop",
+              "width": 640,
+              "height": 360,
+              "byteSize": 0,
+              "mimeType": "image/jpeg",
+              "aspectRatio": "16:9",
+              "sha1Hash": "0000000000000000000000000000000000000000"
+            }
+          }
+        },
+        "CardTitle": "Community Grants"
+      },
+      {
+        "PageAsset": {
+          "url": "/health",
+          "text": "Health Services",
+          "target": "_self"
+        },
+        "CardImage": {
+          "name": "Health Services image",
+          "alt": "Health Services",
+          "caption": "Health Services",
+          "imageVariations": {
+            "original": {
+              "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=640&h=360&fit=crop",
+              "width": 640,
+              "height": 360,
+              "byteSize": 0,
+              "mimeType": "image/jpeg",
+              "aspectRatio": "16:9",
+              "sha1Hash": "0000000000000000000000000000000000000000"
+            }
+          }
+        },
+        "CardTitle": "Health Services"
+      }
+    ]
+  }
+}

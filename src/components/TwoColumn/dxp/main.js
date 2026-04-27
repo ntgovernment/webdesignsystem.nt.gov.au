@@ -1,36 +1,16 @@
-/**
+﻿/**
  * TwoColumn DXP Component Service - Server-Side Renderer
  *
  * Renders a responsive two-column layout with WYSIWYG content areas.
  * Desktop: Columns displayed side-by-side with configurable widths
- * Mobile (≤768px): Columns stack vertically
+ * Mobile (â‰¤768px): Columns stack vertically
  *
- * CSS is loaded globally via ntg-design-system.css
+ * CSS is loaded globally via web-design-system.css
  * No client-side JavaScript required (static layout component)
  */
 
-/**
- * Helper function to escape HTML attributes
- * @param {string} str - String to escape
- * @returns {string} Escaped string safe for HTML attributes
- */
-function escapeHtml(str) {
-  if (!str) return "";
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-/**
- * Generate unique instance ID
- * @returns {string} Unique identifier for this component instance
- */
-function generateInstanceId() {
-  return `tc-${Math.random().toString(36).substring(2, 11)}`;
-}
+import { escapeHtml } from "../../../utils/sanitize.js";
+import { generateInstanceId } from "../../../utils/instance-id.js";
 
 /**
  * Build inline styles for the container
@@ -79,7 +59,7 @@ export default {
     } = input;
 
     // Generate unique ID for this instance
-    const instanceId = generateInstanceId();
+    const instanceId = generateInstanceId("tc");
 
     // Build class list
     const classList = ["nt-two-column"];
@@ -104,3 +84,4 @@ export default {
 </div>`;
   },
 };
+

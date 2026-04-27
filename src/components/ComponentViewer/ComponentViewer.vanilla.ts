@@ -1,9 +1,11 @@
 /**
  * ComponentViewer Vanilla JS - Client-Side Hydration
  *
- * Reads minimal server-rendered container and renders full HTML with interactivity.
- * Loaded globally and auto-detects all [data-hydration-component="component-viewer"] elements.
+ * Enhances server-rendered HTML with interactivity (zoom, code toggle, copy).
+ * No longer re-renders - server provides complete HTML structure.
  */
+
+import { debugError, debugWarn } from "../../utils/debug";
 
 // Type definitions for external libraries
 declare global {
@@ -42,7 +44,7 @@ export class ComponentViewerClient {
     try {
       this.props = JSON.parse(container.dataset.hydrationProps || "{}");
     } catch (error) {
-      console.error("Failed to parse hydration props:", error);
+      debugError("Failed to parse hydration props:", error);
       this.props = {
         storybookUrl: "",
       };
@@ -52,10 +54,7 @@ export class ComponentViewerClient {
     this.currentZoom = this.props.initialZoom || 1;
     this.isCodeVisible = this.props.showCodeByDefault || false;
 
-    // Render the HTML
-    this.render();
-
-    // Get rendered elements
+    // Get already-rendered elements (server-rendered HTML)
     this.iframe = container.querySelector("[data-iframe]") as HTMLIFrameElement;
     this.zoomContainer = container.querySelector(
       "[data-zoom-container]",
@@ -66,6 +65,9 @@ export class ComponentViewerClient {
     this.codeDisplay = container.querySelector(
       "[data-code-display]",
     ) as HTMLElement;
+
+    // Update "Open canvas" button to "Open in Storybook" with Storybook icon
+    this.updateOpenTabButton();
 
     // Setup event listeners
     this.setupEventListeners();
@@ -81,122 +83,6 @@ export class ComponentViewerClient {
     if (this.currentZoom !== 1) {
       this.applyZoom();
     }
-  }
-
-  private render(): void {
-    const {
-      storybookUrl,
-      height = "200px",
-      showCodeByDefault = false,
-      enableCopy = true,
-      enableZoom = true,
-    } = this.props;
-
-    const zoomControls = enableZoom
-      ? `
-            <div class="component-viewer__zoom-controls">
-              <button 
-                class="component-viewer__control-btn" 
-                data-action="zoom-in"
-                aria-label="Zoom in"
-                title="Zoom in"
-              >
-                <i class="fa-light fa-magnifying-glass-plus" aria-hidden="true"></i>
-                <span class="component-viewer__control-label">Zoom in</span>
-              </button>
-              <button 
-                class="component-viewer__control-btn" 
-                data-action="zoom-out"
-                aria-label="Zoom out"
-                title="Zoom out"
-              >
-                <i class="fa-light fa-magnifying-glass-minus" aria-hidden="true"></i>
-                <span class="component-viewer__control-label">Zoom out</span>
-              </button>
-              <button 
-                class="component-viewer__control-btn" 
-                data-action="zoom-reset"
-                aria-label="Reset zoom"
-                title="Reset zoom"
-              >
-                <i class="fa-light fa-arrows-rotate" aria-hidden="true"></i>
-                <span class="component-viewer__control-label">Reset zoom</span>
-              </button>
-            </div>`
-      : "";
-
-    const copyButton = enableCopy
-      ? `
-        <button 
-          class="component-viewer__button" 
-          data-action="copy"
-          aria-label="Copy code to clipboard"
-        >
-          <i class="fa-light fa-copy" aria-hidden="true"></i>
-          <span data-copy-text>Copy</span>
-        </button>`
-      : "";
-
-    this.container.innerHTML = `
-      <!-- Preview Section -->
-      <div class="component-viewer__preview" style="height: ${this.escapeHtml(height)}">
-        <div class="component-viewer__iframe-wrapper">
-          
-          <!-- Toolbar -->
-          <div class="component-viewer__toolbar">
-            ${zoomControls}
-            <button 
-              class="component-viewer__control-btn" 
-              data-action="open-new-tab"
-              aria-label="Open canvas in new tab"
-              title="Open canvas in new tab"
-            >
-              <i class="fa-light fa-arrow-up-right-from-square" aria-hidden="true"></i>
-              <span class="component-viewer__control-label">Open canvas in new tab</span>
-            </button>
-          </div>
-
-          <!-- Iframe Content -->
-          <div class="component-viewer__iframe-content" data-zoom-container>
-            <iframe
-              src="${this.escapeHtml(storybookUrl)}"
-              class="component-viewer__iframe"
-              title="Component Preview"
-              frameborder="0"
-              sandbox="allow-scripts allow-same-origin"
-              data-iframe
-            ></iframe>
-          </div>
-        </div>
-      </div>
-
-      <!-- Code Display Section -->
-      <div class="component-viewer__code ${showCodeByDefault ? "component-viewer__code--visible" : ""}" data-code-panel>
-        <pre class="component-viewer__code-content"><code class="language-html" data-code-display></code></pre>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="component-viewer__actions">
-        ${copyButton}
-        <button 
-          class="component-viewer__button" 
-          data-action="toggle-code"
-          aria-label="${showCodeByDefault ? "Hide code" : "See code"}"
-        >
-          <i class="fa-light fa-code" aria-hidden="true"></i>
-          <span data-code-toggle-text>${showCodeByDefault ? "Hide code" : "See code"}</span>
-        </button>
-      </div>
-    `;
-  }
-
-  private escapeHtml(str: string): string {
-    return (str || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
   }
 
   private setupEventListeners(): void {
@@ -227,6 +113,28 @@ export class ComponentViewerClient {
           break;
       }
     });
+  }
+
+  private updateOpenTabButton(): void {
+    const btn = this.container.querySelector(
+      '[data-action="open-new-tab"]',
+    ) as HTMLElement;
+    if (!btn) return;
+
+    btn.setAttribute("aria-label", "Open in Storybook");
+    btn.setAttribute("title", "Open in Storybook");
+
+    const storybookSvg = `<svg width="11" height="13" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3.16667 8.5C3.56667 9.5 4.25933 9.83333 5.35533 9.83333H5.16667C6.36667 9.83333 7.16667 9.184 7.16667 8.21C7.16667 7.414 6.61267 7.01067 5.73533 6.65467L4.41867 6.12C3.652 5.80867 3.16667 5.172 3.16667 4.47533C3.16667 3.82867 3.766 3.28467 4.558 3.21333L4.96667 3.17667C5.98533 3.08467 6.96667 3.68467 7.16667 4.5M7.83333 0.833333V1.5M0.5 1.16667L0.833333 12.1667L9.83333 12.5V0.5L0.5 1.16667Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+    const iconEl = btn.querySelector("i");
+    if (iconEl) {
+      iconEl.outerHTML = storybookSvg;
+    }
+
+    const labelEl = btn.querySelector(".component-viewer__control-label");
+    if (labelEl) {
+      labelEl.textContent = "Open in Storybook";
+    }
   }
 
   private handleZoomIn(): void {
@@ -275,7 +183,7 @@ export class ComponentViewerClient {
         }, 2000);
       }
     } catch (err) {
-      console.error("Copy failed:", err);
+      debugError("Copy failed:", err);
     }
   }
 
@@ -326,7 +234,7 @@ export class ComponentViewerClient {
         this.iframe.contentDocument || this.iframe.contentWindow?.document;
 
       if (!iframeDoc) {
-        console.warn("Cannot access iframe document");
+        debugWarn("Cannot access iframe document");
         this.formatCode(
           this.props.codeExample || "<!-- Unable to access iframe -->",
         );
@@ -372,7 +280,7 @@ export class ComponentViewerClient {
         this.formatCode(this.props.codeExample || "");
       }
     } catch (error) {
-      console.error("Error extracting iframe content:", error);
+      debugError("Error extracting iframe content:", error);
       this.formatCode(
         this.props.codeExample || "<!-- Error extracting content -->",
       );
@@ -415,15 +323,49 @@ export class ComponentViewerClient {
     return dedented.trim();
   }
 
+  /**
+   * For any <p> or <li> whose text content exceeds 72 characters:
+   * strips all inner tags, then truncates at the next space or full stop
+   * after position 72, appending an ellipsis.
+   */
+  private shortenLongElements(html: string): string {
+    try {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      let modified = false;
+
+      doc.querySelectorAll("p, li").forEach((el) => {
+        const text = (el.textContent || "").trim();
+        if (text.length <= 72) return;
+
+        // Find the next space or '.' at or after position 72
+        let cutAt = -1;
+        for (let i = 72; i < text.length; i++) {
+          if (text[i] === " " || text[i] === ".") {
+            cutAt = i;
+            break;
+          }
+        }
+        if (cutAt === -1) cutAt = 72;
+
+        el.innerHTML = text.slice(0, cutAt).trimEnd() + "\u2026";
+        modified = true;
+      });
+
+      return modified ? doc.body.innerHTML : html;
+    } catch {
+      return html;
+    }
+  }
+
   private async formatCode(code: string): Promise<void> {
-    // Remove common leading indentation from all lines
     const dedentedCode = this.dedentCode(code);
-    this.extractedCode = dedentedCode;
+    const shortenedCode = this.shortenLongElements(dedentedCode);
+    this.extractedCode = shortenedCode;
 
     try {
       // Check if Prettier is available globally
       if (window.prettier && window.prettierPlugins) {
-        const formatted = await window.prettier.format(dedentedCode, {
+        const formatted = await window.prettier.format(shortenedCode, {
           parser: "html",
           plugins: window.prettierPlugins.html
             ? [window.prettierPlugins.html]
@@ -437,11 +379,11 @@ export class ComponentViewerClient {
         this.extractedCode = formatted;
       } else {
         // Fallback without Prettier
-        this.extractedCode = dedentedCode;
+        this.extractedCode = shortenedCode;
       }
     } catch (error) {
-      console.error("Failed to format code:", error);
-      this.extractedCode = dedentedCode;
+      debugError("Failed to format code:", error);
+      this.extractedCode = shortenedCode;
     }
 
     // Only display (with typing effect) when the code panel is visible
@@ -456,15 +398,34 @@ export class ComponentViewerClient {
   private animateTyping(code: string, avgDelay = 12): void {
     if (!this.codeDisplay) return;
 
+    const len = code.length;
+
+    // If code is empty, clear and return
+    if (len === 0) {
+      this.codeDisplay.textContent = "";
+      this.codeDisplay.classList.remove("typing-cursor");
+      return;
+    }
+
+    // If code is longer than 200 characters, skip animation and display immediately
+    if (len > 200) {
+      // Use textContent to set code, then let Prism handle the highlighting
+      this.codeDisplay.textContent = code;
+      this.codeDisplay.classList.remove("typing-cursor");
+      if (window.Prism) {
+        window.Prism.highlightElement(this.codeDisplay);
+      }
+      return;
+    }
+
     // Clear existing content and add typing cursor class
     this.codeDisplay.textContent = "";
     this.codeDisplay.classList.add("typing-cursor");
 
     let i = 0;
-    const len = code.length;
 
     const tick = () => {
-      // Append next character
+      // Append next character using textContent (safer for typing animation)
       this.codeDisplay!.textContent += code.charAt(i);
       i += 1;
 
@@ -474,6 +435,7 @@ export class ComponentViewerClient {
         setTimeout(tick, Math.max(4, avgDelay + jitter));
       } else {
         // Finished typing: remove cursor and apply Prism highlighting
+        // Prism will read textContent and generate proper HTML with syntax highlighting
         setTimeout(() => {
           this.codeDisplay!.classList.remove("typing-cursor");
           if (window.Prism) {
@@ -482,14 +444,6 @@ export class ComponentViewerClient {
         }, 120);
       }
     };
-
-    // Start
-    if (len === 0) {
-      // Nothing to type — immediately remove cursor and clear
-      this.codeDisplay.classList.remove("typing-cursor");
-      this.codeDisplay.textContent = "";
-      return;
-    }
 
     // Kick off the first tick
     setTimeout(tick, avgDelay);

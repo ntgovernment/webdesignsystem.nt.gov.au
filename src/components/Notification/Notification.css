@@ -1,0 +1,146 @@
+/**
+ * NT Design System - Notification Component
+ * Status-specific callout with accent bar, icon, and text.
+ */
+
+.notification {
+  width: 100%;
+  background: var(--clr-bg-default, #ffffff);
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  outline: var(--border-width-md, 1px) solid;
+  outline-offset: calc(-1 * var(--border-width-md, 1px));
+  border-radius: var(--radii-none, 0px);
+}
+
+.notification__accent-bar {
+  width: var(--sp-xs, 8px);
+  align-self: stretch;
+}
+
+.notification__content {
+  flex: 1 1 0;
+  padding: var(--sp-xl, 24px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: var(--sp-xs, 8px);
+}
+
+.notification__header {
+  align-self: stretch;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: var(--sp-md, 16px);
+}
+
+.notification__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: var(--sp-xs, 8px);
+  flex: 1 1 0;
+}
+
+.notification__icon {
+  width: var(--sp-xxl, 32px);
+  height: var(--sp-xxl, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notification__icon i {
+  font-size: var(--sp-xl, 24px);
+  color: var(--clr-text-default, #1f1f5f);
+}
+
+.notification__title {
+  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
+  font-size: var(--type-desktop-h3-size, 24px);
+  font-weight: var(--type-desktop-h3-weight, 700);
+  line-height: var(--type-desktop-h3-lh, 32px);
+  color: var(--clr-text-default, #1f1f5f);
+}
+
+.notification__message {
+  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
+  font-size: var(--type-body-default-size, 16px);
+  font-weight: var(--type-body-default-weight, 400);
+  line-height: var(--type-body-default-lh, 24px);
+  color: var(--clr-text-default, #1f1f5f);
+}
+
+.notification a {
+  color: var(--clr-link-default, #1f1f5f);
+}
+
+/* keep visited colour identical to default to prevent purple browser default */
+.notification a:visited {
+  color: var(--clr-link-default, #1f1f5f);
+}
+
+/* Variant colors */
+.notification--info {
+  outline-color: var(--clr-status-info, #107cc0);
+}
+
+.notification--info .notification__accent-bar {
+  background: var(--clr-status-info, #107cc0);
+}
+
+.notification--info .notification__icon i {
+  color: var(--clr-status-info, #107cc0);
+}
+
+.notification--success {
+  outline-color: var(--clr-status-success, #107810);
+}
+
+.notification--success .notification__accent-bar {
+  background: var(--clr-status-success, #107810);
+}
+
+.notification--success .notification__icon i {
+  color: var(--clr-status-success, #107810);
+}
+
+.notification--warning {
+  outline-color: var(--clr-status-warning, #d6410a);
+}
+
+.notification--warning .notification__accent-bar {
+  background: var(--clr-status-warning, #d6410a);
+}
+
+.notification--warning .notification__icon i {
+  color: var(--clr-status-warning, #d6410a);
+}
+
+.notification--danger {
+  outline-color: var(--clr-status-danger, #a60f37);
+}
+
+.notification--danger .notification__accent-bar {
+  background: var(--clr-status-danger, #a60f37);
+}
+
+.notification--danger .notification__icon i {
+  color: var(--clr-status-danger, #a60f37);
+}
+
+@media (max-width: 640px) {
+  .notification__content {
+    padding: var(--sp-lg, 20px);
+  }
+
+  .notification__title {
+    font-size: var(--type-mobile-h3-size, 20px);
+    line-height: var(--type-mobile-h3-lh, 28px);
+  }
+}

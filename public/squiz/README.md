@@ -17,8 +17,8 @@ This directory contains HTML nesters designed for direct embedding in Squiz Matr
 ### Build and Deploy
 
 ```bash
-# Build Squiz nesters
-npm run build:squiz
+# Build nesters and all components
+npm run build
 ```
 
 This copies all nesters to `deploy/nesters/` along with the vanilla JS components and global stylesheet.
@@ -60,35 +60,11 @@ This copies all nesters to `deploy/nesters/` along with the vanilla JS component
 
 Each nester can be customized by editing the HTML files in this directory. After making changes:
 
-1. Run `npm run build:squiz` to rebuild
+1. Run `npm run build` to rebuild
 2. Update the corresponding MySource_AREA in your paint layout
 3. Commit and push to trigger Git File Bridge sync
-
-## Component Configuration
-
-Components support configuration via `data-*` attributes:
-
-### Header
-
-```html
-<div
-  id="nt-header-root"
-  data-title="My Site Name"
-  data-logo-src="/path/to/logo.svg"
-  data-icon="fa-bars"
-></div>
-```
-
-### Theme Switcher
-
-```html
-<div
-  id="nt-theme-switcher-root"
-  data-themes="light,dark"
-  data-default-theme="light"
-></div>
-```
 
 ## Documentation
 
 See [DEPLOYMENT_GUIDE.md](../DEPLOYMENT_GUIDE.md) for complete Squiz Matrix integration documentation.
+For component-specific usage, data attributes, and examples, use each component's README under `src/components/<Component>/README.md`.

@@ -35,82 +35,20 @@ npm install
 # Start local development with component previews
 npm run dev
 
-# Build components for deployment (vanilla JS)
+# Build all components for deployment
 npm run build
 
-# Deploy without rebuilding
+# Run deploy script without rebuilding
 npm run deploy
 ```
 
+> 📌 **Note:** For detailed usage, configuration options, data-attribute documentation, and examples for each component, see the README in the corresponding directory under `src/components/<Component>/README.md`.
+
 ## Architecture: Why Vanilla JavaScript?
 
-The NT Design System is built with **vanilla JavaScript instead of React** for significant strategic and technical advantages:
+For the full strategic rationale behind the vanilla JS approach, see **[VANILLA_JS_RATIONALE.md](VANILLA_JS_RATIONALE.md)**.
 
-| Aspect             | Vanilla JS              | React Alternative       |
-| ------------------ | ----------------------- | ----------------------- |
-| **Bundle Size**    | ~30 KB (all components) | 500+ KB per component   |
-| **Load Time**      | ~50ms                   | ~500ms                  |
-| **Dependencies**   | 0 external JS libraries | 7+ npm packages         |
-| **Squiz Native**   | Direct integration      | Requires transformation |
-| **Learning Curve** | Hours (native DOM APIs) | Days/weeks (React/JSX)  |
-| **Maintenance**    | Forever compatible      | Tied to React versions  |
-| **Security**       | Minimal attack surface  | 7+ packages to audit    |
-
-### Performance Impact
-
-**Bundle Size Comparison:**
-
-```
-Vanilla JS Components: 1.41 - 8.07 KB each
-React Component: 380 KB+ for same functionality
-```
-
-**User Experience Improvements:**
-
-- Faster page loads for NT citizens and businesses
-- Better performance on slower connections (rural/remote areas)
-- Reduced data usage (important for limited bandwidth users)
-- Faster subsequent interactions (zero framework overhead)
-
-### Development Efficiency
-
-**Build Process:**
-
-```bash
-# Before (React)
-npm run build:components    # Build React components individually
-npm run build:squiz         # Build vanilla JS wrapper
-npm run deploy:squiz        # Deploy
-
-# After (Vanilla JS)
-npm run build   # Build everything once
-```
-
-**Component Development Time:**
-
-- Creating components: 50% faster (no React patterns to follow)
-- Debugging: 66% faster (no virtual DOM to understand)
-- Deployment: 60% faster (single build mode)
-
-### Squiz Matrix Integration
-
-Vanilla JS integrates directly with Squiz without transformation layers:
-
-```html
-<!-- Direct, clean integration -->
-<div id="nt-header-root" data-title="%asset_name%"></div>
-<script src="%globals_asset_url:ASSET_ID%/js/header.js"></script>
-```
-
-**No need for:**
-
-- React app bootstrap
-- Virtual DOM hydration
-- State management setup
-- Asset URL transformation
-- Component wrapper layers
-
-For complete strategic analysis, see **[VANILLA_JS_RATIONALE.md](VANILLA_JS_RATIONALE.md)**.
+**Summary:** components ship as a single ~30 KB IIFE bundle compared to 500 KB+ when using React, with zero external dependencies and native Squiz Matrix integration.
 
 ## Deployment Approach
 
@@ -118,12 +56,12 @@ The NT Design System uses **lightweight vanilla JavaScript components** for prod
 
 **Benefits:**
 
-- ✅ Small bundle sizes (~5-10KB per component vs 380KB+ with React)
-- ✅ No framework dependencies
-- ✅ Direct integration with MySource_AREA tags
-- ✅ Single global stylesheet for entire design system
-- ✅ Pre-built HTML nesters ready to embed
-- ✅ ES modules with automatic code splitting
+- âœ… Small bundle sizes (~5-10KB per component vs 380KB+ with React)
+- âœ… No framework dependencies
+- âœ… Direct integration with MySource_AREA tags
+- âœ… Single global stylesheet for entire design system
+- âœ… Pre-built HTML nesters ready to embed
+- âœ… ES modules with automatic code splitting
 
 **Build Command:**
 
@@ -137,6 +75,9 @@ After running `npm run build`, files are organized as:
 
 ```
 deploy/
+├── web-design-system.min.js    # Single IIFE bundle (NTGDesignSystem global, all components)
+├── web-design-system.min.css   # All component styles + design tokens
+├── external-tokens/            # Individual token CSS files
 ├── nesters/                    # HTML nesters for MySource_AREA tags
 │   ├── head.html               # <head> content with stylesheets
 │   ├── skip-links.html         # Accessibility skip navigation
@@ -144,13 +85,6 @@ deploy/
 │   ├── left-nav.html           # Left navigation sidebar
 │   ├── footer.html             # Footer with navigation and branding
 │   └── footer-js.html          # JavaScript component loading
-├── js/                          # Vanilla JavaScript components
-│   ├── header.js               # Header component (~25KB)
-│   ├── left-nav.js             # Left navigation (~5KB)
-│   ├── theme-switcher.js       # Theme switcher (~10KB)
-│   ├── two-column.js           # Two-column layout (~8KB)
-│   └── component-viewer-client.js  # Component viewer client
-├── ntg-design-system.css       # Global stylesheet with all design tokens
 └── manifest.json               # Deployment metadata
 ```
 
@@ -196,7 +130,7 @@ After running `npm run build`, the HTML nesters in `deploy/nesters/` will contai
 ></script>
 <link
   rel="stylesheet"
-  href="%globals_asset_url_with_hash:1590990:deploy/ntg-design-system.css%"
+  href="%globals_asset_url_with_hash:1590990:deploy/web-design-system.css%"
 />
 ```
 
@@ -269,11 +203,7 @@ The following is a complete paint layout example showing how to integrate all ne
     <MySource_AREA id_name="footer_js" design_area="nest_content" cache="1">
       <!-- Reference: deploy/nesters/footer-js.html -->
       <script
-        src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/header.js%"
-        defer
-      ></script>
-      <script
-        src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/theme-switcher.js%"
+        src="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.js%"
         defer
       ></script>
     </MySource_AREA>
@@ -305,32 +235,7 @@ Upload each nester as a file asset in Squiz Matrix and reference it:
 **Pros:** Centralized updates, easier maintenance  
 **Cons:** Additional asset dependencies, less cache control
 
-### Configuring Components via Data Attributes
-
-All vanilla JS components support configuration via `data-*` attributes:
-
-#### Header Configuration
-
-```html
-<div
-  id="nt-header-root"
-  data-title="My Application Name"
-  data-logo-src="https://custom-logo-url.png"
-  data-logo-alt="Custom Alt Text"
-  data-icon="fa-bars"
-></div>
-```
-
-#### Theme Switcher Configuration
-
-```html
-<div
-  id="nt-theme-switcher-root"
-  data-themes="light,dark,high-contrast"
-  data-default-theme="light"
-  data-storage-key="my-app-theme"
-></div>
-```
+<!-- Component configuration examples have been removed from this guide. Refer to the individual component README files under `src/components/<Component>/README.md` for up‑to‑date usage and data‑attribute documentation. -->
 
 ## Using in Squiz Matrix
 
@@ -361,23 +266,12 @@ In your Squiz Matrix paint layouts, reference the compiled files:
 <!-- Global Design System Stylesheet -->
 <link
   rel="stylesheet"
-  href="%globals_asset_url_with_hash:ASSET_ID:deploy/ntg-design-system.css%"
+  href="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.css%"
 />
 
-<!-- Vanilla JS Components -->
+<!-- All Components (single IIFE bundle) -->
 <script
-  type="module"
-  src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/header.js%"
-  defer
-></script>
-<script
-  type="module"
-  src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/left-nav.js%"
-  defer
-></script>
-<script
-  type="module"
-  src="%globals_asset_url_with_hash:ASSET_ID:deploy/js/theme-switcher.js%"
+  src="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.js%"
   defer
 ></script>
 ```
@@ -423,11 +317,11 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 - **Verify Git File Bridge sync** - Check that files exist in Squiz Matrix asset tree
 - **Check asset URLs** - Ensure `%globals_asset_url_with_hash:ASSET_ID%` has correct Asset ID
 - **Ensure CORS settings** - Allow loading from the asset server
-- **Check file paths** - Verify paths match deployment structure (e.g., `/js/header.js`)
+- **Check file paths** - Verify paths match deployment structure (e.g., `deploy/web-design-system.min.js`)
 
 ### Styles Not Applied
 
-- **Check stylesheet loading** - Verify `ntg-design-system.css` loads in Network tab
+- **Check stylesheet loading** - Verify `web-design-system.css` loads in Network tab
 - **Check for CSS conflicts** - Existing site styles may override design system
 - **Verify class names** - Components use `.nt-*` prefix to avoid conflicts
 - **Clear cache** - Browser and Squiz Matrix caches may need clearing
@@ -448,12 +342,16 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 
 ### Bundle Size Issues
 
-- **Check build output** - Run `npm run build` and verify file sizes in `deploy/js/`
+- **Check build output** - Run `npm run build` and verify that `deploy/web-design-system.min.js` and `deploy/web-design-system.min.css` are present
 - **Minimize Font Awesome** - Use kit configuration to include only needed icons
 - **Code splitting** - Components are automatically split into separate bundles
 - **Review dependencies** - Check package.json for unnecessary dependencies
 
 ## Component Reference
+
+Detailed, component‑specific documentation (props, configuration, API, examples, tokens, accessibility, etc.) is maintained inside each component directory. Please consult the README in `src/components/<Component>/README.md` for the latest information.
+
+The remainder of this guide focuses on Squiz Matrix deployment and global setup; it does not duplicate component API details.
 
 ### Available Squiz Matrix Nesters
 
@@ -465,64 +363,67 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 | `footer.html`     | `footer_content` | Footer navigation and branding       | `cache="1"`   |
 | `footer-js.html`  | `footer_js`      | JavaScript component loading         | `cache="1"`   |
 
-### Vanilla JS Components
+### Tab Marker Transformer
 
-| Component      | File                            | Size  | Auto-Mount ID                |
-| -------------- | ------------------------------- | ----- | ---------------------------- |
-| Header         | `js/header.js`                  | ~25KB | `#nt-header-root`            |
-| Left Nav       | `js/left-nav.js`                | ~5KB  | `#nt-leftnav-root`           |
-| Theme Switcher | `js/theme-switcher.js`          | ~10KB | `#nt-theme-switcher-root`    |
-| Two Column     | `js/two-column.js`              | ~8KB  | `#nt-twocolumn-root`         |
-| Viewer Client  | `js/component-viewer-client.js` | ~15KB | `[data-hydration-component]` |
+The footer-js nester includes automatic initialization of the Tab Marker Transformer, which converts simple `<hr><p>Title</p><hr>` patterns into interactive DXP-formatted tabs.
 
-### Configuration Reference
+**What it does:**
 
-#### Header Data Attributes
+- Scans the page container (default: `#content`) for HR/paragraph/HR patterns
+- Transforms these patterns into clickable tab navigation
+- Automatically hides/shows content sections based on active tab
+- Only renders navigation if 2+ tabs are detected
 
-| Attribute       | Type   | Default               | Description             |
-| --------------- | ------ | --------------------- | ----------------------- |
-| `data-title`    | string | "Web Design System"   | Header title text       |
-| `data-logo-src` | URL    | NT Gov logo           | Logo image URL          |
-| `data-logo-alt` | string | "NT Government Logo"  | Logo alt text           |
-| `data-icon`     | string | "fa-magnifying-glass" | Font Awesome icon class |
+**Content author workflow (WYSIWYG):**
 
-#### Theme Switcher Data Attributes
+1. Insert Horizontal Rule (Insert > Horizontal Rule)
+2. Add paragraph with tab title text (e.g., "Overview")
+3. Insert another Horizontal Rule
+4. Add empty paragraph
+5. Add tab content below
+6. Repeat for each additional tab
 
-| Attribute            | Type       | Default                   | Description            |
-| -------------------- | ---------- | ------------------------- | ---------------------- |
-| `data-themes`        | CSV string | "light,dark"              | Available themes       |
-| `data-default-theme` | string     | "light"                   | Default theme          |
-| `data-storage-key`   | string     | "web-design-system-theme" | localStorage key       |
-| `data-class`         | string     | ""                        | Additional CSS classes |
+**Example HTML pattern:**
 
-## File Size Reference
+```html
+<div id="content" class="ntg-body">
+  <!-- Tab 1 -->
+  <hr />
+  <p>Overview</p>
+  <hr />
+  <p></p>
+  <h2>Overview Section</h2>
+  <p>Content for overview...</p>
 
-### Vanilla JS Build
+  <!-- Tab 2 -->
+  <hr />
+  <p>Usage</p>
+  <hr />
+  <p></p>
+  <h2>Usage Guidelines</h2>
+  <p>Content for usage...</p>
+</div>
+```
+
+**Benefits:**
+
+- No HTML knowledge required for content authors
+- Works with standard WYSIWYG editor tools
+- Automatically styled with DXP-compliant inline styles
+- Full theming support via CSS custom properties
+
+For complete documentation including technical details, styling, and troubleshooting, see [src/components/Tab/README.md](src/components/Tab/README.md#tab-marker-transformer-dxp-format).
+
+## Bundle Size Reference
 
 ```
 deploy/
-├── ntg-design-system.css    ~20-30KB (minified, all components)
-├── js/
-│   ├── header.js            ~25KB (includes dependencies)
-│   ├── left-nav.js          ~5KB (minimal dependencies)
-│   ├── theme-switcher.js    ~10KB (includes localStorage logic)
-│   ├── two-column.js        ~8KB (lightweight layout)
-│   └── component-viewer-client.js  ~15KB (includes Prism.js)
-└── nesters/                ~10-15KB total (5 HTML files)
+├── web-design-system.min.js    ~30 KB   (all components, single IIFE)
+├── web-design-system.min.css   ~20 KB   (all styles + tokens)
+└── nesters/                     ~10 KB   (5 HTML files)
 ```
 
-**Total bundle size:** ~90-110KB (complete design system with all components)
-
-**Performance Benefits:**
-
-- Fast load times with ES modules
-- Automatic code splitting per component
-- No framework overhead
-- Minimal runtime dependencies
-  To find the current hashes:
-
-1. Check `deploy/manifest.json` after running deployment
-2. Or check the `deploy/viewer/index.html` file which contains the correct references
+**Total:** ~60 KB for the complete design system (uncompressed). Gzip reduces this significantly on the wire.
 
 ## Best Practices
 

@@ -1,0 +1,26 @@
+/**
+ * NT Design System - Global Stylesheet
+ * Consolidated CSS for Squiz Matrix deployment
+ * 
+ * This file combines all design tokens and component styles
+ * into a single stylesheet for easier integration with Squiz Matrix.
+ * 
+ * Theme: @ntgovernment/web-design-system
+ * Source: https://github.com/ntgovernment/web-design-system
+ * Minified Theme: https://github.com/ntgovernment/web-design-system/blob/main/dist/ntg-theme.min.css
+ */
+
+/* Import Design Tokens */
+@import "./tokens.css";
+
+/* Base Styles */
+@import "./index.css";
+
+/* Component Styles */
+@import "./components/Header/Header.css";
+@import "./components/ThemeSwitcher/ThemeSwitcher.css";
+@import "./components/Tab/Tab.css";
+@import "./components/TwoColumn/TwoColumn.css";
+@import "./components/LeftNav/LeftNav.css";
+@import "./components/ComponentViewer/ComponentViewer.css";
+@import "./components/Notification/Notification.css";

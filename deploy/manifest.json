@@ -1,5 +1,5 @@
 {
-  "deployedAt": "2026-02-13T17:54:52.070Z",
+  "deployedAt": "2026-02-25T05:00:11.149Z",
   "bundles": {
     "css": "web-design-system.min.css",
     "js": "web-design-system.min.js"
@@ -7,12 +7,12 @@
   "nesters": {
     "count": 7,
     "files": [
-      "component-viewer.html",
       "footer-js.html",
       "footer.html",
       "head.html",
       "header.html",
       "left-nav.html",
+      "page-card.html",
       "skip-links.html"
     ]
   }

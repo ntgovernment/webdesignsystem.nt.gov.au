@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ntg">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Component - NT Design System Preview</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="https://nt.gov.au/_design/latest/images/favicon.svg">
+
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/d8e5f638f7.js" crossorigin="anonymous"></script>
+
+    <!-- Prism.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/themes/prism-okaidia.min.css">
+
+    <!-- Preconnect to external resources for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Global tokens and base styles required by components -->
+    <link rel="stylesheet" href="/src/index.css">
+
+    <!-- NTG theme + component styles from web-design-system -->
+    <link rel="stylesheet" href="/deploy/web-design-system.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--clr-bg-default);
+            color: var(--clr-text-default);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--clr-text-default);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            color: var(--clr-text-default);
+        }
+
+        .description {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--clr-text-muted);
+        }
+
+        .table-wrapper {
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+
+        .demo-section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: var(--clr-bg-shade);
+            border-radius: 4px;
+        }
+
+        .demo-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            color: var(--clr-text-emphasis);
+        }
+
+        /* Ensure Bootstrap table base styles apply */
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: var(--bs-table-color);
+            vertical-align: top;
+            border-color: var(--bs-table-border-color);
+        }
+
+        .table> :not(caption)>*>* {
+            padding: var(--bs-table-cell-padding-y) var(--bs-table-cell-padding-x);
+            background-color: var(--bs-table-bg);
+            border-bottom-width: var(--bs-table-border-width);
+            box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+        }
+
+        .table>tbody {
+            vertical-align: inherit;
+        }
+
+        .table>thead {
+            vertical-align: bottom;
+        }
+
+        /* Striped rows */
+        .table-striped>tbody>tr:nth-of-type(odd)>* {
+            --bs-table-accent-bg: var(--bs-table-striped-bg);
+            color: var(--bs-table-striped-color);
+        }
+
+        /* Hover effect */
+        .table-hover>tbody>tr:hover>* {
+            --bs-table-accent-bg: var(--bs-table-hover-bg);
+            color: var(--bs-table-hover-color);
+        }
+
+        code {
+            background: var(--clr-bg-shade-alt);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Table Component</h1>
+        <p class="description">
+            The Table component provides structured, accessible data presentation with support for headers,
+            striped rows, hover states, and sortable columns. Imported from @ntgovernment/web-design-system.
+        </p>
+
+        <!-- Basic Table -->
+        <div class="demo-section">
+            <h2>Basic Table</h2>
+            <p class="description">A simple table with headers and data rows.</p>
+            <div class="table-wrapper">
+                <table class="table content-table__table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Terminology</span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Description</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Palettes</td>
+                            <td>Palettes define the available colour values in the system. Palettes contain raw colour
+                                values (hex or RGBA). They do not define usage. Designers and developers should not
+                                apply palette values directly in components.</td>
+                        </tr>
+                        <tr>
+                            <td>Base value</td>
+                            <td>Base value is the specific attribute, such as hex or rgba code applied to a primitive
+                                token through theme.</td>
+                        </tr>
+                        <tr>
+                            <td>Tokens</td>
+                            <td>Tokens assign semantic meaning to the colours from the palette based on their use cases
+                                e.g. <em>$ntg-clr-bg-default</em>, <em>$ntg-clr-text-default</em>.</td>
+                        </tr>
+                        <tr>
+                            <td>Components</td>
+                            <td>Components consume tokens to apply colour consistently in the interface.</td>
+                        </tr>
+                        <tr>
+                            <td>Themes</td>
+                            <td>Themes control which palette values are assigned to tokens. Themes allow colour values
+                                to change without altering token names or component logic.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Striped Table -->
+        <div class="demo-section">
+            <h2>Striped Table</h2>
+            <p class="description">Add <code>.table-striped</code> for alternating row colors.</p>
+            <div class="table-wrapper">
+                <table class="table table-striped content-table__table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Terminology</span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Description</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Palettes</td>
+                            <td>Palettes define the available colour values in the system. Palettes contain raw colour
+                                values (hex or RGBA). They do not define usage. Designers and developers should not
+                                apply palette values directly in components.</td>
+                        </tr>
+                        <tr>
+                            <td>Base value</td>
+                            <td>Base value is the specific attribute, such as hex or rgba code applied to a primitive
+                                token through theme.</td>
+                        </tr>
+                        <tr>
+                            <td>Tokens</td>
+                            <td>Tokens assign semantic meaning to the colours from the palette based on their use cases
+                                e.g. <em>$ntg-clr-bg-default</em>, <em>$ntg-clr-text-default</em>.</td>
+                        </tr>
+                        <tr>
+                            <td>Components</td>
+                            <td>Components consume tokens to apply colour consistently in the interface.</td>
+                        </tr>
+                        <tr>
+                            <td>Themes</td>
+                            <td>Themes control which palette values are assigned to tokens. Themes allow colour values
+                                to change without altering token names or component logic.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Hoverable Table -->
+        <div class="demo-section">
+            <h2>Hoverable Table</h2>
+            <p class="description">Add <code>.table-hover</code> to enable row hover effects.</p>
+            <div class="table-wrapper">
+                <table class="table table-hover content-table__table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Terminology</span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Description</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Palettes</td>
+                            <td>Palettes define the available colour values in the system. Palettes contain raw colour
+                                values (hex or RGBA). They do not define usage. Designers and developers should not
+                                apply palette values directly in components.</td>
+                        </tr>
+                        <tr>
+                            <td>Base value</td>
+                            <td>Base value is the specific attribute, such as hex or rgba code applied to a primitive
+                                token through theme.</td>
+                        </tr>
+                        <tr>
+                            <td>Tokens</td>
+                            <td>Tokens assign semantic meaning to the colours from the palette based on their use cases
+                                e.g. <em>$ntg-clr-bg-default</em>, <em>$ntg-clr-text-default</em>.</td>
+                        </tr>
+                        <tr>
+                            <td>Components</td>
+                            <td>Components consume tokens to apply colour consistently in the interface.</td>
+                        </tr>
+                        <tr>
+                            <td>Themes</td>
+                            <td>Themes control which palette values are assigned to tokens. Themes allow colour values
+                                to change without altering token names or component logic.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Table with Sort Indicators -->
+        <div class="demo-section">
+            <h2>Sortable Table Headers</h2>
+            <p class="description">Tables with sort indicators using <code>.content-table__sort</code> and
+                <code>.content-table__sort-icon</code>.</p>
+            <div class="table-wrapper">
+                <table class="table table-hover content-table__table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Term</span>
+                                    <div class="content-table__sort">
+                                        <i class="fa-solid fa-caret-up content-table__sort-icon"></i>
+                                        <i class="fa-solid fa-caret-down content-table__sort-icon"></i>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Category</span>
+                                    <div class="content-table__sort">
+                                        <i class="fa-solid fa-caret-up content-table__sort-icon"></i>
+                                        <i class="fa-solid fa-caret-down content-table__sort-icon"></i>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Priority</span>
+                                    <div class="content-table__sort">
+                                        <i class="fa-solid fa-caret-up content-table__sort-icon"></i>
+                                        <i class="fa-solid fa-caret-down content-table__sort-icon"></i>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Palettes</td>
+                            <td>Design Foundation</td>
+                            <td>High</td>
+                        </tr>
+                        <tr>
+                            <td>Tokens</td>
+                            <td>Design System</td>
+                            <td>High</td>
+                        </tr>
+                        <tr>
+                            <td>Components</td>
+                            <td>UI Elements</td>
+                            <td>Medium</td>
+                        </tr>
+                        <tr>
+                            <td>Themes</td>
+                            <td>Customization</td>
+                            <td>Low</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Table with Caption -->
+        <div class="demo-section">
+            <h2>Table with Caption</h2>
+            <p class="description">Add a caption to provide context about the table data.</p>
+            <div class="table-wrapper">
+                <table class="table table-striped table-hover content-table__table">
+                    <caption class="content-table__caption">
+                        Design System Terminology: A quick reference guide for colour management in the NT Government
+                        Design System
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Terminology</span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Description</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Palettes</td>
+                            <td>Palettes define the available colour values in the system. Palettes contain raw colour
+                                values (hex or RGBA). They do not define usage. Designers and developers should not
+                                apply palette values directly in components.</td>
+                        </tr>
+                        <tr>
+                            <td>Base value</td>
+                            <td>Base value is the specific attribute, such as hex or rgba code applied to a primitive
+                                token through theme.</td>
+                        </tr>
+                        <tr>
+                            <td>Tokens</td>
+                            <td>Tokens assign semantic meaning to the colours from the palette based on their use cases
+                                e.g. <em>$ntg-clr-bg-default</em>, <em>$ntg-clr-text-default</em>.</td>
+                        </tr>
+                        <tr>
+                            <td>Components</td>
+                            <td>Components consume tokens to apply colour consistently in the interface.</td>
+                        </tr>
+                        <tr>
+                            <td>Themes</td>
+                            <td>Themes control which palette values are assigned to tokens. Themes allow colour values
+                                to change without altering token names or component logic.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Combined: Striped + Hover + Caption -->
+        <div class="demo-section">
+            <h2>Full Example: Striped, Hoverable, with Caption</h2>
+            <p class="description">Combining all table features together.</p>
+            <div class="table-wrapper">
+                <table class="table table-striped table-hover content-table__table">
+                    <caption class="content-table__caption">
+                        Comprehensive table example demonstrating all available styling options
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Feature</span>
+                                    <div class="content-table__sort">
+                                        <i class="fa-solid fa-caret-up content-table__sort-icon"></i>
+                                        <i class="fa-solid fa-caret-down content-table__sort-icon"></i>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Class Names</span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="content-table__header">
+                                    <span>Description</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Base Styling</td>
+                            <td><code>.content-table__table</code></td>
+                            <td>Applies NT Government design system styling with design tokens</td>
+                        </tr>
+                        <tr>
+                            <td>Striped Rows</td>
+                            <td><code>.table-striped</code></td>
+                            <td>Alternating background colors for improved readability</td>
+                        </tr>
+                        <tr>
+                            <td>Hover Effect</td>
+                            <td><code>.table-hover</code></td>
+                            <td>Highlights rows on mouse hover for better interactivity</td>
+                        </tr>
+                        <tr>
+                            <td>Sort Indicators</td>
+                            <td><code>.content-table__sort</code></td>
+                            <td>Visual indicators for sortable column headers</td>
+                        </tr>
+                        <tr>
+                            <td>Caption</td>
+                            <td><code>.content-table__caption</code></td>
+                            <td>Descriptive text providing context about the table</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markup.min.js"></script>
+</body>
+
+</html>

@@ -24,11 +24,36 @@ body {
   min-height: 100vh;
 }
 
-/* Ensure page content has the design-system spacing token (24px) */
+/* Ensure page content has the design-system spacing token (now uses sp/4xl) */
 #content {
-  padding: var(--sp-xl, 24px);
+  padding: var(--sp-4xl, 40px);
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* Hydration component spacing */
+/*
+  `div[data-hydration-*]` is not a valid CSS selector (attribute-name wildcards
+  are not supported). Target the actual hydration attributes used in markup.
+*/
+div[data-hydration-component],
+div[data-hydration-props] {
+  margin-block: var(--sp-4xl);
+}
+
+/* Keep component links from showing browser default visited purple */
+.nt-page-banner__cta:visited {
+  color: var(--clr-link-inverse, white) !important;
+}
+
+.nt-leftnav__link:visited,
+.nt-footer__link:visited {
+  color: var(--clr-link-default, #1f1f5f) !important;
+}
+
+/* Vertical gaps between direct children inside `#content.ntg-body` — uses token `--sp-4xl` */
+#content.ntg-body > * + * {
+  margin-block-start: var(--sp-4xl);
 }

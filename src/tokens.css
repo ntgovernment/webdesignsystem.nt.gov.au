@@ -5,21 +5,26 @@
  * Token Hierarchy:
  * 1. External tokens from @ntgovernment/web-design-system (base foundation)
  * 2. Local token overrides (project-specific customizations)
+ * 
+ * Theme Source:
+ * @ntgovernment/web-design-system - https://github.com/ntgovernment/web-design-system
+ * Minified Theme: https://github.com/ntgovernment/web-design-system/blob/main/dist/ntg-theme.min.css
  */
 
-/* Import External Design System Tokens */
+/* External Design System Tokens from @ntgovernment/web-design-system */
 /* 
- * Source: @ntgovernment/web-design-system
- * Repository: https://github.com/ntgovernment/web-design-system
+ * These tokens are the foundation of the NT Government design system.
+ * They define colors, spacing, typography, and grid variables.
  * 
- * To populate external tokens:
+ * To update external tokens:
  * - Option A: Run `npm install` (requires GitHub authentication)
- * - Option B: Manually copy files from external repo to src/external-tokens/
+ * - Option B: Manually copy files from https://github.com/ntgovernment/web-design-system/tree/main/src/themes
  * 
- * See src/external-tokens/README.md for detailed instructions
+ * See src/external-tokens/README.md for detailed setup instructions
  */
 
-/* External token files imported from @ntgovernment/web-design-system */
+/* Base and theme CSS variables from @ntgovernment/web-design-system */
+/* These are sourced from: https://github.com/ntgovernment/web-design-system/dist/ntg-theme.min.css */
 @import "./external-tokens/base-variables.css";
 @import "./external-tokens/common.css";
 @import "./external-tokens/grid.css";
@@ -27,6 +32,7 @@
 @import "./external-tokens/typography-literals.css";
 @import "./external-tokens/typography-ntg.css";
 @import "./external-tokens/theme-ntg.css";
+@import "./external-tokens/table.css";
 
 /* Import Lato font */
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
@@ -89,6 +95,8 @@
 
   /* Additional Spacing (project-specific) */
   --sp-xs-plus: 10px;
+  /* 4xl spacing token (40px) — used by hydration containers */
+  --sp-4xl: 40px;
 
   /* Content Max Width (standard for layout) */
   --content-max-width: 1200px;

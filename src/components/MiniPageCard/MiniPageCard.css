@@ -1,0 +1,188 @@
+/**
+ * NT Design System - MiniPageCard Component
+ * Compact grid layout displaying ContentPage assets with icon and title.
+ */
+
+.nt-mini-page-card {
+  width: 100%;
+  display: block;
+  /* Card mini icon color aligns with design-system Card token */
+  --nt-mini-card-icon-color: var(--clr-text-emphasis);
+}
+
+.nt-mini-page-card__grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--grid-gap, var(--sp-md, 16px));
+}
+
+.nt-mini-page-card__grid > div {
+  width: 100%;
+  height: 100%;
+}
+
+/* Card base styling - inherited from web-design-system */
+.nt-mini-page-card .card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--clr-bg-default);
+  border: var(--border-width-md) solid var(--clr-border-subtle);
+  overflow: hidden;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nt-mini-page-card .card--clickable {
+  cursor: pointer;
+}
+
+.nt-mini-page-card .card--clickable:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--clr-border-subtle);
+}
+
+.nt-mini-page-card .card--clickable:focus {
+  outline: none;
+}
+
+.nt-mini-page-card .card--clickable:focus-visible {
+  box-shadow: var(--shadow-focus-ntg);
+  border-radius: var(--radii-none);
+}
+
+.nt-mini-page-card .card-body {
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-md) var(--sp-lg) var(--sp-lg) var(--sp-lg);
+  flex: 1;
+}
+
+.nt-mini-page-card__content {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-xs);
+}
+
+.mini-page-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nt-mini-card-icon-color);
+  font-size: 22px;
+  flex: 0 0 auto;
+}
+
+.mini-page-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2xs);
+}
+
+/* Grid title (H2) */
+.nt-mini-page-card__title {
+  margin: 0 0 var(--sp-sm) 0;
+  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
+  font-size: var(--type-heading-h2-size);
+  font-weight: var(--type-heading-h2-weight);
+  line-height: var(--type-heading-h2-lh);
+  color: var(--clr-text-default);
+  word-wrap: break-word;
+}
+
+.nt-mini-page-card__description {
+  margin: 0 0 var(--sp-lg) 0;
+  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
+  font-size: var(--type-body-md-size, 16px);
+  line-height: var(--type-body-md-lh, 24px);
+  color: var(--clr-text-default);
+  max-width: 72ch;
+}
+
+/* Card title styling */
+.nt-mini-page-card .card-title {
+  margin: 0;
+  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  color: var(--clr-link-default);
+  word-wrap: break-word;
+  transition: color 0.2s ease;
+}
+
+.nt-mini-page-card .card--clickable:hover .card-title {
+  color: var(--clr-link-hover);
+}
+
+/* keep visited colour identical to default to prevent purple browser default */
+.nt-mini-page-card a:visited .card-title {
+  color: var(--clr-link-default);
+}
+
+/* Error state */
+.page-card-error {
+  background: var(--clr-status-danger-bg);
+  border: var(--border-width-md) solid var(--clr-status-danger);
+  border-radius: var(--radii-sm);
+  padding: var(--sp-xl);
+  margin: var(--sp-md);
+  text-align: center;
+}
+
+.page-card-error h3 {
+  margin: 0 0 var(--sp-xs) 0;
+  color: var(--clr-status-danger);
+}
+
+.page-card-error p {
+  margin: 0;
+  color: var(--clr-status-danger);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .nt-mini-page-card .card-body {
+    padding: var(--sp-md);
+  }
+
+  .nt-mini-page-card .card-title {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nt-mini-page-card .card-body {
+    padding: var(--sp-sm);
+  }
+
+  .mini-page-card__icon {
+    font-size: 20px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-contrast: more) {
+  .nt-mini-page-card .card {
+    border-width: var(--border-width-lg);
+  }
+
+  .nt-mini-page-card .card--clickable:focus-visible {
+    outline: var(--border-width-md) solid var(--clr-link-default);
+    outline-offset: var(--sp-xs);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nt-mini-page-card .card,
+  .nt-mini-page-card .card-title {
+    transition: none;
+  }
+}

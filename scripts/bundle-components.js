@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 
 /**
  * Component Bundler
@@ -20,12 +20,12 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 const buildDir = path.join(rootDir, ".build");
 
-console.log("📦 Building unified component bundles...\n");
+console.log("ðŸ“¦ Building unified component bundles...\n");
 
 // Ensure .build directory exists
 if (!fs.existsSync(buildDir)) {
   fs.mkdirSync(buildDir, { recursive: true });
-  console.log("✓ Created .build directory");
+  console.log("âœ“ Created .build directory");
 }
 
 // Paths to component files and styles
@@ -43,7 +43,7 @@ const components = [
 ];
 
 const styles = [
-  "src/ntg-design-system.css",
+  "src/web-design-system.css",
   "src/index.css",
   "src/tokens.css",
   "src/components/Header/Header.css",
@@ -77,7 +77,7 @@ for (const component of components) {
 // Write JS bundle
 const jsBundlePath = path.join(buildDir, "web-design-system.min.js");
 fs.writeFileSync(jsBundlePath, bundleJs, "utf-8");
-console.log(`✓ Generated: ${path.relative(rootDir, jsBundlePath)}`);
+console.log(`âœ“ Generated: ${path.relative(rootDir, jsBundlePath)}`);
 
 // Build bundle CSS by reading and concatenaing CSS files
 let bundleCss = `/**
@@ -103,6 +103,7 @@ for (const stylePath of styles) {
 // Write CSS bundle
 const cssBundlePath = path.join(buildDir, "web-design-system.min.css");
 fs.writeFileSync(cssBundlePath, bundleCss, "utf-8");
-console.log(`✓ Generated: ${path.relative(rootDir, cssBundlePath)}`);
+console.log(`âœ“ Generated: ${path.relative(rootDir, cssBundlePath)}`);
 
-console.log("\n✅ Bundle generation complete!");
+console.log("\nâœ… Bundle generation complete!");
+

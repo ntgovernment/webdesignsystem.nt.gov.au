@@ -59,6 +59,11 @@
     color var(--nav-transition);
 }
 
+/* keep visited colour identical to default to prevent purple browser default */
+.nt-leftnav__link:visited {
+  color: var(--clr-link-default, #1f1f5f) !important;
+}
+
 .nt-leftnav__link:hover,
 .nt-leftnav__toggle:hover {
   background-color: var(--clr-bg-shade, #f5f5f7);
@@ -396,6 +401,7 @@
   padding: var(--sp-xxl, 32px);
   overflow-y: auto;
   max-width: 100%;
+  background-color: var(--clr-bg-shade);
 }
 
 .nt-main-content .ntg-body {

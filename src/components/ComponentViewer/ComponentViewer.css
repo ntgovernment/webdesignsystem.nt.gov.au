@@ -3,6 +3,63 @@
   display: flex;
   flex-direction: column;
   font-family: Lato, sans-serif;
+  position: relative;
+}
+
+/* Introduction Section */
+.component-viewer__introduction {
+  color: var(--clr-text-default, #1f1e27);
+  font-size: 16px;
+  font-family: var(--font-family-primary, Lato);
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0 0 var(--sp-xl, 32px) 0;
+  max-width: 72ch;
+}
+
+.component-viewer__introduction p {
+  margin: 0 0 var(--sp-md, 16px) 0;
+}
+
+.component-viewer__introduction p:last-child {
+  margin-bottom: 0;
+}
+
+.component-viewer__introduction ul,
+.component-viewer__introduction ol {
+  margin: 0 0 var(--sp-md, 16px) 0;
+  padding-left: var(--sp-lg, 24px);
+}
+
+.component-viewer__introduction li {
+  margin-bottom: var(--sp-xs, 8px);
+}
+
+.component-viewer__introduction li:last-child {
+  margin-bottom: 0;
+}
+
+.component-viewer__introduction strong {
+  font-weight: 700;
+}
+
+.component-viewer__introduction em {
+  font-style: italic;
+}
+
+.component-viewer__introduction a {
+  color: var(--clr-action-primary, #1f1f5f);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.component-viewer__introduction a:hover {
+  color: var(--clr-action-primary-hover, #16163d);
+}
+
+.component-viewer__introduction a:focus {
+  outline: 2px solid var(--clr-action-primary, #1f1f5f);
+  outline-offset: 2px;
 }
 
 /* Preview Section */
@@ -130,7 +187,9 @@
 
 /* Code Display Section */
 .component-viewer__code {
-  padding: var(--sp-md, 16px);
+  width: 100%;
+  margin-top: -66px;
+  padding: 60px var(--sp-md, 16px) var(--sp-md, 16px);
   background: #272822;
   display: flex;
   align-items: flex-start;
@@ -141,12 +200,30 @@
     opacity 0.3s ease,
     max-height 0.3s ease,
     padding 0.3s ease;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
 }
 
 .component-viewer__code--visible {
   opacity: 1;
-  max-height: 2000px;
-  padding: var(--sp-md, 16px);
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 60px var(--sp-md, 16px) var(--sp-md, 16px);
+}
+
+.component-viewer__code::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.component-viewer__code::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.component-viewer__code::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
 }
 
 .component-viewer__code-content {
@@ -158,7 +235,25 @@
   color: #e6e6e6;
   overflow-x: auto;
   white-space: pre;
+  word-wrap: normal;
   width: 100%;
+  background: transparent;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+
+.component-viewer__code-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.component-viewer__code-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.component-viewer__code-content::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
 }
 
 .component-viewer__code-content code {
@@ -166,6 +261,45 @@
   padding: 0;
   margin: 0;
   display: block;
+  white-space: pre;
+  word-wrap: normal;
+  background: transparent;
+  color: inherit;
+}
+
+/* Prism token styling - these override Prism defaults for content compatibility */
+.component-viewer__code-content .token {
+  color: #e6e6e6;
+}
+
+.component-viewer__code-content .token.comment,
+.component-viewer__code-content .token.prolog,
+.component-viewer__code-content .token.doctype,
+.component-viewer__code-content .token.cdata {
+  color: #75715e;
+}
+
+.component-viewer__code-content .token.punctuation {
+  color: #f8f8f2;
+}
+
+.component-viewer__code-content .token.property,
+.component-viewer__code-content .token.tag,
+.component-viewer__code-content .token.boolean,
+.component-viewer__code-content .token.number,
+.component-viewer__code-content .token.constant,
+.component-viewer__code-content .token.symbol,
+.component-viewer__code-content .token.deleted {
+  color: #ae81ff;
+}
+
+.component-viewer__code-content .token.selector,
+.component-viewer__code-content .token.attr-name,
+.component-viewer__code-content .token.string,
+.component-viewer__code-content .token.char,
+.component-viewer__code-content .token.builtin,
+.component-viewer__code-content .token.inserted {
+  color: #a6e22e;
 }
 
 /* Typing cursor animation */
@@ -188,13 +322,19 @@
 
 /* Action Buttons */
 .component-viewer__actions {
-  padding: var(--sp-md, 16px) 0;
+  position: relative;
+  z-index: 1;
+  padding: var(--sp-xxs, 4px) var(--sp-md, 16px);
   display: flex;
   justify-content: flex-end;
   gap: var(--sp-sm, 12px);
+  background: transparent;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .component-viewer__button {
+  margin-top: 12px;
   padding: var(--sp-sm, 12px) var(--sp-md, 16px);
   background: var(--clr-action-secondary, white);
   border: var(--border-width-md, 1px) solid var(--clr-border-strong-01, #1f1f5f);
@@ -219,6 +359,10 @@
   transform: translateY(1px);
 }
 
+.component-viewer__actions .component-viewer__button:nth-child(2) {
+  width: 128px;
+}
+
 .component-viewer__button i {
   font-size: 16px;
 }
@@ -239,6 +383,7 @@
 
   .component-viewer__actions {
     flex-direction: column;
+    padding: var(--sp-xs, 8px) var(--sp-md, 16px);
   }
 
   .component-viewer__button {

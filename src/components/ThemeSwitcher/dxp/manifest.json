@@ -5,14 +5,14 @@
   "displayName": "Theme Switcher",
   "description": "Multi-URL theme switcher with tab navigation supporting up to 3 themes with iframe previews",
   "icon": {
-    "id": "palette",
+    "id": "view_carousel",
     "color": {
       "type": "enum",
       "value": "purple"
     }
   },
   "type": "edge",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "mainFunction": "render",
   "functions": [
     {

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Color Swatch - NT Design System (Preview)</title>
+    <!-- Global tokens and base styles required by components -->
+    <link rel="stylesheet" href="/src/index.css">
+    <!-- Fallback: built design system stylesheet -->
+    <link rel="stylesheet" href="/deploy/web-design-system.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .demo-container {
+            min-height: 100vh;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #0066cc;
+            text-decoration: none;
+            margin: 1rem 0;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .demo-content {
+            max-width: 1168px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        .demo-content h1 {
+            color: #1f1f5f;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-content h2 {
+            color: #1f1f5f;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .demo-content p {
+            color: #444;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .nt-main-content {
+            padding: 0;
+        }
+
+        .swatch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 152px);
+            gap: 16px;
+            margin: var(--sp-md, 16px) 0 0;
+        }
+
+        /* Preview override for page banner CTAs */
+        .nt-page-banner__cta {
+            text-box-trim: trim-both;
+            text-box-edge: cap alphabetic;
+            color: var(--clr-link-inverse, white);
+            font-size: 14px;
+            font-family: Lato, var(--font-family-primary, system-ui, sans-serif);
+            font-weight: 700;
+            line-height: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .nt-page-banner__cta:hover {
+            color: var(--clr-link-inverse, white);
+            text-decoration: underline;
+        }
+
+        .nt-page-banner__cta svg {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Preview override: let banner size be content-driven */
+        .nt-page-banner {
+            height: auto !important;
+            max-height: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="demo-container">
+        <!-- Header + Left nav to show page layout context -->
+        <div id="nt-header-root" data-title="Color Swatch"></div>
+
+        <div class="page-container" style="display:flex;">
+            <div id="nt-leftnav-root" data-default-expanded="Foundations"></div>
+
+            <main class="nt-main-content" style="flex:1;">
+                <!-- Page banner MUST be outside and immediately above #content -->
+                <div id="nt-page-banner-content" data-page-banner-title="Color Swatch"
+                    data-page-banner-description="Displays a color swatch card with color sample, label, and hex code."
+                    data-page-banner-type="Primary"
+                    data-page-banner-figma-url="https://www.figma.com/design/H2JiHRyJGSE7Z7uq2LvQEh/NTG-Design-System?m=dev"
+                    data-page-banner-storybook-url="">
+                </div>
+
+                <div id="content" class="demo-content ntg-body">
+                    <a href="./" class="back-link">← Back to preview</a>
+                    <h1>Color Swatch</h1>
+                    <p>
+                        Visual preview only. Full component documentation and examples live in
+                        <strong><code>src/components/ColorSwatch/README.md</code></strong> — please refer there for API,
+                        DXP schema and usage examples.
+                    </p>
+
+                    <h2>Intro</h2>
+                    <p>
+                        The extended palette provides a curated range of NTG brand colors. The swatches below show a
+                        small demo set for quick visual reference.
+                    </p>
+
+                    <div class="swatch-grid">
+                        <div data-hydration-component="color-swatch"
+                            data-hydration-props='{"Color":"#1F1F5F","Label":"Blue 03","HexCode":"#1F1F5F"}'></div>
+                        <div data-hydration-component="color-swatch"
+                            data-hydration-props='{"Color":"#E35205","Label":"Orange 03","HexCode":"#E35205"}'></div>
+                        <div data-hydration-component="color-swatch"
+                            data-hydration-props='{"Color":"#C33826","Label":"Ochre 02","HexCode":"#C33826"}'></div>
+                        <div data-hydration-component="color-swatch"
+                            data-hydration-props='{"Color":"#C25062","Label":"Coral 03","HexCode":"#C25062"}'></div>
+                    </div>
+
+                    <p class="note">See <code>src/components/ColorSwatch/README.md</code> for complete usage examples
+                        (client hydration + DXP schema).</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="/src/components/Header/Header.vanilla.ts"></script>
+    <script type="module" src="/src/components/LeftNav/LeftNav.vanilla.ts"></script>
+    <script type="module" src="/src/components/PageBanner/PageBanner.vanilla.ts"></script>
+    <script type="module" src="/src/components/ColorSwatch/ColorSwatch.vanilla.ts"></script>
+</body>
+
+</html>

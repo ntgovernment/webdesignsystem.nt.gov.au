@@ -5,14 +5,14 @@
   "displayName": "Two Column Layout",
   "description": "Responsive two-column layout with WYSIWYG editors for left and right content. Displays side-by-side on desktop and stacks on mobile (768px breakpoint).",
   "icon": {
-    "id": "code",
+    "id": "view_column",
     "color": {
       "type": "enum",
       "value": "blue"
     }
   },
   "type": "edge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "mainFunction": "render",
   "functions": [
     {
