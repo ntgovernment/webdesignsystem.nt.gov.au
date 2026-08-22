@@ -1,5 +1,9 @@
 # MiniPageCard Component
 
+> **Deprecated:** Use `web-design-system/card` with `cardMode: "Mini Cards"`. This component remains available so existing Squiz instances continue to render.
+
+For new work, use [Card](../Card/README.md). Card combines this component with PageCard and adds Visual Page Builder inline editing. Existing MiniPageCard instances can remain in place while teams migrate component-by-component.
+
 Compact, responsive card grid layout displaying page assets with FontAwesome icons and titles. Part of the NT Government Web Design System.
 
 ## Overview

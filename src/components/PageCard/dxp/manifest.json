@@ -2,8 +2,8 @@
   "$schema": "http://localhost:3000/schemas/v1.json#",
   "namespace": "web-design-system",
   "name": "page-card",
-  "displayName": "Page Card Grid",
-  "description": "Responsive grid layout displaying Card assets with Image and Title",
+  "displayName": "Page Card Grid (Deprecated)",
+  "description": "Deprecated: use web-design-system/card in Display Cards mode. Retained for existing component instances.",
   "icon": {
     "id": "view_comfy",
     "color": {
@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "mainFunction": "main",
   "functions": [
     {

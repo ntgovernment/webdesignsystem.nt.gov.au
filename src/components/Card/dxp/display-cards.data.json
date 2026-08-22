@@ -1,0 +1,57 @@
+{
+  "cardMode": "Display Cards",
+  "Title": "Key services",
+  "Description": "Browse services and resources by topic.",
+  "Cards": [
+    {
+      "PageAsset": {
+        "url": "/business/licensing",
+        "text": "Business licensing",
+        "target": "_self"
+      },
+      "CardTitle": "Business licensing",
+      "CardImage": {
+        "name": "Business licensing",
+        "alt": "People discussing business documents",
+        "caption": "Business licensing",
+        "imageVariations": {
+          "original": {
+            "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=360&fit=crop",
+            "width": 640,
+            "height": 360,
+            "byteSize": 0,
+            "mimeType": "image/jpeg",
+            "aspectRatio": "16:9",
+            "sha1Hash": "0000000000000000000000000000000000000000"
+          }
+        }
+      },
+      "IconCode": "fa-light fa-briefcase"
+    },
+    {
+      "PageAsset": {
+        "url": "/health",
+        "text": "Health services",
+        "target": "_self"
+      },
+      "CardTitle": "Health services",
+      "CardImage": {
+        "name": "Health services",
+        "alt": "Health professional working at a desk",
+        "caption": "Health services",
+        "imageVariations": {
+          "original": {
+            "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=640&h=360&fit=crop",
+            "width": 640,
+            "height": 360,
+            "byteSize": 0,
+            "mimeType": "image/jpeg",
+            "aspectRatio": "16:9",
+            "sha1Hash": "0000000000000000000000000000000000000000"
+          }
+        }
+      },
+      "IconCode": "fa-light fa-heart-pulse"
+    }
+  ]
+}

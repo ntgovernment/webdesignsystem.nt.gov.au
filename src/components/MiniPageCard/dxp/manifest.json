@@ -2,8 +2,8 @@
   "$schema": "http://localhost:3000/schemas/v1.json#",
   "namespace": "web-design-system",
   "name": "mini-page-card",
-  "displayName": "Mini Page Card",
-  "description": "Compact grid layout displaying Card assets with icon and title",
+  "displayName": "Mini Page Card (Deprecated)",
+  "description": "Deprecated: use web-design-system/card in Mini Cards mode. Retained for existing component instances.",
   "icon": {
     "id": "grid_view",
     "color": {
@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "mainFunction": "main",
   "functions": [
     {

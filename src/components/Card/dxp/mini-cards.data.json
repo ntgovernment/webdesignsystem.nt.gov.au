@@ -1,0 +1,34 @@
+{
+  "cardMode": "Mini Cards",
+  "Title": "Explore the design system",
+  "Description": "Quick links to design system resources.",
+  "Cards": [
+    {
+      "PageAsset": {
+        "url": "/about",
+        "text": "About",
+        "target": "_self"
+      },
+      "CardTitle": "About",
+      "IconCode": "fa-light fa-circle-info"
+    },
+    {
+      "PageAsset": {
+        "url": "/components",
+        "text": "Components",
+        "target": "_self"
+      },
+      "CardTitle": "Components",
+      "IconCode": "fa-light fa-cubes"
+    },
+    {
+      "PageAsset": {
+        "url": "/foundations",
+        "text": "Foundations",
+        "target": "_self"
+      },
+      "CardTitle": "Foundations",
+      "IconCode": "fa-light fa-layer-group"
+    }
+  ]
+}

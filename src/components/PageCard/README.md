@@ -2,6 +2,10 @@
 
 # PageCard Component - Complete Developer Guide
 
+> **Deprecated:** Use `web-design-system/card` with `cardMode: "Display Cards"`. This component remains available so existing Squiz instances continue to render.
+
+For new work, use [Card](../Card/README.md). Card combines this component with MiniPageCard and adds Visual Page Builder inline editing. Existing PageCard instances can remain in place while teams migrate component-by-component.
+
 ## Overview
 
 The **PageCard** component is a responsive card grid for Squiz DXP. It renders a list of cards using the **web-design-system Card component structure** with `Cards` entries that combine `SquizLink` (destination) and `SquizImage` (image) with a required `CardTitle`.

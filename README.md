@@ -48,15 +48,25 @@ Server-rendered components deployed independently via `dxp-next`. Each has `dxp/
 
 | Component                 | DXP name                             | README                                   |
 | ------------------------- | ------------------------------------ | ---------------------------------------- |
+| **Card**                  | `web-design-system/card`             | src/components/Card/README.md            |
 | **ColorSwatch**           | `web-design-system/color-swatch`     | src/components/ColorSwatch/README.md     |
 | **ComponentViewer**       | `web-design-system/component-viewer` | src/components/ComponentViewer/README.md |
-| **MiniPageCard**          | `web-design-system/mini-page-card`   | src/components/MiniPageCard/README.md    |
+| **MiniPageCard** _(deprecated)_ | `web-design-system/mini-page-card` | src/components/MiniPageCard/README.md |
 | **Notification**          | `web-design-system/notification`     | src/components/Notification/README.md    |
-| **PageCard**              | `web-design-system/page-card`        | src/components/PageCard/README.md        |
+| **PageCard** _(deprecated)_ | `web-design-system/page-card`      | src/components/PageCard/README.md        |
 | **PageTile**              | `web-design-system/page-tile`        | src/components/PageTile/README.md        |
 | **ThemeSwitcher** _(DXP)_ | `web-design-system/theme-switcher`   | src/components/ThemeSwitcher/README.md   |
 | **Tab** _(DXP)_           | `web-design-system/tab`              | src/components/Tab/README.md             |
 | **TwoColumn** _(DXP)_     | `web-design-system/two-column`       | src/components/TwoColumn/README.md       |
+
+#### Card
+
+`Card` is the preferred replacement for `PageCard` and `MiniPageCard`. It uses one repeatable `Cards` collection and the `cardMode` quick option:
+
+- `Display Cards` renders an image, title, and destination.
+- `Mini Cards` renders an icon, title, and destination.
+
+Visual Page Builder supports inline editing for the grid title, grid description, card title, card image, and card destination. Icon class names remain editable from the component fields panel.
 
 ## Project Structure
 
@@ -126,7 +136,13 @@ Deployed separately via the Squiz DXP CLI:
 dxp-next auth login --tenant ntgov-4670
 dxp-next cmp deploy src/components/ComponentViewer/dxp
 dxp-next cmp dev-ui src/components/ComponentViewer/dxp   # Local dev preview
+
+# Card component
+dxp-next cmp deploy src/components/Card/dxp
+dxp-next cmp dev-ui src/components/Card/dxp
 ```
+
+The Card dev UI includes `display-cards` and `mini-cards` previews. CLI 5.29.1 supports `ui:metadata.inlineEditable`; it does not support `previewPlaceholder`.
 
 ## Squiz Matrix Integration
 

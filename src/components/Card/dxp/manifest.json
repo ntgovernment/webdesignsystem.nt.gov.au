@@ -1,0 +1,124 @@
+{
+  "$schema": "http://localhost:3000/schemas/v1.json#",
+  "namespace": "web-design-system",
+  "name": "card",
+  "displayName": "Card",
+  "description": "Responsive cards with display and mini variants, editable directly in Visual Page Builder.",
+  "icon": {
+    "id": "web_stories",
+    "color": {
+      "type": "enum",
+      "value": "orange"
+    }
+  },
+  "type": "edge",
+  "version": "1.0.0",
+  "mainFunction": "main",
+  "functions": [
+    {
+      "name": "main",
+      "entry": "main.js",
+      "input": {
+        "type": "object",
+        "properties": {
+          "cardMode": {
+            "type": "string",
+            "title": "Card mode",
+            "description": "Choose full image cards or compact icon cards.",
+            "enum": ["Display Cards", "Mini Cards"],
+            "default": "Display Cards",
+            "ui:metadata": {
+              "quickOption": true
+            }
+          },
+          "Title": {
+            "type": "string",
+            "title": "Grid title",
+            "ui:metadata": {
+              "inlineEditable": true
+            }
+          },
+          "Description": {
+            "type": "string",
+            "format": "multi-line",
+            "title": "Grid description",
+            "ui:metadata": {
+              "inlineEditable": true
+            }
+          },
+          "Cards": {
+            "type": "array",
+            "title": "Cards",
+            "description": "Add, reorder, or remove cards. Images apply to Display Cards; icons apply to Mini Cards.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "PageAsset": {
+                  "type": "SquizLink",
+                  "title": "Destination",
+                  "ui:metadata": {
+                    "inlineEditable": true
+                  }
+                },
+                "CardTitle": {
+                  "type": "string",
+                  "title": "Card title",
+                  "ui:metadata": {
+                    "inlineEditable": true
+                  }
+                },
+                "CardImage": {
+                  "type": "SquizImage",
+                  "title": "Card image",
+                  "description": "Shown in Display Cards mode.",
+                  "ui:metadata": {
+                    "inlineEditable": true
+                  }
+                },
+                "IconCode": {
+                  "type": "string",
+                  "title": "Font Awesome class name",
+                  "description": "Shown in Mini Cards mode, for example: fa-light fa-circle-info."
+                }
+              },
+              "required": ["PageAsset", "CardTitle"]
+            },
+            "minItems": 1
+          }
+        },
+        "required": ["cardMode", "Cards"]
+      },
+      "output": {
+        "responseType": "html"
+      }
+    }
+  ],
+  "previews": {
+    "display-cards": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "file",
+            "path": "display-cards.data.json"
+          }
+        }
+      }
+    },
+    "mini-cards": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "file",
+            "path": "mini-cards.data.json"
+          }
+        }
+      }
+    }
+  }
+}

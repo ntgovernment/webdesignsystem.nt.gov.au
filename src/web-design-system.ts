@@ -13,6 +13,7 @@ import "./components/ThemeSwitcher/ThemeSwitcher.vanilla";
 import "./components/ComponentViewer/ComponentViewer.vanilla";
 import "./components/PageBanner/PageBanner.vanilla";
 import "./components/Notification/Notification.vanilla";
+import "./components/Card/Card.vanilla";
 import "./components/PageCard/PageCard.vanilla";
 import "./components/MiniPageCard/MiniPageCard.vanilla";
 import "./components/PageTile/PageTile.vanilla";

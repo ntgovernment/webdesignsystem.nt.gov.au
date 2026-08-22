@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card component preview</title>
+  <script src="https://kit.fontawesome.com/d8e5f638f7.js" crossorigin="anonymous"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { color: #1f1e27; font-family: Lato, sans-serif; margin: 0; padding: 2rem; }
+    .nt-card__grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(353px, 1fr)); }
+    .nt-card--mini .nt-card__grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .nt-card__title { margin: 0 0 .75rem; }
+    .nt-card__description { margin: 0 0 1.5rem; }
+    .nt-card__item { height: 100%; }
+    .card { border: 1px solid #d3d3d7; color: inherit; display: flex; height: 100%; overflow: hidden; text-decoration: none; }
+    .card--display { flex-direction: column; }
+    .card--mini { align-items: center; }
+    .card__media { aspect-ratio: 16 / 9; overflow: hidden; }
+    .card__media img { height: 100%; object-fit: cover; width: 100%; }
+    .card__content { flex: 1; padding: 1.5rem 2rem 2.5rem; }
+    .card__content--mini { padding: 1rem 1.5rem .75rem .5rem; }
+    .card__icon { color: #c33826; font-size: 1.375rem; margin-left: 1.5rem; }
+    .card__title { color: #1f1f5f; font-size: 1.25rem; margin: 0; }
+    @media (max-width: 768px) { .nt-card__grid, .nt-card--mini .nt-card__grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  [component://output]
+</body>
+</html>
