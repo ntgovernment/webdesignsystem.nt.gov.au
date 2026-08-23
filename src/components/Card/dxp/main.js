@@ -52,9 +52,7 @@ const resolveAssetMetadata = async (link, info) => {
   }
 
   const url = resolveLinkUrl(link);
-  if (!url || typeof info?.fns?.resolveMatrixAssetByUrl !== "function") {
-    return {};
-  }
+  if (!url) return {};
 
   try {
     const asset = await info.fns.resolveMatrixAssetByUrl(url, ["metadata"]);
@@ -92,7 +90,6 @@ const resolveImageAlt = (image, fallbackTitle) => {
 const resolveMetadataImage = async (value, info) => {
   if (!value || typeof value !== "string") return value;
   if (!value.startsWith("matrix-asset://")) return value;
-  if (typeof info?.fns?.resolveUri !== "function") return "";
 
   try {
     return await info.fns.resolveUri(value);

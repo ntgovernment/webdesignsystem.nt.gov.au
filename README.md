@@ -144,7 +144,9 @@ dxp-next cmp deploy src/components/Card/dxp
 dxp-next cmp dev-ui src/components/Card/dxp
 ```
 
-The Card dev UI includes `display-cards` and `mini-cards` previews. CLI 5.29.1 supports `ui:metadata.inlineEditable`; it does not support `previewPlaceholder`.
+The Card dev UI includes `image-cards`, `icon-cards`, `image-icon-cards`, `text-only-cards`, and `resolved-asset-cards` previews. The `resolved-asset-cards` preview intentionally uses bare destination links (no embedded metadata) to validate live metadata lookup. CLI 5.29.1 supports `ui:metadata.inlineEditable`; it does not support `previewPlaceholder`.
+
+Card edge renderer media resolution uses Squiz late-bound utility functions (`resolveMatrixAssetByUrl` and `resolveUri`) and requires session-based Content API access. If destination metadata cannot be resolved, cards continue to render title-only.
 
 ## Squiz Matrix Integration
 

@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "mainFunction": "main",
   "functions": [
     {
@@ -118,6 +118,19 @@
           "inputData": {
             "type": "file",
             "path": "image-icon-cards.data.json"
+          }
+        }
+      }
+    },
+    "resolved-asset-cards": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "file",
+            "path": "resolved-asset-cards.data.json"
           }
         }
       }

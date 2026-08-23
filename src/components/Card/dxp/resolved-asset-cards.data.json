@@ -1,0 +1,22 @@
+{
+  "showImage": true,
+  "showIcon": true,
+  "cardsPerRow": "2",
+  "Content": "<p>Media in this preview is resolved from the destination assets.</p>",
+  "Cards": [
+    {
+      "PageAsset": {
+        "url": "https://cmsexternal.nt.gov.au/webds/design",
+        "text": "Design",
+        "target": "_self"
+      }
+    },
+    {
+      "PageAsset": {
+        "url": "https://cmsexternal.nt.gov.au/webds/develop",
+        "text": "Develop",
+        "target": "_self"
+      }
+    }
+  ]
+}

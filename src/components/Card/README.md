@@ -32,6 +32,8 @@ Editors select a destination asset once. The DXP edge renderer retrieves that as
 - `content-cardImagePhoto` (metadata field asset `#1185561`) when Image is enabled
 - `content-cardIcon` (metadata field asset `#1185563`) when Icon is enabled
 
+DXP function utilities are late-bound during rendering. Call `resolveMatrixAssetByUrl` and `resolveUri` inside their error boundaries without an early `typeof` check; inspecting the temporary utility placeholder prevents Squiz from replacing it with the callable function.
+
 Image metadata may be an image URL, a SquizImage-like object, or a Matrix asset URI. Icon metadata is a Font Awesome class string such as `fa-light fa-circle-info`.
 
 The Content Management Content API must have session-based authentication enabled for DXP asset resolution. A missing or inaccessible metadata value leaves the selected media area empty without breaking the rest of the grid.
@@ -75,7 +77,7 @@ dxp-next cmp dev-ui src/components/Card/dxp
 dxp-next cmp deploy src/components/Card/dxp
 ```
 
-The development UI includes Image-only, Icon-only, Image+Icon, and title-only previews. The CLI uses fixed internal port `5555`; stop a stale development UI process if that port is already occupied.
+The development UI includes Image-only, Icon-only, Image+Icon, title-only, and live asset-resolution previews. The live preview intentionally omits embedded metadata and requires session-based Content API access. The CLI uses fixed internal port `5555`; stop a stale development UI process if that port is already occupied.
 
 ## Accessibility
 

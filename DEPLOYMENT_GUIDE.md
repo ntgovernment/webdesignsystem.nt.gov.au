@@ -333,6 +333,14 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 - **Check Font Awesome** - Icons require Font Awesome kit to be loaded
 - **Validate HTML structure** - Ensure container divs are not nested incorrectly
 
+### Card Images or Icons Missing
+
+- **Confirm Card toggles are enabled** - Verify both `showImage` and/or `showIcon` are enabled on the Card instance
+- **Verify destination metadata values** - Ensure linked assets include `content-cardTitle`, `content-cardImagePhoto`, and `content-cardIcon` as needed
+- **Check Content API session auth** - Card media lookup requires session-based Content API access in DXP
+- **Use the live Card preview** - Run `dxp-next cmp dev-ui src/components/Card/dxp` and open `resolved-asset-cards` to validate resolver behavior with bare links
+- **Expect graceful fallback** - If metadata cannot be resolved, cards intentionally render title-only rather than failing the component
+
 ### Theme Not Persisting
 
 - **Check localStorage** - Verify localStorage is enabled in browser
