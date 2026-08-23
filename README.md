@@ -65,6 +65,7 @@ Server-rendered components deployed independently via `dxp-next`. Each has `dxp/
 
 - Image and Icon can be enabled separately, together, or both disabled.
 - Enabled media is populated from `content-cardImagePhoto` and `content-cardIcon`; titles use `content-cardTitle`.
+- In Card `1.0.15`, the browser resolves the related image asset with `getGeneral` and renders the smallest original or variety that covers the responsive image container at the device pixel ratio.
 - In Card `1.0.14`, the browser writes the `content-cardIcon` text value to `data-metadata-icon` using the same metadata request as the image field; `#1185563` identifies the metadata field, not an icon asset.
 - In Card `1.0.13`, the browser resolves `content-cardImagePhoto` through the Matrix JavaScript API and writes it to `data-metadata-image` on each linked Card.
 - In Card `1.0.12`, every server-rendered Card exposes the complete resolved asset payload as escaped JSON in `data-asset-info`.
@@ -160,6 +161,7 @@ dxp-next cmp dev-ui src/components/ComponentViewer/dxp   # Local dev preview
 dxp-next cmp deploy src/components/Card/dxp
 dxp-next cmp dev-ui src/components/Card/dxp
 npm run test:card-dxp
+npm run test:card-client
 npm run test:card-ssr-live
 ```
 
@@ -167,7 +169,7 @@ The Card dev UI includes `image-cards`, `icon-cards`, `image-icon-cards`, `text-
 
 Card edge renderer metadata and media resolution uses the Squiz JavaScript API data service (`https://cmsexternal.nt.gov.au/webds/_design/javascript-api/data-service.js`, key `5805955303`) with `getLineageFromUrl`, `getGeneral`, `getMetadata`, and `getAttributes`. Existing Squiz late-bound utility functions (`resolveMatrixAssetByUrl` and `resolveUri`) remain as fallback, so cards continue to render when service resolution is unavailable.
 
-Card `1.0.14` exposes client-resolved `content-cardIcon` as `data-metadata-icon` using the same metadata request as Card `1.0.13`, which exposes `content-cardImagePhoto` as `data-metadata-image`. Card `1.0.12` exposes the complete resolved asset payload as escaped JSON in `data-asset-info` on every rendered Card. Card `1.0.11` adds credentialed data-service fetches for DXP session persistence and supports live image `urls`/`web_path` response fields. Card `1.0.10` also forwards nonce session cookies for server-side data-service requests. If the JavaScript API asset does not have read permissions to destination and related image assets, Matrix returns `permissionError` and Card falls back to selected `PageAsset` link fields.
+Card `1.0.15` uses the client-resolved image metadata for a cached image asset `getGeneral` request and renders the smallest available image that covers the measured media container. Card `1.0.14` exposes client-resolved `content-cardIcon` as `data-metadata-icon` using the same metadata request as Card `1.0.13`, which exposes `content-cardImagePhoto` as `data-metadata-image`. Card `1.0.12` exposes the complete resolved asset payload as escaped JSON in `data-asset-info` on every rendered Card. Card `1.0.11` adds credentialed data-service fetches for DXP session persistence and supports live image `urls`/`web_path` response fields. Card `1.0.10` also forwards nonce session cookies for server-side data-service requests. If the JavaScript API asset does not have read permissions to destination and related image assets, Matrix returns `permissionError` and Card falls back to selected `PageAsset` link fields.
 
 Card `1.0.6` also hydrates each rendered card element with namespaced attributes from resolved destination data: `data-asset-*` for asset fields and `data-metadata-*` for metadata fields. Complex values are JSON-serialized and HTML-escaped.
 

@@ -2,7 +2,7 @@
 
 Card is the preferred responsive card grid for Squiz DXP. It presents a shared collection of linked cards using image or icon media supplied by asset metadata.
 
-Current DXP component version: `1.0.14`.
+Current DXP component version: `1.0.15`.
 
 ## Input
 
@@ -55,6 +55,8 @@ Image arrays and objects are JSON-serialized, so a Related Asset value can appea
 
 Every Card is initially rendered with `data-metadata-image=""` and `data-metadata-icon=""`. The values are populated asynchronously after the browser API calls complete. The page and `data-service.js` must share an origin because the Matrix JavaScript API relies on the browser session and does not support cross-domain session calls. An unavailable API, missing metadata value, or unlinked Card keeps the empty attributes without altering the server-rendered content.
 
+When `showImage` is enabled, the browser uses the Related Asset ID from `content-cardImagePhoto` for one additional cached `getGeneral({ asset_id, get_attributes: 1 })` call. It reads the original `web_path` and available image varieties, measures the 16:9 media container, accounts for device pixel ratio, and renders the smallest image whose width and height cover that container. A `ResizeObserver` reselects the source when responsive layout changes require another size. When `showImage` is disabled, the image asset is not requested or rendered.
+
 Local vanilla previews cannot call DXP resolver functions. Supply the same values under the link's `metadata` property:
 
 ```html
@@ -93,6 +95,8 @@ This hydration supports both direct preview metadata values and JSON:API-style r
 
 ## Compatibility
 
+Version `1.0.15` resolves the client-side image Related Asset with `getGeneral` and renders the smallest original or variety that covers the responsive media container.
+
 Version `1.0.14` adds client-side `content-cardIcon` text lookup through the existing metadata request and exposes the first text value as `data-metadata-icon` on every linked Card.
 
 Version `1.0.13` adds client-side `content-cardImagePhoto` lookup through `data-service.js` and exposes the result as `data-metadata-image` on every linked Card.
@@ -124,6 +128,7 @@ Run these commands from the repository root:
 ```bash
 dxp-next cmp dev-ui src/components/Card/dxp
 dxp-next cmp deploy src/components/Card/dxp
+npm run test:card-client
 npm run test:card-dxp
 npm run test:card-ssr-live
 ```
@@ -131,6 +136,8 @@ npm run test:card-ssr-live
 The development UI includes Image-only, Icon-only, Image+Icon, title-only, and live asset-resolution previews. The live preview intentionally omits embedded metadata and requires data-service access (`Origin`, nonce session cookies, and JavaScript API asset read permissions). Resolver fallback paths still require session-based Content API access. The CLI uses fixed internal port `5555`; stop a stale development UI process if that port is already occupied.
 
 `npm run test:card-dxp` runs a focused regression harness for data-service resolution, resolver fallback attributes, and nested JSON:API image payload handling.
+
+`npm run test:card-client` verifies Matrix variety URL construction and smallest-covering image selection at different device pixel ratios.
 
 `npm run test:card-ssr-live` checks the raw deployed HTML at `https://cmsexternal.nt.gov.au/webds/_nocache` and independently resolves the live fixture destinations through the Matrix data service. It fails when the deployed Card falls back without destination metadata, even if the underlying assets are accessible. Set `CARD_SSR_PAGE_URL` to inspect another deployed page. Environments using an outbound proxy must expose it through Node's standard proxy settings.
 

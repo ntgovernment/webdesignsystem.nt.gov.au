@@ -63,6 +63,7 @@ export interface CardProps {
 interface SquizMatrixApi {
   getLineageFromUrl(options: Record<string, unknown>): Promise<unknown> | void;
   getMetadata(options: Record<string, unknown>): Promise<unknown> | void;
+  getGeneral(options: Record<string, unknown>): Promise<unknown> | void;
 }
 
 interface SquizMatrixApiConstructor {
@@ -81,6 +82,8 @@ const cardMetadataRequests = new Map<
   string,
   Promise<{ image: unknown; icon: unknown }>
 >();
+const imageAssetRequests = new Map<string, Promise<Record<string, unknown>>>();
+const imageResizeObservers = new WeakMap<HTMLElement, ResizeObserver>();
 let matrixApiPromise: Promise<SquizMatrixApi> | null = null;
 
 const loadMatrixApi = (): Promise<SquizMatrixApi> => {
@@ -185,6 +188,177 @@ const normalizeTextMetadata = (value: unknown): string => {
     : "";
 };
 
+const normalizeAssetId = (value: unknown): string => {
+  const candidate = Array.isArray(value) ? value[0] : value;
+  if (typeof candidate === "number" && Number.isFinite(candidate)) {
+    return String(Math.trunc(candidate));
+  }
+  if (candidate && typeof candidate === "object") {
+    const record = candidate as Record<string, unknown>;
+    return normalizeAssetId(record.assetid || record.asset_id || record.id);
+  }
+  if (typeof candidate !== "string") return "";
+
+  const trimmed = candidate.trim();
+  if (/^\d+$/.test(trimmed)) return trimmed;
+  return /^matrix-asset:\/\/[a-zA-Z0-9.-]+\/(\d+)(?::.+)?$/.exec(
+    trimmed,
+  )?.[1] || "";
+};
+
+const fetchImageAsset = (assetId: string): Promise<Record<string, unknown>> => {
+  const existingRequest = imageAssetRequests.get(assetId);
+  if (existingRequest) return existingRequest;
+
+  const request = loadMatrixApi().then(async (api) => {
+    const result = await callMatrixApi<unknown>(api.getGeneral.bind(api), {
+      asset_id: assetId,
+      get_attributes: 1,
+    });
+    if (!result || typeof result !== "object") return {};
+    const record = result as Record<string, unknown>;
+    return record.data && typeof record.data === "object"
+      ? (record.data as Record<string, unknown>)
+      : record;
+  });
+
+  imageAssetRequests.set(assetId, request);
+  return request;
+};
+
+export interface ImageCandidate {
+  url: string;
+  width: number;
+  height: number;
+}
+
+const toDimension = (value: unknown): number => {
+  const dimension = Number(value);
+  return Number.isFinite(dimension) && dimension > 0 ? dimension : 0;
+};
+
+export const resolveImageCandidates = (
+  asset: Record<string, unknown>,
+): ImageCandidate[] => {
+  const urls = Array.isArray(asset.urls) ? asset.urls : [];
+  const originalUrl = String(asset.web_path || asset.url || urls[0] || "");
+  if (!originalUrl) return [];
+
+  const candidates: ImageCandidate[] = [];
+  const varieties = asset.varieties;
+  const varietyData =
+    varieties && typeof varieties === "object"
+      ? (varieties as Record<string, unknown>).data
+      : null;
+
+  if (varietyData && typeof varietyData === "object") {
+    Object.values(varietyData).forEach((value) => {
+      if (!value || typeof value !== "object") return;
+      const variety = value as Record<string, unknown>;
+      const filename = String(variety.filename || "");
+      if (!filename) return;
+
+      try {
+        candidates.push({
+          url: new URL(filename, originalUrl).href,
+          width: toDimension(variety.variety_width || variety.width),
+          height: toDimension(variety.variety_height || variety.height),
+        });
+      } catch {
+        return;
+      }
+    });
+  }
+
+  candidates.push({
+    url: originalUrl,
+    width: toDimension(asset.width),
+    height: toDimension(asset.height),
+  });
+
+  return candidates
+    .filter((candidate) => candidate.width && candidate.height)
+    .sort((left, right) => left.width * left.height - right.width * right.height);
+};
+
+export const selectImageCandidate = (
+  candidates: ImageCandidate[],
+  width: number,
+  height: number,
+  pixelRatio = Math.max(1, window.devicePixelRatio || 1),
+): ImageCandidate | null => {
+  if (candidates.length === 0) return null;
+  const requiredWidth = width * pixelRatio;
+  const requiredHeight = height * pixelRatio;
+  return (
+    candidates.find(
+      (candidate) =>
+        candidate.width >= requiredWidth &&
+        candidate.height >= requiredHeight,
+    ) || candidates.at(-1) || null
+  );
+};
+
+const cardShowsImage = (card: HTMLElement): boolean =>
+  card.closest<HTMLElement>(".nt-card__grid")?.dataset.showImage === "true";
+
+const renderClientImage = (
+  card: HTMLElement,
+  asset: Record<string, unknown>,
+): void => {
+  const candidates = resolveImageCandidates(asset);
+  if (candidates.length === 0) return;
+
+  let media = Array.from(card.children).find((child) =>
+    child.classList.contains("card__media"),
+  ) as HTMLElement | undefined;
+  if (!media) {
+    media = document.createElement("div");
+    media.className = "card__media card__media--16-9";
+    card.insertBefore(media, card.firstChild);
+  }
+
+  let image = media.querySelector("img");
+  if (!image) {
+    image = document.createElement("img");
+    image.loading = "lazy";
+    image.decoding = "async";
+    media.appendChild(image);
+  }
+
+  const attributes =
+    asset.attributes && typeof asset.attributes === "object"
+      ? (asset.attributes as Record<string, unknown>)
+      : {};
+  image.alt = String(
+    asset.alt ||
+      attributes.alt ||
+      card.querySelector(".card__title")?.textContent ||
+      "",
+  );
+
+  const updateImage = () => {
+    const bounds = media.getBoundingClientRect();
+    const width = bounds.width || card.getBoundingClientRect().width;
+    const height = bounds.height || width * (9 / 16);
+    const candidate = selectImageCandidate(candidates, width, height);
+    if (!candidate || image.dataset.matrixSource === candidate.url) return;
+
+    image.src = candidate.url;
+    image.width = candidate.width;
+    image.height = candidate.height;
+    image.dataset.matrixSource = candidate.url;
+  };
+
+  updateImage();
+  imageResizeObservers.get(media)?.disconnect();
+  if (typeof ResizeObserver !== "undefined") {
+    const observer = new ResizeObserver(updateImage);
+    observer.observe(media);
+    imageResizeObservers.set(media, observer);
+  }
+};
+
 const fetchCardMetadata = (
   url: string,
 ): Promise<{ image: unknown; icon: unknown }> => {
@@ -231,9 +405,15 @@ const enrichCardMetadata = (root: ParentNode = document): void => {
     if (!url) return;
 
     void fetchCardMetadata(new URL(url, window.location.href).href)
-      .then((metadata) => {
+      .then(async (metadata) => {
         card.dataset.metadataImage = serializeMetadataValue(metadata.image);
         card.dataset.metadataIcon = normalizeTextMetadata(metadata.icon);
+        if (!cardShowsImage(card)) return;
+
+        const imageAssetId = normalizeAssetId(metadata.image);
+        if (!imageAssetId) return;
+        const imageAsset = await fetchImageAsset(imageAssetId);
+        renderClientImage(card, imageAsset);
       })
       .catch((error) => {
         debugError("[Card] Unable to resolve metadata:", error);
