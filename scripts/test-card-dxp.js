@@ -117,6 +117,7 @@ globalThis.fetch = async (url, options = {}) => {
   if (requestUrl.includes("SQ_ACTION=getToken")) {
     tokenRequestCount += 1;
     assert.equal(options.headers?.Origin, "https://cmsexternal.nt.gov.au");
+    assert.equal(options.credentials, "include");
     return {
       ok: true,
       headers: {
@@ -132,6 +133,7 @@ globalThis.fetch = async (url, options = {}) => {
   assert.equal(options.headers?.Origin, "https://cmsexternal.nt.gov.au");
   assert.equal(options.headers?.["X-SquizMatrix-JSAPI-Key"], "5805955303");
   assert.equal(options.headers?.Cookie, "SQ_SYSTEM_SESSION_INTER=mock-session");
+  assert.equal(options.credentials, "include");
 
   const payload = JSON.parse(options.body || "{}");
   const type = payload.type;
@@ -189,7 +191,7 @@ globalThis.fetch = async (url, options = {}) => {
         id: "456",
         type: "image",
         uri: "matrix-asset://ntg/456",
-        url: "https://example.nt.gov.au/design-from-service.jpg",
+        urls: ["https://example.nt.gov.au/design-from-service.jpg"],
       }),
     };
   }
@@ -206,7 +208,6 @@ globalThis.fetch = async (url, options = {}) => {
       ok: true,
       json: async () => ({
         attributes: {
-          url: "https://example.nt.gov.au/design-from-service.jpg",
           alt: "Service image alt",
         },
       }),

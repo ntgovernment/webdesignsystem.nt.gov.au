@@ -353,12 +353,9 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 
 ### Card Images or Icons Missing
 
-- **Confirm Card toggles are enabled** - Verify both `showImage` and/or `showIcon` are enabled on the Card instance
-- **Verify destination metadata values** - Ensure linked assets include `content-cardTitle`, `content-cardImagePhoto`, and `content-cardIcon` as needed
-- **Check Related Asset image values** - In Card `1.0.5+`, `content-cardImagePhoto` may be a Matrix metadata array containing a bare image asset ID. The renderer resolves that ID as `matrix-asset://ntg/<id>` via `resolveUri`, then uses the resolved asset's `url` or first `urls` value
-- **Inspect card hydration attributes** - In Card `1.0.6+`, each rendered `.card` includes `data-asset-*` and `data-metadata-*` values from resolved destination asset data. Use browser DevTools to verify expected fields are present
-- **Upgrade existing Card instances** - Card `1.0.7` preserves selected link attributes when lookup fails and handles nested JSON:API image assets. Existing Visual Page Builder instances may remain pinned to an earlier component version and must be upgraded explicitly
-- **Check Content API session auth** - Card media lookup requires session-based Content API access in DXP
+ **Use Card `1.0.11` or later** - Server-side data-service requests use credentials and live image responses can supply `urls` or `web_path`; existing instances may need an explicit component-version upgrade
+ **Check Related Asset image values** - In Card `1.0.5+`, `content-cardImagePhoto` may be a Matrix metadata array containing a bare image asset ID. The renderer resolves that ID through the data service first, then `resolveUri`, and uses the resolved asset's `url`, first `urls` value, or `web_path`
+ **Run the deployed SSR check** - Set Node's standard proxy variables when required, then run `npm run test:card-ssr-live`; set `CARD_SSR_PAGE_URL` to inspect another deployed page
 - **Use the live Card preview** - Run `dxp-next cmp dev-ui src/components/Card/dxp` and open `resolved-asset-cards` to validate resolver behavior with bare links
 - **Expect graceful fallback** - If metadata cannot be resolved, cards intentionally render title-only rather than failing the component
 

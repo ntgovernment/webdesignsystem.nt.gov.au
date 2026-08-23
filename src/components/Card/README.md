@@ -2,7 +2,7 @@
 
 Card is the preferred responsive card grid for Squiz DXP. It presents a shared collection of linked cards using image or icon media supplied by asset metadata.
 
-Current DXP component version: `1.0.10`.
+Current DXP component version: `1.0.11`.
 
 ## Input
 
@@ -83,6 +83,8 @@ This hydration supports both direct preview metadata values and JSON:API-style r
 
 ## Compatibility
 
+Version `1.0.11` enables credentialed fetches for the nonce and data-service requests so the DXP runtime can retain its Matrix session. It also reads live image URLs returned as `urls` or `web_path` by `getGeneral`.
+
 Version `1.0.10` forwards the Matrix session cookies returned with the nonce so server-side DXP requests can authenticate the subsequent data-service calls.
 
 Version `1.0.9` routes requests through the DXP runtime fetch function, reuses one origin-bound nonce per service client, rejects Matrix API error envelopes, selects the destination at the end of returned lineage, and retains successful results if an optional asset call fails.
@@ -107,11 +109,14 @@ Run these commands from the repository root:
 dxp-next cmp dev-ui src/components/Card/dxp
 dxp-next cmp deploy src/components/Card/dxp
 npm run test:card-dxp
+npm run test:card-ssr-live
 ```
 
 The development UI includes Image-only, Icon-only, Image+Icon, title-only, and live asset-resolution previews. The live preview intentionally omits embedded metadata and requires data-service access (`Origin`, nonce session cookies, and JavaScript API asset read permissions). Resolver fallback paths still require session-based Content API access. The CLI uses fixed internal port `5555`; stop a stale development UI process if that port is already occupied.
 
 `npm run test:card-dxp` runs a focused regression harness for data-service resolution, resolver fallback attributes, and nested JSON:API image payload handling.
+
+`npm run test:card-ssr-live` checks the raw deployed HTML at `https://cmsexternal.nt.gov.au/webds/_nocache` and independently resolves the live fixture destinations through the Matrix data service. It fails when the deployed Card falls back without destination metadata, even if the underlying assets are accessible. Set `CARD_SSR_PAGE_URL` to inspect another deployed page. Environments using an outbound proxy must expose it through Node's standard proxy settings.
 
 ## Accessibility
 

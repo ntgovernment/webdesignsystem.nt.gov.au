@@ -83,7 +83,16 @@ const readGeneralFields = (...sources) => {
     if (isRecord(source.general)) return source.general;
     if (isRecord(source.data?.general)) return source.data.general;
 
-    const knownKeys = ["id", "type", "name", "url", "uri", "matrixAssetUri"];
+    const knownKeys = [
+      "id",
+      "type",
+      "name",
+      "url",
+      "urls",
+      "web_path",
+      "uri",
+      "matrixAssetUri",
+    ];
     const fields = {};
     for (const key of knownKeys) {
       if (Object.prototype.hasOwnProperty.call(source, key)) {
@@ -135,6 +144,7 @@ const getNonceToken = async (fetchImpl, endpoint, cacheKey, origin) => {
   const tokenRequest = (async () => {
     const response = await fetchImpl(`${endpoint}?SQ_ACTION=getToken`, {
       headers: { Origin: origin },
+      credentials: "include",
     });
     if (!response.ok) {
       throw new Error(
@@ -189,6 +199,7 @@ export const createMatrixDataServiceClient = (options = {}) => {
       method: "POST",
       headers,
       body: JSON.stringify(body),
+      credentials: "include",
     });
   };
 

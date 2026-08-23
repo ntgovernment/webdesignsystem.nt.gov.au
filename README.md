@@ -65,6 +65,7 @@ Server-rendered components deployed independently via `dxp-next`. Each has `dxp/
 
 - Image and Icon can be enabled separately, together, or both disabled.
 - Enabled media is populated from `content-cardImagePhoto` and `content-cardIcon`; titles use `content-cardTitle`.
+- In Card `1.0.11`, Matrix requests use credentialed fetches and retain live image `urls`/`web_path` values.
 - In Card `1.0.10`, the data-service nonce session cookies are forwarded across server-side DXP requests.
 - In Card `1.0.9`, data-service requests use the DXP runtime fetch function with origin-bound nonce reuse and correct destination lineage selection.
 - In Card `1.0.8`, destination metadata and attributes are resolved through the Squiz JavaScript API data service first, then fall back to DXP resolver functions if needed.
@@ -156,13 +157,14 @@ dxp-next cmp dev-ui src/components/ComponentViewer/dxp   # Local dev preview
 dxp-next cmp deploy src/components/Card/dxp
 dxp-next cmp dev-ui src/components/Card/dxp
 npm run test:card-dxp
+npm run test:card-ssr-live
 ```
 
 The Card dev UI includes `image-cards`, `icon-cards`, `image-icon-cards`, `text-only-cards`, and `resolved-asset-cards` previews. The `resolved-asset-cards` preview intentionally uses bare destination links (no embedded metadata) to validate live metadata lookup. CLI 5.29.1 supports `ui:metadata.inlineEditable`; it does not support `previewPlaceholder`.
 
 Card edge renderer metadata and media resolution uses the Squiz JavaScript API data service (`https://cmsexternal.nt.gov.au/webds/_design/javascript-api/data-service.js`, key `5805955303`) with `getLineageFromUrl`, `getGeneral`, `getMetadata`, and `getAttributes`. Existing Squiz late-bound utility functions (`resolveMatrixAssetByUrl` and `resolveUri`) remain as fallback, so cards continue to render when service resolution is unavailable.
 
-Card `1.0.10` also forwards nonce session cookies for server-side data-service requests. If the JavaScript API asset does not have read permissions to destination and related image assets, Matrix returns `permissionError` and Card falls back to selected `PageAsset` link fields.
+Card `1.0.11` adds credentialed data-service fetches for DXP session persistence and supports live image `urls`/`web_path` response fields. Card `1.0.10` also forwards nonce session cookies for server-side data-service requests. If the JavaScript API asset does not have read permissions to destination and related image assets, Matrix returns `permissionError` and Card falls back to selected `PageAsset` link fields.
 
 Card `1.0.6` also hydrates each rendered card element with namespaced attributes from resolved destination data: `data-asset-*` for asset fields and `data-metadata-*` for metadata fields. Complex values are JSON-serialized and HTML-escaped.
 
