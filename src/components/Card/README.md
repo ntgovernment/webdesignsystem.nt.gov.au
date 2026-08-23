@@ -2,7 +2,7 @@
 
 Card is the preferred responsive card grid for Squiz DXP. It presents a shared collection of linked cards using image or icon media supplied by asset metadata.
 
-Current DXP component version: `1.0.11`.
+Current DXP component version: `1.0.13`.
 
 ## Input
 
@@ -46,6 +46,10 @@ Local previews may continue supplying an image URL or SquizImage-like object dir
 
 The data service endpoint and API key must be accessible from the rendering environment. Resolver fallback still requires session-based Content API access. A missing or inaccessible metadata value leaves the selected media area empty without breaking the rest of the grid.
 
+The browser bundle also loads the same JavaScript API asset on pages containing rendered Cards. For each linked Card it calls `getLineageFromUrl`, then `getMetadata`, and writes metadata field `content-cardImagePhoto` (`#1185561`) to `data-metadata-image`. Arrays and objects are JSON-serialized, so a Related Asset value can appear in the DOM as `data-metadata-image="[&quot;1592553&quot;]"` and is available through `card.dataset.metadataImage` as `["1592553"]`.
+
+Every Card is initially rendered with `data-metadata-image=""`. The value is populated asynchronously after the browser API calls complete. The page and `data-service.js` must share an origin because the Matrix JavaScript API relies on the browser session and does not support cross-domain session calls. An unavailable API, missing metadata value, or unlinked Card keeps the empty attribute without altering the server-rendered content.
+
 Local vanilla previews cannot call DXP resolver functions. Supply the same values under the link's `metadata` property:
 
 ```html
@@ -74,6 +78,7 @@ The renderer exposes an empty Content field target in editor mode so TinyMCE can
 
 Each rendered card element (`a.card` or `div.card`) now includes data attributes for resolved destination asset values:
 
+- `data-asset-info` contains the complete resolved asset object as HTML-escaped JSON. When remote resolution is unavailable, it contains the selected `PageAsset` value.
 - `data-asset-*` attributes are hydrated from resolved asset attributes (or direct asset fields for local previews).
 - `data-metadata-*` attributes are hydrated from resolved metadata fields.
 - Primitive values are emitted directly; arrays and objects are JSON-serialized and HTML-escaped.
@@ -82,6 +87,10 @@ Each rendered card element (`a.card` or `div.card`) now includes data attributes
 This hydration supports both direct preview metadata values and JSON:API-style resolver responses (`data.attributes`).
 
 ## Compatibility
+
+Version `1.0.13` adds client-side `content-cardImagePhoto` lookup through `data-service.js` and exposes the result as `data-metadata-image` on every linked Card.
+
+Version `1.0.12` adds `data-asset-info` to every rendered Card so consumers can access the complete resolved asset payload from the server-rendered HTML.
 
 Version `1.0.11` enables credentialed fetches for the nonce and data-service requests so the DXP runtime can retain its Matrix session. It also reads live image URLs returned as `urls` or `web_path` by `getGeneral`.
 
@@ -117,6 +126,8 @@ The development UI includes Image-only, Icon-only, Image+Icon, title-only, and l
 `npm run test:card-dxp` runs a focused regression harness for data-service resolution, resolver fallback attributes, and nested JSON:API image payload handling.
 
 `npm run test:card-ssr-live` checks the raw deployed HTML at `https://cmsexternal.nt.gov.au/webds/_nocache` and independently resolves the live fixture destinations through the Matrix data service. It fails when the deployed Card falls back without destination metadata, even if the underlying assets are accessible. Set `CARD_SSR_PAGE_URL` to inspect another deployed page. Environments using an outbound proxy must expose it through Node's standard proxy settings.
+
+To verify client enrichment, open the deployed page, wait for load, and inspect `.nt-card .card[data-metadata-image]` in browser developer tools. A populated value confirms the destination lineage and metadata requests completed in the visitor's Matrix session.
 
 ## Accessibility
 

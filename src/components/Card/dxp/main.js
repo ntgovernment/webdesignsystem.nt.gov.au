@@ -365,6 +365,7 @@ const populateCardMedia = async (card, visibility, info) => {
 
   return {
     ...item,
+    resolvedAssetInfo: asset || item.PageAsset || {},
     resolvedAssetAttributes: attributes,
     resolvedMetadata: metadata,
     resolvedTitle,
@@ -405,6 +406,10 @@ const renderCard = (card, index, visibility, editor) => {
   const hrefAttr = href ? ` href="${escapeAttr(href)}"` : "";
   const targetAttr = target ? ` target="${escapeAttr(target)}"` : "";
   const relAttr = target === "_blank" ? ' rel="noopener noreferrer"' : "";
+  const assetInfo = serializeDataAttributeValue(
+    item.resolvedAssetInfo || item.PageAsset || {},
+  );
+  const assetInfoAttribute = ` data-asset-info="${escapeAttr(assetInfo || "{}")}"`;
   const assetDataAttributes = renderDataAttributes(
     item.resolvedAssetAttributes,
     "asset",
@@ -434,7 +439,7 @@ const renderCard = (card, index, visibility, editor) => {
     .join(" ");
 
   return `<div class="nt-card__item" role="listitem" data-card-index="${index}">
-    <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset"${assetDataAttributes}${metadataDataAttributes}${hrefAttr}${targetAttr}${relAttr}>
+    <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset" data-metadata-image=""${assetInfoAttribute}${assetDataAttributes}${metadataDataAttributes}${hrefAttr}${targetAttr}${relAttr}>
       ${imageHtml}
       ${leadingIcon}
       <div class="${bodyClass}">

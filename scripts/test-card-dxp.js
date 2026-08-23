@@ -59,6 +59,11 @@ assert.match(
 );
 assert.match(fallbackHtml, /data-asset-text="Design"/);
 assert.match(fallbackHtml, /data-asset-target="_self"/);
+assert.match(fallbackHtml, /data-metadata-image=""/);
+assert.match(
+  fallbackHtml,
+  /data-asset-info="{&quot;url&quot;:&quot;https:\/\/example\.nt\.gov\.au\/design&quot;,&quot;text&quot;:&quot;Design&quot;,&quot;target&quot;:&quot;_self&quot;}"/,
+);
 assert.match(fallbackHtml, /<h3 class="card__title">Design<\/h3>/);
 
 const resolvedHtml = await cardComponent.main(baseInput, {
@@ -98,6 +103,10 @@ const resolvedHtml = await cardComponent.main(baseInput, {
 
 assert.match(resolvedHtml, /data-asset-id="123"/);
 assert.match(resolvedHtml, /data-asset-type="page"/);
+assert.match(
+  resolvedHtml,
+  /data-asset-info="{&quot;id&quot;:&quot;123&quot;,&quot;type&quot;:&quot;page&quot;,&quot;attributes&quot;:/,
+);
 assert.match(
   resolvedHtml,
   /data-metadata-content-card-title="\[&quot;Design metadata&quot;\]"/,

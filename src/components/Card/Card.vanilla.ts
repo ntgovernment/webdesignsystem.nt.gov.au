@@ -60,6 +60,160 @@ export interface CardProps {
   cssClass?: string;
 }
 
+interface SquizMatrixApi {
+  getLineageFromUrl(options: Record<string, unknown>): Promise<unknown> | void;
+  getMetadata(options: Record<string, unknown>): Promise<unknown> | void;
+}
+
+interface SquizMatrixApiConstructor {
+  new (options: { key: string }): SquizMatrixApi;
+}
+
+const MATRIX_DATA_SERVICE_URL =
+  "https://cmsexternal.nt.gov.au/webds/_design/javascript-api/data-service.js";
+const MATRIX_DATA_SERVICE_KEY = "5805955303";
+const CARD_IMAGE_METADATA_KEY = "content-cardImagePhoto";
+const CARD_IMAGE_METADATA_FIELD_ID = "1185561";
+const enrichedCards = new WeakSet<HTMLElement>();
+const metadataImageRequests = new Map<string, Promise<unknown>>();
+let matrixApiPromise: Promise<SquizMatrixApi> | null = null;
+
+const loadMatrixApi = (): Promise<SquizMatrixApi> => {
+  if (matrixApiPromise) return matrixApiPromise;
+
+  matrixApiPromise = new Promise((resolve, reject) => {
+    const createApi = () => {
+      const Api = window.Squiz_Matrix_API;
+      if (!Api) return false;
+      resolve(new Api({ key: MATRIX_DATA_SERVICE_KEY }));
+      return true;
+    };
+
+    if (createApi()) return;
+
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      `script[src="${MATRIX_DATA_SERVICE_URL}"]`,
+    );
+    const script = existingScript || document.createElement("script");
+    const handleLoad = () => {
+      if (!createApi()) {
+        reject(new Error("Squiz Matrix JavaScript API did not initialize"));
+      }
+    };
+
+    script.addEventListener("load", handleLoad, { once: true });
+    script.addEventListener(
+      "error",
+      () => reject(new Error("Unable to load Squiz Matrix JavaScript API")),
+      { once: true },
+    );
+
+    if (!existingScript) {
+      script.src = MATRIX_DATA_SERVICE_URL;
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  });
+
+  return matrixApiPromise;
+};
+
+const callMatrixApi = <T>(
+  method: (options: Record<string, unknown>) => Promise<unknown> | void,
+  options: Record<string, unknown>,
+): Promise<T> =>
+  new Promise((resolve, reject) => {
+    const result = method({
+      ...options,
+      dataCallback: resolve,
+      errorCallback: reject,
+    });
+    if (result && typeof result.then === "function") {
+      result.then((value) => resolve(value as T), reject);
+    }
+  });
+
+const resolveLineageAssetId = (lineage: unknown): string => {
+  const entries = Array.isArray(lineage)
+    ? lineage
+    : lineage && typeof lineage === "object"
+      ? Object.values(lineage)
+      : [];
+  const destination = entries.at(-1);
+  if (!destination || typeof destination !== "object") return "";
+
+  const record = destination as Record<string, unknown>;
+  return String(record.assetid || record.asset_id || record.id || "");
+};
+
+const resolveMetadataImage = (metadata: unknown): unknown => {
+  if (!metadata || typeof metadata !== "object") return "";
+  const record = metadata as Record<string, unknown>;
+  const values =
+    record.metadata && typeof record.metadata === "object"
+      ? (record.metadata as Record<string, unknown>)
+      : record;
+  return (
+    values[CARD_IMAGE_METADATA_KEY] ??
+    values[CARD_IMAGE_METADATA_FIELD_ID] ??
+    ""
+  );
+};
+
+const serializeMetadataImage = (value: unknown): string => {
+  if (value === null || value === undefined) return "";
+  if (["string", "number", "boolean"].includes(typeof value)) {
+    return String(value);
+  }
+
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return "";
+  }
+};
+
+const fetchMetadataImage = (url: string): Promise<unknown> => {
+  const existingRequest = metadataImageRequests.get(url);
+  if (existingRequest) return existingRequest;
+
+  const request = loadMatrixApi().then(async (api) => {
+    const lineage = await callMatrixApi<unknown>(
+      api.getLineageFromUrl.bind(api),
+      { asset_url: url },
+    );
+    const assetId = resolveLineageAssetId(lineage);
+    if (!assetId) return "";
+
+    const metadata = await callMatrixApi<unknown>(api.getMetadata.bind(api), {
+      asset_id: assetId,
+    });
+    return resolveMetadataImage(metadata);
+  });
+
+  metadataImageRequests.set(url, request);
+  return request;
+};
+
+const enrichCardMetadataImages = (root: ParentNode = document): void => {
+  root.querySelectorAll<HTMLElement>(".nt-card .card[href]").forEach((card) => {
+    if (enrichedCards.has(card)) return;
+    enrichedCards.add(card);
+    card.dataset.metadataImage = "";
+
+    const url = card.getAttribute("href");
+    if (!url) return;
+
+    void fetchMetadataImage(new URL(url, window.location.href).href)
+      .then((value) => {
+        card.dataset.metadataImage = serializeMetadataImage(value);
+      })
+      .catch((error) => {
+        debugError("[Card] Unable to resolve image metadata:", error);
+      });
+  });
+};
+
 const resolveColumnClass = (cardsPerRow?: CardColumns): string => {
   switch (cardsPerRow) {
     case "2":
@@ -215,7 +369,7 @@ export class CardClient {
       .join(" ");
 
     return `<div class="nt-card__item" role="listitem" data-card-index="${index}">
-      <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset"${hrefAttr}${targetAttr}${relAttr}>
+      <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset" data-metadata-image=""${hrefAttr}${targetAttr}${relAttr}>
         ${imageHtml}
         ${leadingIcon}
         <div class="${bodyClasses}">
@@ -260,6 +414,7 @@ if (typeof document !== "undefined") {
     document
       .querySelectorAll<HTMLElement>('[data-hydration-component="card"]')
       .forEach((node) => new CardClient(node));
+    enrichCardMetadataImages();
   };
 
   if (document.readyState === "loading") {
@@ -272,6 +427,7 @@ if (typeof document !== "undefined") {
 declare global {
   interface Window {
     NTGCard: typeof CardClient;
+    Squiz_Matrix_API?: SquizMatrixApiConstructor;
   }
 }
 
