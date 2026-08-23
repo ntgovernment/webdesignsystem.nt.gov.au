@@ -1,6 +1,6 @@
 # ColorSwatch Component
 
-A display component that presents color swatches in a grid layout with an optional formatted introduction. Each swatch displays a color sample with its label and hex code in a card format. Part of the NT Government Web Design System, designed for showcasing colors from the extended color palette in design documentation and theming interfaces.
+A display component that presents color swatches in a grid layout with optional formatted content. Each swatch displays a color sample with its name and hex code in a card format. Part of the NT Government Web Design System, designed for showcasing colors from the extended color palette in design documentation and theming interfaces.
 
 ## Overview
 
@@ -12,8 +12,9 @@ The ColorSwatch component renders a responsive grid of color cards, each display
 
 The component supports:
 
-- **Formatted introduction** (rich text rendered above the swatch grid)
+- **Formatted content** (rich text rendered above the swatch grid)
 - **Multiple color swatches** displayed in a responsive grid layout
+- **Inline editing** for Content and each swatch Name and Hex value in Visual Page Builder
 
 ### Icon Rationale
 
@@ -34,13 +35,13 @@ The component follows the Figma specification:
 ## Features
 
 - **Grid layout**: Responsive grid displaying multiple color swatches with auto-fill columns (152px fixed width)
-- **Formatted introduction**: Rich text rendered above the swatch grid (DXP FormattedText)
+- **Formatted content**: Rich text rendered above the swatch grid (DXP FormattedText)
 - **Server-side & client-side rendering**: Works with both DXP SSR and vanilla JS hydration
 - **Design token integration**: Uses CSS custom properties for consistent theming
 - **Accessible markup**: Semantic HTML with proper ARIA attributes
 - **Responsive design**: Grid adapts to container width with auto-fill columns
 - **Auto-initialization**: Automatically mounts on DOM ready via data attributes (client-side)
-- **Sanitization**: Most user inputs are escaped; Introduction is rendered as HTML when using FormattedText
+- **Sanitization**: Name and Hex values are escaped; Content is rendered as trusted FormattedText HTML
 
 ## Props / Input Properties
 
@@ -48,24 +49,33 @@ The component follows the Figma specification:
 
 The DXP component accepts the following properties for rendering a grid of color swatches:
 
-| Property       | Type            | Required | Description                                              | Example                                                 |
-| -------------- | --------------- | -------- | -------------------------------------------------------- | ------------------------------------------------------- |
-| `Introduction` | `FormattedText` | No       | Optional formatted text displayed above the swatch grid  | "<p>The extended palette <strong>range</strong>...</p>" |
-| `ColorValues`  | `array`         | Yes      | Collection of color swatches to display (minimum 1 item) | `[{ "Value": "Blue 03 #1F1F5F" }]`                      |
-| `cssClass`     | `string`        | No       | Additional CSS class(es) to apply to the grid container  | "custom-grid"                                           |
+| Property      | Type            | Schema required | Description                                              | Example                                                   |
+| ------------- | --------------- | --------------- | -------------------------------------------------------- | --------------------------------------------------------- |
+| `Content`     | `FormattedText` | No              | Optional formatted content displayed above the grid      | `"<p>The extended palette <strong>range</strong>...</p>"` |
+| `ColorValues` | `array`         | No              | Collection of color swatches to display (minimum 1 item) | `[{ "Name": "Blue 03", "Hex": "#1F1F5F" }]`          |
+
+The root schema leaves both fields optional so an editor can create the component incrementally. The renderer displays an error state until at least one `ColorValues` item is provided. Programmatic callers can also pass `cssClass` to add classes to the grid container; it is not exposed in the DXP authoring schema.
 
 #### ColorValues Array Item Structure
 
 Each item in the `ColorValues` array has the following structure:
 
-| Property | Type     | Required | Description                                                 | Example               |
-| -------- | -------- | -------- | ----------------------------------------------------------- | --------------------- |
-| `Value`  | `string` | Yes      | Color in format: "Name #HexValue" (e.g., "Blue 03 #1F1F5F") | `"Orange 03 #E35205"` |
+| Property | Type     | Required | Description                                      | Example       |
+| -------- | -------- | -------- | ------------------------------------------------ | ------------- |
+| `Name`   | `string` | Yes      | Display name for the color                       | `"Orange 03"` |
+| `Hex`    | `string` | Yes      | Displayed code and CSS color applied to the tile | `"#E35205"`   |
 
-The `Value` string is automatically parsed by the server-side renderer:
+## Inline Editing
 
-- **Name** (before `#`): Used as the label
-- **HexValue** (after `#`): Used as both the background color and hex code display
+Visual Page Builder maps editable output to these field paths:
+
+- `data-sq-field="Content"`
+- `data-sq-field="ColorValues[0].Name"`
+- `data-sq-field="ColorValues[0].Hex"`
+
+The array index changes for each swatch. Editing `Hex` updates its displayed value and, when DXP rerenders the component, the sample's `background-color`. The editor renders an empty Content target so authors can add formatted content inline even when no initial value exists.
+
+Existing saved `Introduction` and combined `Value` inputs remain render-compatible during migration. New and legacy fields are not both exposed in the authoring form, and canonical `Content`, `Name`, and `Hex` values take precedence when both forms are supplied.
 
 ### Client-Side TypeScript Interface
 
@@ -73,12 +83,16 @@ For client-side hydration, each individual swatch expects these props:
 
 ```typescript
 export interface ColorSwatchProps {
-  Color?: string; // PascalCase (DXP standard)
+  Name?: string;
+  Hex?: string;
+  Color?: string;
   Label?: string;
   HexCode?: string;
   cssClass?: string;
 
   // Fallback lowercase props for legacy compatibility
+  name?: string;
+  hex?: string;
   color?: string;
   label?: string;
   hexCode?: string;
@@ -88,14 +102,15 @@ export interface ColorSwatchProps {
 
 ### Client-Side Property Details
 
-| Property                 | Type     | Required | Description                                                                         | Example                               |
-| ------------------------ | -------- | -------- | ----------------------------------------------------------------------------------- | ------------------------------------- |
-| `Color` / `color`        | `string` | No       | Background color for the swatch sample. Accepts hex codes or CSS custom properties. | `"#1F1F5F"` or `"var(--clr-primary)"` |
-| `Label` / `label`        | `string` | No       | Display name for the color                                                          | `"Blue 03"`                           |
-| `HexCode` / `hexCode`    | `string` | No       | Hex code text to display below the label                                            | `"#1F1F5F"`                           |
-| `cssClass` / `className` | `string` | No       | Additional CSS class(es) to apply to the container                                  | `"custom-variant"`                    |
+| Property                 | Type     | Required | Description                                        | Example            |
+| ------------------------ | -------- | -------- | -------------------------------------------------- | ------------------ |
+| `Name` / `name`          | `string` | No       | Display name for the color                         | `"Blue 03"`        |
+| `Hex` / `hex`            | `string` | No       | Displayed code and background color for the sample | `"#1F1F5F"`        |
+| `cssClass` / `className` | `string` | No       | Additional CSS classes for the container           | `"custom-variant"` |
 
-**Note**: The component supports both PascalCase (DXP convention) and camelCase (legacy) property names with automatic fallback resolution.
+`Color`, `Label`, `HexCode`, and their lowercase forms remain compatibility aliases. New code should use `Name` and `Hex`.
+
+**Note**: The standalone client accepts canonical PascalCase or lowercase props. Legacy `Color`, `Label`, and `HexCode` aliases remain available for existing integrations.
 
 ## Usage Examples
 
@@ -106,7 +121,7 @@ export interface ColorSwatchProps {
 ```html
 <div
   data-hydration-component="color-swatch"
-  data-hydration-props='{"Color":"#1F1F5F","Label":"Blue 03","HexCode":"#1F1F5F"}'
+  data-hydration-props='{"Name":"Blue 03","Hex":"#1F1F5F"}'
 ></div>
 ```
 
@@ -119,9 +134,8 @@ import { ColorSwatchClient } from "@ntgovernment/web-design-system/components/Co
 
 const container = document.getElementById("my-swatch");
 const swatch = new ColorSwatchClient(container, {
-  Color: "#E35205",
-  Label: "Orange 03",
-  HexCode: "#E35205",
+  Name: "Orange 03",
+  Hex: "#E35205",
 });
 ```
 
@@ -133,13 +147,13 @@ const swatch = new ColorSwatchClient(container, {
 import colorSwatchComponent from "./src/components/ColorSwatch/dxp/main.js";
 
 const html = await colorSwatchComponent.main({
-  Introduction:
+  Content:
     "<p>The extended color palette provides a <strong>range</strong> of shades for each base color.</p>",
   ColorValues: [
-    { Value: "Blue 03 #1F1F5F" },
-    { Value: "Orange 03 #E35205" },
-    { Value: "Ochre 02 #C33826" },
-    { Value: "Coral 03 #C25062" },
+    { Name: "Blue 03", Hex: "#1F1F5F" },
+    { Name: "Orange 03", Hex: "#E35205" },
+    { Name: "Ochre 02", Hex: "#C33826" },
+    { Name: "Coral 03", Hex: "#C25062" },
   ],
   cssClass: "my-custom-grid",
 });
@@ -159,14 +173,10 @@ console.log(html);
 2. **Add to Matrix page** via DXP Component Services interface
 3. **Configure inputs** in the component editor:
 
-- **Grid Introduction** (FormattedText, optional): `The extended color palette provides a <strong>range</strong> of shades for each base color.`
+- **Content** (FormattedText, optional): `The extended color palette provides a <strong>range</strong> of shades for each base color.`
 - **Color Swatches** (array): Add multiple items
-  - Color Value 1: `Blue 03 #1F1F5F`
-  - Color Value 2: `Orange 03 #E35205`
-  - Color Value 3: `Ochre 02 #C33826`
-  - Color Value 4: `Coral 03 #C25062`
 
-The component automatically parses each Value string (format: "Name #HexValue") and renders the grid with all swatches.
+Each item has an inline-editable **Name** and **Hex**. Enter Hex with its leading `#`; updating it changes both the displayed code and the sample background after DXP rerenders the component.
 
 ## Styling
 
@@ -175,9 +185,9 @@ The component automatically parses each Value string (format: "Name #HexValue") 
 | Class                                | Description                                                 |
 | ------------------------------------ | ----------------------------------------------------------- |
 | `.nt-color-swatch-grid`              | Root container for the entire component                     |
-| `.nt-color-swatch-grid__description` | Formatted introduction (rich text above the swatch grid)    |
+| `.nt-color-swatch-grid__description` | Formatted content (rich text above the swatch grid)         |
 | `.nt-color-swatch-grid__container`   | Grid container with auto-fill layout (152px columns)        |
-| `.nt-color-swatch-grid--no-intro`    | Reduces top margin when no introduction is provided         |
+| `.nt-color-swatch-grid--no-intro`    | Reduces top margin when no Content is provided              |
 | `.nt-color-swatch`                   | Individual swatch card with border, padding, and background |
 | `.nt-color-swatch__sample`           | Color display area (99px height, 152px width)               |
 | `.nt-color-swatch__content`          | Text container with padding and gap                         |
@@ -195,7 +205,7 @@ The component leverages the following design tokens for consistent theming:
   /* Grid gap and default grid top margin */ /* Border & Background */
   --border-width-md: 1px --clr-border-subtle: #d3d3d7 --clr-bg-default: #ffffff
   --radii-none: 0px /* Border radius (sharp corners) */ /* Typography */
-  --clr-text-default: #1f1e27 /* Introduction and label color */
+  --clr-text-default: #1f1e27 /* Content and label color */
   --clr-text-muted: #666774 /* Hex code color */ --font-family-primary: Lato
   /* Focus State */ --shadow-focus-ntg: 0px 0px 0px 4px #ec8c58ff;
 ```
@@ -208,7 +218,10 @@ Add custom styles via the `cssClass` prop in the DXP component:
 
 ```javascript
 const html = await colorSwatchComponent.main({
-  ColorValues: [{ Value: "Blue 03 #1F1F5F" }, { Value: "Orange 03 #E35205" }],
+  ColorValues: [
+    { Name: "Blue 03", Hex: "#1F1F5F" },
+    { Name: "Orange 03", Hex: "#E35205" },
+  ],
   cssClass: "compact-grid",
 });
 ```
@@ -236,7 +249,7 @@ For client-side hydrated swatches:
 ```html
 <div
   data-hydration-component="color-swatch"
-  data-hydration-props='{"Color":"#1F1F5F","Label":"Primary","HexCode":"#1F1F5F","cssClass":"featured-color"}'
+  data-hydration-props='{"Name":"Primary","Hex":"#1F1F5F","cssClass":"featured-color"}'
 ></div>
 ```
 
@@ -251,7 +264,7 @@ For client-side hydrated swatches:
 
 - **Semantic HTML**: Uses `div` elements with descriptive class names
 - **ARIA attributes**: Color sample has `aria-hidden="true"` since it's decorative
-- **Text content**: Label and hex code are readable by screen readers
+- **Text content**: Name and hex code are readable by screen readers
 - **Focus states**: Interactive elements support `--shadow-focus-ntg` token
 - **Color contrast**: Text colors meet WCAG AA standards against white background
 
@@ -294,10 +307,12 @@ The `manifest.json` defines the component for Squiz DXP:
 
 ```json
 {
-  "Description": {
+  "Content": {
     "type": "FormattedText",
-    "title": "Grid Introduction",
-    "description": "Optional formatted text displayed above the swatch grid"
+    "title": "Content",
+    "ui:metadata": {
+      "inlineEditable": true
+    }
   },
   "ColorValues": {
     "type": "array",
@@ -306,20 +321,29 @@ The `manifest.json` defines the component for Squiz DXP:
     "items": {
       "type": "object",
       "properties": {
-        "Value": {
+        "Name": {
           "type": "string",
-          "title": "Color Value",
-          "description": "Enter color in format: Name #HexValue (e.g., 'Blue 03 #1F1F5F')"
+          "title": "Name",
+          "ui:metadata": {
+            "inlineEditable": true
+          }
+        },
+        "Hex": {
+          "type": "string",
+          "title": "Hex",
+          "ui:metadata": {
+            "inlineEditable": true
+          }
         }
       },
-      "required": ["Value"]
+      "required": ["Name", "Hex"]
     },
     "minItems": 1
   }
 }
 ```
 
-**Note**: `required` array is empty for dev-ui compatibility, allowing preview without all fields.
+**Note**: The root `required` array is empty so editors can build the component incrementally. Within each `ColorValues` item, both `Name` and `Hex` are required.
 
 ### Preview Configuration
 
@@ -335,10 +359,10 @@ The component includes an inline preview in the manifest:
           "inputData": {
             "type": "inline",
             "value": {
-              "Introduction": "The extended palette provides a <strong>range</strong> of shades for each base color.",
+              "Content": "The extended palette provides a <strong>range</strong> of shades for each base color.",
               "ColorValues": [
-                { "Value": "Blue 03 #1F1F5F" },
-                { "Value": "Orange 03 #E35205" }
+                { "Name": "Blue 03", "Hex": "#1F1F5F" },
+                { "Name": "Orange 03", "Hex": "#E35205" }
               ]
             }
           }
@@ -364,8 +388,8 @@ The component includes an inline preview in the manifest:
 4. Drag onto the page or insert via component picker
 5. Configure the input properties in the editor:
 
-- **Grid Introduction** (FormattedText, optional): Add rich text (e.g., with bold or links)
-- **Color Swatches**: Add one or more items, each with a `Value` in the format `Name #HexValue`
+- **Content** (FormattedText, optional): Add rich text (e.g., with bold or links)
+- **Color Swatches**: Add one or more items, then edit each Name and Hex inline
 
 6. Save and publish
 
@@ -385,8 +409,8 @@ Open `http://localhost:5173/preview/color-swatch.html` to view the component pre
 #### Testing DXP Main Function
 
 ```bash
-# Test server-side rendering
-node -e "import('./src/components/ColorSwatch/dxp/main.js').then(m => console.log(m.default.main({Introduction:'<p>Sample <strong>introduction</strong>.</p>',ColorValues:[{Value:'Blue 03 #1F1F5F'}]})))"
+# Test the manifest and server-side renderer
+npm run test:color-swatch-dxp
 ```
 
 ### Build Process
@@ -419,7 +443,7 @@ To add more color swatches to the preview:
 ```html
 <div
   data-hydration-component="color-swatch"
-  data-hydration-props='{"Color":"#XYZ123","Label":"Custom Color","HexCode":"#XYZ123"}'
+  data-hydration-props='{"Name":"Custom Color","Hex":"#123ABC"}'
 ></div>
 ```
 
@@ -452,13 +476,13 @@ if (typeof document !== "undefined") {
 
 ### Sanitization
 
-Most user inputs are sanitized to prevent XSS attacks. Introduction (FormattedText) is rendered as HTML and should be treated as trusted content:
+Name and Hex inputs are sanitized to prevent XSS attacks. Content (FormattedText) is rendered as HTML and should be treated as trusted content:
 
 ```typescript
 import { escapeHtml, escapeAttr } from "../../utils/sanitize";
 
 // For text content
-const safeLabel = escapeHtml(label);
+const safeName = escapeHtml(name);
 
 // For HTML attributes
 const safeColor = escapeAttr(color);
@@ -487,15 +511,35 @@ This ensures `window.NTGColorSwatch` is always available, even after minificatio
 
 ### Props Resolution
 
-The component supports both PascalCase (DXP standard) and camelCase (legacy) props with automatic fallback:
+The component resolves canonical props first and then checks compatibility aliases:
 
 ```typescript
-private resolveText(primary?: string, fallback?: string): string {
-  return primary || fallback || "";
+private resolveText(...values: Array<string | undefined>): string {
+  return values.find((value): value is string => typeof value === "string") ?? "";
 }
 
-const color = this.resolveText(this.props.Color, this.props.color);
-const label = this.resolveText(this.props.Label, this.props.label);
+const name = this.resolveText(
+  this.props.Name,
+  this.props.name,
+  this.props.Label,
+  this.props.label,
+);
+const hex = this.resolveText(
+  this.props.Hex,
+  this.props.hex,
+  this.props.HexCode,
+  this.props.hexCode,
+  this.props.Color,
+  this.props.color,
+);
+const color = this.resolveText(
+  this.props.Hex,
+  this.props.hex,
+  this.props.Color,
+  this.props.color,
+  this.props.HexCode,
+  this.props.hexCode,
+);
 ```
 
 This ensures compatibility with both naming conventions.
@@ -540,6 +584,13 @@ The ColorSwatch component is designed to showcase colors from the NT Government 
 - **Auto-polyfill**: Build process may include polyfills via Vite
 
 ## Version History
+
+### v2.1.0
+
+- Renamed the formatted `Introduction` field to inline-editable `Content`
+- Split the combined color value into inline-editable `Name` and `Hex` fields
+- Applied `Hex` to both the displayed value and sample background
+- Retained renderer compatibility for saved `Introduction` and `Value` data
 
 ### v1.0.0 (Initial Release)
 
@@ -607,7 +658,8 @@ Any changes to `dxp/manifest.json` (schema, properties, defaults) or `dxp/main.j
 
 ## License
 
-Part of the NT Government Web Design System.  
+Part of the NT Government Web Design System.
+
 © Northern Territory Government of Australia
 
 ## Support
@@ -619,6 +671,8 @@ For questions, issues, or contributions:
 
 ---
 
-**Component Version**: 1.0.0  
-**Last Updated**: February 2026  
+**Component Version**: 2.1.0
+
+**Last Updated**: August 2026
+
 **Maintainer**: NT Government Web Design System Team

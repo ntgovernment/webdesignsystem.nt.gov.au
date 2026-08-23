@@ -10,6 +10,7 @@
     "test:card-client": "node scripts/test-card-client.js",
     "test:card-dxp": "node scripts/test-card-dxp.js",
     "test:card-ssr-live": "node scripts/test-card-ssr-live.js",
+    "test:color-swatch-dxp": "node scripts/test-color-swatch-dxp.js",
     "preview": "vite preview --open /preview/",
     "deploy": "node scripts/deploy-squiz.js"
   },

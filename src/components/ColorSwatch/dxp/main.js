@@ -1,8 +1,8 @@
 /**
  * ColorSwatch DXP Component Service - Server-Side Renderer
  *
- * Renders a grid of color swatch cards with an optional introduction.
- * Each swatch displays a color sample, label, and hex code.
+ * Renders a grid of color swatch cards with optional formatted content.
+ * Each swatch displays a color sample, name, and hex code.
  * Supports multiple color values in an array format.
  */
 
@@ -11,36 +11,39 @@ import { escapeHtml, escapeAttr } from "../../../utils/sanitize.js";
 /**
  * Render a single color swatch card
  */
+const parseLegacyValue = (value) => {
+  if (typeof value !== "string") return { name: "", hex: "" };
+
+  const hashIndex = value.indexOf("#");
+  if (hashIndex === -1) return { name: value.trim(), hex: "#cccccc" };
+
+  return {
+    name: value.slice(0, hashIndex).trim(),
+    hex: value.slice(hashIndex).trim(),
+  };
+};
+
 const renderSwatch = (colorValue, index) => {
-  const { Value = "" } = colorValue;
-
-  let Label = "";
-  let Color = "";
-  let HexCode = "";
-
-  // Parse the Value string to extract Label and HexCode
-  if (Value.includes("#")) {
-    const parts = Value.split("#");
-    Label = parts[0].trim();
-    HexCode = "#" + parts[1].trim();
-    Color = HexCode;
-  } else {
-    // Fallback if no # found
-    Label = Value;
-    Color = "#cccccc";
-    HexCode = "#cccccc";
-  }
+  const { name: legacyName, hex: legacyHex } = parseLegacyValue(
+    colorValue?.Value,
+  );
+  const name = colorValue?.Name ?? legacyName;
+  const hex = colorValue?.Hex ?? legacyHex;
+  const nameText = typeof name === "string" ? name : "";
+  const hexText = typeof hex === "string" ? hex : "";
+  const swatchColor = hexText || "#cccccc";
+  const fieldPath = `ColorValues[${index}]`;
 
   return `<div data-swatch-index="${index}">
     <div class="nt-color-swatch">
-      <div 
-        class="nt-color-swatch__sample" 
-        style="background-color: ${escapeAttr(Color)}"
+      <div
+        class="nt-color-swatch__sample"
+        style="background-color: ${escapeAttr(swatchColor)}"
         aria-hidden="true"
       ></div>
       <div class="nt-color-swatch__content">
-        <div class="nt-color-swatch__label">${escapeHtml(Label)}</div>
-        <div class="nt-color-swatch__hex">${escapeHtml(HexCode)}</div>
+        <div class="nt-color-swatch__label" data-sq-field="${fieldPath}.Name">${escapeHtml(nameText)}</div>
+        <div class="nt-color-swatch__hex" data-sq-field="${fieldPath}.Hex">${escapeHtml(hexText)}</div>
       </div>
     </div>
   </div>`;
@@ -49,8 +52,14 @@ const renderSwatch = (colorValue, index) => {
 /**
  * Main server-side render function
  */
-const main = async (input) => {
-  const { Introduction = "", ColorValues = [], cssClass = "" } = input || {};
+const main = async (input, info) => {
+  const {
+    Content,
+    Introduction = "",
+    ColorValues = [],
+    cssClass = "",
+  } = input || {};
+  const editor = Boolean(info?.ctx?.editor);
 
   // Validate required props
   if (!ColorValues || ColorValues.length === 0) {
@@ -68,11 +77,12 @@ const main = async (input) => {
   ).join("");
 
   // Build container classes
-  const introductionHtml = typeof Introduction === "string" ? Introduction : "";
-  const hasIntroduction = introductionHtml.trim().length > 0;
+  const content = Content ?? Introduction;
+  const contentHtml = typeof content === "string" ? content : "";
+  const hasContent = contentHtml.trim().length > 0;
   const containerClasses = [
     "nt-color-swatch-grid",
-    hasIntroduction ? "" : "nt-color-swatch-grid--no-intro",
+    hasContent ? "" : "nt-color-swatch-grid--no-intro",
     cssClass,
   ]
     .filter(Boolean)
@@ -81,8 +91,8 @@ const main = async (input) => {
   // Assemble complete component HTML
   let html = `<div class="${containerClasses}">`;
 
-  if (hasIntroduction) {
-    html += `<div class="nt-color-swatch-grid__description">${introductionHtml}</div>`;
+  if (hasContent || editor) {
+    html += `<div class="nt-color-swatch-grid__description" data-sq-field="Content">${contentHtml}</div>`;
   }
 
   html += `<div class="nt-color-swatch-grid__container" role="list" data-component-type="color-swatch-grid" data-swatch-count="${ColorValues.length}">

@@ -8,7 +8,7 @@
     <!-- Global tokens and base styles required by components -->
     <link rel="stylesheet" href="/src/index.css">
     <!-- Fallback: built design system stylesheet -->
-    <link rel="stylesheet" href="/deploy/web-design-system.css">
+    <link rel="stylesheet" href="/deploy/web-design-system.min.css">
     <style>
         * {
             box-sizing: border-box;
@@ -119,7 +119,7 @@
             <main class="nt-main-content" style="flex:1;">
                 <!-- Page banner MUST be outside and immediately above #content -->
                 <div id="nt-page-banner-content" data-page-banner-title="Color Swatch"
-                    data-page-banner-description="Displays a color swatch card with color sample, label, and hex code."
+                    data-page-banner-description="Displays color swatches with editable names and hex values."
                     data-page-banner-type="Primary"
                     data-page-banner-figma-url="https://www.figma.com/design/H2JiHRyJGSE7Z7uq2LvQEh/NTG-Design-System?m=dev"
                     data-page-banner-storybook-url="">
@@ -134,7 +134,7 @@
                         DXP schema and usage examples.
                     </p>
 
-                    <h2>Intro</h2>
+                    <h2>Content</h2>
                     <p>
                         The extended palette provides a curated range of NTG brand colors. The swatches below show a
                         small demo set for quick visual reference.
@@ -142,13 +142,13 @@
 
                     <div class="swatch-grid">
                         <div data-hydration-component="color-swatch"
-                            data-hydration-props='{"Color":"#1F1F5F","Label":"Blue 03","HexCode":"#1F1F5F"}'></div>
+                            data-hydration-props='{"Name":"Blue 03","Hex":"#1F1F5F"}'></div>
                         <div data-hydration-component="color-swatch"
-                            data-hydration-props='{"Color":"#E35205","Label":"Orange 03","HexCode":"#E35205"}'></div>
+                            data-hydration-props='{"Name":"Orange 03","Hex":"#E35205"}'></div>
                         <div data-hydration-component="color-swatch"
-                            data-hydration-props='{"Color":"#C33826","Label":"Ochre 02","HexCode":"#C33826"}'></div>
+                            data-hydration-props='{"Name":"Ochre 02","Hex":"#C33826"}'></div>
                         <div data-hydration-component="color-swatch"
-                            data-hydration-props='{"Color":"#C25062","Label":"Coral 03","HexCode":"#C25062"}'></div>
+                            data-hydration-props='{"Name":"Coral 03","Hex":"#C25062"}'></div>
                     </div>
 
                     <p class="note">See <code>src/components/ColorSwatch/README.md</code> for complete usage examples

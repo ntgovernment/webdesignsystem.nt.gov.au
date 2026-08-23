@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "mainFunction": "main",
   "functions": [
     {
@@ -21,10 +21,13 @@
       "input": {
         "type": "object",
         "properties": {
-          "Introduction": {
+          "Content": {
             "type": "FormattedText",
-            "title": "Grid Introduction",
-            "description": "Optional formatted text displayed above the swatch grid"
+            "title": "Content",
+            "description": "Optional formatted content displayed above the swatch grid",
+            "ui:metadata": {
+              "inlineEditable": true
+            }
           },
           "ColorValues": {
             "type": "array",
@@ -33,13 +36,24 @@
             "items": {
               "type": "object",
               "properties": {
-                "Value": {
+                "Name": {
                   "type": "string",
-                  "title": "Color Value",
-                  "description": "Enter color in format: Name #HexValue (e.g., 'Blue 03 #1F1F5F')"
+                  "title": "Name",
+                  "description": "Display name for the color (for example, 'Blue 03')",
+                  "ui:metadata": {
+                    "inlineEditable": true
+                  }
+                },
+                "Hex": {
+                  "type": "string",
+                  "title": "Hex",
+                  "description": "Hex value used for the swatch color (for example, '#1F1F5F')",
+                  "ui:metadata": {
+                    "inlineEditable": true
+                  }
                 }
               },
-              "required": ["Value"]
+              "required": ["Name", "Hex"]
             },
             "minItems": 1
           }
@@ -61,19 +75,23 @@
           "inputData": {
             "type": "inline",
             "value": {
-              "Introduction": "The extended color palette provides a <strong>range</strong> of shades for each base color.",
+              "Content": "The extended color palette provides a <strong>range</strong> of shades for each base color.",
               "ColorValues": [
                 {
-                  "Value": "Blue 03 #1F1F5F"
+                  "Name": "Blue 03",
+                  "Hex": "#1F1F5F"
                 },
                 {
-                  "Value": "Orange 03 #E35205"
+                  "Name": "Orange 03",
+                  "Hex": "#E35205"
                 },
                 {
-                  "Value": "Ochre 02 #C33826"
+                  "Name": "Ochre 02",
+                  "Hex": "#C33826"
                 },
                 {
-                  "Value": "Coral 03 #C25062"
+                  "Name": "Coral 03",
+                  "Hex": "#C25062"
                 }
               ]
             }

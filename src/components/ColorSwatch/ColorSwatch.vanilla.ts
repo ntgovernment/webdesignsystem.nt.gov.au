@@ -8,11 +8,15 @@ import "./ColorSwatch.css";
 import { escapeAttr, escapeHtml } from "../../utils/sanitize";
 
 export interface ColorSwatchProps {
+  Name?: string;
+  Hex?: string;
   Color?: string;
   Label?: string;
   HexCode?: string;
   cssClass?: string;
   // Fallback lowercase props for legacy compatibility
+  name?: string;
+  hex?: string;
   color?: string;
   label?: string;
   hexCode?: string;
@@ -39,14 +43,35 @@ export class ColorSwatchClient {
     }
   }
 
-  private resolveText(primary?: string, fallback?: string): string {
-    return primary || fallback || "";
+  private resolveText(...values: Array<string | undefined>): string {
+    return (
+      values.find((value): value is string => typeof value === "string") ?? ""
+    );
   }
 
   private render(): void {
-    const color = this.resolveText(this.props.Color, this.props.color);
-    const label = this.resolveText(this.props.Label, this.props.label);
-    const hexCode = this.resolveText(this.props.HexCode, this.props.hexCode);
+    const name = this.resolveText(
+      this.props.Name,
+      this.props.name,
+      this.props.Label,
+      this.props.label,
+    );
+    const hex = this.resolveText(
+      this.props.Hex,
+      this.props.hex,
+      this.props.HexCode,
+      this.props.hexCode,
+      this.props.Color,
+      this.props.color,
+    );
+    const color = this.resolveText(
+      this.props.Hex,
+      this.props.hex,
+      this.props.Color,
+      this.props.color,
+      this.props.HexCode,
+      this.props.hexCode,
+    );
     const cssClass = this.resolveText(
       this.props.cssClass,
       this.props.className,
@@ -59,14 +84,14 @@ export class ColorSwatchClient {
     this.container.className = containerClass;
 
     this.container.innerHTML = `
-      <div 
-        class="nt-color-swatch__sample" 
+      <div
+        class="nt-color-swatch__sample"
         style="background-color: ${escapeAttr(color)}"
         aria-hidden="true"
       ></div>
       <div class="nt-color-swatch__content">
-        <div class="nt-color-swatch__label">${escapeHtml(label)}</div>
-        <div class="nt-color-swatch__hex">${escapeHtml(hexCode)}</div>
+        <div class="nt-color-swatch__label">${escapeHtml(name)}</div>
+        <div class="nt-color-swatch__hex">${escapeHtml(hex)}</div>
       </div>
     `;
   }
