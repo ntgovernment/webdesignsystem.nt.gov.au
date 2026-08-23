@@ -102,6 +102,12 @@
   padding: var(--sp-md) var(--sp-lg) var(--sp-lg) var(--sp-xs);
 }
 
+.nt-card .card__content--with-icon {
+  align-items: center;
+  flex-direction: row;
+  gap: var(--sp-md);
+}
+
 .nt-card .card__icon {
   align-items: center;
   color: var(--clr-text-emphasis);
@@ -112,14 +118,8 @@
   margin-left: var(--sp-lg);
 }
 
-.nt-card__title {
-  color: var(--clr-text-default);
-  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
-  font-size: var(--type-heading-h2-size);
-  font-weight: var(--type-heading-h2-weight);
-  line-height: var(--type-heading-h2-lh);
-  margin: 0 0 var(--sp-sm);
-  overflow-wrap: anywhere;
+.nt-card .card__content--with-icon .card__icon {
+  margin-left: 0;
 }
 
 .nt-card__description {
@@ -129,6 +129,14 @@
   line-height: var(--type-body-md-lh, 24px);
   margin: 0 0 var(--sp-lg);
   max-width: 72ch;
+}
+
+.nt-card__description > :first-child {
+  margin-top: 0;
+}
+
+.nt-card__description > :last-child {
+  margin-bottom: 0;
 }
 
 .nt-card .card__title {

@@ -1,8 +1,8 @@
 {
   "showImage": false,
-  "showIcon": true,
+  "showIcon": false,
   "cardsPerRow": "3",
-  "Content": "<p>Quick links to <strong>design system resources</strong>.</p>",
+  "Content": "<p>Cards can display linked titles without image or icon media.</p>",
   "Cards": [
     {
       "PageAsset": {
@@ -10,7 +10,6 @@
         "text": "About",
         "target": "_self",
         "metadata": {
-          "content-cardIcon": "fa-light fa-circle-info",
           "content-cardTitle": "About"
         }
       }
@@ -21,7 +20,6 @@
         "text": "Components",
         "target": "_self",
         "metadata": {
-          "content-cardIcon": "fa-light fa-cubes",
           "content-cardTitle": "Components"
         }
       }
@@ -32,7 +30,6 @@
         "text": "Foundations",
         "target": "_self",
         "metadata": {
-          "content-cardIcon": "fa-light fa-layer-group",
           "content-cardTitle": "Foundations"
         }
       }

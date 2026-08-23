@@ -61,12 +61,14 @@ Server-rendered components deployed independently via `dxp-next`. Each has `dxp/
 
 #### Card
 
-`Card` is the preferred replacement for `PageCard` and `MiniPageCard`. It uses one repeatable `Cards` collection and the `cardMode` quick option:
+`Card` is the preferred replacement for `PageCard` and `MiniPageCard`. It uses one repeatable, fully optional `Cards` collection and independent `showImage` and `showIcon` quick options:
 
-- `Display Cards` renders an image, title, and destination.
-- `Mini Cards` renders an icon, title, and destination.
+- Image and Icon can be enabled separately, together, or both disabled.
+- Enabled media is populated from `content-cardImagePhoto` and `content-cardIcon`; titles use `content-cardTitle`.
 
-Visual Page Builder supports inline editing for the grid title, grid description, card title, card image, and card destination. Icon class names remain editable from the component fields panel.
+Visual Page Builder provides TinyMCE inline editing for FormattedText Content and inline editing for card destinations. Card titles and media are fetched from destination asset metadata by the DXP edge renderer, so editors do not specify them separately. All Card fields are optional, allowing blank or partially configured components to be saved.
+
+Content values are rendered as trusted FormattedText HTML from Squiz, so rich text such as paragraphs, lists, links, and emphasis appears as authored in TinyMCE.
 
 ## Project Structure
 

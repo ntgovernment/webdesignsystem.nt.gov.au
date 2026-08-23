@@ -1,58 +1,72 @@
 # Card
 
-Card is the preferred responsive card grid for Squiz DXP. It consolidates PageCard and MiniPageCard behind one shared `Cards` collection and a presentation switch.
-
-## Modes
-
-- `Display Cards`: 16:9 image, title, and destination.
-- `Mini Cards`: Font Awesome icon, title, and destination.
-
-Switching `cardMode` does not replace or reshape `Cards`. `CardImage` is used by Display Cards and `IconCode` is used by Mini Cards.
+Card is the preferred responsive card grid for Squiz DXP. It presents a shared collection of linked cards using image or icon media supplied by asset metadata.
 
 ## Input
 
+All fields are optional so editors can save a blank or partially configured component.
+
 ```ts
 interface CardItem {
-  PageAsset: SquizLink;
-  CardTitle: string;
-  CardImage?: SquizImage;
-  IconCode?: string;
+  PageAsset?: SquizLink;
 }
 
 interface CardProps {
-  cardMode: "Display Cards" | "Mini Cards";
+  showImage?: boolean;
+  showIcon?: boolean;
   cardsPerRow?: "Automatic" | "2" | "3" | "4";
-  Title?: string;
-  Description?: string;
-  Cards: CardItem[];
+  Content?: FormattedText;
+  Cards?: CardItem[];
 }
+```
+
+`showImage` defaults to `true` and `showIcon` defaults to `false`. Editors can enable either toggle independently, allowing image-only, icon-only, image and icon, or title-only cards.
+
+`Content` uses DXP `FormattedText`, which opens TinyMCE for inline rich-text editing. Squiz supplies the value as trusted HTML so paragraphs, links, lists, and text formatting are rendered directly rather than escaped.
+
+## Asset metadata
+
+Editors select a destination asset once. The DXP edge renderer retrieves that asset with `resolveMatrixAssetByUrl(url, ["metadata"])` and uses:
+
+- `content-cardTitle` (metadata field asset `#1185557`) for the card title
+- `content-cardImagePhoto` (metadata field asset `#1185561`) when Image is enabled
+- `content-cardIcon` (metadata field asset `#1185563`) when Icon is enabled
+
+Image metadata may be an image URL, a SquizImage-like object, or a Matrix asset URI. Icon metadata is a Font Awesome class string such as `fa-light fa-circle-info`.
+
+The Content Management Content API must have session-based authentication enabled for DXP asset resolution. A missing or inaccessible metadata value leaves the selected media area empty without breaking the rest of the grid.
+
+Local vanilla previews cannot call DXP resolver functions. Supply the same values under the link's `metadata` property:
+
+```html
+<div
+  data-hydration-component="card"
+  data-hydration-props='{"showImage":false,"showIcon":true,"Cards":[{"PageAsset":{"url":"/about","metadata":{"content-cardTitle":"About","content-cardIcon":"fa-light fa-circle-info"}}}]}'
+></div>
 ```
 
 ## Cards per row
 
-Editors can choose `Automatic`, `2`, `3`, or `4` cards per row. The setting applies to both card modes and represents the maximum number of cards shown on a row:
-
-- `Automatic` keeps the mode-specific responsive auto-fill layout and is the default.
-- `2`, `3`, and `4` use that count when the component has enough space, then reduce the count at narrower component widths.
-- All layouts stack to one card per row on mobile.
-
-Existing component instances without `cardsPerRow` continue to use `Automatic` behavior.
+`Automatic` uses the media-specific responsive layout and is the default. Values `2`, `3`, and `4` set the maximum number of cards per row, reducing at narrower component widths. All layouts stack to one card per row on mobile.
 
 ## Inline editing
 
-Visual Page Builder can edit the grid title, description, each card title, image, and destination directly in the preview. The manifest marks those fields with `ui:metadata.inlineEditable`, and SSR maps them with:
+Visual Page Builder can edit Content and each destination through these field mappings:
 
-- `data-sq-field="Title"`
-- `data-sq-field="Description"`
-- `data-sq-field="Cards[0].CardTitle"`
-- `data-sq-field="Cards[0].CardImage"`
+- `data-sq-field="Content"`
 - `data-sq-field="Cards[0].PageAsset"`
 
-Card indices are generated at render time. Add, remove, and reorder cards through the Page Outline. `IconCode` remains a sidebar field because its Font Awesome class string has no meaningful inline text target.
+The card title and media are owned by the selected asset's metadata and are not additional editable Card fields.
 
-The installed Squiz CLI schema does not support `previewPlaceholder`. Optional section text and empty image targets are therefore rendered as empty field targets only when `info.ctx.editor` is true, keeping them selectable in Page Builder without leaking placeholder content to the live site.
+The renderer exposes an empty Content field target in editor mode so TinyMCE can be opened before content exists. An empty Cards collection renders the component's empty state, while the optional schema still permits editors to save it.
 
-### Preview and deployment
+## Compatibility
+
+Version `1.0.2` removes Grid Title, Media Type, Card Mode, Card Title, Card Image, and Icon Code from the editor schema, and replaces Grid Description with Content. The renderer still accepts existing `Description`, `mediaType`, `cardMode`, `CardTitle`, `CardImage`, and `IconCode` values as fallbacks. New Card instances should use `Content`, `showImage`, `showIcon`, and asset metadata.
+
+Deprecated `web-design-system/page-card` and `web-design-system/mini-page-card` instances remain available and are not changed by this release.
+
+## Preview and deployment
 
 Run these commands from the repository root:
 
@@ -61,27 +75,8 @@ dxp-next cmp dev-ui src/components/Card/dxp
 dxp-next cmp deploy src/components/Card/dxp
 ```
 
-The development UI includes `display-cards` and `mini-cards` previews. This CLI uses fixed internal port `5555`; stop a stale `dxp-next cmp dev-ui` process if that port is already occupied.
-
-## Local use
-
-```html
-<div
-  data-hydration-component="card"
-  data-hydration-props='{"cardMode":"Mini Cards","cardsPerRow":"3","Cards":[{"PageAsset":{"url":"/about"},"CardTitle":"About","IconCode":"fa-light fa-circle-info"}]}'
-></div>
-```
-
-The vanilla renderer supports `Cards` and the legacy aliases `PageArray` and `pages`. Actual inline editing is provided by Squiz Visual Page Builder, not native `contenteditable` behavior.
-
-## Migration
-
-- PageCard maps to `cardMode: "Display Cards"` without changing card fields.
-- MiniPageCard maps to `cardMode: "Mini Cards"` without changing card fields.
-- Existing `web-design-system/page-card` and `web-design-system/mini-page-card` instances remain available during migration.
-
-For a PageCard migration, change the component to `web-design-system/card` and set `cardMode` to `Display Cards`. For a MiniPageCard migration, use `Mini Cards` and keep each entry's `PageAsset`, `CardTitle`, and `IconCode` values. Existing component instances should remain in place until each page has been migrated.
+The development UI includes Image-only, Icon-only, Image+Icon, and title-only previews. The CLI uses fixed internal port `5555`; stop a stale development UI process if that port is already occupied.
 
 ## Accessibility
 
-The grid uses list semantics. Cards with destinations are keyboard-focusable links; cards without destinations render as non-interactive elements. Links opening a new window receive `rel="noopener noreferrer"`, images retain authored alternative text, and styles support increased contrast and reduced motion.
+The grid uses list semantics. Cards with destinations are keyboard-focusable links, links opening a new window receive `rel="noopener noreferrer"`, images retain metadata alt text with the card title as fallback, and decorative icons are hidden from assistive technology.

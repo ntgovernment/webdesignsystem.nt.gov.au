@@ -1,0 +1,46 @@
+{
+  "showImage": true,
+  "showIcon": true,
+  "cardsPerRow": "2",
+  "Content": "<p>Cards can display both asset <strong>images and icons</strong>.</p>",
+  "Cards": [
+    {
+      "PageAsset": {
+        "url": "/business/licensing",
+        "text": "Business licensing",
+        "target": "_self",
+        "metadata": {
+          "content-cardTitle": "Business licensing",
+          "content-cardIcon": "fa-light fa-briefcase",
+          "content-cardImagePhoto": {
+            "alt": "People discussing business documents",
+            "imageVariations": {
+              "original": {
+                "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=360&fit=crop"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "PageAsset": {
+        "url": "/health",
+        "text": "Health services",
+        "target": "_self",
+        "metadata": {
+          "content-cardTitle": "Health services",
+          "content-cardIcon": "fa-light fa-heart-pulse",
+          "content-cardImagePhoto": {
+            "alt": "Health professional working at a desk",
+            "imageVariations": {
+              "original": {
+                "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=640&h=360&fit=crop"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

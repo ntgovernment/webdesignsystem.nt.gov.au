@@ -2,6 +2,7 @@ export { CardClient } from "./Card.vanilla";
 export type {
   CardColumns,
   CardItem,
+  CardMediaType,
   CardMode,
   CardProps,
   SquizImageValue,

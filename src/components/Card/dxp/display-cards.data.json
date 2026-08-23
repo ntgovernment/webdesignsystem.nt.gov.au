@@ -1,106 +1,80 @@
 {
-  "cardMode": "Display Cards",
+  "showImage": true,
+  "showIcon": false,
   "cardsPerRow": "4",
-  "Title": "Key services",
-  "Description": "Browse services and resources by topic.",
+  "Content": "<p>Browse <strong>services and resources</strong> by topic.</p>",
   "Cards": [
     {
       "PageAsset": {
         "url": "/business/licensing",
         "text": "Business licensing",
-        "target": "_self"
-      },
-      "CardTitle": "Business licensing",
-      "CardImage": {
-        "name": "Business licensing",
-        "alt": "People discussing business documents",
-        "caption": "Business licensing",
-        "imageVariations": {
-          "original": {
-            "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=360&fit=crop",
-            "width": 640,
-            "height": 360,
-            "byteSize": 0,
-            "mimeType": "image/jpeg",
-            "aspectRatio": "16:9",
-            "sha1Hash": "0000000000000000000000000000000000000000"
-          }
+        "target": "_self",
+        "metadata": {
+          "content-cardImagePhoto": {
+            "alt": "People discussing business documents",
+            "imageVariations": {
+              "original": {
+                "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&h=360&fit=crop"
+              }
+            }
+          },
+          "content-cardTitle": "Business licensing"
         }
-      },
-      "IconCode": "fa-light fa-briefcase"
+      }
     },
     {
       "PageAsset": {
         "url": "/health",
         "text": "Health services",
-        "target": "_self"
-      },
-      "CardTitle": "Health services",
-      "CardImage": {
-        "name": "Health services",
-        "alt": "Health professional working at a desk",
-        "caption": "Health services",
-        "imageVariations": {
-          "original": {
-            "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=640&h=360&fit=crop",
-            "width": 640,
-            "height": 360,
-            "byteSize": 0,
-            "mimeType": "image/jpeg",
-            "aspectRatio": "16:9",
-            "sha1Hash": "0000000000000000000000000000000000000000"
-          }
+        "target": "_self",
+        "metadata": {
+          "content-cardImagePhoto": {
+            "alt": "Health professional working at a desk",
+            "imageVariations": {
+              "original": {
+                "url": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=640&h=360&fit=crop"
+              }
+            }
+          },
+          "content-cardTitle": "Health services"
         }
-      },
-      "IconCode": "fa-light fa-heart-pulse"
+      }
     },
     {
       "PageAsset": {
         "url": "/education",
         "text": "Education and learning",
-        "target": "_self"
-      },
-      "CardTitle": "Education and learning",
-      "CardImage": {
-        "name": "Education and learning",
-        "alt": "Students learning together",
-        "imageVariations": {
-          "original": {
-            "url": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=640&h=360&fit=crop",
-            "width": 640,
-            "height": 360,
-            "byteSize": 0,
-            "mimeType": "image/jpeg",
-            "aspectRatio": "16:9",
-            "sha1Hash": "0000000000000000000000000000000000000000"
-          }
+        "target": "_self",
+        "metadata": {
+          "content-cardImagePhoto": {
+            "alt": "Students learning together",
+            "imageVariations": {
+              "original": {
+                "url": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=640&h=360&fit=crop"
+              }
+            }
+          },
+          "content-cardTitle": "Education and learning"
         }
-      },
-      "IconCode": "fa-light fa-graduation-cap"
+      }
     },
     {
       "PageAsset": {
         "url": "/transport",
         "text": "Driving and transport",
-        "target": "_self"
-      },
-      "CardTitle": "Driving and transport",
-      "CardImage": {
-        "name": "Driving and transport",
-        "alt": "Road through the Northern Territory landscape",
-        "imageVariations": {
-          "original": {
-            "url": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=640&h=360&fit=crop",
-            "width": 640,
-            "height": 360,
-            "byteSize": 0,
-            "mimeType": "image/jpeg",
-            "aspectRatio": "16:9",
-            "sha1Hash": "0000000000000000000000000000000000000000"
-          }
+        "target": "_self",
+        "metadata": {
+          "content-cardImagePhoto": {
+            "alt": "Road through the Northern Territory landscape",
+            "imageVariations": {
+              "original": {
+                "url": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=640&h=360&fit=crop"
+              }
+            }
+          },
+          "content-cardTitle": "Driving and transport"
         }
-      },
-      "IconCode": "fa-light fa-car"
+      }
     }
   ]
 }

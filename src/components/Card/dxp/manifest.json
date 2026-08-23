@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "mainFunction": "main",
   "functions": [
     {
@@ -21,12 +21,20 @@
       "input": {
         "type": "object",
         "properties": {
-          "cardMode": {
-            "type": "string",
-            "title": "Card mode",
-            "description": "Choose full image cards or compact icon cards.",
-            "enum": ["Display Cards", "Mini Cards"],
-            "default": "Display Cards",
+          "showImage": {
+            "type": "boolean",
+            "title": "Image",
+            "description": "Show the image from each destination asset's metadata.",
+            "default": true,
+            "ui:metadata": {
+              "quickOption": true
+            }
+          },
+          "showIcon": {
+            "type": "boolean",
+            "title": "Icon",
+            "description": "Show the icon from each destination asset's metadata.",
+            "default": false,
             "ui:metadata": {
               "quickOption": true
             }
@@ -41,17 +49,9 @@
               "quickOption": true
             }
           },
-          "Title": {
-            "type": "string",
-            "title": "Grid title",
-            "ui:metadata": {
-              "inlineEditable": true
-            }
-          },
-          "Description": {
-            "type": "string",
-            "format": "multi-line",
-            "title": "Grid description",
+          "Content": {
+            "type": "FormattedText",
+            "title": "Content",
             "ui:metadata": {
               "inlineEditable": true
             }
@@ -59,7 +59,7 @@
           "Cards": {
             "type": "array",
             "title": "Cards",
-            "description": "Add, reorder, or remove cards. Images apply to Display Cards; icons apply to Mini Cards.",
+            "description": "Add, reorder, or remove cards. Media is populated from the selected destination asset's metadata.",
             "items": {
               "type": "object",
               "properties": {
@@ -69,34 +69,13 @@
                   "ui:metadata": {
                     "inlineEditable": true
                   }
-                },
-                "CardTitle": {
-                  "type": "string",
-                  "title": "Card title",
-                  "ui:metadata": {
-                    "inlineEditable": true
-                  }
-                },
-                "CardImage": {
-                  "type": "SquizImage",
-                  "title": "Card image",
-                  "description": "Shown in Display Cards mode.",
-                  "ui:metadata": {
-                    "inlineEditable": true
-                  }
-                },
-                "IconCode": {
-                  "type": "string",
-                  "title": "Font Awesome class name",
-                  "description": "Shown in Mini Cards mode, for example: fa-light fa-circle-info."
                 }
               },
-              "required": ["PageAsset", "CardTitle"]
-            },
-            "minItems": 1
+              "required": []
+            }
           }
         },
-        "required": ["cardMode", "Cards"]
+        "required": []
       },
       "output": {
         "responseType": "html"
@@ -104,7 +83,7 @@
     }
   ],
   "previews": {
-    "display-cards": {
+    "image-cards": {
       "functionData": {
         "main": {
           "wrapper": {
@@ -117,7 +96,7 @@
         }
       }
     },
-    "mini-cards": {
+    "icon-cards": {
       "functionData": {
         "main": {
           "wrapper": {
@@ -126,6 +105,32 @@
           "inputData": {
             "type": "file",
             "path": "mini-cards.data.json"
+          }
+        }
+      }
+    },
+    "image-icon-cards": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "file",
+            "path": "image-icon-cards.data.json"
+          }
+        }
+      }
+    },
+    "text-only-cards": {
+      "functionData": {
+        "main": {
+          "wrapper": {
+            "path": "preview.html"
+          },
+          "inputData": {
+            "type": "file",
+            "path": "text-only-cards.data.json"
           }
         }
       }
