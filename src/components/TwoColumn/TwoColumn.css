@@ -6,9 +6,13 @@
 
 .nt-two-column {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: var(--sp-xxl, 2rem);
   width: 100%;
+}
+
+.nt-two-column:has(.nt-two-column__right:not(:empty)) {
+  grid-template-columns: 1fr 1fr;
 }
 
 .nt-two-column__left,

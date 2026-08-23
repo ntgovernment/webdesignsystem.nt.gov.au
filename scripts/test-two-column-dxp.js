@@ -5,6 +5,10 @@ import { build } from "esbuild";
 
 const root = process.cwd();
 const componentDirectory = path.join(root, "src/components/TwoColumn/dxp");
+const componentStyles = fs.readFileSync(
+  path.join(root, "src/components/TwoColumn/TwoColumn.css"),
+  "utf8",
+);
 const result = await build({
   entryPoints: [path.join(componentDirectory, "main.js")],
   bundle: true,
@@ -54,5 +58,14 @@ assert.doesNotMatch(configuredHtml, /style=/);
 const emptyHtml = await twoColumnComponent.render({});
 assert.match(emptyHtml, /data-sq-field="leftContent"><\/div>/);
 assert.match(emptyHtml, /data-sq-field="rightContent"><\/div>/);
+
+assert.match(
+  componentStyles,
+  /\.nt-two-column\s*{[^}]*grid-template-columns:\s*1fr;/s,
+);
+assert.match(
+  componentStyles,
+  /\.nt-two-column:has\(\.nt-two-column__right:not\(:empty\)\)\s*{[^}]*grid-template-columns:\s*1fr 1fr;/s,
+);
 
 console.log("TwoColumn DXP renderer tests passed");

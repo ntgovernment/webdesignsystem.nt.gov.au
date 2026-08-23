@@ -4,12 +4,13 @@ Responsive two-column layout with WYSIWYG content areas for Squiz DXP Component 
 
 ## Overview
 
-TwoColumn provides an equal-width CSS Grid layout for displaying content side-by-side on desktop and stacked on mobile.
+TwoColumn provides a responsive CSS Grid layout. Left content spans the available width when right content is empty; populated columns display side-by-side on desktop and stack on mobile.
 
 Key features:
 
 - Inline WYSIWYG editing for left and right content (`FormattedText` — raw HTML from Squiz editor)
-- Equal-width columns with design-system spacing
+- Full-width left content when the right column is empty
+- Equal-width columns with design-system spacing when right content is populated
 - Responsive: side-by-side on desktop (>768px), stacked on mobile (≤768px)
 - Server-rendered only — no client JavaScript required
 
@@ -29,7 +30,7 @@ src/components/TwoColumn/
 
 - **Server-side rendering (edge)**: `dxp/main.js` generates the complete HTML structure at the edge
 - **No client-side JavaScript**: layout is purely CSS Grid with responsive media queries
-- **Fixed layout**: CSS defines two equal-width columns with a design-token gap
+- **Content-aware layout**: CSS uses one track by default and two equal tracks when the right column is populated
 - The global design system CSS (`web-design-system.min.css`) must be present on the page for base styling
 
 ## Input / Props
@@ -56,7 +57,7 @@ Both targets are rendered even when empty, allowing authors to add content inlin
 
 | Class                   | Element       | Notes                                 |
 | ----------------------- | ------------- | ------------------------------------- |
-| `.nt-two-column`        | Root `<div>`  | Equal-width CSS Grid container        |
+| `.nt-two-column`        | Root `<div>`  | Content-aware CSS Grid container      |
 | `.nt-two-column__left`  | Left `<div>`  | `min-width: 0` prevents grid overflow |
 | `.nt-two-column__right` | Right `<div>` | `min-width: 0` prevents grid overflow |
 
