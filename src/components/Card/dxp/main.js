@@ -49,22 +49,10 @@ const resolveLinkTarget = (link) => {
   return link.target || "";
 };
 
-const resolveMediaVisibility = (
-  showImage,
-  showIcon,
-  legacyMediaType,
-  legacyMode,
-) => {
-  if (typeof showImage === "boolean" || typeof showIcon === "boolean") {
-    return {
-      showImage: typeof showImage === "boolean" ? showImage : true,
-      showIcon: typeof showIcon === "boolean" ? showIcon : false,
-    };
-  }
-
-  const legacyIcon = legacyMediaType === "Icon" || legacyMode === "Mini Cards";
-  return { showImage: !legacyIcon, showIcon: legacyIcon };
-};
+const resolveMediaVisibility = (showImage, showIcon) => ({
+  showImage: typeof showImage === "boolean" ? showImage : true,
+  showIcon: typeof showIcon === "boolean" ? showIcon : false,
+});
 
 const unwrapResolved = (result) => {
   if (!result || typeof result !== "object") return null;
@@ -452,27 +440,19 @@ const main = async (input, info) => {
   const {
     showImage,
     showIcon,
-    mediaType,
-    cardMode,
     cardsPerRow = "Automatic",
     Content = "",
-    Description = "",
     Cards = [],
   } = input || {};
   const editor = Boolean(info?.ctx?.editor);
-  const visibility = resolveMediaVisibility(
-    showImage,
-    showIcon,
-    mediaType,
-    cardMode,
-  );
+  const visibility = resolveMediaVisibility(showImage, showIcon);
   const cards = Array.isArray(Cards) ? Cards : [];
 
   if (cards.length === 0) {
     return `<div class="nt-card nt-card--empty" role="status">No cards provided in configuration</div>`;
   }
 
-  const content = Content || Description;
+  const content = Content;
   const contentHtml =
     content || editor
       ? `<div class="nt-card__description" data-sq-field="Content">${typeof content === "string" ? content : ""}</div>`

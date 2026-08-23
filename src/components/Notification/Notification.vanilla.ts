@@ -11,12 +11,8 @@ export type NotificationVariant = "info" | "success" | "warning" | "danger";
 
 export interface NotificationProps {
   variant?: NotificationVariant;
-  title?: string;
   message?: string;
-  className?: string;
-  Title?: string;
   Message?: string;
-  cssClass?: string;
 }
 
 const iconMap: Record<NotificationVariant, string> = {
@@ -64,18 +60,8 @@ export class NotificationClient {
 
   private render(): void {
     const variant = normalizeVariant(this.props.variant);
-    const title = this.resolveText(this.props.title, this.props.Title);
     const message = this.resolveText(this.props.message, this.props.Message);
-    const className = this.resolveText(
-      this.props.className,
-      this.props.cssClass,
-    );
-
-    const containerClass = [
-      "notification",
-      `notification--${variant}`,
-      className,
-    ]
+    const containerClass = ["notification", `notification--${variant}`]
       .filter(Boolean)
       .join(" ");
 
@@ -92,7 +78,6 @@ export class NotificationClient {
             <i class="${escapeAttr(iconClass)}" aria-hidden="true"></i>
           </div>
           <div class="notification__text">
-            <div class="notification__title">${escapeHtml(title)}</div>
             <div class="notification__message">${escapeHtml(message)}</div>
           </div>
         </div>

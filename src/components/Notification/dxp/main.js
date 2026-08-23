@@ -5,7 +5,7 @@
  * No client-side JavaScript required for rendering.
  */
 
-import { escapeAttr, escapeHtml } from "../../../utils/sanitize.js";
+import { escapeAttr } from "../../../utils/sanitize.js";
 
 const iconMap = {
   info: "fa-light fa-circle-info",
@@ -29,21 +29,14 @@ const normalizeVariant = (variant) => {
 const resolveText = (primary, fallback) => primary || fallback || "";
 
 const main = async (input) => {
-  const { title, message, Title, Message, variant, className, cssClass } =
-    input || {};
+  const { message, Message, variant } = input || {};
 
   const resolvedVariant = normalizeVariant(variant);
-  const resolvedTitle = resolveText(title, Title);
   const resolvedMessage = resolveText(message, Message);
   const messageHtml =
     typeof resolvedMessage === "string" ? resolvedMessage : "";
-  const resolvedClassName = resolveText(className, cssClass);
 
-  const containerClasses = [
-    "notification",
-    `notification--${resolvedVariant}`,
-    resolvedClassName,
-  ]
+  const containerClasses = ["notification", `notification--${resolvedVariant}`]
     .filter(Boolean)
     .join(" ");
 
@@ -57,7 +50,6 @@ const main = async (input) => {
           <i class="${escapeAttr(iconClass)}" aria-hidden="true"></i>
         </div>
         <div class="notification__text">
-          <div class="notification__title">${escapeHtml(resolvedTitle)}</div>
           <div class="notification__message" data-sq-field="message">${messageHtml}</div>
         </div>
       </div>

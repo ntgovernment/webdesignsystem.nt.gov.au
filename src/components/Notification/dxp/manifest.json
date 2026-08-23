@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "mainFunction": "main",
   "functions": [
     {
@@ -21,12 +21,6 @@
       "input": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "title": "Title",
-            "description": "Notification heading",
-            "default": "Information alert"
-          },
           "message": {
             "type": "FormattedText",
             "title": "Message",
@@ -42,11 +36,6 @@
             "description": "Status type",
             "default": "info",
             "enum": ["info", "success", "warning", "danger"]
-          },
-          "cssClass": {
-            "type": "string",
-            "title": "CSS Class",
-            "description": "Additional CSS classes to apply"
           }
         },
         "required": []
@@ -67,7 +56,6 @@
             "type": "inline",
             "value": {
               "variant": "info",
-              "title": "Information alert",
               "message": "Your application has been submitted for review."
             }
           }

@@ -1,6 +1,6 @@
 # Notification Component
 
-The Notification component displays contextual, status-specific callouts used within page content. It provides a prominent left accent bar, an icon, a heading and a message. Implemented as a lightweight vanilla JS component with optional DXP server-side rendering.
+The Notification component displays contextual, status-specific callouts used within page content. It provides a prominent left accent bar, an icon, and a message. Implemented as a lightweight vanilla JS component with optional DXP server-side rendering.
 
 ## Purpose
 
@@ -36,7 +36,7 @@ Client-side auto-mount (hydration container):
 ```html
 <div
   data-hydration-component="notification"
-  data-hydration-props='{"variant":"info","title":"Information","message":"Important info here."}'
+  data-hydration-props='{"variant":"info","message":"Important info here."}'
 ></div>
 ```
 
@@ -47,7 +47,6 @@ import { NotificationClient } from "./components/Notification/Notification.vanil
 const el = document.getElementById("my-notification");
 new NotificationClient(el, {
   variant: "success",
-  title: "Saved",
   message: "Your changes have been saved.",
 });
 ```
@@ -62,7 +61,6 @@ Example manifest usage in DXP:
 // manifest.json -> function main
 {
   "variant": "info",
-  "title": "Information alert",
   "message": "<p>Your action completed.</p>"
 }
 ```
@@ -78,11 +76,9 @@ The server renderer marks the message as the inline-editable field:
 ## Props (Vanilla / DXP)
 
 - `variant` — `"info" | "success" | "warning" | "danger"` (default: `info`)
-- `title` — `string` (heading)
 - `message` — escaped plain text in the vanilla API; trusted `FormattedText` HTML in DXP
-- `className` / `cssClass` — `string` (optional additional CSS classes)
 
-All props are accepted as either camelCase or PascalCase keys in hydration JSON (`title` / `Title`, `message` / `Message`).
+Props are accepted as either camelCase or PascalCase keys in hydration JSON for message (`message` / `Message`).
 
 ## Accessibility
 
@@ -124,7 +120,6 @@ Info notification (HTML):
         <i class="fa-light fa-circle-info" aria-hidden="true"></i>
       </div>
       <div class="notification__text">
-        <div class="notification__title">Information</div>
         <div class="notification__message">Your request has been received.</div>
       </div>
     </div>
@@ -134,7 +129,8 @@ Info notification (HTML):
 
 ## Developer notes
 
-- The DXP manifest accepts `null` input and provides default `title`/`message` values — this prevents dev-ui validation failures when no input is supplied.
+- The DXP manifest accepts `null` input and provides a default `message` value — this prevents dev-ui validation failures when no input is supplied.
+- Notification no longer supports caller-supplied CSS classes (`className`/`cssClass`).
 - The component intentionally **does not** include a dismiss button. Add dismiss behavior later as an enhancement if required.
 - Icon mapping (Font Awesome / `fa-light`):
   - `info` → `fa-circle-info`

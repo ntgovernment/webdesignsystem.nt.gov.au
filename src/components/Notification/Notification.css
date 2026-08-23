@@ -60,14 +60,6 @@
   color: var(--clr-text-default, #1f1f5f);
 }
 
-.notification__title {
-  font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
-  font-size: var(--type-desktop-h3-size, 24px);
-  font-weight: var(--type-desktop-h3-weight, 700);
-  line-height: var(--type-desktop-h3-lh, 32px);
-  color: var(--clr-text-default, #1f1f5f);
-}
-
 .notification__message {
   font-family: var(--type-font-default, "Lato", system-ui, sans-serif);
   font-size: var(--type-body-default-size, 16px);
@@ -147,8 +139,4 @@
     padding: var(--sp-lg, 20px);
   }
 
-  .notification__title {
-    font-size: var(--type-mobile-h3-size, 20px);
-    line-height: var(--type-mobile-h3-lh, 28px);
-  }
 }
