@@ -116,6 +116,7 @@ VITE_FONT_AWESOME_KIT_ID=41b791824a
 ```
 
 Use this Font Awesome kit value for pages served from URLs starting with `https://cmsexternal.nt.gov.au`.
+If `VITE_FONT_AWESOME_KIT_ID` is omitted, deployment falls back to `41b791824a`.
 
 ### Build
 

@@ -24,6 +24,8 @@ VITE_FONT_AWESOME_KIT_ID=41b791824a
 
 These values are automatically substituted during the build process. The `.env` file is git-ignored for security.
 
+If `VITE_FONT_AWESOME_KIT_ID` is not set, the deploy script falls back to `41b791824a` so `YOUR_KIT_ID` is never emitted in `deploy/nesters/head.html`.
+
 ## Quick Reference
 
 ### Build Commands
@@ -133,6 +135,16 @@ After running `npm run build`, the HTML nesters in `deploy/nesters/` will contai
   href="%globals_asset_url_with_hash:1590990:deploy/web-design-system.css%"
 />
 ```
+
+### 3.1 Troubleshooting 403 From Font Awesome
+
+If browser console shows:
+
+```text
+GET https://kit.fontawesome.com/YOUR_KIT_ID.js 403 (Forbidden)
+```
+
+then your Matrix head content is still using an old nester output. Run `npm run deploy` (or `npm run build`), commit `deploy/nesters/head.html`, and push to trigger Git File Bridge sync.
 
 ### 4. Embed Nesters in Paint Layouts
 
