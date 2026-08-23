@@ -21,11 +21,22 @@ interface CardItem {
 
 interface CardProps {
   cardMode: "Display Cards" | "Mini Cards";
+  cardsPerRow?: "Automatic" | "2" | "3" | "4";
   Title?: string;
   Description?: string;
   Cards: CardItem[];
 }
 ```
+
+## Cards per row
+
+Editors can choose `Automatic`, `2`, `3`, or `4` cards per row. The setting applies to both card modes and represents the maximum number of cards shown on a row:
+
+- `Automatic` keeps the mode-specific responsive auto-fill layout and is the default.
+- `2`, `3`, and `4` use that count when the component has enough space, then reduce the count at narrower component widths.
+- All layouts stack to one card per row on mobile.
+
+Existing component instances without `cardsPerRow` continue to use `Automatic` behavior.
 
 ## Inline editing
 
@@ -57,7 +68,7 @@ The development UI includes `display-cards` and `mini-cards` previews. This CLI 
 ```html
 <div
   data-hydration-component="card"
-  data-hydration-props='{"cardMode":"Mini Cards","Cards":[{"PageAsset":{"url":"/about"},"CardTitle":"About","IconCode":"fa-light fa-circle-info"}]}'
+  data-hydration-props='{"cardMode":"Mini Cards","cardsPerRow":"3","Cards":[{"PageAsset":{"url":"/about"},"CardTitle":"About","IconCode":"fa-light fa-circle-info"}]}'
 ></div>
 ```
 

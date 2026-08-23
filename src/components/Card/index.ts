@@ -1,5 +1,6 @@
 export { CardClient } from "./Card.vanilla";
 export type {
+  CardColumns,
   CardItem,
   CardMode,
   CardProps,

@@ -3,6 +3,17 @@ import { escapeHtml, escapeAttr } from "../../../utils/sanitize.js";
 const DISPLAY_MODE = "Display Cards";
 const MINI_MODE = "Mini Cards";
 
+const resolveColumnClass = (cardsPerRow) => {
+  switch (cardsPerRow) {
+    case "2":
+    case "3":
+    case "4":
+      return `nt-card--columns-${cardsPerRow}`;
+    default:
+      return "";
+  }
+};
+
 const resolveLinkUrl = (link) => {
   if (!link) return "";
   if (typeof link === "string") return link;
@@ -88,6 +99,7 @@ const renderCard = (card, index, mode, editor) => {
 const main = async (input, info) => {
   const {
     cardMode = DISPLAY_MODE,
+    cardsPerRow = "Automatic",
     Title = "",
     Description = "",
     Cards = [],
@@ -112,8 +124,12 @@ const main = async (input, info) => {
     .map((card, index) => renderCard(card, index, mode, editor))
     .join("");
   const modeModifier = mode === MINI_MODE ? "mini" : "display";
+  const columnClass = resolveColumnClass(cardsPerRow);
+  const classes = ["nt-card", `nt-card--${modeModifier}`, columnClass]
+    .filter(Boolean)
+    .join(" ");
 
-  return `<section class="nt-card nt-card--${modeModifier}">
+  return `<section class="${classes}">
     ${titleHtml}
     ${descriptionHtml}
     <div class="nt-card__grid" role="list" data-card-mode="${escapeAttr(mode)}" data-card-count="${cards.length}">

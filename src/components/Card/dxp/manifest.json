@@ -31,6 +31,16 @@
               "quickOption": true
             }
           },
+          "cardsPerRow": {
+            "type": "string",
+            "title": "Cards per row",
+            "description": "Choose the maximum number of cards per row. The layout uses fewer cards when space is limited.",
+            "enum": ["Automatic", "2", "3", "4"],
+            "default": "Automatic",
+            "ui:metadata": {
+              "quickOption": true
+            }
+          },
           "Title": {
             "type": "string",
             "title": "Grid title",

@@ -3,6 +3,7 @@ import { escapeHtml, escapeAttr } from "../../utils/sanitize";
 import { debugError, debugLog } from "../../utils/debug";
 
 export type CardMode = "Display Cards" | "Mini Cards";
+export type CardColumns = "Automatic" | "2" | "3" | "4";
 
 export type SquizLinkValue =
   | string
@@ -38,6 +39,7 @@ export interface CardItem {
 
 export interface CardProps {
   cardMode?: CardMode;
+  cardsPerRow?: CardColumns;
   Title?: string;
   title?: string;
   Description?: string;
@@ -47,6 +49,17 @@ export interface CardProps {
   pages?: CardItem[];
   cssClass?: string;
 }
+
+const resolveColumnClass = (cardsPerRow?: CardColumns): string => {
+  switch (cardsPerRow) {
+    case "2":
+    case "3":
+    case "4":
+      return `nt-card--columns-${cardsPerRow}`;
+    default:
+      return "";
+  }
+};
 
 const resolveLinkUrl = (link?: SquizLinkValue): string => {
   if (!link) return "";
@@ -147,7 +160,12 @@ export class CardClient {
     const title = this.props.Title || this.props.title || "";
     const description =
       this.props.Description || this.props.description || "";
-    const classes = ["nt-card", `nt-card--${modeModifier}`, this.props.cssClass]
+    const classes = [
+      "nt-card",
+      `nt-card--${modeModifier}`,
+      resolveColumnClass(this.props.cardsPerRow),
+      this.props.cssClass,
+    ]
       .filter(Boolean)
       .join(" ");
 

@@ -8,8 +8,12 @@
   <style>
     * { box-sizing: border-box; }
     body { color: #1f1e27; font-family: Lato, sans-serif; margin: 0; padding: 2rem; }
+    .nt-card { container-type: inline-size; }
     .nt-card__grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(353px, 1fr)); }
     .nt-card--mini .nt-card__grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .nt-card--columns-2 .nt-card__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .nt-card--columns-3 .nt-card__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .nt-card--columns-4 .nt-card__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .nt-card__title { margin: 0 0 .75rem; }
     .nt-card__description { margin: 0 0 1.5rem; }
     .nt-card__item { height: 100%; }
@@ -22,6 +26,9 @@
     .card__content--mini { padding: 1rem 1.5rem .75rem .5rem; }
     .card__icon { color: #c33826; font-size: 1.375rem; margin-left: 1.5rem; }
     .card__title { color: #1f1f5f; font-size: 1.25rem; margin: 0; }
+    @container (max-width: 1099px) { .nt-card--columns-4 .nt-card__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @container (max-width: 899px) { .nt-card--columns-3 .nt-card__grid, .nt-card--columns-4 .nt-card__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @container (max-width: 768px) { .nt-card--columns-2 .nt-card__grid, .nt-card--columns-3 .nt-card__grid, .nt-card--columns-4 .nt-card__grid { grid-template-columns: 1fr; } }
     @media (max-width: 768px) { .nt-card__grid, .nt-card--mini .nt-card__grid { grid-template-columns: 1fr; } }
   </style>
 </head>

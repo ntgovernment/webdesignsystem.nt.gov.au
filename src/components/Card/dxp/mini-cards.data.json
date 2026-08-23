@@ -1,5 +1,6 @@
 {
   "cardMode": "Mini Cards",
+  "cardsPerRow": "3",
   "Title": "Explore the design system",
   "Description": "Quick links to design system resources.",
   "Cards": [
