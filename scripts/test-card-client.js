@@ -32,12 +32,12 @@ const candidates = resolveImageCandidates({
   varieties: {
     data: {
       v1: {
-        filename: "design-small.webp",
+        url: "https://cdn.example.nt.gov.au/design-small.webp",
         variety_width: 400,
         variety_height: 225,
       },
       v2: {
-        filename: "design-medium.webp",
+        urls: ["https://cdn.example.nt.gov.au/design-medium.webp"],
         variety_width: 800,
         variety_height: 450,
       },
@@ -49,12 +49,12 @@ assert.deepEqual(
   candidates.map(({ url, width, height }) => ({ url, width, height })),
   [
     {
-      url: "https://cmsexternal.nt.gov.au/__data/assets/image/0003/1592553/design-small.webp",
+      url: "https://cdn.example.nt.gov.au/design-small.webp",
       width: 400,
       height: 225,
     },
     {
-      url: "https://cmsexternal.nt.gov.au/__data/assets/image/0003/1592553/design-medium.webp",
+      url: "https://cdn.example.nt.gov.au/design-medium.webp",
       width: 800,
       height: 450,
     },

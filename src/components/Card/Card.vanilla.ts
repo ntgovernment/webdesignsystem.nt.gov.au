@@ -241,7 +241,7 @@ export const resolveImageCandidates = (
   asset: Record<string, unknown>,
 ): ImageCandidate[] => {
   const urls = Array.isArray(asset.urls) ? asset.urls : [];
-  const originalUrl = String(asset.web_path || asset.url || urls[0] || "");
+  const originalUrl = String(urls[0] || asset.url || asset.web_path || "");
   if (!originalUrl) return [];
 
   const candidates: ImageCandidate[] = [];
@@ -255,12 +255,15 @@ export const resolveImageCandidates = (
     Object.values(varietyData).forEach((value) => {
       if (!value || typeof value !== "object") return;
       const variety = value as Record<string, unknown>;
-      const filename = String(variety.filename || "");
-      if (!filename) return;
+      const varietyUrls = Array.isArray(variety.urls) ? variety.urls : [];
+      const varietyUrl = String(
+        varietyUrls[0] || variety.url || variety.web_path || "",
+      );
+      if (!varietyUrl) return;
 
       try {
         candidates.push({
-          url: new URL(filename, originalUrl).href,
+          url: varietyUrl,
           width: toDimension(variety.variety_width || variety.width),
           height: toDimension(variety.variety_height || variety.height),
         });
