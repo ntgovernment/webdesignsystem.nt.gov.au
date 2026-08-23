@@ -115,13 +115,13 @@ const createCardFixture = ({ showImage = false, showIcon = true } = {}) => {
 const compactFixture = createCardFixture();
 renderClientIcon(compactFixture.card, "fa-light fa-circle-info");
 const compactIcon = compactFixture.card.querySelector(".card__icon");
-assert.equal(compactFixture.card.children[0], compactIcon);
-assert.equal(compactFixture.card.children[1], compactFixture.content);
+assert.equal(compactFixture.card.children[0], compactFixture.content);
+assert.equal(compactFixture.content.children[0], compactIcon);
 assert.equal(compactIcon.className, "card__icon fa-light fa-circle-info");
 assert.equal(compactIcon.getAttribute("aria-hidden"), "true");
 assert.equal(
   compactFixture.content.classList.contains("card__content--with-icon"),
-  false,
+  true,
 );
 
 const displayFixture = createCardFixture({ showImage: true });

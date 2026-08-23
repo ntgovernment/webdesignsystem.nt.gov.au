@@ -322,14 +322,8 @@ export const renderClientIcon = (card: HTMLElement, icon: string): void => {
   iconElement.className = `card__icon ${icon.trim()}`;
   iconElement.setAttribute("aria-hidden", "true");
 
-  if (cardShowsImage(card)) {
-    content.classList.add("card__content--with-icon");
-    content.prepend(iconElement);
-    return;
-  }
-
-  content.classList.remove("card__content--with-icon");
-  card.insertBefore(iconElement, content);
+  content.classList.add("card__content--with-icon");
+  content.prepend(iconElement);
 };
 
 const renderClientImage = (
@@ -596,8 +590,7 @@ export class CardClient {
       visibility.showIcon && icon
         ? `<span class="card__icon ${escapeAttr(icon)}" aria-hidden="true"></span>`
         : "";
-    const leadingIcon = isCompact ? iconHtml : "";
-    const bodyIcon = visibility.showImage ? iconHtml : "";
+    const bodyIcon = iconHtml;
     const bodyClasses = [
       "card__content",
       isCompact ? "card__content--mini" : "",
@@ -609,7 +602,6 @@ export class CardClient {
     return `<div class="nt-card__item" role="listitem" data-card-index="${index}">
       <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset" data-metadata-image="" data-metadata-icon=""${hrefAttr}${targetAttr}${relAttr}>
         ${imageHtml}
-        ${leadingIcon}
         <div class="${bodyClasses}">
           ${bodyIcon}
           <h3 class="card__title">${escapeHtml(title)}</h3>

@@ -428,8 +428,7 @@ const renderCard = (card, index, visibility, editor) => {
     visibility.showIcon && item.resolvedIcon
       ? `<span class="card__icon ${escapeAttr(item.resolvedIcon)}" aria-hidden="true"></span>`
       : "";
-  const leadingIcon = isCompact ? iconHtml : "";
-  const bodyIcon = visibility.showImage ? iconHtml : "";
+  const bodyIcon = iconHtml;
   const bodyClass = [
     "card__content",
     isCompact ? "card__content--mini" : "",
@@ -441,7 +440,6 @@ const renderCard = (card, index, visibility, editor) => {
   return `<div class="nt-card__item" role="listitem" data-card-index="${index}">
     <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset" data-metadata-image="" data-metadata-icon=""${assetInfoAttribute}${assetDataAttributes}${metadataDataAttributes}${hrefAttr}${targetAttr}${relAttr}>
       ${imageHtml}
-      ${leadingIcon}
       <div class="${bodyClass}">
         ${bodyIcon}
         <h3 class="card__title">${escapeHtml(title)}</h3>

@@ -117,6 +117,10 @@ assert.match(
   /<img src="https:\/\/example\.nt\.gov\.au\/design\.jpg" alt="Design tools" \/>/,
 );
 assert.match(resolvedHtml, /class="card__icon fa-light fa-pen-ruler"/);
+assert.match(
+  resolvedHtml,
+  /<div class="card__content [^"]*card__content--with-icon">\s*<span class="card__icon fa-light fa-pen-ruler"[^>]*><\/span>\s*<h3 class="card__title">Design metadata<\/h3>/,
+);
 
 const originalFetch = globalThis.fetch;
 let tokenRequestCount = 0;

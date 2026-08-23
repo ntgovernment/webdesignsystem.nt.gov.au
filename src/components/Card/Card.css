@@ -103,8 +103,8 @@
 }
 
 .nt-card .card__content--with-icon {
-  align-items: center;
-  flex-direction: row;
+  align-items: flex-start;
+  flex-direction: column;
   gap: var(--sp-md);
 }
 

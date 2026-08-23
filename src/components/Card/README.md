@@ -2,7 +2,7 @@
 
 Card is the preferred responsive card grid for Squiz DXP. It presents a shared collection of linked cards using image or icon media supplied by asset metadata.
 
-Current DXP component version: `1.0.16`.
+Current DXP component version: `1.0.17`.
 
 ## Input
 
@@ -55,7 +55,7 @@ Image arrays and objects are JSON-serialized, so a Related Asset value can appea
 
 Every Card is initially rendered with `data-metadata-image=""` and `data-metadata-icon=""`. The values are populated asynchronously after the browser API calls complete. The page and `data-service.js` must share an origin because the Matrix JavaScript API relies on the browser session and does not support cross-domain session calls. An unavailable API, missing metadata value, or unlinked Card keeps the empty attributes without altering the server-rendered content.
 
-When `showIcon` is enabled, the browser also renders the resolved icon as `<span class="card__icon ..." aria-hidden="true"></span>`. Icon-only Cards place it before `.card__content`; Cards showing both image and icon place it at the start of `.card__content` and apply `.card__content--with-icon`. Existing server-rendered icons are updated in place so client enrichment does not create duplicates.
+When `showIcon` is enabled, the renderer and browser both render the resolved icon as `<span class="card__icon ..." aria-hidden="true"></span>` at the start of `.card__content`, above the title, with `.card__content--with-icon`. Existing server-rendered icons are updated in place so client enrichment does not create duplicates. The Card renderer does not use the MiniPageCard-specific `.mini-page-card__icon` class.
 
 When `showImage` is enabled, the browser uses the Related Asset ID from `content-cardImagePhoto` for one additional cached `getGeneral({ asset_id, get_attributes: 1 })` call. It reads the original `web_path` and available image varieties, measures the 16:9 media container, accounts for device pixel ratio, and renders the smallest image whose width and height cover that container. A `ResizeObserver` reselects the source when responsive layout changes require another size. When `showImage` is disabled, the image asset is not requested or rendered.
 
@@ -96,6 +96,8 @@ Each rendered card element (`a.card` or `div.card`) now includes data attributes
 This hydration supports both direct preview metadata values and JSON:API-style resolver responses (`data.attributes`).
 
 ## Compatibility
+
+Version `1.0.17` places Card icons above titles in the shared content stack and removes the separate leading-icon render path.
 
 Version `1.0.16` renders `content-cardIcon` in the browser after metadata enrichment, matching the existing server-rendered Card markup and placement.
 
