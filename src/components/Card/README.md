@@ -2,7 +2,7 @@
 
 Card is the preferred responsive card grid for Squiz DXP. It presents a shared collection of linked cards using image or icon media supplied by asset metadata.
 
-Current DXP component version: `1.0.8`.
+Current DXP component version: `1.0.10`.
 
 ## Input
 
@@ -35,6 +35,8 @@ Editors select a destination asset once. The DXP edge renderer now resolves dest
 - `content-cardIcon` (metadata field asset `#1185563`) when Icon is enabled
 
 The renderer resolves by URL with `getLineageFromUrl`, then loads destination values with `getGeneral`, `getMetadata`, and `getAttributes`. Related Asset image IDs are resolved with the same service methods.
+
+Server-side requests send `Origin: https://cmsexternal.nt.gov.au`, which is required for API key validation and nonce use. The JavaScript API asset must also allow the WebDS root as an accessible root node, and its effective user must have read access to destination, metadata, and image assets. Matrix returns `permissionError` and the Card falls back to its selected link fields when those permissions are absent.
 
 DXP function utilities remain as fallback. When the data service is unavailable or cannot resolve a destination, the renderer falls back to `resolveMatrixAssetByUrl` and `resolveUri` inside existing error boundaries.
 
@@ -81,6 +83,10 @@ This hydration supports both direct preview metadata values and JSON:API-style r
 
 ## Compatibility
 
+Version `1.0.10` forwards the Matrix session cookies returned with the nonce so server-side DXP requests can authenticate the subsequent data-service calls.
+
+Version `1.0.9` routes requests through the DXP runtime fetch function, reuses one origin-bound nonce per service client, rejects Matrix API error envelopes, selects the destination at the end of returned lineage, and retains successful results if an optional asset call fails.
+
 Version `1.0.8` resolves destination metadata and attributes through the Squiz JavaScript API data service first, then falls back to DXP resolver functions when required. It preserves selected `PageAsset` fields as `data-asset-*` attributes when remote resolution is unavailable.
 
 Version `1.0.7` preserves selected `PageAsset` fields as `data-asset-*` attributes when Content API resolution is unavailable. It also reads destination and Related Asset image values from direct and JSON:API-style resolver payloads, including nested `data.attributes` and `attributes` objects.
@@ -103,7 +109,7 @@ dxp-next cmp deploy src/components/Card/dxp
 npm run test:card-dxp
 ```
 
-The development UI includes Image-only, Icon-only, Image+Icon, title-only, and live asset-resolution previews. The live preview intentionally omits embedded metadata and requires session-based Content API access. The CLI uses fixed internal port `5555`; stop a stale development UI process if that port is already occupied.
+The development UI includes Image-only, Icon-only, Image+Icon, title-only, and live asset-resolution previews. The live preview intentionally omits embedded metadata and requires data-service access (`Origin`, nonce session cookies, and JavaScript API asset read permissions). Resolver fallback paths still require session-based Content API access. The CLI uses fixed internal port `5555`; stop a stale development UI process if that port is already occupied.
 
 `npm run test:card-dxp` runs a focused regression harness for data-service resolution, resolver fallback attributes, and nested JSON:API image payload handling.
 

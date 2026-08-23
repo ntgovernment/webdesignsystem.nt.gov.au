@@ -11,11 +11,14 @@ const resolveDataServiceOptions = (info) => {
   const dataService = info?.ctx?.matrixDataService || {};
   if (dataService.enabled === false) return null;
 
+  const runtimeFetch = info?.fns
+    ? (...args) => info.fns.fetch(...args)
+    : undefined;
+
   return createMatrixDataServiceClient({
-    endpoint:
-      dataService.endpoint || DEFAULT_MATRIX_DATA_SERVICE_ENDPOINT,
+    endpoint: dataService.endpoint || DEFAULT_MATRIX_DATA_SERVICE_ENDPOINT,
     key: dataService.key || DEFAULT_MATRIX_DATA_SERVICE_KEY,
-    fetchImpl: dataService.fetch,
+    fetchImpl: dataService.fetch || runtimeFetch,
   });
 };
 
@@ -59,8 +62,7 @@ const resolveMediaVisibility = (
     };
   }
 
-  const legacyIcon =
-    legacyMediaType === "Icon" || legacyMode === "Mini Cards";
+  const legacyIcon = legacyMediaType === "Icon" || legacyMode === "Mini Cards";
   return { showImage: !legacyIcon, showIcon: legacyIcon };
 };
 
@@ -252,7 +254,10 @@ const resolvePageAsset = async (link, info) => {
 
   const dataServiceAsset = await resolveViaDataServiceByUrl(url, info);
   if (dataServiceAsset) {
-    const attributes = { ...linkAttributes, ...resolveAssetAttributes(dataServiceAsset) };
+    const attributes = {
+      ...linkAttributes,
+      ...resolveAssetAttributes(dataServiceAsset),
+    };
     const metadata = {
       ...linkMetadata,
       ...resolveAssetMetadata(dataServiceAsset, attributes),
@@ -356,10 +361,7 @@ const populateCardMedia = async (card, visibility, info) => {
     resolveLinkTitle(item.PageAsset) ||
     resolveAssetValue(asset, attributes, "name") ||
     "";
-  const metadataImage = firstMetadataValue(
-    metadata,
-    "content-cardImagePhoto",
-  );
+  const metadataImage = firstMetadataValue(metadata, "content-cardImagePhoto");
 
   return {
     ...item,
@@ -370,9 +372,7 @@ const populateCardMedia = async (card, visibility, info) => {
       resolveAssetValue(asset, attributes, "url") ||
       resolveLinkUrl(item.PageAsset),
     resolvedIcon: visibility.showIcon
-      ? firstMetadataValue(metadata, "content-cardIcon") ||
-        item.IconCode ||
-        ""
+      ? firstMetadataValue(metadata, "content-cardIcon") || item.IconCode || ""
       : "",
     resolvedImage: visibility.showImage
       ? (await resolveMetadataImage(metadataImage, domain, info)) ||

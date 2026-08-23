@@ -16,39 +16,40 @@ const normalizeAssetId = (value) => {
   const trimmed = value.trim();
   if (/^\d+$/.test(trimmed)) return trimmed;
 
-  const matrixUriMatch = /^matrix-asset:\/\/[a-zA-Z0-9.-]+\/(\d+)(?::.+)?$/.exec(
-    trimmed,
-  );
+  const matrixUriMatch =
+    /^matrix-asset:\/\/[a-zA-Z0-9.-]+\/(\d+)(?::.+)?$/.exec(trimmed);
   return matrixUriMatch ? matrixUriMatch[1] : "";
 };
 
-const findAssetId = (value) => {
+const collectAssetIds = (value, assetIds = []) => {
   const direct = normalizeAssetId(value);
-  if (direct) return direct;
+  if (direct) {
+    assetIds.push(direct);
+    return assetIds;
+  }
 
   if (Array.isArray(value)) {
     for (const item of value) {
-      const nested = findAssetId(item);
-      if (nested) return nested;
+      collectAssetIds(item, assetIds);
     }
-    return "";
+    return assetIds;
   }
 
-  if (!isRecord(value)) return "";
+  if (!isRecord(value)) return assetIds;
 
   const preferredKeys = ["assetid", "asset_id", "id", "asset", "assetId"];
   for (const key of preferredKeys) {
     if (!Object.prototype.hasOwnProperty.call(value, key)) continue;
-    const nested = findAssetId(value[key]);
-    if (nested) return nested;
+    collectAssetIds(value[key], assetIds);
   }
 
-  for (const nestedValue of Object.values(value)) {
-    const nested = findAssetId(nestedValue);
-    if (nested) return nested;
+  if (assetIds.length === 0) {
+    for (const nestedValue of Object.values(value)) {
+      collectAssetIds(nestedValue, assetIds);
+    }
   }
 
-  return "";
+  return assetIds;
 };
 
 const toPayload = (response) => {
@@ -99,27 +100,67 @@ const readGeneralFields = (...sources) => {
 const fetchJson = async (fetchImpl, url, options) => {
   const response = await fetchImpl(url, options);
   if (!response.ok) {
-    throw new Error(`Matrix data-service request failed with status ${response.status}`);
+    throw new Error(
+      `Matrix data-service request failed with status ${response.status}`,
+    );
   }
 
-  return response.json();
+  const payload = await response.json();
+  if (isRecord(payload) && (payload.error || payload.errorCode)) {
+    throw new Error(
+      payload.error || `Matrix data-service error: ${payload.errorCode}`,
+    );
+  }
+
+  return payload;
 };
 
-const getNonceToken = async (fetchImpl, endpoint, cacheKey) => {
+const readResponseCookies = (response) => {
+  const setCookieValues =
+    typeof response.headers?.getSetCookie === "function"
+      ? response.headers.getSetCookie()
+      : String(response.headers?.get?.("set-cookie") || "")
+          .split(/,(?=\s*[^;,]+=)/)
+          .filter(Boolean);
+
+  return setCookieValues
+    .map((value) => value.split(";", 1)[0].trim())
+    .filter(Boolean)
+    .join("; ");
+};
+
+const getNonceToken = async (fetchImpl, endpoint, cacheKey, origin) => {
   if (tokenCache.has(cacheKey)) return tokenCache.get(cacheKey);
 
-  const response = await fetchImpl(`${endpoint}?SQ_ACTION=getToken`);
-  if (!response.ok) {
-    throw new Error(`Matrix token request failed with status ${response.status}`);
-  }
+  const tokenRequest = (async () => {
+    const response = await fetchImpl(`${endpoint}?SQ_ACTION=getToken`, {
+      headers: { Origin: origin },
+    });
+    if (!response.ok) {
+      throw new Error(
+        `Matrix token request failed with status ${response.status}`,
+      );
+    }
 
-  const token = (await response.text()).trim();
-  if (!token) {
-    throw new Error("Matrix token request returned an empty token");
-  }
+    const token = (await response.text()).trim();
+    if (!token) {
+      throw new Error("Matrix token request returned an empty token");
+    }
 
-  tokenCache.set(cacheKey, token);
-  return token;
+    return {
+      token,
+      cookie: readResponseCookies(response),
+    };
+  })();
+
+  tokenCache.set(cacheKey, tokenRequest);
+
+  try {
+    return await tokenRequest;
+  } catch (error) {
+    tokenCache.delete(cacheKey);
+    throw error;
+  }
 };
 
 export const createMatrixDataServiceClient = (options = {}) => {
@@ -132,17 +173,21 @@ export const createMatrixDataServiceClient = (options = {}) => {
   }
 
   const cacheKey = `${endpoint}|${key}`;
+  const origin = new URL(endpoint).origin;
 
   const post = async (type, params = {}) => {
-    const nonceToken = await getNonceToken(fetchImpl, endpoint, cacheKey);
-    const body = { ...params, type, nonce_token: nonceToken };
+    const nonce = await getNonceToken(fetchImpl, endpoint, cacheKey, origin);
+    const body = { ...params, type, nonce_token: nonce.token };
+    const headers = {
+      "Content-Type": "application/json",
+      Origin: origin,
+      "X-SquizMatrix-JSAPI-Key": key,
+    };
+    if (nonce.cookie) headers.Cookie = nonce.cookie;
 
     return fetchJson(fetchImpl, endpoint, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-SquizMatrix-JSAPI-Key": key,
-      },
+      headers,
       body: JSON.stringify(body),
     });
   };
@@ -151,11 +196,27 @@ export const createMatrixDataServiceClient = (options = {}) => {
     const normalizedId = normalizeAssetId(assetId);
     if (!normalizedId) return null;
 
-    const [generalRaw, metadataRaw, attributesRaw] = await Promise.all([
-      post("getGeneral", { id: normalizedId, get_attributes: 1 }),
-      post("getMetadata", { id: normalizedId }),
-      post("getAttributes", { id: normalizedId }),
-    ]);
+    const [generalResult, metadataResult, attributesResult] =
+      await Promise.allSettled([
+        post("getGeneral", { id: normalizedId, get_attributes: 1 }),
+        post("getMetadata", { id: normalizedId }),
+        post("getAttributes", { id: normalizedId }),
+      ]);
+
+    const generalRaw =
+      generalResult.status === "fulfilled" ? generalResult.value : {};
+    const metadataRaw =
+      metadataResult.status === "fulfilled" ? metadataResult.value : {};
+    const attributesRaw =
+      attributesResult.status === "fulfilled" ? attributesResult.value : {};
+
+    if (
+      generalResult.status === "rejected" &&
+      metadataResult.status === "rejected" &&
+      attributesResult.status === "rejected"
+    ) {
+      throw generalResult.reason;
+    }
 
     const generalPayload = toPayload(generalRaw);
     const metadataPayload = toPayload(metadataRaw);
@@ -192,9 +253,9 @@ export const createMatrixDataServiceClient = (options = {}) => {
       asset_url: encodeURI(assetUrl),
     });
 
-    const assetId =
-      findAssetId(toPayload(lineageRaw)) ||
-      findAssetId(lineageRaw);
+    const assetIds = collectAssetIds(toPayload(lineageRaw));
+    if (assetIds.length === 0) collectAssetIds(lineageRaw, assetIds);
+    const assetId = assetIds.at(-1) || "";
 
     if (!assetId) return null;
     return getAssetById(assetId);
@@ -206,4 +267,7 @@ export const createMatrixDataServiceClient = (options = {}) => {
   };
 };
 
-export { DEFAULT_MATRIX_DATA_SERVICE_ENDPOINT, DEFAULT_MATRIX_DATA_SERVICE_KEY };
+export {
+  DEFAULT_MATRIX_DATA_SERVICE_ENDPOINT,
+  DEFAULT_MATRIX_DATA_SERVICE_KEY,
+};

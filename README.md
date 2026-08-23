@@ -46,18 +46,18 @@ See [src/components/Tab/README.md](src/components/Tab/README.md#tab-marker-trans
 
 Server-rendered components deployed independently via `dxp-next`. Each has `dxp/manifest.json` (schema) and `dxp/main.js` (server-side renderer):
 
-| Component                 | DXP name                             | README                                   |
-| ------------------------- | ------------------------------------ | ---------------------------------------- |
-| **Card**                  | `web-design-system/card`             | src/components/Card/README.md            |
-| **ColorSwatch**           | `web-design-system/color-swatch`     | src/components/ColorSwatch/README.md     |
-| **ComponentViewer**       | `web-design-system/component-viewer` | src/components/ComponentViewer/README.md |
-| **MiniPageCard** _(deprecated)_ | `web-design-system/mini-page-card` | src/components/MiniPageCard/README.md |
-| **Notification**          | `web-design-system/notification`     | src/components/Notification/README.md    |
-| **PageCard** _(deprecated)_ | `web-design-system/page-card`      | src/components/PageCard/README.md        |
-| **PageTile**              | `web-design-system/page-tile`        | src/components/PageTile/README.md        |
-| **ThemeSwitcher** _(DXP)_ | `web-design-system/theme-switcher`   | src/components/ThemeSwitcher/README.md   |
-| **Tab** _(DXP)_           | `web-design-system/tab`              | src/components/Tab/README.md             |
-| **TwoColumn** _(DXP)_     | `web-design-system/two-column`       | src/components/TwoColumn/README.md       |
+| Component                       | DXP name                             | README                                   |
+| ------------------------------- | ------------------------------------ | ---------------------------------------- |
+| **Card**                        | `web-design-system/card`             | src/components/Card/README.md            |
+| **ColorSwatch**                 | `web-design-system/color-swatch`     | src/components/ColorSwatch/README.md     |
+| **ComponentViewer**             | `web-design-system/component-viewer` | src/components/ComponentViewer/README.md |
+| **MiniPageCard** _(deprecated)_ | `web-design-system/mini-page-card`   | src/components/MiniPageCard/README.md    |
+| **Notification**                | `web-design-system/notification`     | src/components/Notification/README.md    |
+| **PageCard** _(deprecated)_     | `web-design-system/page-card`        | src/components/PageCard/README.md        |
+| **PageTile**                    | `web-design-system/page-tile`        | src/components/PageTile/README.md        |
+| **ThemeSwitcher** _(DXP)_       | `web-design-system/theme-switcher`   | src/components/ThemeSwitcher/README.md   |
+| **Tab** _(DXP)_                 | `web-design-system/tab`              | src/components/Tab/README.md             |
+| **TwoColumn** _(DXP)_           | `web-design-system/two-column`       | src/components/TwoColumn/README.md       |
 
 #### Card
 
@@ -65,6 +65,8 @@ Server-rendered components deployed independently via `dxp-next`. Each has `dxp/
 
 - Image and Icon can be enabled separately, together, or both disabled.
 - Enabled media is populated from `content-cardImagePhoto` and `content-cardIcon`; titles use `content-cardTitle`.
+- In Card `1.0.10`, the data-service nonce session cookies are forwarded across server-side DXP requests.
+- In Card `1.0.9`, data-service requests use the DXP runtime fetch function with origin-bound nonce reuse and correct destination lineage selection.
 - In Card `1.0.8`, destination metadata and attributes are resolved through the Squiz JavaScript API data service first, then fall back to DXP resolver functions if needed.
 - In Card `1.0.7`, selected link fields remain available as `data-asset-*` attributes when destination lookup fails, and nested JSON:API image assets are normalized for rendering.
 - In Card `1.0.6`, each rendered card is hydrated with `data-asset-*` and `data-metadata-*` attributes for resolved destination asset values and metadata.
@@ -160,9 +162,13 @@ The Card dev UI includes `image-cards`, `icon-cards`, `image-icon-cards`, `text-
 
 Card edge renderer metadata and media resolution uses the Squiz JavaScript API data service (`https://cmsexternal.nt.gov.au/webds/_design/javascript-api/data-service.js`, key `5805955303`) with `getLineageFromUrl`, `getGeneral`, `getMetadata`, and `getAttributes`. Existing Squiz late-bound utility functions (`resolveMatrixAssetByUrl` and `resolveUri`) remain as fallback, so cards continue to render when service resolution is unavailable.
 
+Card `1.0.10` also forwards nonce session cookies for server-side data-service requests. If the JavaScript API asset does not have read permissions to destination and related image assets, Matrix returns `permissionError` and Card falls back to selected `PageAsset` link fields.
+
 Card `1.0.6` also hydrates each rendered card element with namespaced attributes from resolved destination data: `data-asset-*` for asset fields and `data-metadata-*` for metadata fields. Complex values are JSON-serialized and HTML-escaped.
 
 Card `1.0.7` preserves the selected link's asset attributes if Content API resolution fails and supports image assets returned under nested `data.attributes` or `attributes` resolver payloads.
+
+Card `1.0.8` introduced data-service-first metadata and attribute resolution with resolver fallback. Card `1.0.9` added DXP runtime fetch usage, origin-bound nonce reuse, and lineage destination selection improvements.
 
 ## Squiz Matrix Integration
 

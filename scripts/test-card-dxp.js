@@ -53,7 +53,10 @@ const fallbackHtml = await cardComponent.main(baseInput, {
   },
 });
 
-assert.match(fallbackHtml, /data-asset-url="https:\/\/example\.nt\.gov\.au\/design"/);
+assert.match(
+  fallbackHtml,
+  /data-asset-url="https:\/\/example\.nt\.gov\.au\/design"/,
+);
 assert.match(fallbackHtml, /data-asset-text="Design"/);
 assert.match(fallbackHtml, /data-asset-target="_self"/);
 assert.match(fallbackHtml, /<h3 class="card__title">Design<\/h3>/);
@@ -106,16 +109,29 @@ assert.match(
 assert.match(resolvedHtml, /class="card__icon fa-light fa-pen-ruler"/);
 
 const originalFetch = globalThis.fetch;
+let tokenRequestCount = 0;
 
 globalThis.fetch = async (url, options = {}) => {
   const requestUrl = String(url);
 
   if (requestUrl.includes("SQ_ACTION=getToken")) {
+    tokenRequestCount += 1;
+    assert.equal(options.headers?.Origin, "https://cmsexternal.nt.gov.au");
     return {
       ok: true,
+      headers: {
+        get: (name) =>
+          name === "set-cookie"
+            ? "SQ_SYSTEM_SESSION_INTER=mock-session; Path=/; HttpOnly"
+            : null,
+      },
       text: async () => "mock-token",
     };
   }
+
+  assert.equal(options.headers?.Origin, "https://cmsexternal.nt.gov.au");
+  assert.equal(options.headers?.["X-SquizMatrix-JSAPI-Key"], "5805955303");
+  assert.equal(options.headers?.Cookie, "SQ_SYSTEM_SESSION_INTER=mock-session");
 
   const payload = JSON.parse(options.body || "{}");
   const type = payload.type;
@@ -124,7 +140,9 @@ globalThis.fetch = async (url, options = {}) => {
   if (type === "getLineageFromUrl") {
     return {
       ok: true,
-      json: async () => ({ data: { assetid: "123" } }),
+      json: async () => ({
+        data: [{ assetid: "1" }, { assetid: "100" }, { assetid: "123" }],
+      }),
     };
   }
 
@@ -195,7 +213,9 @@ globalThis.fetch = async (url, options = {}) => {
     };
   }
 
-  throw new Error(`Unexpected data-service request: ${requestUrl} ${type} ${id}`);
+  throw new Error(
+    `Unexpected data-service request: ${requestUrl} ${type} ${id}`,
+  );
 };
 
 const dataServiceHtml = await cardComponent.main(baseInput, {
@@ -224,5 +244,6 @@ assert.match(
   dataServiceHtml,
   /data-metadata-content-card-title="\[&quot;Design metadata from service&quot;\]"/,
 );
+assert.equal(tokenRequestCount, 1);
 
 console.log("Card DXP resolver regression tests passed");
