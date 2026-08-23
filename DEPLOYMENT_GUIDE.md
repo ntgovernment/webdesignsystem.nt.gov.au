@@ -18,8 +18,8 @@ cp .env.example .env
 # Squiz Matrix Git File Bridge Asset ID
 VITE_SQUIZ_GIT_BRIDGE_ASSET_ID=1590990
 
-# Font Awesome Kit ID
-VITE_FONT_AWESOME_KIT_ID=d8e5f638f7
+# Font Awesome Kit ID for https://cmsexternal.nt.gov.au URLs
+VITE_FONT_AWESOME_KIT_ID=41b791824a
 ```
 
 These values are automatically substituted during the build process. The `.env` file is git-ignored for security.
@@ -99,10 +99,10 @@ The NT Design System requires Font Awesome icons. You have two options:
 #### Option A: Use Font Awesome CDN Kit (Recommended)
 
 1. Get your Font Awesome kit from https://fontawesome.com
-2. Update the kit URL in `deploy/nesters/head.html`:
+2. For pages served from URLs starting with `https://cmsexternal.nt.gov.au`, use this script in `deploy/nesters/head.html`:
    ```html
    <script
-     src="https://kit.fontawesome.com/YOUR_KIT_ID.js"
+     src="https://kit.fontawesome.com/41b791824a.js"
      crossorigin="anonymous"
    ></script>
    ```
@@ -119,13 +119,13 @@ The NT Design System requires Font Awesome icons. You have two options:
 After running `npm run build`, the HTML nesters in `deploy/nesters/` will contain:
 
 - Git File Bridge Asset ID: `1590990` (from `.env`)
-- Font Awesome Kit ID: `d8e5f638f7` (from `.env`)
+- Font Awesome Kit ID: `41b791824a` (from `.env`, used for `https://cmsexternal.nt.gov.au` URLs)
 
 **Example from deployed head.html:**
 
 ```html
 <script
-  src="https://kit.fontawesome.com/d8e5f638f7.js"
+  src="https://kit.fontawesome.com/41b791824a.js"
   crossorigin="anonymous"
 ></script>
 <link
@@ -245,7 +245,7 @@ Before building, ensure your `.env` file contains the correct IDs:
 
 ```env
 VITE_SQUIZ_GIT_BRIDGE_ASSET_ID=1590990
-VITE_FONT_AWESOME_KIT_ID=d8e5f638f7
+VITE_FONT_AWESOME_KIT_ID=41b791824a
 ```
 
 These values are automatically injected into all HTML nesters during `npm run build`.

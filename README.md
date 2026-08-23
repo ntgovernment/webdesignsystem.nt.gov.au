@@ -112,8 +112,10 @@ Create `.env` from the example (git-ignored):
 
 ```env
 VITE_SQUIZ_GIT_BRIDGE_ASSET_ID=1590990
-VITE_FONT_AWESOME_KIT_ID=d8e5f638f7
+VITE_FONT_AWESOME_KIT_ID=41b791824a
 ```
+
+Use this Font Awesome kit value for pages served from URLs starting with `https://cmsexternal.nt.gov.au`.
 
 ### Build
 

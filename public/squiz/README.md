@@ -28,7 +28,7 @@ This copies all nesters to `deploy/nesters/` along with the vanilla JS component
 1. **Copy nester content** directly into MySource_AREA tags in your paint layout
 2. **Or upload as file assets** and reference with `%asset_file_contents:ASSET_ID%`
 3. **Update asset references** - Replace `ASSET_ID` with your Git File Bridge asset ID
-4. **Configure Font Awesome** - Update the kit URL in `head.html`
+4. **Configure Font Awesome** - For pages under `https://cmsexternal.nt.gov.au`, set `VITE_FONT_AWESOME_KIT_ID=41b791824a` and run `npm run build` to inject it into `head.html`
 
 ### Example Paint Layout Structure
 
