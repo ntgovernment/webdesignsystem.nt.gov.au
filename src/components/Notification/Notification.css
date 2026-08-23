@@ -76,6 +76,14 @@
   color: var(--clr-text-default, #1f1f5f);
 }
 
+.notification__message > :first-child {
+  margin-top: 0;
+}
+
+.notification__message > :last-child {
+  margin-bottom: 0;
+}
+
 .notification a {
   color: var(--clr-link-default, #1f1f5f);
 }

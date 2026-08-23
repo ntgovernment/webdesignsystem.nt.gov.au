@@ -35,6 +35,8 @@ const main = async (input) => {
   const resolvedVariant = normalizeVariant(variant);
   const resolvedTitle = resolveText(title, Title);
   const resolvedMessage = resolveText(message, Message);
+  const messageHtml =
+    typeof resolvedMessage === "string" ? resolvedMessage : "";
   const resolvedClassName = resolveText(className, cssClass);
 
   const containerClasses = [
@@ -56,7 +58,7 @@ const main = async (input) => {
         </div>
         <div class="notification__text">
           <div class="notification__title">${escapeHtml(resolvedTitle)}</div>
-          <div class="notification__message">${escapeHtml(resolvedMessage)}</div>
+          <div class="notification__message" data-sq-field="message">${messageHtml}</div>
         </div>
       </div>
     </div>

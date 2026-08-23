@@ -1,6 +1,6 @@
 # Notification Component
 
-The Notification component displays contextual, status-specific callouts used within page content. It provides a prominent left accent bar, an icon, a heading and a message. Implemented as a lightweight vanilla JS component with optional DXP server-side rendering (hydration container).
+The Notification component displays contextual, status-specific callouts used within page content. It provides a prominent left accent bar, an icon, a heading and a message. Implemented as a lightweight vanilla JS component with optional DXP server-side rendering.
 
 ## Purpose
 
@@ -24,8 +24,9 @@ The Notification component displays contextual, status-specific callouts used wi
 
 - Variants: `info` (default), `success`, `warning`, `danger`
 - Left accent bar and status icon
+- Inline rich-text editing for the DXP message field
 - Accessible semantics: `role="status"` for non-interruptive announcements
-- Auto-hydrates from `data-hydration-component="notification"` when used as a DXP hydration container
+- Auto-hydrates from `data-hydration-component="notification"` for standalone client-side usage
 - Supports theme tokens and responds to active theme
 
 ## Usage (Vanilla JS)
@@ -53,30 +54,32 @@ new NotificationClient(el, {
 
 ## Usage (DXP)
 
-The DXP manifest exposes `main`/`render` functions and the server renderer returns a minimal hydration container. The manifest provides defaults so the component can render in dev-ui even when input is omitted.
+The DXP manifest exposes the `main` function and the server renderer returns the complete notification markup. The manifest provides defaults so the component can render in dev-ui even when input is omitted. The `message` field uses DXP `FormattedText` and can be edited directly in Visual Page Builder.
 
 Example manifest usage in DXP:
 
 ```js
-// manifest.json -> function render/main
-{ "variant": "info", "title": "Information alert", "message": "Your action completed." }
+// manifest.json -> function main
+{
+  "variant": "info",
+  "title": "Information alert",
+  "message": "<p>Your action completed.</p>"
+}
 ```
 
-The server renderer outputs the same hydration container used by the vanilla client:
+The server renderer marks the message as the inline-editable field:
 
 ```html
-<div
-  class="notification"
-  data-hydration-component="notification"
-  data-hydration-props="{ ... }"
-></div>
+<div class="notification__message" data-sq-field="message">
+  <p>Your action completed.</p>
+</div>
 ```
 
 ## Props (Vanilla / DXP)
 
 - `variant` — `"info" | "success" | "warning" | "danger"` (default: `info`)
 - `title` — `string` (heading)
-- `message` — `string` (body text)
+- `message` — escaped plain text in the vanilla API; trusted `FormattedText` HTML in DXP
 - `className` / `cssClass` — `string` (optional additional CSS classes)
 
 All props are accepted as either camelCase or PascalCase keys in hydration JSON (`title` / `Title`, `message` / `Message`).
@@ -85,7 +88,7 @@ All props are accepted as either camelCase or PascalCase keys in hydration JSON 
 
 - Root element uses `role="status"` to provide polite, non-interruptive announcements.
 - Decorative icon and accent bar are `aria-hidden="true"`.
-- Messages are plain text by default; if you include HTML in a server-rendered description ensure it is sanitized.
+- The vanilla client escapes message text. DXP `FormattedText` is rendered as trusted HTML supplied by the Squiz editor.
 
 ## Theming & Design Tokens
 
@@ -145,7 +148,7 @@ Info notification (HTML):
 
 - Verify all variants render correctly and match the design tokens
 - Test responsive layout and accessibility (screen reader announcements)
-- Check DXP preview and hydration (server renders container + client hydrates)
+- Check DXP preview and inline editing (server renders full markup)
 
 ## Versioning
 

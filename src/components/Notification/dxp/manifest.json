@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "mainFunction": "main",
   "functions": [
     {
@@ -28,10 +28,13 @@
             "default": "Information alert"
           },
           "message": {
-            "type": "string",
+            "type": "FormattedText",
             "title": "Message",
             "description": "Notification message content",
-            "default": "Your application has been submitted for review."
+            "default": "Your application has been submitted for review.",
+            "ui:metadata": {
+              "inlineEditable": true
+            }
           },
           "variant": {
             "type": "string",
