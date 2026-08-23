@@ -1,5 +1,7 @@
 import { escapeHtml, escapeAttr } from "../../../utils/sanitize.js";
 
+const DEFAULT_MATRIX_ASSET_DOMAIN = "ntg";
+
 const resolveColumnClass = (cardsPerRow) => {
   switch (cardsPerRow) {
     case "2":
@@ -45,22 +47,80 @@ const resolveMediaVisibility = (
   return { showImage: !legacyIcon, showIcon: legacyIcon };
 };
 
-const resolveAssetMetadata = async (link, info) => {
-  if (!link || typeof link === "string") return {};
+const unwrapResolved = (result) => {
+  if (!result || typeof result !== "object") return null;
+  if ("data" in result) return result.data ?? null;
+  return result;
+};
+
+const resolveAsset = async (uri, info) => {
+  if (!uri) return null;
+
+  try {
+    return unwrapResolved(await info.fns.resolveUri(uri));
+  } catch {
+    return null;
+  }
+};
+
+const parseAssetUriDomain = (uri) => {
+  const match = /^matrix-asset:\/\/([a-zA-Z0-9.-]+)\/\d+(?::.+)?$/.exec(
+    String(uri ?? ""),
+  );
+  return match ? match[1] : "";
+};
+
+const firstMetadataValue = (metadata, key) => {
+  const value = metadata?.[key];
+  return Array.isArray(value) ? value[0] : value;
+};
+
+const resolvePageAsset = async (link, info) => {
+  if (!link) return { asset: null, metadata: {}, domain: "" };
+
+  if (typeof link === "string" && link.startsWith("matrix-asset://")) {
+    const asset = await resolveAsset(link, info);
+    return {
+      asset,
+      metadata:
+        asset?.metadata && typeof asset.metadata === "object"
+          ? asset.metadata
+          : {},
+      domain: parseAssetUriDomain(link),
+    };
+  }
+
+  if (typeof link !== "object") {
+    return { asset: null, metadata: {}, domain: "" };
+  }
+
   if (link.metadata && typeof link.metadata === "object") {
-    return link.metadata;
+    const assetUri = link.uri || link.matrixAssetUri || "";
+    return {
+      asset: link,
+      metadata: link.metadata,
+      domain: parseAssetUriDomain(assetUri),
+    };
   }
 
   const url = resolveLinkUrl(link);
-  if (!url) return {};
+  if (!url) return { asset: null, metadata: {}, domain: "" };
 
   try {
     const asset = await info.fns.resolveMatrixAssetByUrl(url, ["metadata"]);
-    return asset?.metadata && typeof asset.metadata === "object"
-      ? asset.metadata
-      : {};
+    const resolvedAsset = unwrapResolved(asset);
+    const assetUri =
+      resolvedAsset?.uri || resolvedAsset?.matrixAssetUri || link.uri || "";
+    return {
+      asset: resolvedAsset,
+      metadata:
+        resolvedAsset?.metadata && typeof resolvedAsset.metadata === "object"
+          ? resolvedAsset.metadata
+          : {},
+      domain: parseAssetUriDomain(assetUri),
+    };
   } catch {
-    return {};
+    return { asset: null, metadata: {}, domain: "" };
   }
 };
 
@@ -79,7 +139,12 @@ const resolveImageUrl = (image) => {
     if (variation?.url) return variation.url;
   }
 
-  return image.url || image.href || "";
+  return (
+    image.url ||
+    (Array.isArray(image.urls) ? image.urls[0] : "") ||
+    image.href ||
+    ""
+  );
 };
 
 const resolveImageAlt = (image, fallbackTitle) => {
@@ -87,37 +152,47 @@ const resolveImageAlt = (image, fallbackTitle) => {
   return image.alt || fallbackTitle || image.name || "";
 };
 
-const resolveMetadataImage = async (value, info) => {
+const resolveMetadataImage = async (value, domain, info) => {
   if (!value || typeof value !== "string") return value;
-  if (!value.startsWith("matrix-asset://")) return value;
 
-  try {
-    return await info.fns.resolveUri(value);
-  } catch {
-    return "";
-  }
+  const imageUri = value.startsWith("matrix-asset://")
+    ? value
+    : /^\d+$/.test(value)
+      ? `matrix-asset://${domain || DEFAULT_MATRIX_ASSET_DOMAIN}/${value}`
+      : "";
+
+  return imageUri ? await resolveAsset(imageUri, info) : value;
 };
 
 const populateCardMedia = async (card, visibility, info) => {
   const item = card || {};
-  const metadata = await resolveAssetMetadata(item.PageAsset, info);
+  const { asset, metadata, domain } = await resolvePageAsset(
+    item.PageAsset,
+    info,
+  );
   const resolvedTitle =
-    metadata["content-cardTitle"] ||
+    firstMetadataValue(metadata, "content-cardTitle") ||
     item.CardTitle ||
     resolveLinkTitle(item.PageAsset) ||
+    asset?.name ||
     "";
+  const metadataImage = firstMetadataValue(
+    metadata,
+    "content-cardImagePhoto",
+  );
 
   return {
     ...item,
     resolvedTitle,
+    resolvedHref: asset?.url || resolveLinkUrl(item.PageAsset),
     resolvedIcon: visibility.showIcon
-      ? metadata["content-cardIcon"] || item.IconCode || ""
+      ? firstMetadataValue(metadata, "content-cardIcon") ||
+        item.IconCode ||
+        ""
       : "",
     resolvedImage: visibility.showImage
-      ? (await resolveMetadataImage(
-          metadata["content-cardImagePhoto"],
-          info,
-        )) ||
+      ? (await resolveMetadataImage(metadataImage, domain, info)) ||
+        asset?.thumbnail ||
         item.CardImage ||
         ""
       : "",
@@ -138,7 +213,7 @@ const renderDisplayMedia = (card, title, editor) => {
 const renderCard = (card, index, visibility, editor) => {
   const item = card || {};
   const fieldPath = `Cards[${index}]`;
-  const href = resolveLinkUrl(item.PageAsset);
+  const href = item.resolvedHref || resolveLinkUrl(item.PageAsset);
   const target = resolveLinkTarget(item.PageAsset);
   const title = item.resolvedTitle || "";
   const isCompact = visibility.showIcon && !visibility.showImage;

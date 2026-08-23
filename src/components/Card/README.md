@@ -2,6 +2,8 @@
 
 Card is the preferred responsive card grid for Squiz DXP. It presents a shared collection of linked cards using image or icon media supplied by asset metadata.
 
+Current DXP component version: `1.0.5`.
+
 ## Input
 
 All fields are optional so editors can save a blank or partially configured component.
@@ -34,7 +36,9 @@ Editors select a destination asset once. The DXP edge renderer retrieves that as
 
 DXP function utilities are late-bound during rendering. Call `resolveMatrixAssetByUrl` and `resolveUri` inside their error boundaries without an early `typeof` check; inspecting the temporary utility placeholder prevents Squiz from replacing it with the callable function.
 
-Image metadata may be an image URL, a SquizImage-like object, or a Matrix asset URI. Icon metadata is a Font Awesome class string such as `fa-light fa-circle-info`.
+In Matrix, `content-cardImagePhoto` is a Related Asset field. `#1185561` is the metadata field asset; the field value is the selected image asset reference. That value usually arrives as an array containing a bare image asset ID, such as `["1625449"]`, but may also be a full Matrix asset URI. The DXP renderer converts a bare ID to `matrix-asset://ntg/<id>`, resolves the image with `resolveUri`, unwraps the resolver's `{ data }` response, and uses the resolved asset's `url` or first `urls` value. It falls back to the destination asset's `thumbnail`, then the legacy `CardImage` value.
+
+Local previews may continue supplying an image URL or SquizImage-like object directly. Icon metadata is a Font Awesome class string such as `fa-light fa-circle-info`. Metadata fields support both Matrix's array values and the flat values used by local previews.
 
 The Content Management Content API must have session-based authentication enabled for DXP asset resolution. A missing or inaccessible metadata value leaves the selected media area empty without breaking the rest of the grid.
 
@@ -63,6 +67,8 @@ The card title and media are owned by the selected asset's metadata and are not 
 The renderer exposes an empty Content field target in editor mode so TinyMCE can be opened before content exists. An empty Cards collection renders the component's empty state, while the optional schema still permits editors to save it.
 
 ## Compatibility
+
+Version `1.0.5` updates image resolution for live Matrix metadata. `content-cardImagePhoto` now supports Matrix array values, bare Related Asset IDs, full `matrix-asset://` URIs, and the existing local preview image-object shape. The renderer still supports existing `SquizLink` cards and also accepts a matrix asset URI string as `PageAsset` when supplied programmatically.
 
 Version `1.0.2` removes Grid Title, Media Type, Card Mode, Card Title, Card Image, and Icon Code from the editor schema, and replaces Grid Description with Content. The renderer still accepts existing `Description`, `mediaType`, `cardMode`, `CardTitle`, `CardImage`, and `IconCode` values as fallbacks. New Card instances should use `Content`, `showImage`, `showIcon`, and asset metadata.
 

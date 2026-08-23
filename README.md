@@ -65,6 +65,7 @@ Server-rendered components deployed independently via `dxp-next`. Each has `dxp/
 
 - Image and Icon can be enabled separately, together, or both disabled.
 - Enabled media is populated from `content-cardImagePhoto` and `content-cardIcon`; titles use `content-cardTitle`.
+- In Card `1.0.5`, `content-cardImagePhoto` supports live Matrix Related Asset values: array metadata, bare image asset IDs, full `matrix-asset://` URIs, and local preview image objects.
 
 Visual Page Builder provides TinyMCE inline editing for FormattedText Content and inline editing for card destinations. Card titles and media are fetched from destination asset metadata by the DXP edge renderer, so editors do not specify them separately. All Card fields are optional, allowing blank or partially configured components to be saved.
 
@@ -153,7 +154,7 @@ dxp-next cmp dev-ui src/components/Card/dxp
 
 The Card dev UI includes `image-cards`, `icon-cards`, `image-icon-cards`, `text-only-cards`, and `resolved-asset-cards` previews. The `resolved-asset-cards` preview intentionally uses bare destination links (no embedded metadata) to validate live metadata lookup. CLI 5.29.1 supports `ui:metadata.inlineEditable`; it does not support `previewPlaceholder`.
 
-Card edge renderer media resolution uses Squiz late-bound utility functions (`resolveMatrixAssetByUrl` and `resolveUri`) and requires session-based Content API access. If destination metadata cannot be resolved, cards continue to render title-only.
+Card edge renderer media resolution uses Squiz late-bound utility functions (`resolveMatrixAssetByUrl` and `resolveUri`) and requires session-based Content API access. When `content-cardImagePhoto` contains a bare Related Asset ID, the renderer resolves `matrix-asset://ntg/<id>` and uses the resolved image asset URL. If destination metadata cannot be resolved, cards continue to render title-only.
 
 ## Squiz Matrix Integration
 

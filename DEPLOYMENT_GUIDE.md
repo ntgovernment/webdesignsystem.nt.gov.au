@@ -355,6 +355,7 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 
 - **Confirm Card toggles are enabled** - Verify both `showImage` and/or `showIcon` are enabled on the Card instance
 - **Verify destination metadata values** - Ensure linked assets include `content-cardTitle`, `content-cardImagePhoto`, and `content-cardIcon` as needed
+- **Check Related Asset image values** - In Card `1.0.5`, `content-cardImagePhoto` may be a Matrix metadata array containing a bare image asset ID. The renderer resolves that ID as `matrix-asset://ntg/<id>` via `resolveUri`, then uses the resolved asset's `url` or first `urls` value
 - **Check Content API session auth** - Card media lookup requires session-based Content API access in DXP
 - **Use the live Card preview** - Run `dxp-next cmp dev-ui src/components/Card/dxp` and open `resolved-asset-cards` to validate resolver behavior with bare links
 - **Expect graceful fallback** - If metadata cannot be resolved, cards intentionally render title-only rather than failing the component
