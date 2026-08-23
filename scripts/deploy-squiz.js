@@ -58,7 +58,7 @@ function loadEnvFile() {
 
 const envVars = loadEnvFile();
 const assetId = envVars.VITE_SQUIZ_GIT_BRIDGE_ASSET_ID || "ASSET_ID";
-const fontAwesomeKitId = envVars.VITE_FONT_AWESOME_KIT_ID || "YOUR_KIT_ID";
+const fontAwesomeKitId = envVars.VITE_FONT_AWESOME_KIT_ID || "41b791824a";
 
 console.log("🚀 Starting Squiz DXP deployment preparation...\n");
 console.log(`📦 Asset ID: ${assetId}`);
