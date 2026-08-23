@@ -111,9 +111,12 @@ Content values are rendered as trusted FormattedText HTML from Squiz, so rich te
 Create `.env` from the example (git-ignored):
 
 ```env
+ASSET_ID=1590990
 VITE_SQUIZ_GIT_BRIDGE_ASSET_ID=1590990
 VITE_FONT_AWESOME_KIT_ID=41b791824a
 ```
+
+`ASSET_ID` is the preferred variable for the Git File Bridge asset; `VITE_SQUIZ_GIT_BRIDGE_ASSET_ID` remains as a backward-compatible alias.
 
 Use this Font Awesome kit value for pages served from URLs starting with `https://cmsexternal.nt.gov.au`.
 If `VITE_FONT_AWESOME_KIT_ID` is omitted, deployment falls back to `41b791824a`.

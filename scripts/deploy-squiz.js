@@ -13,6 +13,7 @@
  *
  * Environment Variables:
  *   SQUIZ_DEPLOY_PATH - Path where files should be deployed (default: ./deploy)
+ *   ASSET_ID - Squiz Matrix Git File Bridge asset ID
  *   VITE_SQUIZ_GIT_BRIDGE_ASSET_ID - Squiz Matrix Git File Bridge asset ID
  *   VITE_FONT_AWESOME_KIT_ID - Font Awesome kit ID
  */
@@ -57,7 +58,8 @@ function loadEnvFile() {
 }
 
 const envVars = loadEnvFile();
-const assetId = envVars.VITE_SQUIZ_GIT_BRIDGE_ASSET_ID || "ASSET_ID";
+const assetId =
+  envVars.ASSET_ID || envVars.VITE_SQUIZ_GIT_BRIDGE_ASSET_ID || "ASSET_ID";
 const fontAwesomeKitId = envVars.VITE_FONT_AWESOME_KIT_ID || "41b791824a";
 
 console.log("🚀 Starting Squiz DXP deployment preparation...\n");

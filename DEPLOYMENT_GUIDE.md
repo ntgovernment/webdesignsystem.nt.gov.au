@@ -16,6 +16,9 @@ cp .env.example .env
 
 ```env
 # Squiz Matrix Git File Bridge Asset ID
+ASSET_ID=1590990
+
+# Backward-compatible alias (optional)
 VITE_SQUIZ_GIT_BRIDGE_ASSET_ID=1590990
 
 # Font Awesome Kit ID for https://cmsexternal.nt.gov.au URLs
@@ -23,6 +26,7 @@ VITE_FONT_AWESOME_KIT_ID=41b791824a
 ```
 
 These values are automatically substituted during the build process. The `.env` file is git-ignored for security.
+`ASSET_ID` is used first when both asset variables are present.
 
 If `VITE_FONT_AWESOME_KIT_ID` is not set, the deploy script falls back to `41b791824a` so `YOUR_KIT_ID` is never emitted in `deploy/nesters/head.html`.
 
@@ -256,6 +260,7 @@ Upload each nester as a file asset in Squiz Matrix and reference it:
 Before building, ensure your `.env` file contains the correct IDs:
 
 ```env
+ASSET_ID=1590990
 VITE_SQUIZ_GIT_BRIDGE_ASSET_ID=1590990
 VITE_FONT_AWESOME_KIT_ID=41b791824a
 ```
