@@ -8,7 +8,8 @@ TwoColumn provides a flexible CSS Grid–based layout for displaying content sid
 
 Key features:
 
-- WYSIWYG editors for left and right content (`FormattedText` — raw HTML from Squiz editor)
+- Inline WYSIWYG editing for left and right content (`FormattedText` — raw HTML from Squiz editor)
+- Quick options for column widths, gap, backgrounds, and additional CSS classes
 - Configurable column widths (any valid CSS grid track value)
 - Optional background colors per column (auto-adds `--sp-xl` padding when set)
 - Responsive: side-by-side on desktop (>768px), stacked on mobile (≤768px)
@@ -50,6 +51,22 @@ src/components/TwoColumn/
 
 `FormattedText` is a Squiz DXP content type that provides a rich-text (WYSIWYG) editor in the DXP interface. The value is raw HTML string output. Referenced in `dxp-schemas/content-meta.schema.json`.
 
+## Visual Page Builder Editing
+
+Authors can select and edit both content areas directly on the page. The renderer maps the visible columns to these fields:
+
+- `data-sq-field="leftContent"`
+- `data-sq-field="rightContent"`
+
+Both targets are rendered even when empty, allowing authors to add content inline to a new component. The following non-content fields are available as quick options because they control the layout rather than visible text:
+
+- `leftWidth`
+- `rightWidth`
+- `gap`
+- `leftBackground`
+- `rightBackground`
+- `cssClass`
+
 ## CSS Classes
 
 | Class                   | Element       | Notes                                            |
@@ -78,7 +95,7 @@ dxp-next cmp deploy src/components/TwoColumn/dxp
 dxp-next cmp dev-ui src/components/TwoColumn/dxp   # Local dev preview
 ```
 
-Current version: **1.0.1** (see `dxp/manifest.json`).
+Current version: **1.1.0** (see `dxp/manifest.json`).
 
 ## Example
 
@@ -99,11 +116,11 @@ Current version: **1.0.1** (see `dxp/manifest.json`).
   class="nt-two-column"
   style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;"
 >
-  <div class="nt-two-column__left">
+  <div class="nt-two-column__left" data-sq-field="leftContent">
     <h3>Sidebar</h3>
     <p>Navigation</p>
   </div>
-  <div class="nt-two-column__right">
+  <div class="nt-two-column__right" data-sq-field="rightContent">
     <h2>Main content</h2>
     <p>Text here</p>
   </div>

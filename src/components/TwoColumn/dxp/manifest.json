@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "mainFunction": "render",
   "functions": [
     {
@@ -25,48 +25,72 @@
             "type": "FormattedText",
             "format": "multi-line",
             "title": "Left Column Content",
-            "description": "HTML content for the left column (WYSIWYG editor)"
+            "description": "HTML content for the left column (WYSIWYG editor)",
+            "ui:metadata": {
+              "inlineEditable": true
+            }
           },
           "rightContent": {
             "type": "FormattedText",
             "format": "multi-line",
             "title": "Right Column Content",
-            "description": "HTML content for the right column (WYSIWYG editor)"
+            "description": "HTML content for the right column (WYSIWYG editor)",
+            "ui:metadata": {
+              "inlineEditable": true
+            }
           },
           "leftWidth": {
             "type": "string",
             "title": "Left Column Width",
             "description": "CSS grid width for left column (e.g., '1fr', '300px', '2fr')",
-            "default": "1fr"
+            "default": "1fr",
+            "ui:metadata": {
+              "quickOption": true
+            }
           },
           "rightWidth": {
             "type": "string",
             "title": "Right Column Width",
             "description": "CSS grid width for right column (e.g., '1fr', '300px', '2fr')",
-            "default": "1fr"
+            "default": "1fr",
+            "ui:metadata": {
+              "quickOption": true
+            }
           },
           "gap": {
             "type": "string",
             "title": "Gap Between Columns",
             "description": "Space between columns (e.g., '2rem', '32px')",
-            "default": "2rem"
+            "default": "2rem",
+            "ui:metadata": {
+              "quickOption": true
+            }
           },
           "leftBackground": {
             "type": "string",
             "title": "Left Column Background",
             "description": "CSS background color for left column (e.g., '#f5f5f5', 'transparent')",
-            "default": ""
+            "default": "",
+            "ui:metadata": {
+              "quickOption": true
+            }
           },
           "rightBackground": {
             "type": "string",
             "title": "Right Column Background",
             "description": "CSS background color for right column (e.g., '#f5f5f5', 'transparent')",
-            "default": ""
+            "default": "",
+            "ui:metadata": {
+              "quickOption": true
+            }
           },
           "cssClass": {
             "type": "string",
             "title": "Additional CSS Classes",
-            "description": "Optional CSS classes to apply to the container"
+            "description": "Optional CSS classes to apply to the container",
+            "ui:metadata": {
+              "quickOption": true
+            }
           }
         },
         "required": []

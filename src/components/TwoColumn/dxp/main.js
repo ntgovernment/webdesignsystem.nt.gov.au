@@ -9,7 +9,7 @@
  * No client-side JavaScript required (static layout component)
  */
 
-import { escapeHtml } from "../../../utils/sanitize.js";
+import { escapeAttr } from "../../../utils/sanitize.js";
 import { generateInstanceId } from "../../../utils/instance-id.js";
 
 /**
@@ -23,8 +23,10 @@ function buildContainerStyles(config) {
 
   // Grid layout with configurable column widths
   styles.push(`display: grid`);
-  styles.push(`grid-template-columns: ${leftWidth} ${rightWidth}`);
-  styles.push(`gap: ${gap}`);
+  styles.push(
+    `grid-template-columns: ${escapeAttr(leftWidth)} ${escapeAttr(rightWidth)}`,
+  );
+  styles.push(`gap: ${escapeAttr(gap)}`);
 
   return styles.join("; ");
 }
@@ -36,7 +38,7 @@ function buildContainerStyles(config) {
  */
 function buildColumnStyles(background) {
   if (!background) return "";
-  return `background: ${escapeHtml(background)};`;
+  return `background: ${escapeAttr(background)};`;
 }
 
 /**
@@ -66,7 +68,7 @@ export default {
     if (cssClass) {
       classList.push(cssClass);
     }
-    const className = classList.join(" ");
+    const className = escapeAttr(classList.join(" "));
 
     // Build inline styles
     const containerStyles = buildContainerStyles({
@@ -79,9 +81,8 @@ export default {
 
     // Return complete HTML structure
     return `<div class="${className}" style="${containerStyles}" data-instance-id="${instanceId}">
-  <div class="nt-two-column__left"${leftStyles ? ` style="${leftStyles}"` : ""}>${leftContent}</div>
-  <div class="nt-two-column__right"${rightStyles ? ` style="${rightStyles}"` : ""}>${rightContent}</div>
+  <div class="nt-two-column__left" data-sq-field="leftContent"${leftStyles ? ` style="${leftStyles}"` : ""}>${leftContent}</div>
+  <div class="nt-two-column__right" data-sq-field="rightContent"${rightStyles ? ` style="${rightStyles}"` : ""}>${rightContent}</div>
 </div>`;
   },
 };
-
