@@ -4,14 +4,12 @@ Responsive two-column layout with WYSIWYG content areas for Squiz DXP Component 
 
 ## Overview
 
-TwoColumn provides a flexible CSS Grid–based layout for displaying content side-by-side on desktop and stacked on mobile. Perfect for documentation, sidebars, feature comparisons, and multi-section content.
+TwoColumn provides an equal-width CSS Grid layout for displaying content side-by-side on desktop and stacked on mobile.
 
 Key features:
 
 - Inline WYSIWYG editing for left and right content (`FormattedText` — raw HTML from Squiz editor)
-- Quick options for column widths, gap, backgrounds, and additional CSS classes
-- Configurable column widths (any valid CSS grid track value)
-- Optional background colors per column (auto-adds `--sp-xl` padding when set)
+- Equal-width columns with design-system spacing
 - Responsive: side-by-side on desktop (>768px), stacked on mobile (≤768px)
 - Server-rendered only — no client JavaScript required
 
@@ -31,21 +29,15 @@ src/components/TwoColumn/
 
 - **Server-side rendering (edge)**: `dxp/main.js` generates the complete HTML structure at the edge
 - **No client-side JavaScript**: layout is purely CSS Grid with responsive media queries
-- **Grid values applied inline**: `grid-template-columns` and `gap` are set as inline styles per instance, so each component instance can have independent widths
+- **Fixed layout**: CSS defines two equal-width columns with a design-token gap
 - The global design system CSS (`web-design-system.min.css`) must be present on the page for base styling
 
 ## Input / Props
 
-| Property          | Type            | Default  | Description                                                         |
-| ----------------- | --------------- | -------- | ------------------------------------------------------------------- |
-| `leftContent`     | `FormattedText` | `""`     | HTML content for the left column (WYSIWYG editor)                   |
-| `rightContent`    | `FormattedText` | `""`     | HTML content for the right column (WYSIWYG editor)                  |
-| `leftWidth`       | `string`        | `"1fr"`  | CSS grid track value for the left column (e.g., `"1fr"`, `"300px"`) |
-| `rightWidth`      | `string`        | `"1fr"`  | CSS grid track value for the right column                           |
-| `gap`             | `string`        | `"2rem"` | Space between columns (e.g., `"2rem"`, `"32px"`)                    |
-| `leftBackground`  | `string`        | `""`     | CSS background color for the left column (optional)                 |
-| `rightBackground` | `string`        | `""`     | CSS background color for the right column (optional)                |
-| `cssClass`        | `string`        | `""`     | Additional CSS classes for the root container                       |
+| Property       | Type            | Default | Description                                       |
+| -------------- | --------------- | ------- | ------------------------------------------------- |
+| `leftContent`  | `FormattedText` | `""`    | HTML content for the left column (WYSIWYG editor) |
+| `rightContent` | `FormattedText` | `""`    | HTML content for the right column                 |
 
 ### `FormattedText` type
 
@@ -58,34 +50,23 @@ Authors can select and edit both content areas directly on the page. The rendere
 - `data-sq-field="leftContent"`
 - `data-sq-field="rightContent"`
 
-Both targets are rendered even when empty, allowing authors to add content inline to a new component. The following non-content fields are available as quick options because they control the layout rather than visible text:
-
-- `leftWidth`
-- `rightWidth`
-- `gap`
-- `leftBackground`
-- `rightBackground`
-- `cssClass`
+Both targets are rendered even when empty, allowing authors to add content inline to a new component. These are the component's only input fields.
 
 ## CSS Classes
 
-| Class                   | Element       | Notes                                            |
-| ----------------------- | ------------- | ------------------------------------------------ |
-| `.nt-two-column`        | Root `<div>`  | CSS Grid container; column widths/gap are inline |
-| `.nt-two-column__left`  | Left `<div>`  | `min-width: 0` prevents grid overflow            |
-| `.nt-two-column__right` | Right `<div>` | `min-width: 0` prevents grid overflow            |
-
-When a column has a `background` inline style, `padding: var(--sp-xl, 24px)` is applied automatically via the CSS attribute selector `[style*="background"]`.
+| Class                   | Element       | Notes                                 |
+| ----------------------- | ------------- | ------------------------------------- |
+| `.nt-two-column`        | Root `<div>`  | Equal-width CSS Grid container        |
+| `.nt-two-column__left`  | Left `<div>`  | `min-width: 0` prevents grid overflow |
+| `.nt-two-column__right` | Right `<div>` | `min-width: 0` prevents grid overflow |
 
 On mobile (≤768px), `grid-template-columns` is forced to `1fr` by a `!important` media query override, stacking both columns vertically.
 
 ## Design Tokens
 
-| Token     | Usage                                 | Fallback |
-| --------- | ------------------------------------- | -------- |
-| `--sp-xl` | Column padding when background is set | `24px`   |
-
-Column widths, gap, and background colors are passed as inline styles from `main.js` (not CSS tokens), so they can vary per instance independently.
+| Token      | Usage               | Fallback |
+| ---------- | ------------------- | -------- |
+| `--sp-xxl` | Gap between columns | `2rem`   |
 
 ## DXP Deployment
 
@@ -95,27 +76,21 @@ dxp-next cmp deploy src/components/TwoColumn/dxp
 dxp-next cmp dev-ui src/components/TwoColumn/dxp   # Local dev preview
 ```
 
-Current version: **1.1.0** (see `dxp/manifest.json`).
+Current version: **2.0.0** (see `dxp/manifest.json`).
 
 ## Example
 
 ```json
 {
   "leftContent": "<h3>Sidebar</h3><p>Navigation</p>",
-  "rightContent": "<h2>Main content</h2><p>Text here</p>",
-  "leftWidth": "1fr",
-  "rightWidth": "2fr",
-  "gap": "2rem"
+  "rightContent": "<h2>Main content</h2><p>Text here</p>"
 }
 ```
 
 ### Rendered HTML
 
 ```html
-<div
-  class="nt-two-column"
-  style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;"
->
+<div class="nt-two-column">
   <div class="nt-two-column__left" data-sq-field="leftContent">
     <h3>Sidebar</h3>
     <p>Navigation</p>
@@ -129,13 +104,7 @@ Current version: **1.1.0** (see `dxp/manifest.json`).
 
 ## DXP Previews
 
-Three preview configurations are defined in `manifest.json`:
-
-| Preview            | Description                                      |
-| ------------------ | ------------------------------------------------ |
-| `basic`            | Equal-width two columns (1fr / 1fr)              |
-| `sidebar`          | Sidebar + main (1fr / 2fr)                       |
-| `with-backgrounds` | Demonstrates per-column background color support |
+The `basic` manifest preview demonstrates the equal-width responsive layout.
 
 ## Local Preview
 
