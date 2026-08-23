@@ -27,6 +27,7 @@ VITE_FONT_AWESOME_KIT_ID=41b791824a
 
 These values are automatically substituted during the build process. The `.env` file is git-ignored for security.
 `ASSET_ID` is used first when both asset variables are present.
+If no `.env` file is present, the deploy script reads shell environment variables and falls back to `ASSET_ID=1590990`.
 
 If `VITE_FONT_AWESOME_KIT_ID` is not set, the deploy script falls back to `41b791824a` so `YOUR_KIT_ID` is never emitted in `deploy/nesters/head.html`.
 
@@ -265,7 +266,7 @@ VITE_SQUIZ_GIT_BRIDGE_ASSET_ID=1590990
 VITE_FONT_AWESOME_KIT_ID=41b791824a
 ```
 
-These values are automatically injected into all HTML nesters during `npm run build`.
+These values are automatically injected into all HTML nesters during `npm run build`. In CI/CD, you can provide them as shell environment variables without creating a `.env` file.
 
 ### 2. Git File Bridge Setup
 

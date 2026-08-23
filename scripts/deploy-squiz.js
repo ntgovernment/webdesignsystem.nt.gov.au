@@ -36,7 +36,7 @@ function loadEnvFile() {
   const envPath = path.join(rootDir, ".env");
   if (!fs.existsSync(envPath)) {
     console.warn(
-      "⚠️  No .env file found. Asset ID placeholders will not be replaced.",
+      "⚠️  No .env file found. Using environment variables and built-in defaults.",
     );
     return {};
   }
@@ -58,8 +58,13 @@ function loadEnvFile() {
 }
 
 const envVars = loadEnvFile();
+const defaultAssetId = "1590990";
 const assetId =
-  envVars.ASSET_ID || envVars.VITE_SQUIZ_GIT_BRIDGE_ASSET_ID || "ASSET_ID";
+  process.env.ASSET_ID ||
+  process.env.VITE_SQUIZ_GIT_BRIDGE_ASSET_ID ||
+  envVars.ASSET_ID ||
+  envVars.VITE_SQUIZ_GIT_BRIDGE_ASSET_ID ||
+  defaultAssetId;
 const fontAwesomeKitId = envVars.VITE_FONT_AWESOME_KIT_ID || "41b791824a";
 
 console.log("🚀 Starting Squiz DXP deployment preparation...\n");

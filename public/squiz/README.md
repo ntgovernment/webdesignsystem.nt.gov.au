@@ -26,6 +26,7 @@ This copies all nesters to `deploy/nesters/` along with the vanilla JS component
 ### Embedding in Squiz Matrix
 
 Set `ASSET_ID=1590990` in your `.env` (or `VITE_SQUIZ_GIT_BRIDGE_ASSET_ID` as a backward-compatible alias) before running `npm run build`.
+If `.env` is missing, the deploy script can read shell environment variables and defaults to `ASSET_ID=1590990`.
 
 1. **Copy nester content** directly into MySource_AREA tags in your paint layout
 2. **Or upload as file assets** and reference with `%asset_file_contents:ASSET_ID%`

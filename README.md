@@ -117,6 +117,7 @@ VITE_FONT_AWESOME_KIT_ID=41b791824a
 ```
 
 `ASSET_ID` is the preferred variable for the Git File Bridge asset; `VITE_SQUIZ_GIT_BRIDGE_ASSET_ID` remains as a backward-compatible alias.
+If no `.env` file is present, the deploy script also reads shell environment variables and falls back to `ASSET_ID=1590990`.
 
 Use this Font Awesome kit value for pages served from URLs starting with `https://cmsexternal.nt.gov.au`.
 If `VITE_FONT_AWESOME_KIT_ID` is omitted, deployment falls back to `41b791824a`.
@@ -130,7 +131,7 @@ npm run build
 Runs `vite build` then `scripts/deploy-squiz.js`:
 
 1. Bundles all components → `deploy/web-design-system.min.js` + `.min.css`
-2. Processes HTML nesters (injects Asset ID from `.env`) → `deploy/nesters/`
+2. Processes HTML nesters (injects Asset ID from env vars or `.env`, fallback `1590990`) → `deploy/nesters/`
 3. Copies design token CSS → `deploy/external-tokens/`
 4. Writes `deploy/manifest.json`
 
