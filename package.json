@@ -7,6 +7,7 @@
     "dev": "vite --open /preview/",
     "build": "vite build && node scripts/deploy-squiz.js",
     "lint": "eslint .",
+    "test:card-dxp": "node scripts/test-card-dxp.js",
     "preview": "vite preview --open /preview/",
     "deploy": "node scripts/deploy-squiz.js"
   },

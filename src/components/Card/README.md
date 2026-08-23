@@ -2,7 +2,7 @@
 
 Card is the preferred responsive card grid for Squiz DXP. It presents a shared collection of linked cards using image or icon media supplied by asset metadata.
 
-Current DXP component version: `1.0.6`.
+Current DXP component version: `1.0.7`.
 
 ## Input
 
@@ -79,6 +79,8 @@ This hydration supports both direct preview metadata values and JSON:API-style r
 
 ## Compatibility
 
+Version `1.0.7` preserves selected `PageAsset` fields as `data-asset-*` attributes when Content API resolution is unavailable. It also reads destination and Related Asset image values from direct and JSON:API-style resolver payloads, including nested `data.attributes` and `attributes` objects.
+
 Version `1.0.6` adds per-card hydration attributes for resolved destination data (`data-asset-*` and `data-metadata-*`) and keeps compatibility with direct and JSON:API-style asset resolver payloads.
 
 Version `1.0.5` updates image resolution for live Matrix metadata. `content-cardImagePhoto` now supports Matrix array values, bare Related Asset IDs, full `matrix-asset://` URIs, and the existing local preview image-object shape. The renderer still supports existing `SquizLink` cards and also accepts a matrix asset URI string as `PageAsset` when supplied programmatically.
@@ -94,9 +96,12 @@ Run these commands from the repository root:
 ```bash
 dxp-next cmp dev-ui src/components/Card/dxp
 dxp-next cmp deploy src/components/Card/dxp
+npm run test:card-dxp
 ```
 
 The development UI includes Image-only, Icon-only, Image+Icon, title-only, and live asset-resolution previews. The live preview intentionally omits embedded metadata and requires session-based Content API access. The CLI uses fixed internal port `5555`; stop a stale development UI process if that port is already occupied.
+
+`npm run test:card-dxp` runs a focused regression harness for Card resolver fallback attributes and nested JSON:API image payload handling.
 
 ## Accessibility
 

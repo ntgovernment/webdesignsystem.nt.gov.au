@@ -65,6 +65,7 @@ Server-rendered components deployed independently via `dxp-next`. Each has `dxp/
 
 - Image and Icon can be enabled separately, together, or both disabled.
 - Enabled media is populated from `content-cardImagePhoto` and `content-cardIcon`; titles use `content-cardTitle`.
+- In Card `1.0.7`, selected link fields remain available as `data-asset-*` attributes when destination lookup fails, and nested JSON:API image assets are normalized for rendering.
 - In Card `1.0.6`, each rendered card is hydrated with `data-asset-*` and `data-metadata-*` attributes for resolved destination asset values and metadata.
 - In Card `1.0.5`, `content-cardImagePhoto` supports live Matrix Related Asset values: array metadata, bare image asset IDs, full `matrix-asset://` URIs, and local preview image objects.
 
@@ -151,6 +152,7 @@ dxp-next cmp dev-ui src/components/ComponentViewer/dxp   # Local dev preview
 # Card component
 dxp-next cmp deploy src/components/Card/dxp
 dxp-next cmp dev-ui src/components/Card/dxp
+npm run test:card-dxp
 ```
 
 The Card dev UI includes `image-cards`, `icon-cards`, `image-icon-cards`, `text-only-cards`, and `resolved-asset-cards` previews. The `resolved-asset-cards` preview intentionally uses bare destination links (no embedded metadata) to validate live metadata lookup. CLI 5.29.1 supports `ui:metadata.inlineEditable`; it does not support `previewPlaceholder`.
@@ -158,6 +160,8 @@ The Card dev UI includes `image-cards`, `icon-cards`, `image-icon-cards`, `text-
 Card edge renderer media resolution uses Squiz late-bound utility functions (`resolveMatrixAssetByUrl` and `resolveUri`) and requires session-based Content API access. When `content-cardImagePhoto` contains a bare Related Asset ID, the renderer resolves `matrix-asset://ntg/<id>` and uses the resolved image asset URL. If destination metadata cannot be resolved, cards continue to render title-only.
 
 Card `1.0.6` also hydrates each rendered card element with namespaced attributes from resolved destination data: `data-asset-*` for asset fields and `data-metadata-*` for metadata fields. Complex values are JSON-serialized and HTML-escaped.
+
+Card `1.0.7` preserves the selected link's asset attributes if Content API resolution fails and supports image assets returned under nested `data.attributes` or `attributes` resolver payloads.
 
 ## Squiz Matrix Integration
 

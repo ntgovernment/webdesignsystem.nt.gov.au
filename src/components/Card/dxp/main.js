@@ -58,12 +58,27 @@ const isRecord = (value) =>
 
 const resolveAssetAttributes = (asset) => {
   if (!isRecord(asset)) return {};
-  return isRecord(asset.attributes) ? asset.attributes : asset;
+  if (!isRecord(asset.attributes)) return asset;
+
+  const { attributes, ...resourceFields } = asset;
+  return { ...resourceFields, ...attributes };
 };
 
-const resolveAssetMetadata = (asset, attributes) => {
+const resolveAssetMetadata = (asset, attributes, envelope) => {
   if (isRecord(attributes.metadata)) return attributes.metadata;
-  return isRecord(asset?.metadata) ? asset.metadata : {};
+  if (isRecord(asset?.metadata)) return asset.metadata;
+  return isRecord(envelope?.metadata) ? envelope.metadata : {};
+};
+
+const normalizeResolvedAsset = (result) => {
+  const asset = unwrapResolved(result);
+  const attributes = resolveAssetAttributes(asset);
+
+  return {
+    asset,
+    attributes,
+    metadata: resolveAssetMetadata(asset, attributes, result),
+  };
 };
 
 const resolveAssetValue = (asset, attributes, key) =>
@@ -118,7 +133,7 @@ const resolveAsset = async (uri, info) => {
   if (!uri) return null;
 
   try {
-    return unwrapResolved(await info.fns.resolveUri(uri));
+    return normalizeResolvedAsset(await info.fns.resolveUri(uri)).asset;
   } catch {
     return null;
   }
@@ -156,38 +171,54 @@ const resolvePageAsset = async (link, info) => {
     return { asset: null, attributes: {}, metadata: {}, domain: "" };
   }
 
-  if (link.metadata && typeof link.metadata === "object") {
+  const linkAttributes = resolveAssetAttributes(link);
+  const linkMetadata = resolveAssetMetadata(link, linkAttributes);
+
+  if (isRecord(link.metadata)) {
     const assetUri = link.uri || link.matrixAssetUri || "";
     return {
       asset: link,
-      attributes: link,
-      metadata: link.metadata,
+      attributes: linkAttributes,
+      metadata: linkMetadata,
       domain: parseAssetUriDomain(assetUri),
     };
   }
 
   const url = resolveLinkUrl(link);
   if (!url) {
-    return { asset: null, attributes: {}, metadata: {}, domain: "" };
+    return {
+      asset: link,
+      attributes: linkAttributes,
+      metadata: linkMetadata,
+      domain: "",
+    };
   }
 
   try {
-    const asset = await info.fns.resolveMatrixAssetByUrl(url, ["metadata"]);
-    const resolvedAsset = unwrapResolved(asset);
-    const attributes = resolveAssetAttributes(resolvedAsset);
+    const resolved = normalizeResolvedAsset(
+      await info.fns.resolveMatrixAssetByUrl(url, ["metadata"]),
+    );
+    const attributes = { ...linkAttributes, ...resolved.attributes };
+    const metadata = { ...linkMetadata, ...resolved.metadata };
     const assetUri =
-      resolveAssetValue(resolvedAsset, attributes, "uri") ||
-      resolveAssetValue(resolvedAsset, attributes, "matrixAssetUri") ||
+      resolveAssetValue(resolved.asset, attributes, "uri") ||
+      resolveAssetValue(resolved.asset, attributes, "matrixAssetUri") ||
       link.uri ||
       "";
     return {
-      asset: resolvedAsset,
+      asset: resolved.asset,
       attributes,
-      metadata: resolveAssetMetadata(resolvedAsset, attributes),
+      metadata,
       domain: parseAssetUriDomain(assetUri),
     };
   } catch {
-    return { asset: null, attributes: {}, metadata: {}, domain: "" };
+    const assetUri = link.uri || link.matrixAssetUri || "";
+    return {
+      asset: link,
+      attributes: linkAttributes,
+      metadata: linkMetadata,
+      domain: parseAssetUriDomain(assetUri),
+    };
   }
 };
 
@@ -195,28 +226,33 @@ const resolveImageUrl = (image) => {
   if (!image) return "";
   if (typeof image === "string") return image;
 
-  if (image.imageVariations) {
-    if (image.imageVariations.original?.url) {
-      return image.imageVariations.original.url;
+  const asset = unwrapResolved(image);
+  const attributes = resolveAssetAttributes(asset);
+
+  if (attributes.imageVariations) {
+    if (attributes.imageVariations.original?.url) {
+      return attributes.imageVariations.original.url;
     }
 
-    const variation = Object.values(image.imageVariations).find(
+    const variation = Object.values(attributes.imageVariations).find(
       (item) => item?.url,
     );
     if (variation?.url) return variation.url;
   }
 
   return (
-    image.url ||
-    (Array.isArray(image.urls) ? image.urls[0] : "") ||
-    image.href ||
+    attributes.url ||
+    (Array.isArray(attributes.urls) ? attributes.urls[0] : "") ||
+    attributes.href ||
     ""
   );
 };
 
 const resolveImageAlt = (image, fallbackTitle) => {
   if (!image || typeof image === "string") return fallbackTitle || "";
-  return image.alt || fallbackTitle || image.name || "";
+  const asset = unwrapResolved(image);
+  const attributes = resolveAssetAttributes(asset);
+  return attributes.alt || fallbackTitle || attributes.name || "";
 };
 
 const resolveMetadataImage = async (value, domain, info) => {
