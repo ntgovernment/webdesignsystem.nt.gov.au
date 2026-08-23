@@ -2,7 +2,7 @@
 
 Card is the preferred responsive card grid for Squiz DXP. It presents a shared collection of linked cards using image or icon media supplied by asset metadata.
 
-Current DXP component version: `1.0.7`.
+Current DXP component version: `1.0.8`.
 
 ## Input
 
@@ -28,19 +28,21 @@ interface CardProps {
 
 ## Asset metadata
 
-Editors select a destination asset once. The DXP edge renderer retrieves that asset with `resolveMatrixAssetByUrl(url, ["metadata"])` and uses:
+Editors select a destination asset once. The DXP edge renderer now resolves destination data with the Squiz JavaScript API data service (`https://cmsexternal.nt.gov.au/webds/_design/javascript-api/data-service.js`, API key `5805955303`) and uses:
 
 - `content-cardTitle` (metadata field asset `#1185557`) for the card title
 - `content-cardImagePhoto` (metadata field asset `#1185561`) when Image is enabled
 - `content-cardIcon` (metadata field asset `#1185563`) when Icon is enabled
 
-DXP function utilities are late-bound during rendering. Call `resolveMatrixAssetByUrl` and `resolveUri` inside their error boundaries without an early `typeof` check; inspecting the temporary utility placeholder prevents Squiz from replacing it with the callable function.
+The renderer resolves by URL with `getLineageFromUrl`, then loads destination values with `getGeneral`, `getMetadata`, and `getAttributes`. Related Asset image IDs are resolved with the same service methods.
 
-In Matrix, `content-cardImagePhoto` is a Related Asset field. `#1185561` is the metadata field asset; the field value is the selected image asset reference. That value usually arrives as an array containing a bare image asset ID, such as `["1625449"]`, but may also be a full Matrix asset URI. The DXP renderer converts a bare ID to `matrix-asset://ntg/<id>`, resolves the image with `resolveUri`, unwraps the resolver's `{ data }` response, and uses the resolved asset's `url` or first `urls` value. It falls back to the destination asset's `thumbnail`, then the legacy `CardImage` value.
+DXP function utilities remain as fallback. When the data service is unavailable or cannot resolve a destination, the renderer falls back to `resolveMatrixAssetByUrl` and `resolveUri` inside existing error boundaries.
+
+In Matrix, `content-cardImagePhoto` is a Related Asset field. `#1185561` is the metadata field asset; the field value usually arrives as an array containing a bare image asset ID such as `["1625449"]`, but may also be a full Matrix asset URI. The renderer resolves the image asset through the data service first and keeps `resolveUri` fallback for environments where service resolution is unavailable. It uses the resolved image asset `url` (or first `urls` value), then falls back to the destination asset `thumbnail`, then the legacy `CardImage` value.
 
 Local previews may continue supplying an image URL or SquizImage-like object directly. Icon metadata is a Font Awesome class string such as `fa-light fa-circle-info`. Metadata fields support both Matrix's array values and the flat values used by local previews.
 
-The Content Management Content API must have session-based authentication enabled for DXP asset resolution. A missing or inaccessible metadata value leaves the selected media area empty without breaking the rest of the grid.
+The data service endpoint and API key must be accessible from the rendering environment. Resolver fallback still requires session-based Content API access. A missing or inaccessible metadata value leaves the selected media area empty without breaking the rest of the grid.
 
 Local vanilla previews cannot call DXP resolver functions. Supply the same values under the link's `metadata` property:
 
@@ -79,6 +81,8 @@ This hydration supports both direct preview metadata values and JSON:API-style r
 
 ## Compatibility
 
+Version `1.0.8` resolves destination metadata and attributes through the Squiz JavaScript API data service first, then falls back to DXP resolver functions when required. It preserves selected `PageAsset` fields as `data-asset-*` attributes when remote resolution is unavailable.
+
 Version `1.0.7` preserves selected `PageAsset` fields as `data-asset-*` attributes when Content API resolution is unavailable. It also reads destination and Related Asset image values from direct and JSON:API-style resolver payloads, including nested `data.attributes` and `attributes` objects.
 
 Version `1.0.6` adds per-card hydration attributes for resolved destination data (`data-asset-*` and `data-metadata-*`) and keeps compatibility with direct and JSON:API-style asset resolver payloads.
@@ -101,7 +105,7 @@ npm run test:card-dxp
 
 The development UI includes Image-only, Icon-only, Image+Icon, title-only, and live asset-resolution previews. The live preview intentionally omits embedded metadata and requires session-based Content API access. The CLI uses fixed internal port `5555`; stop a stale development UI process if that port is already occupied.
 
-`npm run test:card-dxp` runs a focused regression harness for Card resolver fallback attributes and nested JSON:API image payload handling.
+`npm run test:card-dxp` runs a focused regression harness for data-service resolution, resolver fallback attributes, and nested JSON:API image payload handling.
 
 ## Accessibility
 

@@ -1,6 +1,23 @@
 import { escapeHtml, escapeAttr } from "../../../utils/sanitize.js";
+import {
+  createMatrixDataServiceClient,
+  DEFAULT_MATRIX_DATA_SERVICE_ENDPOINT,
+  DEFAULT_MATRIX_DATA_SERVICE_KEY,
+} from "../../../utils/matrix-data-service.js";
 
 const DEFAULT_MATRIX_ASSET_DOMAIN = "ntg";
+
+const resolveDataServiceOptions = (info) => {
+  const dataService = info?.ctx?.matrixDataService || {};
+  if (dataService.enabled === false) return null;
+
+  return createMatrixDataServiceClient({
+    endpoint:
+      dataService.endpoint || DEFAULT_MATRIX_DATA_SERVICE_ENDPOINT,
+    key: dataService.key || DEFAULT_MATRIX_DATA_SERVICE_KEY,
+    fetchImpl: dataService.fetch,
+  });
+};
 
 const resolveColumnClass = (cardsPerRow) => {
   switch (cardsPerRow) {
@@ -132,6 +149,12 @@ const renderDataAttributes = (source, prefix, excludedKeys = []) => {
 const resolveAsset = async (uri, info) => {
   if (!uri) return null;
 
+  const dataServiceAsset = await resolveViaDataServiceById(
+    parseAssetUriId(uri),
+    info,
+  );
+  if (dataServiceAsset) return dataServiceAsset;
+
   try {
     return normalizeResolvedAsset(await info.fns.resolveUri(uri)).asset;
   } catch {
@@ -144,6 +167,39 @@ const parseAssetUriDomain = (uri) => {
     String(uri ?? ""),
   );
   return match ? match[1] : "";
+};
+
+const parseAssetUriId = (uri) => {
+  const match = /^matrix-asset:\/\/[a-zA-Z0-9.-]+\/(\d+)(?::.+)?$/.exec(
+    String(uri ?? ""),
+  );
+  return match ? match[1] : "";
+};
+
+const resolveViaDataServiceById = async (assetId, info) => {
+  if (!assetId) return null;
+
+  const client = resolveDataServiceOptions(info);
+  if (!client) return null;
+
+  try {
+    return await client.getAssetById(assetId);
+  } catch {
+    return null;
+  }
+};
+
+const resolveViaDataServiceByUrl = async (url, info) => {
+  if (!url) return null;
+
+  const client = resolveDataServiceOptions(info);
+  if (!client) return null;
+
+  try {
+    return await client.getAssetByUrl(url);
+  } catch {
+    return null;
+  }
 };
 
 const firstMetadataValue = (metadata, key) => {
@@ -191,6 +247,27 @@ const resolvePageAsset = async (link, info) => {
       attributes: linkAttributes,
       metadata: linkMetadata,
       domain: "",
+    };
+  }
+
+  const dataServiceAsset = await resolveViaDataServiceByUrl(url, info);
+  if (dataServiceAsset) {
+    const attributes = { ...linkAttributes, ...resolveAssetAttributes(dataServiceAsset) };
+    const metadata = {
+      ...linkMetadata,
+      ...resolveAssetMetadata(dataServiceAsset, attributes),
+    };
+    const assetUri =
+      resolveAssetValue(dataServiceAsset, attributes, "uri") ||
+      resolveAssetValue(dataServiceAsset, attributes, "matrixAssetUri") ||
+      link.uri ||
+      "";
+
+    return {
+      asset: dataServiceAsset,
+      attributes,
+      metadata,
+      domain: parseAssetUriDomain(assetUri),
     };
   }
 

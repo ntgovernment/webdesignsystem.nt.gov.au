@@ -41,6 +41,11 @@ const baseInput = {
 };
 
 const fallbackHtml = await cardComponent.main(baseInput, {
+  ctx: {
+    matrixDataService: {
+      enabled: false,
+    },
+  },
   fns: {
     resolveMatrixAssetByUrl: async () => {
       throw new Error("Content API unavailable");
@@ -54,6 +59,11 @@ assert.match(fallbackHtml, /data-asset-target="_self"/);
 assert.match(fallbackHtml, /<h3 class="card__title">Design<\/h3>/);
 
 const resolvedHtml = await cardComponent.main(baseInput, {
+  ctx: {
+    matrixDataService: {
+      enabled: false,
+    },
+  },
   fns: {
     resolveMatrixAssetByUrl: async () => ({
       data: {
@@ -94,5 +104,125 @@ assert.match(
   /<img src="https:\/\/example\.nt\.gov\.au\/design\.jpg" alt="Design tools" \/>/,
 );
 assert.match(resolvedHtml, /class="card__icon fa-light fa-pen-ruler"/);
+
+const originalFetch = globalThis.fetch;
+
+globalThis.fetch = async (url, options = {}) => {
+  const requestUrl = String(url);
+
+  if (requestUrl.includes("SQ_ACTION=getToken")) {
+    return {
+      ok: true,
+      text: async () => "mock-token",
+    };
+  }
+
+  const payload = JSON.parse(options.body || "{}");
+  const type = payload.type;
+  const id = String(payload.id || "");
+
+  if (type === "getLineageFromUrl") {
+    return {
+      ok: true,
+      json: async () => ({ data: { assetid: "123" } }),
+    };
+  }
+
+  if (type === "getGeneral" && id === "123") {
+    return {
+      ok: true,
+      json: async () => ({
+        id: "123",
+        type: "page",
+        uri: "matrix-asset://ntg/123",
+        url: "https://example.nt.gov.au/design",
+        name: "Design asset",
+      }),
+    };
+  }
+
+  if (type === "getMetadata" && id === "123") {
+    return {
+      ok: true,
+      json: async () => ({
+        "content-cardTitle": ["Design metadata from service"],
+        "content-cardIcon": ["fa-light fa-cloud"],
+        "content-cardImagePhoto": ["456"],
+      }),
+    };
+  }
+
+  if (type === "getAttributes" && id === "123") {
+    return {
+      ok: true,
+      json: async () => ({
+        attributes: {
+          url: "https://example.nt.gov.au/design",
+          name: "Design asset",
+        },
+      }),
+    };
+  }
+
+  if (type === "getGeneral" && id === "456") {
+    return {
+      ok: true,
+      json: async () => ({
+        id: "456",
+        type: "image",
+        uri: "matrix-asset://ntg/456",
+        url: "https://example.nt.gov.au/design-from-service.jpg",
+      }),
+    };
+  }
+
+  if (type === "getMetadata" && id === "456") {
+    return {
+      ok: true,
+      json: async () => ({}),
+    };
+  }
+
+  if (type === "getAttributes" && id === "456") {
+    return {
+      ok: true,
+      json: async () => ({
+        attributes: {
+          url: "https://example.nt.gov.au/design-from-service.jpg",
+          alt: "Service image alt",
+        },
+      }),
+    };
+  }
+
+  throw new Error(`Unexpected data-service request: ${requestUrl} ${type} ${id}`);
+};
+
+const dataServiceHtml = await cardComponent.main(baseInput, {
+  ctx: {
+    matrixDataService: {
+      endpoint:
+        "https://cmsexternal.nt.gov.au/webds/_design/javascript-api/data-service.js",
+      key: "5805955303",
+    },
+  },
+});
+
+globalThis.fetch = originalFetch;
+
+assert.match(
+  dataServiceHtml,
+  /<h3 class="card__title">Design metadata from service<\/h3>/,
+);
+assert.match(dataServiceHtml, /class="card__icon fa-light fa-cloud"/);
+assert.match(
+  dataServiceHtml,
+  /<img src="https:\/\/example\.nt\.gov\.au\/design-from-service\.jpg" alt="Service image alt" \/>/,
+);
+assert.match(dataServiceHtml, /data-asset-id="123"/);
+assert.match(
+  dataServiceHtml,
+  /data-metadata-content-card-title="\[&quot;Design metadata from service&quot;\]"/,
+);
 
 console.log("Card DXP resolver regression tests passed");
