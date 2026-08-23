@@ -305,6 +305,33 @@ export const selectImageCandidate = (
 const cardShowsImage = (card: HTMLElement): boolean =>
   card.closest<HTMLElement>(".nt-card__grid")?.dataset.showImage === "true";
 
+const cardShowsIcon = (card: HTMLElement): boolean =>
+  card.closest<HTMLElement>(".nt-card__grid")?.dataset.showIcon === "true";
+
+export const renderClientIcon = (card: HTMLElement, icon: string): void => {
+  if (!cardShowsIcon(card) || !icon.trim()) return;
+
+  const content = card.querySelector<HTMLElement>(".card__content");
+  if (!content) return;
+
+  let iconElement = card.querySelector<HTMLElement>(".card__icon");
+  if (!iconElement) {
+    iconElement = document.createElement("span");
+  }
+
+  iconElement.className = `card__icon ${icon.trim()}`;
+  iconElement.setAttribute("aria-hidden", "true");
+
+  if (cardShowsImage(card)) {
+    content.classList.add("card__content--with-icon");
+    content.prepend(iconElement);
+    return;
+  }
+
+  content.classList.remove("card__content--with-icon");
+  card.insertBefore(iconElement, content);
+};
+
 const renderClientImage = (
   card: HTMLElement,
   asset: Record<string, unknown>,
@@ -411,6 +438,7 @@ const enrichCardMetadata = (root: ParentNode = document): void => {
       .then(async (metadata) => {
         card.dataset.metadataImage = serializeMetadataValue(metadata.image);
         card.dataset.metadataIcon = normalizeTextMetadata(metadata.icon);
+        renderClientIcon(card, card.dataset.metadataIcon);
         if (!cardShowsImage(card)) return;
 
         const imageAssetId = normalizeAssetId(metadata.image);
