@@ -53,6 +53,67 @@ const unwrapResolved = (result) => {
   return result;
 };
 
+const isRecord = (value) =>
+  Boolean(value) && typeof value === "object" && !Array.isArray(value);
+
+const resolveAssetAttributes = (asset) => {
+  if (!isRecord(asset)) return {};
+  return isRecord(asset.attributes) ? asset.attributes : asset;
+};
+
+const resolveAssetMetadata = (asset, attributes) => {
+  if (isRecord(attributes.metadata)) return attributes.metadata;
+  return isRecord(asset?.metadata) ? asset.metadata : {};
+};
+
+const resolveAssetValue = (asset, attributes, key) =>
+  attributes[key] ?? asset?.[key];
+
+const normalizeDataAttributeName = (key) =>
+  String(key)
+    .trim()
+    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+
+const serializeDataAttributeValue = (value) => {
+  if (value === null || value === undefined) return null;
+  if (["string", "number", "boolean"].includes(typeof value)) {
+    return String(value);
+  }
+
+  if (typeof value !== "object") return null;
+
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return null;
+  }
+};
+
+const renderDataAttributes = (source, prefix, excludedKeys = []) => {
+  if (!isRecord(source)) return "";
+
+  const excluded = new Set(excludedKeys);
+  const attributes = new Map();
+
+  Object.entries(source).forEach(([key, value]) => {
+    if (excluded.has(key)) return;
+
+    const name = normalizeDataAttributeName(key);
+    const serializedValue = serializeDataAttributeValue(value);
+    if (!name || serializedValue === null) return;
+
+    attributes.set(`data-${prefix}-${name}`, serializedValue);
+  });
+
+  return [...attributes.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([name, value]) => ` ${name}="${escapeAttr(value)}"`)
+    .join("");
+};
+
 const resolveAsset = async (uri, info) => {
   if (!uri) return null;
 
@@ -76,51 +137,57 @@ const firstMetadataValue = (metadata, key) => {
 };
 
 const resolvePageAsset = async (link, info) => {
-  if (!link) return { asset: null, metadata: {}, domain: "" };
+  if (!link) {
+    return { asset: null, attributes: {}, metadata: {}, domain: "" };
+  }
 
   if (typeof link === "string" && link.startsWith("matrix-asset://")) {
     const asset = await resolveAsset(link, info);
+    const attributes = resolveAssetAttributes(asset);
     return {
       asset,
-      metadata:
-        asset?.metadata && typeof asset.metadata === "object"
-          ? asset.metadata
-          : {},
+      attributes,
+      metadata: resolveAssetMetadata(asset, attributes),
       domain: parseAssetUriDomain(link),
     };
   }
 
   if (typeof link !== "object") {
-    return { asset: null, metadata: {}, domain: "" };
+    return { asset: null, attributes: {}, metadata: {}, domain: "" };
   }
 
   if (link.metadata && typeof link.metadata === "object") {
     const assetUri = link.uri || link.matrixAssetUri || "";
     return {
       asset: link,
+      attributes: link,
       metadata: link.metadata,
       domain: parseAssetUriDomain(assetUri),
     };
   }
 
   const url = resolveLinkUrl(link);
-  if (!url) return { asset: null, metadata: {}, domain: "" };
+  if (!url) {
+    return { asset: null, attributes: {}, metadata: {}, domain: "" };
+  }
 
   try {
     const asset = await info.fns.resolveMatrixAssetByUrl(url, ["metadata"]);
     const resolvedAsset = unwrapResolved(asset);
+    const attributes = resolveAssetAttributes(resolvedAsset);
     const assetUri =
-      resolvedAsset?.uri || resolvedAsset?.matrixAssetUri || link.uri || "";
+      resolveAssetValue(resolvedAsset, attributes, "uri") ||
+      resolveAssetValue(resolvedAsset, attributes, "matrixAssetUri") ||
+      link.uri ||
+      "";
     return {
       asset: resolvedAsset,
-      metadata:
-        resolvedAsset?.metadata && typeof resolvedAsset.metadata === "object"
-          ? resolvedAsset.metadata
-          : {},
+      attributes,
+      metadata: resolveAssetMetadata(resolvedAsset, attributes),
       domain: parseAssetUriDomain(assetUri),
     };
   } catch {
-    return { asset: null, metadata: {}, domain: "" };
+    return { asset: null, attributes: {}, metadata: {}, domain: "" };
   }
 };
 
@@ -166,7 +233,7 @@ const resolveMetadataImage = async (value, domain, info) => {
 
 const populateCardMedia = async (card, visibility, info) => {
   const item = card || {};
-  const { asset, metadata, domain } = await resolvePageAsset(
+  const { asset, attributes, metadata, domain } = await resolvePageAsset(
     item.PageAsset,
     info,
   );
@@ -174,7 +241,7 @@ const populateCardMedia = async (card, visibility, info) => {
     firstMetadataValue(metadata, "content-cardTitle") ||
     item.CardTitle ||
     resolveLinkTitle(item.PageAsset) ||
-    asset?.name ||
+    resolveAssetValue(asset, attributes, "name") ||
     "";
   const metadataImage = firstMetadataValue(
     metadata,
@@ -183,8 +250,12 @@ const populateCardMedia = async (card, visibility, info) => {
 
   return {
     ...item,
+    resolvedAssetAttributes: attributes,
+    resolvedMetadata: metadata,
     resolvedTitle,
-    resolvedHref: asset?.url || resolveLinkUrl(item.PageAsset),
+    resolvedHref:
+      resolveAssetValue(asset, attributes, "url") ||
+      resolveLinkUrl(item.PageAsset),
     resolvedIcon: visibility.showIcon
       ? firstMetadataValue(metadata, "content-cardIcon") ||
         item.IconCode ||
@@ -192,7 +263,7 @@ const populateCardMedia = async (card, visibility, info) => {
       : "",
     resolvedImage: visibility.showImage
       ? (await resolveMetadataImage(metadataImage, domain, info)) ||
-        asset?.thumbnail ||
+        resolveAssetValue(asset, attributes, "thumbnail") ||
         item.CardImage ||
         ""
       : "",
@@ -221,6 +292,15 @@ const renderCard = (card, index, visibility, editor) => {
   const hrefAttr = href ? ` href="${escapeAttr(href)}"` : "";
   const targetAttr = target ? ` target="${escapeAttr(target)}"` : "";
   const relAttr = target === "_blank" ? ' rel="noopener noreferrer"' : "";
+  const assetDataAttributes = renderDataAttributes(
+    item.resolvedAssetAttributes,
+    "asset",
+    ["metadata"],
+  );
+  const metadataDataAttributes = renderDataAttributes(
+    item.resolvedMetadata,
+    "metadata",
+  );
   const clickableClass = href ? " card--clickable" : "";
   const modeClass = isCompact ? " card--mini" : " card--display";
   const imageHtml = visibility.showImage
@@ -241,7 +321,7 @@ const renderCard = (card, index, visibility, editor) => {
     .join(" ");
 
   return `<div class="nt-card__item" role="listitem" data-card-index="${index}">
-    <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset"${hrefAttr}${targetAttr}${relAttr}>
+    <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset"${assetDataAttributes}${metadataDataAttributes}${hrefAttr}${targetAttr}${relAttr}>
       ${imageHtml}
       ${leadingIcon}
       <div class="${bodyClass}">

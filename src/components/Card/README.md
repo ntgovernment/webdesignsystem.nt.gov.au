@@ -2,7 +2,7 @@
 
 Card is the preferred responsive card grid for Squiz DXP. It presents a shared collection of linked cards using image or icon media supplied by asset metadata.
 
-Current DXP component version: `1.0.5`.
+Current DXP component version: `1.0.6`.
 
 ## Input
 
@@ -66,7 +66,20 @@ The card title and media are owned by the selected asset's metadata and are not 
 
 The renderer exposes an empty Content field target in editor mode so TinyMCE can be opened before content exists. An empty Cards collection renders the component's empty state, while the optional schema still permits editors to save it.
 
+## Card hydration attributes
+
+Each rendered card element (`a.card` or `div.card`) now includes data attributes for resolved destination asset values:
+
+- `data-asset-*` attributes are hydrated from resolved asset attributes (or direct asset fields for local previews).
+- `data-metadata-*` attributes are hydrated from resolved metadata fields.
+- Primitive values are emitted directly; arrays and objects are JSON-serialized and HTML-escaped.
+- `metadata` is excluded from `data-asset-*` to avoid duplicating the `data-metadata-*` namespace.
+
+This hydration supports both direct preview metadata values and JSON:API-style resolver responses (`data.attributes`).
+
 ## Compatibility
+
+Version `1.0.6` adds per-card hydration attributes for resolved destination data (`data-asset-*` and `data-metadata-*`) and keeps compatibility with direct and JSON:API-style asset resolver payloads.
 
 Version `1.0.5` updates image resolution for live Matrix metadata. `content-cardImagePhoto` now supports Matrix array values, bare Related Asset IDs, full `matrix-asset://` URIs, and the existing local preview image-object shape. The renderer still supports existing `SquizLink` cards and also accepts a matrix asset URI string as `PageAsset` when supplied programmatically.
 
