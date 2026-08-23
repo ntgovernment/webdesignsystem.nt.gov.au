@@ -357,8 +357,9 @@ Replace `ASSET_ID` with your Squiz Matrix Git File Bridge asset ID.
 - **Verify destination metadata values** - Ensure linked assets include `content-cardTitle`, `content-cardImagePhoto`, and `content-cardIcon` as needed
 - **Inspect complete asset data** - In Card `1.0.12+`, parse `data-asset-info` on each rendered `.card`; it contains the resolved asset payload or the selected `PageAsset` fallback
 - **Inspect client-resolved image metadata** - In Card `1.0.13+`, `data-metadata-image` is populated in the browser from `content-cardImagePhoto` (`#1185561`); an empty value indicates that lookup has not completed or was unavailable
+- **Inspect client-resolved icon metadata** - In Card `1.0.14+`, `data-metadata-icon` is populated with the plain text value from `content-cardIcon`; `#1185563` identifies the metadata field, not an icon asset
 - **Keep the JavaScript API same-origin** - The page and `https://cmsexternal.nt.gov.au/webds/_design/javascript-api/data-service.js` must share an origin so the API can use the browser's Matrix session
-- **Verify after page load** - Inspect `.nt-card .card[data-metadata-image]` in browser developer tools; Related Asset arrays are stored as JSON, for example `["1592553"]`
+- **Verify after page load** - Inspect `.nt-card .card[data-metadata-image][data-metadata-icon]` in browser developer tools; Related Asset image arrays are stored as JSON, while icon values remain strings and use the first item if Matrix returns an array
 - **Use Card `1.0.11` or later** - Server-side data-service requests use credentials and live image responses can supply `urls` or `web_path`; existing instances may need an explicit component-version upgrade
 - **Check Related Asset image values** - In Card `1.0.5+`, `content-cardImagePhoto` may be a Matrix metadata array containing a bare image asset ID. The renderer resolves that ID through the data service first, then `resolveUri`, and uses the resolved asset's `url`, first `urls` value, or `web_path`
 - **Check Content API session auth** - Resolver fallback requires session-based Content API access in DXP

@@ -74,8 +74,13 @@ const MATRIX_DATA_SERVICE_URL =
 const MATRIX_DATA_SERVICE_KEY = "5805955303";
 const CARD_IMAGE_METADATA_KEY = "content-cardImagePhoto";
 const CARD_IMAGE_METADATA_FIELD_ID = "1185561";
+const CARD_ICON_METADATA_KEY = "content-cardIcon";
+const CARD_ICON_METADATA_FIELD_ASSET_ID = "1185563";
 const enrichedCards = new WeakSet<HTMLElement>();
-const metadataImageRequests = new Map<string, Promise<unknown>>();
+const cardMetadataRequests = new Map<
+  string,
+  Promise<{ image: unknown; icon: unknown }>
+>();
 let matrixApiPromise: Promise<SquizMatrixApi> | null = null;
 
 const loadMatrixApi = (): Promise<SquizMatrixApi> => {
@@ -146,21 +151,21 @@ const resolveLineageAssetId = (lineage: unknown): string => {
   return String(record.assetid || record.asset_id || record.id || "");
 };
 
-const resolveMetadataImage = (metadata: unknown): unknown => {
+const resolveMetadataValue = (
+  metadata: unknown,
+  key: string,
+  fieldId: string,
+): unknown => {
   if (!metadata || typeof metadata !== "object") return "";
   const record = metadata as Record<string, unknown>;
   const values =
     record.metadata && typeof record.metadata === "object"
       ? (record.metadata as Record<string, unknown>)
       : record;
-  return (
-    values[CARD_IMAGE_METADATA_KEY] ??
-    values[CARD_IMAGE_METADATA_FIELD_ID] ??
-    ""
-  );
+  return values[key] ?? values[fieldId] ?? "";
 };
 
-const serializeMetadataImage = (value: unknown): string => {
+const serializeMetadataValue = (value: unknown): string => {
   if (value === null || value === undefined) return "";
   if (["string", "number", "boolean"].includes(typeof value)) {
     return String(value);
@@ -173,8 +178,17 @@ const serializeMetadataImage = (value: unknown): string => {
   }
 };
 
-const fetchMetadataImage = (url: string): Promise<unknown> => {
-  const existingRequest = metadataImageRequests.get(url);
+const normalizeTextMetadata = (value: unknown): string => {
+  const text = Array.isArray(value) ? value[0] : value;
+  return ["string", "number", "boolean"].includes(typeof text)
+    ? String(text)
+    : "";
+};
+
+const fetchCardMetadata = (
+  url: string,
+): Promise<{ image: unknown; icon: unknown }> => {
+  const existingRequest = cardMetadataRequests.get(url);
   if (existingRequest) return existingRequest;
 
   const request = loadMatrixApi().then(async (api) => {
@@ -183,33 +197,46 @@ const fetchMetadataImage = (url: string): Promise<unknown> => {
       { asset_url: url },
     );
     const assetId = resolveLineageAssetId(lineage);
-    if (!assetId) return "";
+    if (!assetId) return { image: "", icon: "" };
 
     const metadata = await callMatrixApi<unknown>(api.getMetadata.bind(api), {
       asset_id: assetId,
     });
-    return resolveMetadataImage(metadata);
+    return {
+      image: resolveMetadataValue(
+        metadata,
+        CARD_IMAGE_METADATA_KEY,
+        CARD_IMAGE_METADATA_FIELD_ID,
+      ),
+      icon: resolveMetadataValue(
+        metadata,
+        CARD_ICON_METADATA_KEY,
+        CARD_ICON_METADATA_FIELD_ASSET_ID,
+      ),
+    };
   });
 
-  metadataImageRequests.set(url, request);
+  cardMetadataRequests.set(url, request);
   return request;
 };
 
-const enrichCardMetadataImages = (root: ParentNode = document): void => {
+const enrichCardMetadata = (root: ParentNode = document): void => {
   root.querySelectorAll<HTMLElement>(".nt-card .card[href]").forEach((card) => {
     if (enrichedCards.has(card)) return;
     enrichedCards.add(card);
     card.dataset.metadataImage = "";
+    card.dataset.metadataIcon = "";
 
     const url = card.getAttribute("href");
     if (!url) return;
 
-    void fetchMetadataImage(new URL(url, window.location.href).href)
-      .then((value) => {
-        card.dataset.metadataImage = serializeMetadataImage(value);
+    void fetchCardMetadata(new URL(url, window.location.href).href)
+      .then((metadata) => {
+        card.dataset.metadataImage = serializeMetadataValue(metadata.image);
+        card.dataset.metadataIcon = normalizeTextMetadata(metadata.icon);
       })
       .catch((error) => {
-        debugError("[Card] Unable to resolve image metadata:", error);
+        debugError("[Card] Unable to resolve metadata:", error);
       });
   });
 };
@@ -369,7 +396,7 @@ export class CardClient {
       .join(" ");
 
     return `<div class="nt-card__item" role="listitem" data-card-index="${index}">
-      <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset" data-metadata-image=""${hrefAttr}${targetAttr}${relAttr}>
+      <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset" data-metadata-image="" data-metadata-icon=""${hrefAttr}${targetAttr}${relAttr}>
         ${imageHtml}
         ${leadingIcon}
         <div class="${bodyClasses}">
@@ -414,7 +441,7 @@ if (typeof document !== "undefined") {
     document
       .querySelectorAll<HTMLElement>('[data-hydration-component="card"]')
       .forEach((node) => new CardClient(node));
-    enrichCardMetadataImages();
+    enrichCardMetadata();
   };
 
   if (document.readyState === "loading") {

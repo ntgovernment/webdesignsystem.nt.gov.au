@@ -2,7 +2,7 @@
 
 Card is the preferred responsive card grid for Squiz DXP. It presents a shared collection of linked cards using image or icon media supplied by asset metadata.
 
-Current DXP component version: `1.0.13`.
+Current DXP component version: `1.0.14`.
 
 ## Input
 
@@ -32,7 +32,7 @@ Editors select a destination asset once. The DXP edge renderer now resolves dest
 
 - `content-cardTitle` (metadata field asset `#1185557`) for the card title
 - `content-cardImagePhoto` (metadata field asset `#1185561`) when Image is enabled
-- `content-cardIcon` (metadata field asset `#1185563`) when Icon is enabled
+- `content-cardIcon` (text metadata field asset `#1185563`) when Icon is enabled; `#1185563` identifies the field, not an icon asset
 
 The renderer resolves by URL with `getLineageFromUrl`, then loads destination values with `getGeneral`, `getMetadata`, and `getAttributes`. Related Asset image IDs are resolved with the same service methods.
 
@@ -46,9 +46,14 @@ Local previews may continue supplying an image URL or SquizImage-like object dir
 
 The data service endpoint and API key must be accessible from the rendering environment. Resolver fallback still requires session-based Content API access. A missing or inaccessible metadata value leaves the selected media area empty without breaking the rest of the grid.
 
-The browser bundle also loads the same JavaScript API asset on pages containing rendered Cards. For each linked Card it calls `getLineageFromUrl`, then `getMetadata`, and writes metadata field `content-cardImagePhoto` (`#1185561`) to `data-metadata-image`. Arrays and objects are JSON-serialized, so a Related Asset value can appear in the DOM as `data-metadata-image="[&quot;1592553&quot;]"` and is available through `card.dataset.metadataImage` as `["1592553"]`.
+The browser bundle also loads the same JavaScript API asset on pages containing rendered Cards. For each linked Card it calls `getLineageFromUrl`, then makes one `getMetadata` request and writes:
 
-Every Card is initially rendered with `data-metadata-image=""`. The value is populated asynchronously after the browser API calls complete. The page and `data-service.js` must share an origin because the Matrix JavaScript API relies on the browser session and does not support cross-domain session calls. An unavailable API, missing metadata value, or unlinked Card keeps the empty attribute without altering the server-rendered content.
+- `content-cardImagePhoto` (`#1185561`) to `data-metadata-image`
+- `content-cardIcon` (text field `#1185563`) to `data-metadata-icon` as a plain string
+
+Image arrays and objects are JSON-serialized, so a Related Asset value can appear in the DOM as `data-metadata-image="[&quot;1592553&quot;]"` and is available through `card.dataset.metadataImage` as `["1592553"]`. Icon metadata is text, not an asset ID; an icon value such as `briefcase` is written as `data-metadata-icon="briefcase"`. If Matrix wraps the text in an array, the first value is used.
+
+Every Card is initially rendered with `data-metadata-image=""` and `data-metadata-icon=""`. The values are populated asynchronously after the browser API calls complete. The page and `data-service.js` must share an origin because the Matrix JavaScript API relies on the browser session and does not support cross-domain session calls. An unavailable API, missing metadata value, or unlinked Card keeps the empty attributes without altering the server-rendered content.
 
 Local vanilla previews cannot call DXP resolver functions. Supply the same values under the link's `metadata` property:
 
@@ -87,6 +92,8 @@ Each rendered card element (`a.card` or `div.card`) now includes data attributes
 This hydration supports both direct preview metadata values and JSON:API-style resolver responses (`data.attributes`).
 
 ## Compatibility
+
+Version `1.0.14` adds client-side `content-cardIcon` text lookup through the existing metadata request and exposes the first text value as `data-metadata-icon` on every linked Card.
 
 Version `1.0.13` adds client-side `content-cardImagePhoto` lookup through `data-service.js` and exposes the result as `data-metadata-image` on every linked Card.
 
@@ -127,7 +134,7 @@ The development UI includes Image-only, Icon-only, Image+Icon, title-only, and l
 
 `npm run test:card-ssr-live` checks the raw deployed HTML at `https://cmsexternal.nt.gov.au/webds/_nocache` and independently resolves the live fixture destinations through the Matrix data service. It fails when the deployed Card falls back without destination metadata, even if the underlying assets are accessible. Set `CARD_SSR_PAGE_URL` to inspect another deployed page. Environments using an outbound proxy must expose it through Node's standard proxy settings.
 
-To verify client enrichment, open the deployed page, wait for load, and inspect `.nt-card .card[data-metadata-image]` in browser developer tools. A populated value confirms the destination lineage and metadata requests completed in the visitor's Matrix session.
+To verify client enrichment, open the deployed page, wait for load, and inspect `.nt-card .card[data-metadata-image][data-metadata-icon]` in browser developer tools. Populated values confirm the destination lineage and metadata request completed in the visitor's Matrix session.
 
 ## Accessibility
 

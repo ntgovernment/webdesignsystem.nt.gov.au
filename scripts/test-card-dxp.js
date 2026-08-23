@@ -60,6 +60,7 @@ assert.match(
 assert.match(fallbackHtml, /data-asset-text="Design"/);
 assert.match(fallbackHtml, /data-asset-target="_self"/);
 assert.match(fallbackHtml, /data-metadata-image=""/);
+assert.match(fallbackHtml, /data-metadata-icon=""/);
 assert.match(
   fallbackHtml,
   /data-asset-info="{&quot;url&quot;:&quot;https:\/\/example\.nt\.gov\.au\/design&quot;,&quot;text&quot;:&quot;Design&quot;,&quot;target&quot;:&quot;_self&quot;}"/,

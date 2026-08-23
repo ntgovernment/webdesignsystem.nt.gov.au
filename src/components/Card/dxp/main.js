@@ -439,7 +439,7 @@ const renderCard = (card, index, visibility, editor) => {
     .join(" ");
 
   return `<div class="nt-card__item" role="listitem" data-card-index="${index}">
-    <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset" data-metadata-image=""${assetInfoAttribute}${assetDataAttributes}${metadataDataAttributes}${hrefAttr}${targetAttr}${relAttr}>
+    <${tagName} class="card card--full${modeClass}${clickableClass}" data-sq-field="${fieldPath}.PageAsset" data-metadata-image="" data-metadata-icon=""${assetInfoAttribute}${assetDataAttributes}${metadataDataAttributes}${hrefAttr}${targetAttr}${relAttr}>
       ${imageHtml}
       ${leadingIcon}
       <div class="${bodyClass}">
