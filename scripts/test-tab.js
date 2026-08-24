@@ -1,10 +1,22 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import path from "node:path";
 import { build } from "esbuild";
 
 const root = process.cwd();
 const componentDirectory = path.join(root, "src/components/Tab");
 const sanitizePath = path.join(root, "src/utils/sanitize.ts");
+
+const manifest = JSON.parse(
+  fs.readFileSync(
+    path.join(componentDirectory, "dxp/manifest.json"),
+    "utf8",
+  ),
+);
+assert.equal(
+  manifest.functions[0].input.properties.title["ui:metadata"].inlineEditable,
+  true,
+);
 
 const rendererBuild = await build({
   entryPoints: [path.join(componentDirectory, "dxp/main.js")],
@@ -35,14 +47,18 @@ assert.match(
   defaultHtml,
   /style="min-height: 18\.5px; border: 1px solid transparent;"/,
 );
-assert.match(defaultHtml, /<hr><p>Overview<\/p><hr><p><\/p><p><\/p><p><\/p>/);
+assert.match(defaultHtml, /<p data-sq-field="title">Overview<\/p>/);
+assert.match(
+  defaultHtml,
+  /<hr><p data-sq-field="title">Overview<\/p><hr><p><\/p><p><\/p><p><\/p>/,
+);
 
 const customAnchorHtml = await tabComponent.main({
   title: "Usage & setup",
   anchor: "usage-setup",
 });
 assert.match(customAnchorHtml, /data-tab-id="usage-setup"/);
-assert.match(customAnchorHtml, /<p>Usage &amp; setup<\/p>/);
+assert.match(customAnchorHtml, /<p data-sq-field="title">Usage &amp; setup<\/p>/);
 
 const escapedHtml = await tabComponent.main({
   title: '<script>alert("tab")</script>',
