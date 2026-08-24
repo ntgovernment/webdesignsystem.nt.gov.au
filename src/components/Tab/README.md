@@ -19,6 +19,7 @@ The Tab component scans the DOM for tab marker elements, groups subsequent conte
 ## What's Included
 
 - `Tab.vanilla.ts` — Main component class with auto-initialization
+- `Tab.transformer.ts` — Squiz marker transformer and accessible navigation
 - `Tab.css` — Sticky navigation styles with design tokens
 - `index.ts` — Export file
 - `dxp/manifest.json` — DXP edge component schema
@@ -30,6 +31,7 @@ The Tab component scans the DOM for tab marker elements, groups subsequent conte
 ```
 src/components/Tab/
 ├── Tab.vanilla.ts     # Client-side component class
+├── Tab.transformer.ts # Squiz marker transformer
 ├── Tab.css            # Component styles
 ├── index.ts           # Export file
 ├── README.md          # This file
@@ -134,6 +136,10 @@ around a page and then add the corresponding content immediately after each mark
 Any additional properties are ignored. The component outputs a single wrapper
 `<div>` marker with authoring-friendly child markup.
 
+The `title` property is inline editable in Squiz. The rendered title paragraph
+uses `data-sq-field="title"`, so authors can edit the label directly on the
+page canvas.
+
 ### Authoring Example (Squiz Matrix)
 
 ```html
@@ -179,6 +185,8 @@ sample content.
 | `data-tab-marker-class`  | CSS class name for tab marker elements     | `"nt-tab-marker"`              |
 | `data-tab-sticky-offset` | CSS value for sticky top position          | `"var(--header-height, 76px)"` |
 | `data-tab-title`         | **(On markers)** Display title for the tab | Required                       |
+| `data-tab-id`            | **(On markers)** Stable panel id fragment  | Derived from title             |
+| `data-sq-field="title"` | Inline-edit hook on the DXP title paragraph | `title`                        |
 
 ## JavaScript API
 
@@ -260,6 +268,10 @@ const tabs = new window.NTGTab(container, config);
 | `.nt-tab__button--active` | Active tab button modifier                        |
 | `.nt-tab__panel`          | Content panel wrapper with `role="tabpanel"`      |
 | `.nt-tab-marker`          | Tab marker element (hidden after initialization)  |
+| `.nt-tab-transformer__nav` | Transformer sticky navigation and tab list       |
+| `.nt-tab-transformer__inner` | Transformer scrollable tab row                 |
+| `.nt-tab-transformer__button` | Transformer focusable tab button              |
+| `.nt-tab-transformer__panel` | Transformer-generated tab panel                |
 
 ## Design Tokens
 
@@ -365,20 +377,25 @@ After initialization, the component generates the following structure:
 
 ## Accessibility
 
-The Tab component follows the [W3C ARIA Tabs Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/):
+Both Tab implementations use semantic tabs and ARIA-linked panels. Their focus
+models differ intentionally: `TabClient` follows the standard roving-tabindex
+pattern, while the DXP transformer keeps every rendered tab in sequential focus
+order so repeated Tab presses reach each control.
 
 ### ARIA Attributes
 
 - **Tab List:** `role="tablist"` on navigation container
 - **Tab Buttons:** `role="tab"`, `aria-selected`, `aria-controls`, `tabindex`
 - **Tab Panels:** `role="tabpanel"`, `aria-labelledby`, `hidden`
-- **Focus Management:** Only active tab is focusable (`tabindex="0"` vs `"-1"`)
+- **TabClient Focus:** Only the active tab is in sequential focus order
+  (`tabindex="0"` vs `"-1"`)
+- **Transformer Focus:** Every generated tab has `tabindex="0"`
 
 ### Keyboard Navigation
 
 | Key                                 | Action                      |
 | ----------------------------------- | --------------------------- |
-| <kbd>Tab</kbd>                      | Move focus to/from tab list |
+| <kbd>Tab</kbd>                      | TabClient: enter/leave the tab list; transformer: move through every tab |
 | <kbd>→</kbd> / <kbd>↓</kbd>         | Next tab                    |
 | <kbd>←</kbd> / <kbd>↑</kbd>         | Previous tab                |
 | <kbd>Home</kbd>                     | First tab                   |
@@ -474,17 +491,26 @@ When printing:
 
 ## Versioning
 
-**Current Version:** 1.1.0
+**Current Version:** 1.1.2
 
 ### Changelog
+
+#### 1.1.2
+
+- Keeps every transformed tab in sequential keyboard focus order
+- Removes one unnecessary empty paragraph from the DXP marker output
+
+#### 1.1.1
+
+- Makes the DXP Tab Title inline editable with `data-sq-field="title"`
+- Adds inline-edit metadata to the `title` manifest property
 
 #### 1.1.0
 
 - DXP marker now renders full `.sq-inline-viper-content` wrapper markup
 - Transformer supports wrapper markers, legacy `.nt-tab-marker`, and legacy
   `<hr><p>Title</p><hr>` patterns
-- Transformer renders semantic `<nav>/<button>` tabs with roving `tabindex`
-  and keyboard navigation
+- Transformer renders semantic `<nav>/<button>` tabs with keyboard navigation
 
 #### 1.0.0 (Initial Release)
 
@@ -538,9 +564,8 @@ markers and inserts a sticky navigation before `#content`.
     style="min-height: 18.5px; border: 1px solid transparent"
   >
     <hr />
-    <p>Overview</p>
+    <p data-sq-field="title">Overview</p>
     <hr />
-    <p></p>
     <p></p>
     <p></p>
   </div>
@@ -587,9 +612,9 @@ document.addEventListener("DOMContentLoaded", function () {
 ### DXP Tab Navigation Structure
 
 Generated navigation retains DXP data attributes while using focusable buttons
-and ARIA-linked panels. The active button has `tabindex="0"`; inactive buttons
-use `tabindex="-1"`. Press Tab to enter the tab list, then use Left Arrow,
-Right Arrow, Home, or End to move focus and select a tab.
+and ARIA-linked panels. Every button has `tabindex="0"`, so repeated Tab presses
+move through each rendered tab. Left Arrow, Right Arrow, Home, and End also move
+focus and select a tab.
 
 ```html
 <nav
@@ -640,9 +665,9 @@ Right Arrow, Home, or End to move focus and select a tab.
   - `padding: 16px`
   - Font: Lato, 16px, line-height 24px
   - Color: `var(--clr-link-default, #1F1F5F)`
-- **Active tab:** `data-active="True"`, `aria-selected="true"`, `tabindex="0"`
-- **Inactive tabs:** `data-active="False"`, `aria-selected="false"`,
-  `tabindex="-1"`
+- **All tabs:** `tabindex="0"`, allowing sequential focus with Tab
+- **Active tab:** `data-active="True"`, `aria-selected="true"`
+- **Inactive tabs:** `data-active="False"`, `aria-selected="false"`
 - **Keyboard:** Left/Right/Home/End update selected tab and move focus
 - **Focus ring:** visible via `.nt-tab-transformer__button:focus-visible`
 
@@ -804,9 +829,8 @@ To convert from standard Tab component to Transformer:
      style="min-height: 18.5px; border: 1px solid transparent"
    >
      <hr />
-     <p>Title</p>
+     <p data-sq-field="title">Title</p>
      <hr />
-     <p></p>
      <p></p>
      <p></p>
    </div>

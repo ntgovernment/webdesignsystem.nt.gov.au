@@ -137,7 +137,7 @@ function createTabButton(
   button.setAttribute("role", "tab");
   button.setAttribute("aria-selected", String(isActive));
   button.setAttribute("aria-controls", marker.panelElement?.id || "");
-  button.setAttribute("tabindex", isActive ? "0" : "-1");
+  button.setAttribute("tabindex", "0");
   button.setAttribute("data-active", isActive ? "True" : "False");
   button.setAttribute("data-horizontal", "True");
   button.setAttribute("data-left-icon", "false");
@@ -161,7 +161,6 @@ function selectTab(
   buttons.forEach((button, index) => {
     const isActive = index === selectedIndex;
     button.setAttribute("aria-selected", String(isActive));
-    button.setAttribute("tabindex", isActive ? "0" : "-1");
     button.setAttribute("data-active", isActive ? "True" : "False");
     markers[index].panelElement!.hidden = !isActive;
   });

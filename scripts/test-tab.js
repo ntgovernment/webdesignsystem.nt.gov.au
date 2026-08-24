@@ -6,6 +6,14 @@ import { build } from "esbuild";
 const root = process.cwd();
 const componentDirectory = path.join(root, "src/components/Tab");
 const sanitizePath = path.join(root, "src/utils/sanitize.ts");
+const transformerPath = path.join(componentDirectory, "Tab.transformer.ts");
+
+const transformerSource = fs.readFileSync(transformerPath, "utf8");
+assert.match(
+  transformerSource,
+  /button\.setAttribute\("tabindex", "0"\)/,
+);
+assert.doesNotMatch(transformerSource, /tabindex[^\n]*"-1"/);
 
 const manifest = JSON.parse(
   fs.readFileSync(
@@ -50,7 +58,7 @@ assert.match(
 assert.match(defaultHtml, /<p data-sq-field="title">Overview<\/p>/);
 assert.match(
   defaultHtml,
-  /<hr><p data-sq-field="title">Overview<\/p><hr><p><\/p><p><\/p><p><\/p>/,
+  /<hr><p data-sq-field="title">Overview<\/p><hr><p><\/p><p><\/p>/,
 );
 
 const customAnchorHtml = await tabComponent.main({
@@ -71,7 +79,7 @@ assert.match(
 );
 
 const transformerBuild = await build({
-  entryPoints: [path.join(componentDirectory, "Tab.transformer.ts")],
+  entryPoints: [transformerPath],
   bundle: true,
   format: "iife",
   platform: "browser",
