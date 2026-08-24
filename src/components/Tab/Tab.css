@@ -80,6 +80,73 @@
   outline: none;
 }
 
+.nt-tab-transformer__nav {
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background: var(--clr-bg-default, white);
+  border-top: 1px solid var(--clr-border-subtle, #d3d3d7);
+  border-bottom: 1px solid var(--clr-border-subtle, #d3d3d7);
+}
+
+.nt-tab-transformer__inner {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 var(--sp-xl, 24px);
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: auto;
+}
+
+.nt-tab-transformer__button {
+  display: flex;
+  min-width: 64px;
+  padding: 16px;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto;
+  border: 0;
+  border-bottom: 4px solid transparent;
+  background: transparent;
+  color: var(--clr-link-default, #1f1f5f);
+  font:
+    400 16px/24px Lato,
+    sans-serif;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.nt-tab-transformer__button:hover {
+  background: var(--clr-bg-shade, #f5f5f7);
+}
+
+.nt-tab-transformer__button:focus-visible {
+  outline: 2px solid var(--clr-link-default, #1f1f5f);
+  outline-offset: -4px;
+}
+
+.nt-tab-transformer__button[data-active="True"] {
+  border-bottom-color: var(--clr-border-accent, #c33826);
+  font-weight: 700;
+}
+
+.nt-tab-transformer__panel {
+  width: 100%;
+}
+
+.nt-tab-transformer__panel[hidden] {
+  display: none;
+}
+
 /* Responsive adjustments for tablets */
 @media (max-width: 1024px) {
   .nt-tab__button {
@@ -138,7 +205,8 @@
 
 /* Accessibility: Reduce motion */
 @media (prefers-reduced-motion: reduce) {
-  .nt-tab__button {
+  .nt-tab__button,
+  .nt-tab-transformer__button {
     transition: none;
   }
 }
@@ -156,11 +224,13 @@
 
 /* Print styles - show all content */
 @media print {
-  .nt-tab__nav {
+  .nt-tab__nav,
+  .nt-tab-transformer__nav {
     display: none;
   }
 
-  .nt-tab__panel[hidden] {
+  .nt-tab__panel[hidden],
+  .nt-tab-transformer__panel[hidden] {
     display: block !important;
   }
 }

@@ -1,10 +1,10 @@
-<!-- 
+<!--
   NT Design System - FOOTER JS Nester
   Squiz Matrix Area: footer_js (design_area="nest_content")
-  
+
   JavaScript component loading for NT Design System.
   Place this at the end of the body for optimal page load performance.
-  
+
   COMPONENTS LOADED (unified bundle):
   1. Header component (vanilla JS)
   2. Left Navigation component (vanilla JS)
@@ -12,36 +12,52 @@
   4. Component Viewer component (vanilla JS)
   5. Page Banner component (vanilla JS)
   6. Tab Marker Transformer (auto-initializes for #content)
-  
+
   SQUIZ MATRIX USAGE:
   Asset URLs use %globals_asset_url_with_hash: for automatic cache-busting.
   ASSET_ID is replaced with your Git File Bridge asset ID during build.
-  
+
   TAB TRANSFORMATION:
-  Automatically converts <hr><p>Title</p><hr> patterns in #content container
-  into interactive DXP-formatted tabs. No additional configuration needed.
-  
+  Converts DXP .sq-inline-viper-content tab markers in #content into
+  accessible sticky tabs. Legacy .nt-tab-marker and <hr><p>Title</p><hr>
+  markers remain supported.
+
   NOTE: Scripts use 'defer' for optimal loading performance
 -->
 
 <!-- Unified NT Design System Bundle -->
-<script src="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.js%" defer></script>
+<script
+  src="%globals_asset_url_with_hash:ASSET_ID:deploy/web-design-system.min.js%"
+  defer
+></script>
 
 <!-- Prism.js for ComponentViewer syntax highlighting -->
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markup.min.js" defer></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/prism.min.js"
+  defer
+></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-markup.min.js"
+  defer
+></script>
 
 <!-- Prettier for ComponentViewer code formatting -->
-<script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/standalone.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/plugins/html.js" defer></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/standalone.js"
+  defer
+></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/prettier@3.8.1/plugins/html.js"
+  defer
+></script>
 
 <!-- Tab Marker Transformer Auto-Initialization -->
 <script>
   // Auto-transform tab markers when page loads
-  // Converts <hr><p>Title</p><hr> patterns into interactive DXP tabs
-  document.addEventListener('DOMContentLoaded', function () {
-    if (window.transformTabMarkers && document.getElementById('content')) {
-      window.transformTabMarkers('#content');
+  // Converts DXP and legacy markers into interactive, keyboard-accessible tabs
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.transformTabMarkers && document.getElementById("content")) {
+      window.transformTabMarkers("#content");
     }
   });
 </script>

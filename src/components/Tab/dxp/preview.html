@@ -1,120 +1,166 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tab Component Preview - DXP</title>
     <link rel="stylesheet" href="../../../tokens.css" />
     <link rel="stylesheet" href="../../../web-design-system.css" />
     <style>
-        body {
-            margin: 0;
-            padding: var(--sp-xl, 24px);
-            font-family: var(--font-family-primary, "Lato", sans-serif);
-            background: var(--clr-bg-default, white);
-            color: var(--clr-text-default, #1f1f2e);
-        }
+      body {
+        margin: 0;
+        padding: var(--sp-xl, 24px);
+        font-family: var(--font-family-primary, "Lato", sans-serif);
+        background: var(--clr-bg-default, white);
+        color: var(--clr-text-default, #1f1f2e);
+      }
 
-        .preview-header {
-            margin-bottom: var(--sp-xxl, 32px);
-            padding-bottom: var(--sp-lg, 20px);
-            border-bottom: var(--border-width-md, 1px) solid var(--clr-border-subtle, #d3d3d7);
-        }
+      .preview-header {
+        margin-bottom: var(--sp-xxl, 32px);
+        padding-bottom: var(--sp-lg, 20px);
+        border-bottom: var(--border-width-md, 1px) solid
+          var(--clr-border-subtle, #d3d3d7);
+      }
 
-        .preview-header h1 {
-            margin: 0 0 var(--sp-sm, 12px) 0;
-            font-size: var(--type-heading-h3-size, 1.75rem);
-            color: var(--clr-text-default, #1f1f2e);
-        }
+      .preview-header h1 {
+        margin: 0 0 var(--sp-sm, 12px) 0;
+        font-size: var(--type-heading-h3-size, 1.75rem);
+        color: var(--clr-text-default, #1f1f2e);
+      }
 
-        .preview-header p {
-            margin: 0;
-            color: var(--clr-text-muted, #666774);
-        }
+      .preview-header p {
+        margin: 0;
+        color: var(--clr-text-muted, #666774);
+      }
 
-        /* Simulate header for sticky offset */
-        .fake-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 76px;
-            background: var(--clr-link-default, #1f1f5f);
-            color: white;
-            display: flex;
-            align-items: center;
-            padding: 0 var(--sp-xl, 24px);
-            z-index: 1000;
-            font-weight: 600;
-        }
+      /* Simulate header for sticky offset */
+      .fake-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 76px;
+        background: var(--clr-link-default, #1f1f5f);
+        color: white;
+        display: flex;
+        align-items: center;
+        padding: 0 var(--sp-xl, 24px);
+        z-index: 1000;
+        font-weight: 600;
+      }
 
-        .preview-container {
-            margin-top: 100px;
-            /* Account for fake header */
-        }
+      .preview-container {
+        margin-top: 100px;
+        /* Account for fake header */
+      }
 
-        .nt-tab-content {
-            margin-bottom: var(--sp-lg, 20px);
-        }
+      .nt-tab-content {
+        margin-bottom: var(--sp-lg, 20px);
+      }
 
-        .nt-tab-content h2 {
-            margin-top: 0;
-        }
+      .nt-tab-content h2 {
+        margin-top: 0;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="fake-header">NT Government Web Design System</div>
 
     <div class="preview-container">
-        <div class="preview-header">
-            <h1>Tab Component Preview</h1>
-            <p>DXP Edge Component - Tab Marker</p>
+      <div class="preview-header">
+        <h1>Tab Component Preview</h1>
+        <p>DXP Edge Component - Tab Marker</p>
+      </div>
+
+      <p>
+        Use Tab to focus the active tab, then use the left and right arrow keys
+        to switch sections.
+      </p>
+
+      <div id="content" class="content">
+        <!-- Tab 1 Marker -->
+        <div
+          class="sq-inline-viper-content nt-tab-marker"
+          data-tab-title="Overview"
+          data-tab-id="overview"
+          style="min-height: 18.5px; border: 1px solid transparent"
+        >
+          <hr />
+          <p>Overview</p>
+          <hr />
+          <p></p>
+          <p></p>
+          <p></p>
         </div>
+        <h2>Overview</h2>
+        <p>
+          Welcome to the overview section. This tab contains general information
+          about the topic.
+        </p>
+        <p>You can include any HTML content here:</p>
+        <ul>
+          <li>Text and paragraphs</li>
+          <li>Lists and tables</li>
+          <li>Images and media</li>
+          <li>Any valid HTML</li>
+        </ul>
 
-        <p>This component renders an invisible tab marker. Multiple Tab markers in the same content area create a tabbed
-            interface with sticky navigation.</p>
-
-        <!-- Example content container with tab markers -->
-        <div class="content" data-tab-container=".content">
-            <!-- Tab 1 Marker -->
-            <div class="nt-tab-marker" data-tab-title="Overview"></div>
-            <h2>Overview</h2>
-            <p>Welcome to the overview section. This tab contains general information about the topic.</p>
-            <p>You can include any HTML content here:</p>
-            <ul>
-                <li>Text and paragraphs</li>
-                <li>Lists and tables</li>
-                <li>Images and media</li>
-                <li>Any valid HTML</li>
-            </ul>
-
-            <!-- Tab 2 Marker -->
-            <div class="nt-tab-marker" data-tab-title="Details"></div>
-            <h2>Details</h2>
-            <p>This section provides detailed information. Here you might include:</p>
-            <ul>
-                <li>Step-by-step instructions</li>
-                <li>Detailed specifications</li>
-                <li>Complex data or requirements</li>
-                <li>Implementation details</li>
-            </ul>
-
-            <!-- Tab 3 Marker -->
-            <div class="nt-tab-marker" data-tab-title="Resources"></div>
-            <h2>Resources</h2>
-            <p>Additional resources and links:</p>
-            <ul>
-                <li><a href="#">Download documentation</a></li>
-                <li><a href="#">View examples</a></li>
-                <li><a href="#">Contact support</a></li>
-                <li><a href="#">Learn more</a></li>
-            </ul>
+        <!-- Tab 2 Marker -->
+        <div
+          class="sq-inline-viper-content nt-tab-marker"
+          data-tab-title="Details"
+          data-tab-id="details"
+          style="min-height: 18.5px; border: 1px solid transparent"
+        >
+          <hr />
+          <p>Details</p>
+          <hr />
+          <p></p>
+          <p></p>
+          <p></p>
         </div>
+        <h2>Details</h2>
+        <p>
+          This section provides detailed information. Here you might include:
+        </p>
+        <ul>
+          <li>Step-by-step instructions</li>
+          <li>Detailed specifications</li>
+          <li>Complex data or requirements</li>
+          <li>Implementation details</li>
+        </ul>
+
+        <!-- Tab 3 Marker -->
+        <div
+          class="sq-inline-viper-content nt-tab-marker"
+          data-tab-title="Resources"
+          data-tab-id="resources"
+          style="min-height: 18.5px; border: 1px solid transparent"
+        >
+          <hr />
+          <p>Resources</p>
+          <hr />
+          <p></p>
+          <p></p>
+          <p></p>
+        </div>
+        <h2>Resources</h2>
+        <p>Additional resources and links:</p>
+        <ul>
+          <li><a href="#">Download documentation</a></li>
+          <li><a href="#">View examples</a></li>
+          <li><a href="#">Contact support</a></li>
+          <li><a href="#">Learn more</a></li>
+        </ul>
+      </div>
     </div>
 
     <script type="module" src="../../../web-design-system.ts"></script>
-</body>
-
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        window.transformTabMarkers?.("#content");
+      });
+    </script>
+  </body>
 </html>

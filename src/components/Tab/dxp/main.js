@@ -12,7 +12,7 @@
  * 4. JavaScript automatically generates the tab navigation
  */
 
-import { escapeAttr } from "../../../utils/sanitize.js";
+import { escapeAttr, escapeHtml } from "../../../utils/sanitize.js";
 
 /**
  * Generate anchor ID from title (lowercase with hyphens)
@@ -33,9 +33,7 @@ const main = async (input) => {
   // Use provided anchor or generate from title
   const tabId = anchor.trim() || generateAnchorId(title);
 
-  // Render invisible tab marker
-  // JavaScript will find these markers and generate the tab navigation
-  return `<div class="nt-tab-marker" data-tab-title="${escapeAttr(title)}" data-tab-id="${escapeAttr(tabId)}"></div>`;
+  return `<div class="sq-inline-viper-content nt-tab-marker" data-tab-title="${escapeAttr(title)}" data-tab-id="${escapeAttr(tabId)}" style="min-height: 18.5px; border: 1px solid transparent;"><hr><p>${escapeHtml(title)}</p><hr><p></p><p></p><p></p></div>`;
 };
 
 export default {

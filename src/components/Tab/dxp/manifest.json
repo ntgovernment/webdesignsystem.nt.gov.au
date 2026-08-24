@@ -3,7 +3,7 @@
   "namespace": "web-design-system",
   "name": "tab",
   "displayName": "Tab",
-  "description": "Tab marker component - Insert multiple Tab components to create tabbed sections. JavaScript will scan markers and generate sticky navigation.",
+  "description": "Renders an editable tab marker. Insert multiple Tab components to generate accessible sticky tab navigation.",
   "icon": {
     "id": "tab",
     "color": {
@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "mainFunction": "main",
   "functions": [
     {

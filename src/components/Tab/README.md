@@ -114,10 +114,10 @@ tabs.destroy();
 
 ## Usage — DXP Edge Component
 
-For Squiz Matrix, the Tab component renders as an invisible marker element. When the
-page is delivered to the browser, the client-side JavaScript will collect all markers
-and build the interactive tab navigation based on their `data-tab-title`/`data-tab-id`
-attributes.
+For Squiz Matrix, the Tab component renders an editable marker wrapper using
+`.sq-inline-viper-content.nt-tab-marker` with `<hr><p>Title</p><hr>` marker
+content. When the page is delivered to the browser, client-side JavaScript
+collects all supported marker formats and builds interactive sticky navigation.
 
 This simplified pattern allows authors to sprinkle `web-design-system/tab` components
 around a page and then add the corresponding content immediately after each marker.
@@ -131,8 +131,8 @@ around a page and then add the corresponding content immediately after each mark
 }
 ```
 
-Any additional properties are ignored. The component only outputs a single `<div>`
-marker.
+Any additional properties are ignored. The component outputs a single wrapper
+`<div>` marker with authoring-friendly child markup.
 
 ### Authoring Example (Squiz Matrix)
 
@@ -158,14 +158,12 @@ marker.
 </div>
 ```
 
-The `anchor` property lets you explicitly control the hash used for deep–linking; if
-omitted it is derived from the title by lower‑casing, replacing spaces with hyphens,
-and stripping invalid characters. The JavaScript component uses `data-tab-id`
-internally to identify tabs and will activate the tab if its id matches
-`window.location.hash` (without the leading `#`).
+The `anchor` property lets you explicitly control the generated marker id used
+for panel ids and ARIA linkage. If omitted, the id is derived from the title by
+lowercasing, replacing spaces with hyphens, and stripping invalid characters.
 
-> **Note:** the DXP renderer does not wrap or duplicate your content – it simply
-> outputs a marker. All tab panels are created by the browser when the script runs.
+> **Note:** the DXP renderer only outputs markers. Tab panels and navigation are
+> created in the browser by `window.transformTabMarkers`.
 
 ### Preview
 
@@ -476,9 +474,17 @@ When printing:
 
 ## Versioning
 
-**Current Version:** 1.0.0
+**Current Version:** 1.1.0
 
 ### Changelog
+
+#### 1.1.0
+
+- DXP marker now renders full `.sq-inline-viper-content` wrapper markup
+- Transformer supports wrapper markers, legacy `.nt-tab-marker`, and legacy
+  `<hr><p>Title</p><hr>` patterns
+- Transformer renders semantic `<nav>/<button>` tabs with roving `tabindex`
+  and keyboard navigation
 
 #### 1.0.0 (Initial Release)
 
@@ -500,9 +506,16 @@ When printing:
 
 ### Overview
 
-The Tab Marker Transformer is an alternative tab implementation that converts simple `<hr><p>Title</p><hr>` patterns into DXP-formatted interactive tabs. This approach is specifically designed for Squiz Matrix content authors and supports inline styles with data-attributes.
+The Tab Marker Transformer is an alternative tab implementation for Squiz
+content. It supports three marker formats:
 
-**Key Difference:** While the standard Tab component uses `data-tab-marker` elements with `data-tab-title` attributes, the Transformer uses a simpler HTML pattern that's easier for content editors to create in WYSIWYG editors.
+- DXP wrapper: `.sq-inline-viper-content.nt-tab-marker`
+- Legacy wrapper-less marker: `.nt-tab-marker`
+- Legacy WYSIWYG markers: `<hr><p>Title</p><hr>`
+
+**Key Difference:** the standard `TabClient` path initializes from containers
+with `data-tab-container`; the transformer path initializes from page content
+markers and inserts a sticky navigation before `#content`.
 
 ### When to Use
 
@@ -515,38 +528,33 @@ The Tab Marker Transformer is an alternative tab implementation that converts si
 
 ```html
 <div id="content" class="ntg-body">
-  <!-- Page content before tabs -->
   <h1>Page Title</h1>
-  <p>Introduction paragraph...</p>
 
-  <!-- Tab 1 Marker -->
-  <hr />
-  <p>Overview</p>
-  <hr />
-  <p></p>
+  <!-- Preferred DXP marker format -->
+  <div
+    class="sq-inline-viper-content nt-tab-marker"
+    data-tab-title="Overview"
+    data-tab-id="overview"
+    style="min-height: 18.5px; border: 1px solid transparent"
+  >
+    <hr />
+    <p>Overview</p>
+    <hr />
+    <p></p>
+    <p></p>
+    <p></p>
+  </div>
 
-  <!-- Tab 1 Content -->
   <h2>Overview Section</h2>
   <p>Content for the overview tab...</p>
-  <div>More content...</div>
 
-  <!-- Tab 2 Marker -->
-  <hr />
-  <p>Usage</p>
-  <hr />
-  <p></p>
-
-  <!-- Tab 2 Content -->
-  <h2>Usage Guidelines</h2>
-  <p>Content for the usage tab...</p>
-
-  <!-- Additional tabs follow the same pattern -->
+  <!-- Additional tab markers and content -->
 </div>
 ```
 
 ### Auto-Initialization
 
-The transformer is included in the unified `web-design-system.min.js` bundle and exposed globally as `window.transformTabMarkers`. It's automatically called by the footer-js nester:
+The transformer is included in the unified `web-design-system.min.js` bundle and exposed globally as `window.transformTabMarkers`. It accepts the DXP wrapper, legacy standalone `.nt-tab-marker` elements, and direct `<hr><p>Title</p><hr>` markers. The footer-js nester calls it automatically:
 
 ```javascript
 // Included in deploy/nesters/footer-js.html
@@ -561,82 +569,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
 **Algorithm:**
 
-1. Scans container for `<hr><p>Title</p><hr>` patterns
-2. Extracts tab titles from paragraph text
-3. Hides marker elements using `display: none`
-4. Creates DXP-formatted navigation with inline styles
+1. Scans the container for supported DXP and legacy marker formats
+2. Extracts tab titles and marker ids
+3. Hides marker elements with the `hidden` attribute
+4. Creates token-styled semantic tab navigation with DXP data attributes
 5. Inserts navigation before the content container
-6. Attaches click handlers for tab switching
+6. Attaches click and keyboard handlers for tab switching
 7. Shows first tab content, hides all others
 
 **Content Management:**
 
-- Tracks marker position indices
+- Tracks marker indices and consumed marker ranges
 - Calculates content boundaries between tabs
-- Shows/hides content by setting `display` property
-- Next tab's first marker marks the end of current tab content
+- Moves content into generated `role="tabpanel"` wrappers
+- Toggles panel visibility using the `hidden` attribute
 
 ### DXP Tab Navigation Structure
 
-Generated navigation uses nested divs with DXP data-attributes and inline styles:
+Generated navigation retains DXP data attributes while using focusable buttons
+and ARIA-linked panels. The active button has `tabindex="0"`; inactive buttons
+use `tabindex="-1"`. Press Tab to enter the tab list, then use Left Arrow,
+Right Arrow, Home, or End to move focus and select a tab.
 
 ```html
-<div
+<nav
+  class="nt-tab-transformer__nav"
+  role="tablist"
+  aria-label="Page sections"
   data-breakpoint="xl +lg + md"
   data-scroll-left="false"
   data-scroll-right="false"
-  style="width: 100%; position: sticky; top: 0; z-index: 100; background: var(--clr-bg-default, white); border-top: 1px var(--clr-border-subtle, #D3D3D7) solid; border-bottom: 1px var(--clr-border-subtle, #D3D3D7) solid; display: flex; justify-content: center;"
 >
-  <div
-    style="width: 100%; max-width: 1200px; padding: 0 var(--sp-xl, 24px); display: flex; justify-content: flex-start; align-items: center;"
-  >
-    <!-- Tab Button 1 (Active) -->
-    <div
+  <div class="nt-tab-transformer__inner">
+    <button
+      type="button"
+      class="nt-tab-transformer__button"
+      role="tab"
+      aria-selected="true"
+      aria-controls="nt-tab-group-1-0-overview-panel"
+      tabindex="0"
       data-active="True"
-      data-horizontal="true"
+      data-horizontal="True"
       data-left-icon="false"
       data-show-badge="false"
-      data-state="idle"
+      data-state="Default"
       data-tab-index="0"
-      style="cursor: pointer; min-width: 64px; padding: 16px; border-bottom: 4px var(--clr-border-accent, #C33826) solid;"
     >
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 4px;"
-      >
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <div
-            style="color: var(--clr-link-default, #1F1F5F); font-size: 16px; font-family: Lato; font-weight: 700; line-height: 24px;"
-          >
-            Overview
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab Button 2 (Inactive) -->
-    <div
-      data-active="False"
-      data-horizontal="true"
-      data-left-icon="false"
-      data-show-badge="false"
-      data-state="idle"
-      data-tab-index="1"
-      style="cursor: pointer; min-width: 64px; padding: 16px;"
-    >
-      <div
-        style="display: flex; flex-direction: column; align-items: center; gap: 4px;"
-      >
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <div
-            style="color: var(--clr-link-default, #1F1F5F); font-size: 16px; font-family: Lato; font-weight: 400; line-height: 24px;"
-          >
-            Usage
-          </div>
-        </div>
-      </div>
-    </div>
+      <span class="nt-tab-transformer__label">Overview</span>
+    </button>
   </div>
-</div>
+</nav>
 ```
 
 ### Tab Button Styling
@@ -647,10 +629,10 @@ Generated navigation uses nested divs with DXP data-attributes and inline styles
 - `data-horizontal` — Always "true" for horizontal layout
 - `data-left-icon` — "false" (no icons in basic implementation)
 - `data-show-badge` — "false" (no badges in basic implementation)
-- `data-state` — "idle" (interactive state)
+- `data-state` — "Default" (interactive state)
 - `data-tab-index` — Zero-based tab index
 
-**Inline Styles:**
+**State and Focus Behavior:**
 
 - **All tabs:**
   - `cursor: pointer`
@@ -658,13 +640,11 @@ Generated navigation uses nested divs with DXP data-attributes and inline styles
   - `padding: 16px`
   - Font: Lato, 16px, line-height 24px
   - Color: `var(--clr-link-default, #1F1F5F)`
-- **Active tab:**
-  - `border-bottom: 4px var(--clr-border-accent, #C33826) solid`
-  - `font-weight: 700`
-- **Inactive tabs:**
-  - No bottom border
-  - `font-weight: 400`
-  - Hover: background color change
+- **Active tab:** `data-active="True"`, `aria-selected="true"`, `tabindex="0"`
+- **Inactive tabs:** `data-active="False"`, `aria-selected="false"`,
+  `tabindex="-1"`
+- **Keyboard:** Left/Right/Home/End update selected tab and move focus
+- **Focus ring:** visible via `.nt-tab-transformer__button:focus-visible`
 
 ### Programmatic Usage
 
@@ -758,11 +738,11 @@ console.log(
 
 | Feature                | Standard Tab Component           | Tab Marker Transformer             |
 | ---------------------- | -------------------------------- | ---------------------------------- |
-| **Activation Pattern** | `<div class="nt-tab-marker">`    | `<hr><p>Title</p><hr>`             |
-| **Styling**            | External CSS classes             | Inline styles + data-attributes    |
+| **Activation Pattern** | `<div class="nt-tab-marker">`    | `.sq-inline-viper-content.nt-tab-marker` (legacy formats also supported) |
+| **Styling**            | External CSS classes             | External CSS classes + DXP data attributes |
 | **Best For**           | JavaScript applications          | Squiz Matrix WYSIWYG               |
-| **ARIA Support**       | Full (role="tab", aria-controls) | Basic (click handlers)             |
-| **Keyboard Nav**       | Yes (Arrow keys, Home, End)      | Basic (Tab key only)               |
+| **ARIA Support**       | Full (role="tab", aria-controls) | Full (role="tab", aria-controls) |
+| **Keyboard Nav**       | Yes (Arrow keys, Home, End)      | Yes (Arrow keys, Home, End)        |
 | **URL Hash**           | Yes                              | No                                 |
 | **Sticky Positioning** | Yes (configurable offset)        | Yes (top: 0, z-index: 100)         |
 | **Content Authors**    | Requires HTML knowledge          | Easy (WYSIWYG-friendly)            |
@@ -771,30 +751,14 @@ console.log(
 
 ### Technical Implementation
 
-The transformer is implemented in `src/web-design-system.ts` and bundled into the unified JavaScript file:
+The transformer is implemented in `src/components/Tab/Tab.transformer.ts`,
+imported by `src/web-design-system.ts`, and bundled into the unified JavaScript
+file:
 
 ```typescript
-// Exposed globally for use in HTML pages
-(window as any).transformTabMarkers = transformTabMarkers;
+import { transformTabMarkers } from "./components/Tab/Tab.transformer";
 
-function transformTabMarkers(containerSelector = "#colour-content") {
-  const container = document.querySelector(containerSelector);
-  if (!container) {
-    console.warn(
-      `[TabMarkerTransformer] Container not found: ${containerSelector}`,
-    );
-    return 0;
-  }
-
-  // 1. Extract tab info from HR/P/HR patterns
-  // 2. Hide marker elements
-  // 3. Create DXP-formatted navigation
-  // 4. Insert before content container
-  // 5. Attach click handlers
-  // 6. Initialize: show first tab content only
-
-  return tabs.length;
-}
+window.transformTabMarkers = transformTabMarkers;
 ```
 
 ### Browser Support
@@ -812,7 +776,7 @@ function transformTabMarkers(containerSelector = "#colour-content") {
 2. Verify `window.transformTabMarkers` function exists
 3. Confirm `#content` container exists in DOM
 4. Ensure minimum 2 tab markers are present
-5. Check marker pattern: must be exact `<hr><p>Text</p><hr><p></p>` sequence
+5. Check marker format: preferred DXP wrapper or legacy supported formats
 
 **Styling issues:**
 
@@ -830,13 +794,22 @@ function transformTabMarkers(containerSelector = "#colour-content") {
 
 To convert from standard Tab component to Transformer:
 
-1. Replace `<div class="nt-tab-marker" data-tab-title="Title"></div>` with:
+1. Replace simple marker blocks with DXP wrapper markers:
 
    ```html
-   <hr />
-   <p>Title</p>
-   <hr />
-   <p></p>
+   <div
+     class="sq-inline-viper-content nt-tab-marker"
+     data-tab-title="Title"
+     data-tab-id="title"
+     style="min-height: 18.5px; border: 1px solid transparent"
+   >
+     <hr />
+     <p>Title</p>
+     <hr />
+     <p></p>
+     <p></p>
+     <p></p>
+   </div>
    ```
 
 2. Remove `data-tab-container` attribute from parent
@@ -849,11 +822,9 @@ To convert from standard Tab component to Transformer:
 
 Potential improvements (not yet implemented):
 
-- Keyboard navigation (Arrow keys)
 - Smooth scroll to tab content
 - Persist active tab in URL hash
 - Animation transitions between tabs
-- Accessibility improvements (ARIA attributes)
 - Theme switcher integration
 - Right-to-left (RTL) support
 
