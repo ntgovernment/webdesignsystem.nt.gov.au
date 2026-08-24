@@ -11,6 +11,7 @@
     "test:card-dxp": "node scripts/test-card-dxp.js",
     "test:card-ssr-live": "node scripts/test-card-ssr-live.js",
     "test:color-swatch-dxp": "node scripts/test-color-swatch-dxp.js",
+    "test:component-viewer-dxp": "node scripts/test-component-viewer-dxp.js",
     "test:two-column-dxp": "node scripts/test-two-column-dxp.js",
     "preview": "vite preview --open /preview/",
     "deploy": "node scripts/deploy-squiz.js"

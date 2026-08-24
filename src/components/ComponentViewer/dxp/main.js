@@ -5,13 +5,13 @@
  * Client-side JavaScript detects and enhances with interactivity (zoom, code toggle, copy).
  */
 
-import { escapeHtml, escapeAttr } from "../../../utils/sanitize.js";
+import { escapeAttr } from "../../../utils/sanitize.js";
 import { generateInstanceId } from "../../../utils/instance-id.js";
 
 /**
  * Main server-side render function
  */
-const main = async (input) => {
+const main = async (input, info) => {
   const {
     storybookUrl = "https://ntgovernment.github.io/ntg-design-system/iframe.html?globals=&args=&id=components-button--primary&viewMode=story",
     Introduction = "",
@@ -21,8 +21,8 @@ const main = async (input) => {
     showCodeByDefault = false,
     enableCopy = true,
     enableZoom = true,
-    cssClass = "",
   } = input || {};
+  const editor = Boolean(info?.ctx?.editor);
 
   /**
    * Convert Storybook documentation/story URL to iframe URL
@@ -65,7 +65,7 @@ const main = async (input) => {
 
       // Return original URL if no conversion needed
       return url;
-    } catch (error) {
+    } catch {
       // If URL parsing fails, return original URL
       return url;
     }
@@ -92,16 +92,11 @@ const main = async (input) => {
     enableZoom,
   });
 
-  // Build container classes
-  const containerClasses = ["nt-component-viewer", cssClass]
-    .filter(Boolean)
-    .join(" ");
-
   // Build zoom controls HTML
   const zoomControls = enableZoom
     ? `<div class="component-viewer__zoom-controls">
-        <button 
-          class="component-viewer__control-btn" 
+        <button
+          class="component-viewer__control-btn"
           data-action="zoom-in"
           aria-label="Zoom in"
           title="Zoom in"
@@ -109,8 +104,8 @@ const main = async (input) => {
           <i class="fa-light fa-magnifying-glass-plus" aria-hidden="true"></i>
           <span class="component-viewer__control-label">Zoom in</span>
         </button>
-        <button 
-          class="component-viewer__control-btn" 
+        <button
+          class="component-viewer__control-btn"
           data-action="zoom-out"
           aria-label="Zoom out"
           title="Zoom out"
@@ -118,8 +113,8 @@ const main = async (input) => {
           <i class="fa-light fa-magnifying-glass-minus" aria-hidden="true"></i>
           <span class="component-viewer__control-label">Zoom out</span>
         </button>
-        <button 
-          class="component-viewer__control-btn" 
+        <button
+          class="component-viewer__control-btn"
           data-action="zoom-reset"
           aria-label="Reset zoom"
           title="Reset zoom"
@@ -132,8 +127,8 @@ const main = async (input) => {
 
   // Build copy button HTML
   const copyButton = enableCopy
-    ? `<button 
-        class="component-viewer__button" 
+    ? `<button
+      class="component-viewer__button"
         data-action="copy"
         aria-label="Copy code to clipboard"
       >
@@ -148,30 +143,30 @@ const main = async (input) => {
     : "";
 
   // Assemble complete component HTML
-  let html = `<div 
-    class="${containerClasses}" 
-    data-hydration-component="component-viewer" 
-    data-hydration-props="${escapeAttr(hydrationProps)}" 
+  let html = `<div
+    class="nt-component-viewer"
+    data-hydration-component="component-viewer"
+    data-hydration-props="${escapeAttr(hydrationProps)}"
     data-instance-id="${instanceId}"
   >`;
 
   // Add introduction if provided
-  if (hasIntroduction) {
+  if (hasIntroduction || editor) {
     html += `
     <!-- Introduction Section -->
-    <div class="component-viewer__introduction">${introductionHtml}</div>`;
+    <div class="component-viewer__introduction" data-sq-field="Introduction">${introductionHtml}</div>`;
   }
 
   html += `
     <!-- Preview Section -->
     <div class="component-viewer__preview" style="height: ${escapeAttr(height)}">
       <div class="component-viewer__iframe-wrapper">
-        
+
         <!-- Toolbar -->
         <div class="component-viewer__toolbar">
           ${zoomControls}
-          <button 
-            class="component-viewer__control-btn" 
+          <button
+            class="component-viewer__control-btn"
             data-action="open-new-tab"
             aria-label="Open canvas in new tab"
             title="Open canvas in new tab"
@@ -203,8 +198,8 @@ const main = async (input) => {
     <!-- Action Buttons -->
     <div class="component-viewer__actions">
       ${copyButton}
-      <button 
-        class="component-viewer__button" 
+      <button
+        class="component-viewer__button"
         data-action="toggle-code"
         aria-label="${showCodeByDefault ? "Hide code" : "See code"}"
       >

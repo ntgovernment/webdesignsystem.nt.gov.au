@@ -25,11 +25,10 @@ These props are defined in `manifest.json` and are exposed to Squiz Matrix edito
 | Property            | Type                | Default | Required | Description                                                                                                                                                              |
 | ------------------- | ------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `storybookUrl`      | string              | —       | **yes**  | Full URL to the Storybook story for the iframe. Accepts `?path=/docs/` and `?path=/story/` patterns — `main.js` converts them to `iframe.html?id=` format automatically. |
-| `Introduction`      | FormattedText       | —       | no       | Rich text displayed above the preview. Rendered as raw HTML (supports lists, links, etc.).                                                                               |
+| `Introduction`      | FormattedText       | —       | no       | Inline-editable rich text displayed above the preview. Rendered as raw HTML (supports lists, links, etc.).                                                               |
 | `codeExample`       | string (multi-line) | —       | no       | Plain-text code snippet shown in the code panel. If empty, the client attempts to extract code from the iframe document.                                                 |
 | `height`            | string              | `400px` | no       | Height of the preview iframe.                                                                                                                                            |
 | `showCodeByDefault` | boolean             | `false` | no       | Opens the code panel on load.                                                                                                                                            |
-| `cssClass`          | string              | —       | no       | Additional CSS classes on the root element.                                                                                                                              |
 
 ### Server-side-only props (not in manifest)
 
@@ -43,7 +42,7 @@ These are hardcoded defaults in `main.js` and not exposed to editors:
 
 ## How it works
 
-1. `main.js` renders the static HTML shell with `data-component-viewer` attributes and embeds the `storybookUrl` in the iframe `src`.
+1. `main.js` renders the static HTML shell with hydration attributes (`data-hydration-component="component-viewer"` and `data-hydration-props`) and embeds the `storybookUrl` in the iframe `src`.
 2. On page load, `ComponentViewer.vanilla.ts` hydrates each instance:
    - Calls `updateOpenTabButton()` to replace the default icon and label with the Storybook SVG and "Open in Storybook" text.
    - Attaches zoom/copy/code-toggle button event listeners.
@@ -56,7 +55,7 @@ These are hardcoded defaults in `main.js` and not exposed to editors:
 `main.js` automatically converts Storybook URL patterns to iframe format:
 
 - `?path=/story/components-button--primary` → `iframe.html?id=components-button--primary`
-- `?path=/docs/components-button--primary` → `iframe.html?id=components-button--primary&viewMode=docs`
+- `?path=/docs/components-button--primary` → `iframe.html?id=components-button--primary&viewMode=story`
 
 ## Button Positioning Architecture
 
@@ -197,6 +196,8 @@ Add a ComponentViewer to a page by setting these metadata fields on a Squiz Stan
 | `showCodeByDefault` | `true` / `false`                      |
 
 The nester template at `deploy/nesters/component-viewer.html` maps these fields to the component's props.
+
+`Introduction` is editable directly in Visual Page Builder. In editor mode, an empty `Introduction` still renders an editable target; published pages omit the empty target so it does not create a layout gap. The component root always uses the fixed `nt-component-viewer` class and does not accept additional CSS classes.
 
 **Dependencies** — the paint layout must include:
 

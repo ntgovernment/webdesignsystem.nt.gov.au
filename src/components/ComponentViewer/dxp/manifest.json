@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "1.2.8",
+  "version": "2.0.0",
   "mainFunction": "main",
   "functions": [
     {
@@ -24,7 +24,10 @@
           "Introduction": {
             "type": "FormattedText",
             "title": "Introduction",
-            "description": "Optional introduction text displayed above the component preview. Supports rich formatting (lists, links)."
+            "description": "Optional introduction text displayed above the component preview. Supports rich formatting (lists, links).",
+            "ui:metadata": {
+              "inlineEditable": true
+            }
           },
           "storybookUrl": {
             "type": "string",
@@ -48,11 +51,6 @@
             "title": "Show Code by Default",
             "description": "Whether to show code panel on initial load",
             "default": false
-          },
-          "cssClass": {
-            "type": "string",
-            "title": "CSS Class",
-            "description": "Additional CSS classes to apply to the component container"
           }
         },
         "required": ["storybookUrl"]
