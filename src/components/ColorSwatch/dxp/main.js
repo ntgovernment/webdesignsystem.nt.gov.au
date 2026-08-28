@@ -54,8 +54,8 @@ const renderSwatch = (colorValue, index) => {
  */
 const main = async (input, info) => {
   const {
-    Content,
-    Introduction = "",
+    Introduction,
+    Content = "",
     ColorValues = [],
     cssClass = "",
   } = input || {};
@@ -77,7 +77,7 @@ const main = async (input, info) => {
   ).join("");
 
   // Build container classes
-  const content = Content ?? Introduction;
+  const content = Introduction ?? Content;
   const contentHtml = typeof content === "string" ? content : "";
   const hasContent = contentHtml.trim().length > 0;
   const containerClasses = [
@@ -92,7 +92,7 @@ const main = async (input, info) => {
   let html = `<div class="${containerClasses}">`;
 
   if (hasContent || editor) {
-    html += `<div class="nt-color-swatch-grid__description" data-sq-field="Content">${contentHtml}</div>`;
+    html += `<div class="nt-color-swatch-grid__description" data-sq-field="Introduction">${contentHtml}</div>`;
   }
 
   html += `<div class="nt-color-swatch-grid__container" role="list" data-component-type="color-swatch-grid" data-swatch-count="${ColorValues.length}">

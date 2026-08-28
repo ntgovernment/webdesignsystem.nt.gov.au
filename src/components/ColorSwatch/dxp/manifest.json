@@ -12,7 +12,7 @@
     }
   },
   "type": "edge",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "mainFunction": "main",
   "functions": [
     {
@@ -21,10 +21,10 @@
       "input": {
         "type": "object",
         "properties": {
-          "Content": {
+          "Introduction": {
             "type": "FormattedText",
-            "title": "Content",
-            "description": "Optional formatted content displayed above the swatch grid",
+            "title": "Introduction",
+            "description": "Optional formatted introduction displayed above the swatch grid",
             "ui:metadata": {
               "inlineEditable": true
             }
@@ -75,7 +75,7 @@
           "inputData": {
             "type": "inline",
             "value": {
-              "Content": "The extended color palette provides a <strong>range</strong> of shades for each base color.",
+              "Introduction": "The extended color palette provides a <strong>range</strong> of shades for each base color.",
               "ColorValues": [
                 {
                   "Name": "Blue 03",

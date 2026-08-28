@@ -14,7 +14,7 @@ The component supports:
 
 - **Formatted content** (rich text rendered above the swatch grid)
 - **Multiple color swatches** displayed in a responsive grid layout
-- **Inline editing** for Content and each swatch Name and Hex value in Visual Page Builder
+- **Inline editing** for Introduction and each swatch Name and Hex value in Visual Page Builder
 
 ### Icon Rationale
 
@@ -41,7 +41,7 @@ The component follows the Figma specification:
 - **Accessible markup**: Semantic HTML with proper ARIA attributes
 - **Responsive design**: Grid adapts to container width with auto-fill columns
 - **Auto-initialization**: Automatically mounts on DOM ready via data attributes (client-side)
-- **Sanitization**: Name and Hex values are escaped; Content is rendered as trusted FormattedText HTML
+- **Sanitization**: Name and Hex values are escaped; Introduction is rendered as trusted FormattedText HTML
 
 ## Props / Input Properties
 
@@ -49,10 +49,10 @@ The component follows the Figma specification:
 
 The DXP component accepts the following properties for rendering a grid of color swatches:
 
-| Property      | Type            | Schema required | Description                                              | Example                                                   |
-| ------------- | --------------- | --------------- | -------------------------------------------------------- | --------------------------------------------------------- |
-| `Content`     | `FormattedText` | No              | Optional formatted content displayed above the grid      | `"<p>The extended palette <strong>range</strong>...</p>"` |
-| `ColorValues` | `array`         | No              | Collection of color swatches to display (minimum 1 item) | `[{ "Name": "Blue 03", "Hex": "#1F1F5F" }]`          |
+| Property       | Type            | Schema required | Description                                              | Example                                                   |
+| -------------- | --------------- | --------------- | -------------------------------------------------------- | --------------------------------------------------------- |
+| `Introduction` | `FormattedText` | No              | Optional formatted content displayed above the grid      | `"<p>The extended palette <strong>range</strong>...</p>"` |
+| `ColorValues`  | `array`         | No              | Collection of color swatches to display (minimum 1 item) | `[{ "Name": "Blue 03", "Hex": "#1F1F5F" }]`               |
 
 The root schema leaves both fields optional so an editor can create the component incrementally. The renderer displays an error state until at least one `ColorValues` item is provided. Programmatic callers can also pass `cssClass` to add classes to the grid container; it is not exposed in the DXP authoring schema.
 
@@ -69,13 +69,13 @@ Each item in the `ColorValues` array has the following structure:
 
 Visual Page Builder maps editable output to these field paths:
 
-- `data-sq-field="Content"`
+- `data-sq-field="Introduction"`
 - `data-sq-field="ColorValues[0].Name"`
 - `data-sq-field="ColorValues[0].Hex"`
 
-The array index changes for each swatch. Editing `Hex` updates its displayed value and, when DXP rerenders the component, the sample's `background-color`. The editor renders an empty Content target so authors can add formatted content inline even when no initial value exists.
+The array index changes for each swatch. Editing `Hex` updates its displayed value and, when DXP rerenders the component, the sample's `background-color`. The editor renders an empty Introduction target so authors can add formatted content inline even when no initial value exists.
 
-Existing saved `Introduction` and combined `Value` inputs remain render-compatible during migration. New and legacy fields are not both exposed in the authoring form, and canonical `Content`, `Name`, and `Hex` values take precedence when both forms are supplied.
+Existing saved `Content` and combined `Value` inputs remain render-compatible. Compatibility fields are not exposed in the authoring form, and canonical `Introduction`, `Name`, and `Hex` values take precedence when both forms are supplied.
 
 ### Client-Side TypeScript Interface
 
@@ -147,7 +147,7 @@ const swatch = new ColorSwatchClient(container, {
 import colorSwatchComponent from "./src/components/ColorSwatch/dxp/main.js";
 
 const html = await colorSwatchComponent.main({
-  Content:
+  Introduction:
     "<p>The extended color palette provides a <strong>range</strong> of shades for each base color.</p>",
   ColorValues: [
     { Name: "Blue 03", Hex: "#1F1F5F" },
@@ -173,7 +173,7 @@ console.log(html);
 2. **Add to Matrix page** via DXP Component Services interface
 3. **Configure inputs** in the component editor:
 
-- **Content** (FormattedText, optional): `The extended color palette provides a <strong>range</strong> of shades for each base color.`
+- **Introduction** (FormattedText, optional): `The extended color palette provides a <strong>range</strong> of shades for each base color.`
 - **Color Swatches** (array): Add multiple items
 
 Each item has an inline-editable **Name** and **Hex**. Enter Hex with its leading `#`; updating it changes both the displayed code and the sample background after DXP rerenders the component.
@@ -187,7 +187,7 @@ Each item has an inline-editable **Name** and **Hex**. Enter Hex with its leadin
 | `.nt-color-swatch-grid`              | Root container for the entire component                     |
 | `.nt-color-swatch-grid__description` | Formatted content (rich text above the swatch grid)         |
 | `.nt-color-swatch-grid__container`   | Grid container with auto-fill layout (152px columns)        |
-| `.nt-color-swatch-grid--no-intro`    | Reduces top margin when no Content is provided              |
+| `.nt-color-swatch-grid--no-intro`    | Reduces top margin when no Introduction is provided         |
 | `.nt-color-swatch`                   | Individual swatch card with border, padding, and background |
 | `.nt-color-swatch__sample`           | Color display area (99px height, 152px width)               |
 | `.nt-color-swatch__content`          | Text container with padding and gap                         |
@@ -301,15 +301,16 @@ The `manifest.json` defines the component for Squiz DXP:
 - **Display Name**: "Color Swatch"
 - **Icon**: `palette` (orange)
 - **Type**: `edge` (edge-rendered component)
+- **Version**: `2.1.1`
 - **Main Function**: `main` (entry point: `main.js`)
 
 ### Input Schema
 
 ```json
 {
-  "Content": {
+  "Introduction": {
     "type": "FormattedText",
-    "title": "Content",
+    "title": "Introduction",
     "ui:metadata": {
       "inlineEditable": true
     }
@@ -359,7 +360,7 @@ The component includes an inline preview in the manifest:
           "inputData": {
             "type": "inline",
             "value": {
-              "Content": "The extended palette provides a <strong>range</strong> of shades for each base color.",
+              "Introduction": "The extended palette provides a <strong>range</strong> of shades for each base color.",
               "ColorValues": [
                 { "Name": "Blue 03", "Hex": "#1F1F5F" },
                 { "Name": "Orange 03", "Hex": "#E35205" }
@@ -375,10 +376,33 @@ The component includes an inline preview in the manifest:
 
 ### Deployment Process
 
-1. **Commit changes** to the `dev` branch
-2. **Push to GitHub**: `git push origin dev`
-3. **Automatic sync**: Git File Bridge syncs files to Squiz Matrix
-4. **Component available**: Use via DXP Component Services in Matrix
+ColorSwatch is an edge component and is deployed separately from the Vite asset bundle with the Squiz DXP CLI.
+
+Authenticate once for the NT Government tenant:
+
+```powershell
+$env:Path = "C:\Users\GALR\AppData\Roaming\npm;$env:Path"
+$env:NO_UPDATE_NOTIFIER = "1"
+dxp-next auth login --tenant ntgov-4670
+```
+
+Deploy from the repository root:
+
+```powershell
+dxp-next cmp deploy src/components/ColorSwatch/dxp
+```
+
+For local authoring preview, use an available UI port when port `3000` is occupied:
+
+```powershell
+dxp-next cmp dev-ui --port 3002 src/components/ColorSwatch/dxp
+```
+
+The DXP CLI reports the uploaded component location after a successful deployment. The current component is available at:
+
+<https://dxp.squiz.cloud/organization/ntgov-4670/component-service/all-components/web-design-system/color-swatch>
+
+The shared `npm run build` and Git File Bridge workflow deploy the design-system bundles and nesters; they do not deploy this DXP component source.
 
 ### Using in Squiz Matrix
 
@@ -388,7 +412,7 @@ The component includes an inline preview in the manifest:
 4. Drag onto the page or insert via component picker
 5. Configure the input properties in the editor:
 
-- **Content** (FormattedText, optional): Add rich text (e.g., with bold or links)
+- **Introduction** (FormattedText, optional): Add rich text (e.g., with bold or links)
 - **Color Swatches**: Add one or more items, then edit each Name and Hex inline
 
 6. Save and publish
@@ -476,7 +500,7 @@ if (typeof document !== "undefined") {
 
 ### Sanitization
 
-Name and Hex inputs are sanitized to prevent XSS attacks. Content (FormattedText) is rendered as HTML and should be treated as trusted content:
+Name and Hex inputs are sanitized to prevent XSS attacks. Introduction (FormattedText) is rendered as HTML and should be treated as trusted content:
 
 ```typescript
 import { escapeHtml, escapeAttr } from "../../utils/sanitize";
@@ -585,12 +609,17 @@ The ColorSwatch component is designed to showcase colors from the NT Government 
 
 ## Version History
 
+### v2.1.1
+
+- Restored `Introduction` as the inline-editable formatted text field
+- Retained renderer compatibility for `Content` values saved in v2.1.0
+
 ### v2.1.0
 
 - Renamed the formatted `Introduction` field to inline-editable `Content`
 - Split the combined color value into inline-editable `Name` and `Hex` fields
 - Applied `Hex` to both the displayed value and sample background
-- Retained renderer compatibility for saved `Introduction` and `Value` data
+- Retained renderer compatibility for saved `Introduction` and `Value` data at that version
 
 ### v1.0.0 (Initial Release)
 
@@ -671,7 +700,7 @@ For questions, issues, or contributions:
 
 ---
 
-**Component Version**: 2.1.0
+**Component Version**: 2.1.1
 
 **Last Updated**: August 2026
 

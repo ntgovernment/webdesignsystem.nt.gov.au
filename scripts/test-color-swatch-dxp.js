@@ -33,7 +33,8 @@ const manifest = JSON.parse(
 );
 const properties = manifest.functions[0].input.properties;
 
-assert.equal(properties.Content["ui:metadata"].inlineEditable, true);
+assert.equal(properties.Introduction["ui:metadata"].inlineEditable, true);
+assert.equal(properties.Content, undefined);
 assert.equal(
   properties.ColorValues.items.properties.Name["ui:metadata"].inlineEditable,
   true,
@@ -45,11 +46,11 @@ assert.equal(
 assert.deepEqual(properties.ColorValues.items.required, ["Name", "Hex"]);
 
 const canonicalHtml = await colorSwatchComponent.main({
-  Content: "<p>Extended <strong>palette</strong></p>",
+  Introduction: "<p>Extended <strong>palette</strong></p>",
   ColorValues: [{ Name: "Blue 03", Hex: "#1F1F5F" }],
 });
 
-assert.match(canonicalHtml, /data-sq-field="Content"/);
+assert.match(canonicalHtml, /data-sq-field="Introduction"/);
 assert.match(canonicalHtml, /data-sq-field="ColorValues\[0\]\.Name"/);
 assert.match(canonicalHtml, /data-sq-field="ColorValues\[0\]\.Hex"/);
 assert.match(canonicalHtml, /background-color: #1F1F5F/);
@@ -58,11 +59,12 @@ assert.match(canonicalHtml, />#1F1F5F<\/div>/);
 assert.match(canonicalHtml, /<p>Extended <strong>palette<\/strong><\/p>/);
 
 const legacyHtml = await colorSwatchComponent.main({
-  Introduction: "<p>Legacy content</p>",
+  Content: "<p>Compatibility content</p>",
   ColorValues: [{ Value: "Orange 03 #E35205" }],
 });
 
-assert.match(legacyHtml, /<p>Legacy content<\/p>/);
+assert.match(legacyHtml, /<p>Compatibility content<\/p>/);
+assert.match(legacyHtml, /data-sq-field="Introduction"/);
 assert.match(legacyHtml, />Orange 03<\/div>/);
 assert.match(legacyHtml, /background-color: #E35205/);
 assert.match(legacyHtml, />#E35205<\/div>/);
@@ -76,8 +78,8 @@ assert.match(legacyWithoutHexHtml, /background-color: #cccccc/);
 assert.match(legacyWithoutHexHtml, />#cccccc<\/div>/);
 
 const precedenceHtml = await colorSwatchComponent.main({
-  Content: "<p>Canonical content</p>",
-  Introduction: "<p>Legacy content</p>",
+  Introduction: "<p>Canonical introduction</p>",
+  Content: "<p>Compatibility content</p>",
   ColorValues: [
     {
       Name: "Canonical name",
@@ -87,10 +89,13 @@ const precedenceHtml = await colorSwatchComponent.main({
   ],
 });
 
-assert.match(precedenceHtml, /Canonical content/);
+assert.match(precedenceHtml, /Canonical introduction/);
 assert.match(precedenceHtml, /Canonical name/);
 assert.match(precedenceHtml, /background-color: #123456/);
-assert.doesNotMatch(precedenceHtml, /Legacy content|Legacy name|#ABCDEF/);
+assert.doesNotMatch(
+  precedenceHtml,
+  /Compatibility content|Legacy name|#ABCDEF/,
+);
 
 const editorHtml = await colorSwatchComponent.main(
   { ColorValues: [{ Name: "Blue", Hex: "#0000FF" }] },
@@ -99,8 +104,15 @@ const editorHtml = await colorSwatchComponent.main(
 
 assert.match(
   editorHtml,
-  /class="nt-color-swatch-grid__description" data-sq-field="Content"><\/div>/,
+  /class="nt-color-swatch-grid__description" data-sq-field="Introduction"><\/div>/,
 );
+
+const publishedHtml = await colorSwatchComponent.main({
+  ColorValues: [{ Name: "Blue", Hex: "#0000FF" }],
+});
+
+assert.doesNotMatch(publishedHtml, /data-sq-field="Introduction"/);
+assert.doesNotMatch(publishedHtml, /nt-color-swatch-grid__description/);
 
 const escapedHtml = await colorSwatchComponent.main({
   ColorValues: [
